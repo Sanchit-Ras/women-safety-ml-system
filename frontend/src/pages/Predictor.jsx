@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import RiskExplanation from "../components/RiskExplanation";
 import PredictionMeaning from "../components/PredictionsMeaning";
-import {VITE_API_URL} from "../.env"
+
 export default function Predictor() {
   const [data, setData] = useState({});
   const [state, setState] = useState("");
@@ -13,7 +13,7 @@ export default function Predictor() {
 
   // Fetch districts
   useEffect(() => {
-    fetch(`${VITE_API_URL}/districts`)
+    fetch(`${import.meta.env.VITE_API_URL}/districts`)
       .then((res) => res.json())
       .then((data) => setData(data))
       .catch(() => setError("Failed to load districts"));
@@ -28,7 +28,7 @@ export default function Predictor() {
 
     try {
       const res = await fetch(
-        `${VITE_API_URL}/predict_district?state=${state}&district=${district}`,
+        `${import.meta.env.VITE_API_URL}/predict_district?state=${state}&district=${district}`,
       );
 
       const json = await res.json();
