@@ -13,7 +13,7 @@ export default function Predictor() {
 
   // Fetch districts
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/districts")
+    fetch("https://women-safety-api.onrender.com/districts")
       .then((res) => res.json())
       .then((data) => setData(data))
       .catch(() => setError("Failed to load districts"));
@@ -28,7 +28,7 @@ export default function Predictor() {
 
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/predict_district?state=${state}&district=${district}`,
+        `https://women-safety-api.onrender.com/predict_district?state=${state}&district=${district}`,
       );
 
       const json = await res.json();
