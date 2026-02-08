@@ -24,6 +24,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/deploy-check")
+def deploy_check():
+    return {"status": "NEW VERSION LIVE"}
 
 # =====================================================
 # LOAD EVERYTHING ON STARTUP (VERY IMPORTANT)
