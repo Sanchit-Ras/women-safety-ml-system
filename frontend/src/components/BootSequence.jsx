@@ -11,6 +11,7 @@ const BootSequence = () => {
     "CONNECTING_TO_SECURE_SERVER...",
     "ESTABLISHING_HANDSHAKE...",
     "DECRYPTING_Protocol_v4...",
+    "NOTE: It can take upto 5 mins...",
     "ACCESS_GRANTED.",
     "SYSTEM_READY.",
   ];
