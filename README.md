@@ -65,7 +65,7 @@ Most portfolio projects fail because they leak data or ignore deployment. This p
 ---
 
 ## 🚀 Installation & Local Development
-1. Clone the repo: `git clone https://github.com/Necrosyth/camu.git`
+1. Clone the repo: `git clone`
 2. Install dependencies: `pip install -r requirements.txt`
 3. Run the API: `uvicorn main:app --reload`
 4. Run the UI: `npm start`
@@ -73,6 +73,6 @@ Most portfolio projects fail because they leak data or ignore deployment. This p
 ---
 
 ## 👨‍💻 Author
-**Sanchit Rastogi** *B.Tech in Computer Science | ML Engineer* [LinkedIn](YOUR_LINKEDIN_URL) | [Portfolio](YOUR_PORTFOLIO_URL)
+**Sanchit Rastogi** *B.Tech in Computer Science | ML Engineer* [LinkedIn](kedin.com/in/sanchit-rastogi-95964b314/)
 
 ⭐ *If you find this ML architecture useful for your research, consider starring the repository!*
