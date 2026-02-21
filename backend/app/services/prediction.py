@@ -4,7 +4,6 @@ import pandas as pd
 import os
 from app.services.cache import redis_client
 import json
-import logging
 # =====================================================
 # MODULE-LEVEL STATE
 # =====================================================
@@ -72,9 +71,7 @@ def predict_for_district(state: str, district: str):
     cached_result = redis_client.get(cache_key)
 
     if cached_result:
-        logging.warning("Cache HIT")
         return json.loads(cached_result)
-    logging.warning("Cache MISS")
 
     # ============================
     # NORMAL PREDICTION FLOW
@@ -102,7 +99,6 @@ def predict_for_district(state: str, district: str):
     # STORE IN CACHE (1 hour TTL)
     # ============================
     redis_client.setex(cache_key, 3600, json.dumps(result))
-    print("Cache MISS → Computed & Stored")
 
     return result
 
