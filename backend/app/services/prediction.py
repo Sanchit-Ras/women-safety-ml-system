@@ -2,7 +2,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import os
-from app.services.cache import redis_client
+from app.services.cache import redis_client, ENABLE_CACHE
 import json
 # =====================================================
 # MODULE-LEVEL STATE
@@ -61,17 +61,16 @@ def predict_for_district(state: str, district: str):
 
     state_norm = state.strip().lower()
     district_norm = district.strip().lower()
-
-    # Versioned key (future-safe)
     cache_key = f"v1:{state_norm}:{district_norm}"
 
     # ============================
     # CACHE CHECK
     # ============================
-    cached_result = redis_client.get(cache_key)
 
-    if cached_result:
-        return json.loads(cached_result)
+    if ENABLE_CACHE and redis_client:
+        cached_result = redis_client.get(cache_key)
+        if cached_result:
+            return json.loads(cached_result)
 
     # ============================
     # NORMAL PREDICTION FLOW
@@ -96,9 +95,11 @@ def predict_for_district(state: str, district: str):
     }
 
     # ============================
-    # STORE IN CACHE (1 hour TTL)
+    # STORE IN CACHE
     # ============================
-    redis_client.setex(cache_key, 3600, json.dumps(result))
+
+    if ENABLE_CACHE and redis_client:
+        redis_client.setex(cache_key, 3600, json.dumps(result))
 
     return result
 

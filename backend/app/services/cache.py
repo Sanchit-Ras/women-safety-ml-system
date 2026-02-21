@@ -1,11 +1,18 @@
 import os
 import redis
 
-REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
-REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
+ENABLE_CACHE = os.getenv("ENABLE_CACHE", "true").lower() == "true"
 
-redis_client = redis.Redis(
-    host=REDIS_HOST,
-    port=REDIS_PORT,
-    decode_responses=True  # IMPORTANT
-)
+redis_client = None
+
+if ENABLE_CACHE:
+    redis_url = os.getenv("REDIS_URL")
+
+    if redis_url:
+        redis_client = redis.from_url(redis_url, decode_responses=True)
+    else:
+        redis_client = redis.Redis(
+            host=os.getenv("REDIS_HOST", "localhost"),
+            port=int(os.getenv("REDIS_PORT", 6379)),
+            decode_responses=True
+        )

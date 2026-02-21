@@ -11,6 +11,7 @@ services:
     environment:
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - ENABLE_CACHE=true
 
   redis:
     image: redis:7-alpine
