@@ -142,7 +142,7 @@ def get_all_districts():
 
 def get_model_info():
     return {
-        "model": "Random Forest Regressor",
+        "model": "XGBoost Regressor",
         "features": 10,
         "task": "Crime Percentage Change Prediction",
         "dataset_years": "2001–2014",
