@@ -1,37 +1,6 @@
-export default function Methodology() {
-  const steps = [
-    {
-      title: "Data Engineering",
-      desc: "Aggregated district-level crime records across 14 years and constructed year-over-year percentage change features to normalize regional reporting differences.",
-      step: "01",
-    },
-    {
-      title: "Stationarity Transformation",
-      desc: "Applied Z-score normalization to stabilize variance across districts, enabling the model to learn patterns independent of absolute crime volume.",
-      step: "02",
-    },
-    {
-      title: "Sliding Window Supervision",
-      desc: "Converted temporal crime sequences into supervised learning samples using a 6-year lag window to forecast future crime change.",
-      step: "03",
-    },
-    {
-      title: "District Holdout Validation",
-      desc: "Used GroupShuffleSplit to exclude entire districts during training — preventing geographic memorization and ensuring true generalization.",
-      step: "04",
-    },
-    {
-      title: "Model Architecture",
-      desc: "Benchmarked Random Forest and XGBoost regressors. Tree ensembles were selected due to their robustness against non-linear socio-crime relationships.",
-      step: "05",
-    },
-    {
-      title: "Overfitting Diagnostics",
-      desc: "Compared training, validation, and future-test R² scores to confirm the model learned transferable crime dynamics.",
-      step: "06",
-    },
-  ];
+import { STEPS } from "./constants";
 
+export default function Methodology() {
   return (
     <div className="bg-white py-24">
       <div className="max-w-7xl mx-auto px-6">
@@ -47,7 +16,7 @@ export default function Methodology() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {steps.map((step, i) => (
+          {STEPS.map((step, i) => (
             <div
               key={i}
               className="group relative bg-slate-50 p-8 rounded-3xl border border-slate-100 hover:bg-white hover:shadow-xl transition-all duration-300"

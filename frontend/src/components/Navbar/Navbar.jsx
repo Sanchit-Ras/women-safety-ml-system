@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { NAV_LINKS } from "./constants";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -15,11 +16,6 @@ export default function Navbar() {
   }, []);
 
   const isActive = (path) => location.pathname === path;
-
-  const navLinks = [
-    { name: "Research", path: "/" },
-    { name: "Predictor", path: "/predictor" },
-  ];
 
   return (
     <nav
@@ -55,7 +51,7 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.path}
               to={link.path}
@@ -107,7 +103,7 @@ export default function Navbar() {
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-slate-100 shadow-xl p-4 flex flex-col gap-4 animate-fade-in-down">
-          {navLinks.map((link) => (
+          {NAV_LINKS.map((link) => (
             <Link
               key={link.path}
               to={link.path}
