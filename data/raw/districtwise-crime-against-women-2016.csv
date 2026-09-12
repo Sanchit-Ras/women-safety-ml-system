@@ -1,0 +1,818 @@
+id,year,state_name,state_code,district_name,district_code,registration_circles,rape,attempt_to_commit_rape,kidnapping_and_abduction,dowry_deaths,assault_on_women,insult_to_the_modesty_of_women,cruelty_by_husband_relatives,importation_of_girls_from_foreign,abetment_of_suicides_of_women,dowry_prohibition,indecent_representation_of_women,protection_of_women_from_domestic_violence,immoral_traffic_prevention,acid_attack,attempt_to_acid_attack,deaths_caused_with_intent_to_cause_miscarriage,causing_miscarriage_without_consent_of_women,human_trafficking,un_natural_offences
+0,2016,Andhra Pradesh,28,Anantapur,502,Anantapur,33,15,55,23,362,13,130,0,52,213,0,0,6,0,0,0,0,0,0
+1,2016,Andhra Pradesh,28,Chittoor,503,Chittoor,21,12,9,12,135,3,196,0,0,1,0,0,4,0,0,0,0,0,0
+2,2016,Andhra Pradesh,28,Y.S.R.,504,Cuddapah,38,9,14,12,266,104,332,0,0,0,0,0,6,0,0,0,0,7,0
+3,2016,Andhra Pradesh,28,East Godavari,505,East Godavari,120,22,21,12,413,146,544,0,35,5,4,0,36,1,2,0,0,0,0
+4,2016,Andhra Pradesh,28,Anantapur,502,Guntakal Railway,0,0,1,2,8,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+5,2016,Andhra Pradesh,28,Guntur,506,Guntur,62,17,33,15,283,321,434,0,49,0,0,0,5,0,0,0,0,0,0
+6,2016,Andhra Pradesh,28,Guntur,506,Guntur Urban,43,2,103,7,148,137,374,0,20,0,0,0,16,0,0,0,3,1,0
+7,2016,Andhra Pradesh,28,Krishna,510,Krishna,81,31,38,21,419,250,606,0,36,0,0,0,3,0,0,0,0,1,0
+8,2016,Andhra Pradesh,28,Kurnool,511,Kurnool,33,6,48,18,475,243,277,0,58,367,0,0,19,0,0,0,0,0,0
+9,2016,Andhra Pradesh,28,Spsr Nellore,515,Nellore,52,20,42,4,320,154,562,0,24,0,0,0,15,0,3,0,0,0,0
+10,2016,Andhra Pradesh,28,Prakasam,517,Prakasham,67,14,31,13,290,36,503,0,33,0,0,0,8,0,0,0,0,4,0
+11,2016,Andhra Pradesh,28,East Godavari,505,Rajahmundry,26,1,11,4,146,47,191,0,7,0,0,0,4,0,0,0,0,0,0
+12,2016,Andhra Pradesh,28,Srikakulam,519,Srikakulam,41,1,13,2,130,9,243,0,17,0,0,0,1,0,1,0,0,6,0
+13,2016,Andhra Pradesh,28,Tirupati,752,Tirupathi Urban,16,4,18,6,71,17,74,0,0,0,0,0,2,0,0,0,0,0,0
+14,2016,Andhra Pradesh,28,Ntr,749,Vijayawada City,72,6,28,10,207,134,412,0,25,1,0,0,21,0,0,0,0,7,0
+15,2016,Andhra Pradesh,28,Ntr,749,Vijayawada Railway,2,0,0,1,7,5,0,0,0,0,0,0,0,0,0,0,0,0,0
+16,2016,Andhra Pradesh,28,Visakhapatanam,520,Visakha Rural,34,1,21,4,130,5,130,0,0,0,0,0,0,0,0,0,0,0,0
+17,2016,Andhra Pradesh,28,Visakhapatanam,520,Visakhapatnam,81,2,78,6,306,12,403,0,16,4,0,0,24,2,0,0,0,0,0
+18,2016,Andhra Pradesh,28,Vizianagaram,521,Vizianagaram,33,2,8,4,201,69,299,0,0,1,0,0,0,0,0,0,0,0,0
+19,2016,Andhra Pradesh,28,West Godavari,523,West Godavari,139,25,54,17,512,126,750,0,33,0,1,0,16,0,0,0,0,5,0
+20,2016,Arunachal Pradesh,12,Anjaw,628,Anjaw,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+21,2016,Arunachal Pradesh,12,Changlang,229,Changlang,5,0,9,0,5,0,4,0,1,0,0,0,0,0,0,0,0,0,0
+22,2016,Arunachal Pradesh,12,Papum Pare,237,Crime Branch,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+23,2016,Arunachal Pradesh,12,Dibang Valley,230,Dibang Valley,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+24,2016,Arunachal Pradesh,12,East Kameng,231,Kameng East,5,0,1,0,8,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+25,2016,Arunachal Pradesh,12,West Kameng,242,Kameng West,0,0,1,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+26,2016,Arunachal Pradesh,12,Kurung Kumey,233,Kurung Kumey,1,0,2,0,1,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+27,2016,Arunachal Pradesh,12,Lohit,234,Lohit,3,0,9,1,5,0,2,0,0,0,0,0,0,0,0,0,0,0,0
+28,2016,Arunachal Pradesh,12,Longding,666,Longding,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+29,2016,Arunachal Pradesh,12,Lower Dibang Valley,235,Lower Dibang Valley,1,0,1,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+30,2016,Arunachal Pradesh,12,Papum Pare,237,Papum Pare City,25,4,28,0,45,8,27,0,2,0,0,0,0,0,0,0,0,1,0
+31,2016,Arunachal Pradesh,12,Papum Pare,237,Papum Pare Rural,1,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+32,2016,Arunachal Pradesh,12,East Siang,232,Siang East,14,3,8,0,8,2,7,0,0,0,0,0,0,0,0,0,0,0,0
+33,2016,Arunachal Pradesh,12,Upper Siang,240,Siang Upper,5,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+34,2016,Arunachal Pradesh,12,West Siang,243,Siang West,10,3,3,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+35,2016,Arunachal Pradesh,12,Lower Subansiri,236,Subansiri Lower,2,0,2,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+36,2016,Arunachal Pradesh,12,Upper Subansiri,241,Subansiri Upper,6,4,2,0,6,0,3,0,1,0,0,0,0,0,0,0,0,0,0
+37,2016,Arunachal Pradesh,12,Tawang,238,Tawang,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+38,2016,Arunachal Pradesh,12,Tirap,239,Tirap,0,0,1,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+39,2016,Arunachal Pradesh,12,Namsai,678,Namsai,9,1,10,0,5,0,2,0,0,0,0,0,0,0,0,0,0,0,0
+40,2016,Arunachal Pradesh,12,Siang,679,Siang,2,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+41,2016,Assam,18,Kamrup Metro,618,B. I. E. O.,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+42,2016,Assam,18,Barpeta,280,Barpeta,104,101,337,24,334,0,813,0,0,0,0,0,2,2,0,0,0,1,0
+43,2016,Assam,18,Baksa,616,Baksa,25,4,163,1,87,2,67,0,0,10,0,0,0,1,0,0,0,1,0
+44,2016,Assam,18,Bongaigaon,281,Bongaigaon,41,0,137,2,46,0,234,0,0,0,0,0,1,0,0,0,0,1,0
+45,2016,Assam,18,Kamrup Metro,618,C. I. D.,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+46,2016,Assam,18,Cachar,282,Cachar,75,13,291,12,71,5,515,0,0,22,0,0,1,0,0,0,0,0,0
+47,2016,Assam,18,Chirang,612,Chirang,19,3,76,0,23,0,65,0,0,0,0,0,0,0,0,0,0,0,0
+48,2016,Assam,18,Darrang,283,Darrang,95,28,164,6,524,0,493,0,0,2,0,1,1,0,0,0,0,2,0
+49,2016,Assam,18,Dhemaji,284,Dhemaji,47,8,106,1,91,1,111,0,0,0,0,0,1,0,0,0,0,1,0
+50,2016,Assam,18,Dhubri,285,Dhubri,145,34,329,9,471,7,863,0,0,107,0,0,0,1,0,0,0,6,0
+51,2016,Assam,18,Dibrugarh,286,Dibrugarh,59,5,182,3,41,0,247,0,0,25,0,0,0,0,0,0,0,1,0
+52,2016,Assam,18,Kamrup Metro,618,G. R. P.,1,0,9,0,3,0,0,0,0,0,0,0,0,0,0,0,0,10,0
+53,2016,Assam,18,Goalpara,287,Goalpara,48,8,75,6,15,0,279,0,0,0,0,0,0,1,0,0,0,1,0
+54,2016,Assam,18,Golaghat,288,Golaghat,47,6,198,6,54,0,315,0,0,0,0,0,17,0,0,0,0,0,0
+55,2016,Assam,18,Kamrup Metro,618,Guwahati City,72,9,532,9,151,13,507,0,0,23,0,0,10,1,0,0,0,6,0
+56,2016,Assam,18,Hailakandi,289,Hailakandi,88,5,92,0,26,3,264,0,0,0,0,0,1,0,0,0,0,0,0
+57,2016,Assam,18,West Karbi Anglong,710,Hamren,8,0,22,0,5,0,2,0,0,0,0,0,0,0,0,0,0,0,0
+58,2016,Assam,18,Jorhat,290,Jorhat,32,12,139,1,202,0,399,0,0,0,0,0,3,0,0,0,0,1,0
+59,2016,Assam,18,Kamrup,291,Kamrup,88,0,192,7,96,0,292,0,0,0,0,0,2,0,0,0,0,2,0
+60,2016,Assam,18,Karbi Anglong,292,Karbi Anglong,18,1,75,0,20,0,61,0,0,0,0,0,0,0,1,0,0,0,0
+61,2016,Assam,18,Karimganj,293,Karimganj,47,0,112,10,77,1,275,0,0,12,0,1,0,0,0,0,0,0,0
+62,2016,Assam,18,Kokrajhar,294,Kokrajhar,41,0,121,2,116,0,167,0,0,3,0,0,0,0,0,0,0,0,0
+63,2016,Assam,18,Lakhimpur,295,Lakhimpur,68,0,238,4,23,0,343,0,0,3,0,0,0,0,0,0,0,1,0
+64,2016,Assam,18,Marigaon,296,Morigaon,128,30,185,3,205,0,414,0,0,0,0,0,1,0,0,0,0,0,0
+65,2016,Assam,18,Dima Hasao,299,Dima Hasao,3,0,20,0,6,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+66,2016,Assam,18,Nagaon,297,Nagaon,97,27,361,16,189,0,832,0,0,8,0,0,5,1,0,0,0,4,0
+67,2016,Assam,18,Nalbari,298,Nalbari,37,0,90,1,81,0,180,0,0,0,0,0,1,0,0,0,0,1,0
+68,2016,Assam,18,Kamrup Metro,618,R. P. O.,6,0,8,0,2,0,7,0,0,0,0,0,0,0,0,0,0,0,0
+69,2016,Assam,18,Sivasagar,300,Sibsagar,25,10,210,3,139,0,233,0,0,10,0,0,5,0,0,0,0,3,0
+70,2016,Assam,18,Sonitpur,301,Sonitpur,49,0,200,7,121,0,312,0,0,2,0,0,8,0,0,0,0,13,0
+71,2016,Assam,18,Tinsukia,302,Tinsukia,68,26,170,4,63,0,242,0,0,7,0,0,3,1,0,0,0,3,0
+72,2016,Assam,18,Udalguri,617,Udalguri,23,24,68,2,29,0,58,0,0,0,0,0,0,0,0,0,0,8,0
+73,2016,Assam,18,Tinsukia,302,Sadia,10,0,16,0,2,0,9,0,0,0,0,0,0,0,0,0,0,0,0
+74,2016,Assam,18,Majuli,706,Majuli,9,3,15,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+75,2016,Assam,18,Biswanath,705,Biswanath,42,0,131,6,14,0,101,0,0,0,0,0,0,0,0,0,0,1,0
+76,2016,Assam,18,Hojai,709,Hojai,43,2,134,6,28,1,293,0,0,0,0,0,3,0,0,0,0,0,0
+77,2016,Assam,18,South Salmara Mancachar,707,South Salmara,63,11,76,6,15,1,301,0,0,0,0,0,0,0,0,0,0,0,0
+78,2016,Assam,18,Charaideo,708,Charaideo,8,0,65,0,5,0,23,0,0,0,0,0,0,0,0,0,0,0,0
+79,2016,Bihar,10,Araria,188,Araria,51,14,129,11,1,0,76,0,0,18,0,0,1,0,0,0,0,1,0
+80,2016,Bihar,10,Arwal,611,Arwal,4,0,22,9,4,0,23,0,0,1,0,0,0,0,0,0,0,0,0
+81,2016,Bihar,10,Aurangabad,189,Aurangabad,10,5,42,17,17,0,44,0,0,48,0,0,0,1,0,0,0,0,0
+82,2016,Bihar,10,Pashchim Champaran,211,Bagaha,8,0,69,9,0,0,23,0,0,17,0,0,0,0,0,0,0,1,0
+83,2016,Bihar,10,Banka,190,Banka,10,3,69,20,0,0,39,0,0,20,0,0,0,0,0,0,0,0,0
+84,2016,Bihar,10,Begusarai,191,Begusarai,24,17,97,18,12,0,65,0,0,12,0,0,2,0,0,0,0,0,0
+85,2016,Bihar,10,Pashchim Champaran,211,Bettiah,27,0,163,28,2,0,105,0,0,28,0,0,0,0,0,0,0,0,0
+86,2016,Bihar,10,Kaimur (Bhabua),200,Bhabhua,13,11,73,22,0,0,46,0,0,36,0,0,0,0,0,0,0,0,0
+87,2016,Bihar,10,Bhagalpur,192,Bhagalpur,47,7,127,18,15,0,50,0,0,45,0,0,0,0,0,0,0,0,0
+88,2016,Bihar,10,Bhojpur,193,Bhojpur,21,16,88,36,9,30,240,0,0,65,0,0,0,0,0,0,0,0,0
+89,2016,Bihar,10,Buxar,194,Buxar,16,0,51,18,7,0,51,0,0,35,0,0,0,0,0,0,0,0,0
+90,2016,Bihar,10,Darbhanga,195,Darbhanga,31,22,248,23,0,18,207,0,0,0,0,0,0,0,0,0,0,0,0
+91,2016,Bihar,10,Gaya,196,Gaya,51,0,249,40,2,0,201,0,0,95,0,171,4,0,0,0,0,3,0
+92,2016,Bihar,10,Gopalganj,197,Gopalganj,6,11,120,36,0,0,79,0,0,12,0,0,0,0,0,0,0,0,0
+93,2016,Bihar,10,Munger,207,Jamalpur Railway,0,0,2,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+94,2016,Bihar,10,Jamui,198,Jamui,10,0,41,14,17,0,50,0,0,20,0,0,0,0,0,0,0,0,0
+95,2016,Bihar,10,Jehanabad,199,Jehanabad,19,1,68,17,2,0,25,0,0,21,0,0,0,0,0,0,0,0,0
+96,2016,Bihar,10,Katihar,201,Katihar,57,88,143,10,1,116,136,0,0,16,0,0,0,0,0,0,0,0,0
+97,2016,Bihar,10,Katihar,201,Katihar Railway,1,0,0,0,8,0,0,0,0,0,0,0,0,0,0,0,0,2,0
+98,2016,Bihar,10,Khagaria,202,Khagaria,17,15,97,5,2,0,39,0,0,14,0,0,1,1,0,0,0,0,4
+99,2016,Bihar,10,Kishanganj,203,Kishanganj,40,3,95,6,0,0,46,0,0,23,0,0,5,0,0,0,0,0,0
+100,2016,Bihar,10,Lakhisarai,204,Lakhisarai,10,14,32,8,0,0,51,0,0,15,0,0,0,0,0,0,0,2,0
+101,2016,Bihar,10,Madhepura,205,Madhepura,14,4,105,9,0,0,32,0,0,14,0,0,0,0,0,0,0,0,0
+102,2016,Bihar,10,Madhubani,206,Madhubani,59,0,186,35,7,0,214,0,0,0,0,0,0,0,0,0,0,0,0
+103,2016,Bihar,10,Purbi Champaran,213,Motihari,23,1,236,64,0,0,179,0,0,51,0,0,0,0,0,0,0,0,0
+104,2016,Bihar,10,Munger,207,Munger,11,0,62,6,11,0,55,0,0,5,0,0,0,0,0,0,0,0,0
+105,2016,Bihar,10,Muzaffarpur,208,Muzaffarpur,33,30,292,45,0,0,141,0,0,46,0,0,0,0,0,0,0,0,0
+106,2016,Bihar,10,Muzaffarpur,208,Muzaffarpur Railway,4,0,7,0,8,0,2,0,0,0,0,0,0,0,0,0,0,0,0
+107,2016,Bihar,10,Nalanda,209,Nalanda,34,0,219,47,13,0,108,0,0,73,0,0,0,0,0,0,0,0,0
+108,2016,Bihar,10,Bhagalpur,192,Naugachia,5,0,37,8,7,0,28,0,0,4,0,0,0,0,0,0,0,0,0
+109,2016,Bihar,10,Nawada,210,Nawadah,18,7,104,20,10,0,56,0,0,20,0,0,0,0,0,0,0,0,0
+110,2016,Bihar,10,Patna,212,Patna,75,15,711,98,117,3,455,0,0,55,0,0,31,0,0,0,0,0,0
+111,2016,Bihar,10,Patna,212,Patna Railway,1,0,5,4,19,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+112,2016,Bihar,10,Purnia,214,Purnea,23,0,111,28,0,0,62,0,0,37,0,0,0,0,0,0,0,0,0
+113,2016,Bihar,10,Rohtas,215,Rohtas,25,3,137,25,1,0,81,0,0,0,0,0,0,0,0,0,0,0,0
+114,2016,Bihar,10,Saharsa,216,Saharsa,25,0,106,8,1,0,43,0,0,21,0,0,0,0,0,0,0,0,0
+115,2016,Bihar,10,Samastipur,217,Samastipur,19,0,200,36,1,0,98,0,0,28,0,0,0,0,0,0,0,0,0
+116,2016,Bihar,10,Saran,218,Saran,36,0,237,45,0,0,210,0,0,36,0,0,0,0,0,0,0,0,0
+117,2016,Bihar,10,Sheikhpura,219,Sheikhpura,11,0,27,4,15,0,63,0,0,0,0,0,0,0,0,0,0,0,0
+118,2016,Bihar,10,Sheohar,220,Sheohar,5,0,27,11,9,0,14,0,0,2,0,0,1,0,0,0,0,0,0
+119,2016,Bihar,10,Sitamarhi,221,Sitamarhi,23,19,217,25,0,0,158,0,0,27,0,0,0,0,0,0,0,0,0
+120,2016,Bihar,10,Siwan,222,Siwan,28,0,151,41,0,0,83,0,0,24,0,0,0,0,0,0,0,0,0
+121,2016,Bihar,10,Supaul,223,Supaul,37,15,113,12,1,0,31,0,0,58,0,0,0,0,0,0,0,0,0
+122,2016,Bihar,10,Vaishali,224,Vaishali,26,0,181,51,0,0,85,0,0,16,0,0,5,0,0,0,0,0,0
+123,2016,Bihar,10,Patna,212,Economic Offences Unit,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+124,2016,Bihar,10,Patna,212,Anti Terrorist Squad,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+125,2016,Chhattisgarh,22,Balod,646,Balod,33,2,26,2,46,2,11,0,7,0,0,0,0,0,0,0,0,3,0
+126,2016,Chhattisgarh,22,Baloda Bazar,644,Balodbazar,81,1,92,9,97,6,32,0,10,0,0,0,0,0,0,0,0,0,0
+127,2016,Chhattisgarh,22,Balrampur,649,Balrampur,76,0,2,4,35,0,17,0,7,0,0,0,0,0,0,0,0,1,0
+128,2016,Chhattisgarh,22,Bemetara,650,Bemetra,41,0,30,2,51,2,10,0,4,0,0,0,0,0,0,0,0,0,0
+129,2016,Chhattisgarh,22,Bilaspur,375,Bilaspur,121,0,165,6,238,2,76,0,29,2,0,0,2,0,0,0,0,3,0
+130,2016,Chhattisgarh,22,Bijapur,636,Bizapur,7,0,8,0,3,0,0,0,2,0,0,0,0,0,0,0,0,0,0
+131,2016,Chhattisgarh,22,Dantewada,376,Dantewara,12,0,11,0,6,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+132,2016,Chhattisgarh,22,Dhamtari,377,Dhamtari,49,0,10,3,34,2,12,0,10,0,0,0,0,0,0,0,0,0,0
+133,2016,Chhattisgarh,22,Durg,378,Durg,105,6,151,13,254,14,91,0,18,1,0,2,11,0,0,0,0,2,0
+134,2016,Chhattisgarh,22,Gariyaband,645,Gariyaband,42,1,18,0,34,4,19,0,4,0,0,0,0,0,0,0,0,0,0
+135,2016,Chhattisgarh,22,Raipur,387,G. R. P. Raipur,2,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+136,2016,Chhattisgarh,22,Bastar,374,Jagdalpur,45,0,34,1,21,1,9,0,0,0,0,0,0,0,0,0,0,0,0
+137,2016,Chhattisgarh,22,Janjgir-Champa,379,Janjgir,67,0,95,7,100,10,58,0,21,0,0,1,0,0,0,0,0,0,1
+138,2016,Chhattisgarh,22,Jashpur,380,Jashpur,75,0,63,0,31,1,8,0,2,1,0,0,0,0,0,0,0,10,0
+139,2016,Chhattisgarh,22,Kabirdham,382,Kabirdham,40,0,55,3,62,3,14,0,0,0,0,0,0,0,0,0,0,0,0
+140,2016,Chhattisgarh,22,Kanker,381,Kanker,38,0,25,0,30,9,14,0,4,0,0,0,0,0,0,0,0,0,0
+141,2016,Chhattisgarh,22,Kondagaon,643,Kondagaon,20,0,18,0,12,1,4,0,0,0,0,0,0,0,0,0,0,0,0
+142,2016,Chhattisgarh,22,Korba,383,Korba,60,0,58,6,54,4,41,0,11,0,0,0,2,0,0,2,0,2,0
+143,2016,Chhattisgarh,22,Korea,384,Koriya,73,0,56,0,72,3,38,0,10,2,0,0,0,0,0,0,0,0,0
+144,2016,Chhattisgarh,22,Mahasamund,385,Mahasamund,55,0,48,5,45,2,16,0,1,0,0,0,1,0,0,0,0,1,0
+145,2016,Chhattisgarh,22,Mungeli,647,Mungali,21,0,44,3,35,1,20,0,2,1,0,0,0,0,0,0,0,0,0
+146,2016,Chhattisgarh,22,Narayanpur,637,Narayanpur,7,1,9,0,3,0,2,0,1,1,0,0,0,0,0,0,0,0,0
+147,2016,Chhattisgarh,22,Raigarh,386,Raigarh,155,4,70,8,121,13,32,0,3,1,0,0,0,0,0,0,0,4,0
+148,2016,Chhattisgarh,22,Raipur,387,Raipur,173,2,190,3,183,13,51,0,11,10,0,0,1,0,0,0,0,0,0
+149,2016,Chhattisgarh,22,Rajnandgaon,388,Rajnandgaon,64,3,76,8,68,5,20,0,13,0,0,0,0,0,0,0,0,0,0
+150,2016,Chhattisgarh,22,Surguja,389,Sarguja,80,0,71,1,73,3,10,0,12,0,0,0,0,0,0,0,0,1,0
+151,2016,Chhattisgarh,22,Sukma,642,Sukma,2,0,2,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+152,2016,Chhattisgarh,22,Surajpur,648,Surajpur,82,0,20,0,52,0,17,0,7,0,0,0,0,0,0,0,0,0,1
+153,2016,Goa,30,North Goa,551,North Goa,33,0,35,0,94,19,11,0,0,0,0,0,3,1,0,0,0,17,0
+154,2016,Goa,30,South Goa,552,South Goa,27,0,34,2,44,13,12,0,1,0,0,0,0,0,0,0,0,7,0
+155,2016,Goa,30,North Goa,551,C. I. D.,1,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,11,0
+156,2016,Gujarat,24,Ahmadabad,438,Ahmedabad City,112,0,271,2,131,8,562,0,21,0,0,0,11,1,2,0,0,0,2
+157,2016,Gujarat,24,Ahmadabad,438,Ahmedabad Rural,28,0,52,1,29,1,54,0,12,0,0,0,2,0,0,0,0,0,0
+158,2016,Gujarat,24,Amreli,439,Amreli,12,0,63,0,24,0,102,0,17,0,0,0,0,0,0,0,0,0,0
+159,2016,Gujarat,24,Anand,440,Anand,14,0,103,0,66,1,126,0,2,0,0,0,5,0,1,0,0,0,0
+160,2016,Gujarat,24,Arvalli,672,Arvalli,10,0,51,0,24,0,101,0,12,0,0,0,0,0,0,0,0,0,0
+161,2016,Gujarat,24,Banas Kantha,441,Banaskantha,55,0,54,0,64,2,195,0,13,0,0,0,0,0,0,0,0,0,0
+162,2016,Gujarat,24,Bharuch,442,Bharuch,50,1,29,0,33,1,64,0,0,0,0,0,0,0,0,0,0,0,0
+163,2016,Gujarat,24,Bhavnagar,443,Bhavnagar,12,0,77,1,30,3,120,0,12,0,0,0,1,0,0,0,0,0,0
+164,2016,Gujarat,24,Botad,676,Botad,10,0,32,1,16,0,36,0,3,0,0,0,0,0,0,0,0,0,0
+165,2016,Gujarat,24,Chhotaudepur,668,Chhotaudepur,16,0,29,0,12,0,14,0,0,0,0,0,0,0,0,0,0,0,0
+166,2016,Gujarat,24,Gandhinagar,446,C. I. D. Crime,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+167,2016,Gujarat,24,Dohad,445,Dahod,47,0,112,0,25,0,144,0,8,0,0,0,0,0,0,0,1,0,0
+168,2016,Gujarat,24,Dang,444,Dang,0,0,2,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+169,2016,Gujarat,24,Devbhumi Dwarka,674,Devbhumi Dwarka,4,0,17,0,8,0,25,0,8,0,0,0,0,0,0,0,0,0,0
+170,2016,Gujarat,24,Gandhinagar,446,Gandhinagar,10,1,80,0,38,36,116,0,13,0,0,0,1,0,0,0,0,0,0
+171,2016,Gujarat,24,Gir Somnath,675,Gir Somnath,16,0,31,0,28,0,125,0,0,0,0,0,1,0,0,0,0,0,0
+172,2016,Gujarat,24,Jamnagar,447,Jamnagar,19,0,46,1,22,0,92,0,0,0,0,0,1,0,0,0,0,0,0
+173,2016,Gujarat,24,Junagadh,448,Junagadh,18,0,44,0,27,0,158,0,8,0,0,0,0,0,0,0,0,0,0
+174,2016,Gujarat,24,Kachchh,449,Kachchh East(G),37,0,29,1,33,0,54,0,17,0,0,0,1,0,0,0,0,0,0
+175,2016,Gujarat,24,Kachchh,449,Kachchh West(B),32,0,19,0,28,1,97,0,10,0,0,0,1,0,0,0,0,0,0
+176,2016,Gujarat,24,Kheda,450,Kheda,33,0,34,0,20,0,69,0,2,0,0,0,2,0,0,0,0,0,0
+177,2016,Gujarat,24,Mahisagar,669,Mahisagar,8,0,26,0,11,0,42,0,13,0,0,0,0,0,0,0,0,0,0
+178,2016,Gujarat,24,Mahesana,451,Mehsana,25,1,102,0,55,0,159,0,0,0,0,0,3,1,0,0,0,0,0
+179,2016,Gujarat,24,Morbi,673,Morbi,16,0,31,1,9,1,16,0,5,0,0,0,1,0,0,0,0,0,0
+180,2016,Gujarat,24,Narmada,452,Narmada,13,0,8,0,12,0,10,0,7,0,0,0,0,0,0,0,0,0,0
+181,2016,Gujarat,24,Navsari,453,Navsari,14,0,20,0,14,0,20,0,3,0,0,0,3,0,0,0,0,0,0
+182,2016,Gujarat,24,Panch Mahals,454,Panchmahal,19,0,66,1,31,0,95,0,15,0,0,0,0,1,0,0,0,0,0
+183,2016,Gujarat,24,Patan,455,Patan,20,0,28,2,23,0,59,0,10,0,0,0,0,0,0,0,0,0,0
+184,2016,Gujarat,24,Porbandar,456,Porbandar,7,0,16,0,11,0,56,0,9,0,0,0,0,0,0,0,0,0,0
+185,2016,Gujarat,24,Rajkot,457,Rajkot City,42,0,103,0,29,0,168,0,0,0,0,0,10,0,0,0,0,0,0
+186,2016,Gujarat,24,Rajkot,457,Rajkot Rural,28,0,74,0,24,0,177,0,6,0,0,0,0,0,0,0,0,0,0
+187,2016,Gujarat,24,Sabar Kantha,458,Sabarkantha,21,0,60,0,37,0,149,0,12,0,0,0,2,0,0,0,0,0,0
+188,2016,Gujarat,24,Surat,459,Surat City,121,0,162,0,55,0,195,0,12,0,0,0,20,0,0,0,0,0,0
+189,2016,Gujarat,24,Surat,459,Surat Rural,13,1,37,0,22,0,21,0,0,0,0,0,3,0,0,0,0,0,0
+190,2016,Gujarat,24,Surendranagar,460,Surendranagar,25,0,34,1,32,0,42,0,10,0,0,0,0,0,0,0,0,0,0
+191,2016,Gujarat,24,Tapi,641,Tapi,14,0,7,0,6,0,5,0,0,0,0,0,1,0,0,0,0,0,0
+192,2016,Gujarat,24,Vadodara,461,Vadodara City,16,1,100,0,120,2,221,0,0,0,0,0,4,3,0,0,0,0,0
+193,2016,Gujarat,24,Vadodara,461,Vadodara Rural,19,0,35,0,19,1,27,0,3,0,0,0,0,0,0,0,0,0,0
+194,2016,Gujarat,24,Valsad,462,Valsad,25,0,56,0,39,0,15,0,7,0,0,0,3,0,0,0,0,0,0
+195,2016,Gujarat,24,Ahmadabad,438,W.Rly  Ahmedabad,1,0,1,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+196,2016,Gujarat,24,Vadodara,461,W.Rly Vadodara,0,0,5,0,9,1,1,0,0,0,0,0,0,0,0,0,0,0,0
+484,2016,Nagaland,13,Mon,247,Mon,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+265,2016,Jharkhand,20,Bokaro,322,Bokaro,64,5,24,15,24,0,69,0,0,69,0,0,0,0,0,0,0,0,0
+266,2016,Jharkhand,20,West Singhbhum,343,Chaibasa,74,0,22,3,4,0,18,0,0,13,0,0,0,0,0,0,0,4,0
+267,2016,Jharkhand,20,Chatra,323,Chatra,25,0,30,12,12,0,24,0,0,62,0,0,0,0,0,0,0,0,0
+268,2016,Jharkhand,20,Deoghar,324,Deoghar,55,4,82,23,107,1,110,0,0,151,0,0,0,0,0,0,0,0,0
+269,2016,Jharkhand,20,Dhanbad,325,Dhanbad,110,49,124,30,129,2,71,0,0,117,0,0,0,0,0,0,0,0,0
+270,2016,Jharkhand,20,Dhanbad,325,Dhanbad Railway,2,0,1,1,3,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+271,2016,Jharkhand,20,Dumka,326,Dumka,27,6,10,14,14,0,25,0,0,21,0,0,0,0,0,0,0,0,0
+272,2016,Jharkhand,20,Garhwa,328,Garhwa,48,13,5,15,47,0,51,0,0,110,0,0,0,0,0,0,0,0,0
+273,2016,Jharkhand,20,Giridih,329,Giridih,60,17,82,34,27,0,70,0,0,128,0,0,0,0,0,0,0,0,0
+274,2016,Jharkhand,20,Godda,330,Godda,46,0,20,3,0,0,18,0,0,78,0,0,0,0,0,0,0,0,0
+275,2016,Jharkhand,20,Gumla,331,Gumla,54,3,14,3,12,0,7,0,3,20,0,0,0,0,0,0,0,55,0
+276,2016,Jharkhand,20,Hazaribagh,332,Hazaribagh,54,12,37,13,22,0,41,0,0,129,0,0,0,0,0,0,0,0,0
+277,2016,Jharkhand,20,East Singhbum,327,Jamshedpur,67,15,60,20,40,0,98,0,0,131,0,0,0,0,0,0,0,0,0
+278,2016,Jharkhand,20,East Singhbum,327,Jamshedpur Railway,0,0,0,0,4,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+279,2016,Jharkhand,20,Jamtara,333,Jamtara,19,13,31,9,62,0,57,0,0,60,0,0,0,0,0,0,0,0,0
+280,2016,Jharkhand,20,Khunti,606,Khunti,21,0,4,0,0,0,2,0,0,5,0,0,0,0,0,0,0,0,0
+281,2016,Jharkhand,20,Koderma,334,Koderma,14,0,16,12,0,0,19,0,0,28,0,0,0,0,0,0,0,0,0
+282,2016,Jharkhand,20,Latehar,335,Latehar,25,0,17,4,10,0,10,0,0,15,0,0,0,0,0,0,0,1,0
+283,2016,Jharkhand,20,Lohardaga,336,Lohardagga,46,0,7,5,14,0,10,0,0,31,0,0,0,0,0,0,0,0,0
+284,2016,Jharkhand,20,Pakur,337,Pakur,43,9,3,3,41,0,63,0,0,24,0,0,0,0,0,0,0,1,0
+285,2016,Jharkhand,20,Palamu,338,Palamu,26,2,6,33,12,0,19,0,0,45,0,0,0,0,0,0,0,0,0
+286,2016,Jharkhand,20,Ramgarh,607,Ramgarh,17,14,11,8,40,0,15,0,0,58,0,0,0,0,0,0,0,0,0
+287,2016,Jharkhand,20,Ranchi,339,Ranchi,103,0,54,6,0,0,38,0,0,39,0,0,0,0,0,0,0,56,0
+288,2016,Jharkhand,20,Sahebganj,340,Sahebganj,53,15,20,2,10,0,109,0,0,21,0,0,0,0,0,0,0,0,0
+331,2016,Kerala,32,Kannur,557,Kannur,76,6,11,1,164,15,255,0,0,0,0,1,1,0,0,0,0,0,0
+289,2016,Jharkhand,20,Saraikela Kharsawan,341,Saraikela,28,2,7,8,33,9,37,0,0,16,0,0,0,0,0,0,0,1,0
+290,2016,Jharkhand,20,Simdega,342,Simdega,28,0,6,2,0,0,20,0,0,0,0,0,0,0,0,0,0,18,0
+291,2016,Karnataka,29,Bagalkote,524,Bagalkot,27,0,20,3,101,0,54,0,0,5,0,0,1,0,0,0,0,0,0
+292,2016,Karnataka,29,Bengaluru Urban,525,Bengaluru City,321,3,674,57,820,51,489,0,76,727,0,0,152,0,0,0,1,4,0
+293,2016,Karnataka,29,Bengaluru Urban,525,Bengaluru District,59,0,174,6,124,0,101,0,0,26,0,0,5,0,0,0,0,0,0
+294,2016,Karnataka,29,Belagavi,527,Belagavi District,65,0,44,2,180,3,130,0,13,19,0,0,1,0,0,0,0,0,1
+295,2016,Karnataka,29,Ballari,528,Ballari,62,0,40,9,126,6,46,0,0,78,0,0,9,0,0,0,0,0,0
+296,2016,Karnataka,29,Bidar,529,Bidar,17,4,27,8,78,5,89,0,11,20,0,0,7,0,0,0,0,0,0
+297,2016,Karnataka,29,Vijayapura,530,Vijayapura,50,0,5,3,102,3,114,0,1,4,0,0,6,0,0,0,0,0,0
+298,2016,Karnataka,29,Chikkaballapura,630,Chikkaballapura,73,0,39,6,63,0,21,0,0,26,0,0,7,0,0,0,0,0,0
+299,2016,Karnataka,29,Chamarajanagara,531,Chamarajnagar,20,1,16,3,123,0,16,0,0,5,0,0,0,0,0,0,0,0,0
+300,2016,Karnataka,29,Chikkamagaluru,532,Chikkamagaluru,50,0,36,5,209,2,74,0,8,24,0,0,2,1,1,0,0,0,0
+301,2016,Karnataka,29,Chitradurga,533,Chitradurga,32,0,64,12,239,2,55,0,10,46,0,0,5,1,0,0,0,0,0
+302,2016,Karnataka,29,Dakshina Kannada,534,Dakshina Kannada,34,0,9,0,65,5,19,0,5,13,0,0,0,0,0,0,0,0,0
+303,2016,Karnataka,29,Davangere,535,Davanagere,42,0,60,3,182,0,62,0,0,43,0,0,2,0,0,0,0,0,0
+304,2016,Karnataka,29,Dharwad,536,Dharwad,13,0,15,1,29,0,29,0,1,1,0,0,0,0,0,0,0,0,0
+305,2016,Karnataka,29,Gadag,537,Gadag,23,0,23,0,47,0,25,0,0,7,0,0,2,0,0,0,0,0,0
+306,2016,Karnataka,29,Kalaburagi,538,Kalaburgi,57,3,22,7,130,10,111,0,2,35,0,0,7,0,0,0,0,0,0
+307,2016,Karnataka,29,Hassan,539,Hassan,49,0,60,10,253,0,95,0,0,32,0,0,5,0,0,0,0,0,0
+308,2016,Karnataka,29,Haveri,540,Haveri,40,0,10,3,67,0,33,0,17,22,0,0,2,0,0,0,0,0,0
+309,2016,Karnataka,29,Dharwad,536,Hubballi Dharwad City,19,0,24,0,49,4,45,0,3,0,0,0,14,0,0,0,0,2,0
+310,2016,Karnataka,29,Belagavi,527,K.G.F.,12,1,6,3,20,2,3,0,0,20,0,0,0,0,0,0,0,0,0
+311,2016,Karnataka,29,Kodagu,541,Kodagu,23,0,16,1,58,0,19,0,0,1,0,0,2,0,0,0,0,0,0
+312,2016,Karnataka,29,Kolar,542,Kolar,28,0,33,4,47,0,12,0,0,23,0,0,0,0,0,0,0,0,0
+313,2016,Karnataka,29,Koppal,543,Koppal,35,0,27,2,81,4,49,0,0,7,0,0,1,0,0,0,0,0,0
+314,2016,Karnataka,29,Mandya,544,Mandya,48,4,69,9,401,2,104,0,12,58,0,0,12,0,0,0,0,0,0
+315,2016,Karnataka,29,Dakshina Kannada,534,Mangaluru City,28,0,25,0,122,10,38,0,0,44,0,0,22,0,0,0,0,0,0
+316,2016,Karnataka,29,Mysuru,545,Mysuru City,50,0,70,6,125,4,29,0,0,99,0,0,22,0,0,0,0,0,0
+317,2016,Karnataka,29,Mysuru,545,Mysuru District,45,0,46,5,187,3,72,0,0,15,0,0,1,0,0,0,0,0,0
+318,2016,Karnataka,29,Raichur,546,Raichur,46,0,36,9,218,5,117,0,6,71,0,0,1,0,1,0,1,2,0
+319,2016,Karnataka,29,Bengaluru Urban,525,K.Railways,2,0,2,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+320,2016,Karnataka,29,Ramanagara,631,Ramanagara,30,0,55,9,174,15,63,0,0,61,0,0,4,0,0,0,0,0,0
+321,2016,Karnataka,29,Shivamogga,547,Shimoga,103,0,51,11,378,4,186,0,12,0,0,0,5,0,0,0,0,1,0
+322,2016,Karnataka,29,Tumakuru,548,Tumakuru,48,0,61,22,76,3,68,0,14,72,0,0,15,0,0,0,0,2,0
+323,2016,Karnataka,29,Udupi,549,Udupi,30,0,9,1,112,7,42,0,2,12,0,0,2,0,0,0,0,0,0
+324,2016,Karnataka,29,Uttara Kannada,550,Uttara Kannada,29,0,28,3,99,6,39,0,9,21,0,0,3,0,0,0,0,0,0
+325,2016,Karnataka,29,Yadgir,635,Yadgiri,24,0,8,8,117,0,42,0,3,19,0,0,1,0,0,0,0,0,0
+326,2016,Karnataka,29,Belagavi,527,Belagavi City,21,0,19,3,53,4,65,0,13,42,0,0,5,0,0,0,0,0,0
+327,2016,Kerala,32,Alappuzha,554,Alapuzha,97,6,15,3,194,15,138,0,3,0,0,13,2,2,0,0,0,0,1
+328,2016,Kerala,32,Ernakulam,555,Ernakulam Commr.,62,0,8,1,162,23,111,0,0,0,0,2,14,0,0,0,0,6,0
+329,2016,Kerala,32,Ernakulam,555,Ernakulam Rural,112,4,11,0,207,46,146,0,0,0,1,15,7,0,0,0,0,0,0
+330,2016,Kerala,32,Idukki,556,Idukki,87,2,2,0,198,11,158,0,0,0,0,5,1,0,0,0,0,0,0
+332,2016,Kerala,32,Kasaragod,558,Kasargod,73,0,12,1,165,20,131,0,1,0,0,1,0,1,0,0,0,1,0
+333,2016,Kerala,32,Kollam,559,Kollam Commr.,76,0,10,3,180,17,182,0,0,1,0,12,5,0,0,0,0,0,0
+334,2016,Kerala,32,Kollam,559,Kollam Rural,79,0,7,1,262,14,166,0,2,0,0,4,0,2,0,0,0,0,0
+335,2016,Kerala,32,Kottayam,560,Kottayam,87,1,6,1,212,28,127,0,0,0,0,8,1,0,0,0,0,5,0
+336,2016,Kerala,32,Kozhikode,561,Kozhikode Commr.,52,0,6,2,109,19,161,0,0,0,0,1,1,0,0,0,0,0,0
+337,2016,Kerala,32,Kozhikode,561,Kozhikode Rural,61,6,12,0,245,12,275,0,4,0,0,1,0,1,0,0,0,0,0
+338,2016,Kerala,32,Malappuram,562,Malappuram,160,1,9,1,275,20,436,0,0,1,0,8,3,0,0,0,0,0,2
+339,2016,Kerala,32,Palakkad,563,Palakkad,122,0,12,3,126,11,267,0,3,0,0,1,1,1,0,0,0,1,0
+340,2016,Kerala,32,Pathanamthitta,564,Pathanamthitta,82,0,0,1,202,7,79,0,0,0,0,6,0,0,0,0,0,0,0
+341,2016,Kerala,32,Thiruvananthapuram,565,Railways,0,1,1,0,36,7,0,0,0,0,0,0,0,0,0,0,0,3,0
+342,2016,Kerala,32,Thrissur,566,Thrissur Commr.,46,1,2,1,67,10,67,0,0,0,0,2,4,0,0,0,0,1,0
+343,2016,Kerala,32,Thrissur,566,Thrissur Rural,96,4,7,2,258,13,281,0,2,0,0,3,2,0,0,0,0,0,0
+344,2016,Kerala,32,Thiruvananthapuram,565,Trivandrum Commr.,66,2,7,1,250,20,117,0,0,1,1,19,65,0,0,0,0,0,0
+345,2016,Kerala,32,Thiruvananthapuram,565,Trivandrum Rural,138,5,18,3,540,12,262,0,5,0,0,8,4,1,0,0,0,1,10
+346,2016,Kerala,32,Wayanad,567,Wayanadu,82,3,10,0,177,8,96,0,1,0,0,1,2,1,0,0,0,0,0
+347,2016,Kerala,32,Thiruvananthapuram,565,Crime Branch,2,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+348,2016,Madhya Pradesh,23,Agar Malwa,667,Agar,34,0,8,3,76,12,28,0,2,0,0,0,0,0,0,0,0,0,0
+349,2016,Madhya Pradesh,23,Alirajpur,639,Alirajpur,52,0,25,0,30,2,8,0,10,0,0,0,0,0,0,0,0,0,0
+350,2016,Madhya Pradesh,23,Anuppur,390,Anuppur,72,4,74,4,82,3,86,0,7,0,0,0,0,0,0,0,0,0,0
+351,2016,Madhya Pradesh,23,Ashoknagar,391,Ashok Nagar,77,5,42,5,188,2,99,0,0,1,0,0,0,0,0,0,0,0,0
+352,2016,Madhya Pradesh,23,Balaghat,392,Balaghat,126,2,97,6,131,6,113,0,9,2,0,0,2,0,0,0,0,0,1
+353,2016,Madhya Pradesh,23,Barwani,393,Barwani,76,0,28,3,65,5,26,0,11,0,0,0,0,0,0,0,0,0,0
+354,2016,Madhya Pradesh,23,Betul,394,Betul,97,2,128,13,139,7,126,0,0,1,0,1,0,0,0,0,0,0,0
+355,2016,Madhya Pradesh,23,Bhind,395,Bhind,54,2,94,31,113,5,111,0,10,1,0,0,0,0,0,0,0,0,0
+356,2016,Madhya Pradesh,23,Bhopal,396,Bhopal,286,3,274,26,438,8,355,0,0,4,0,0,0,0,0,0,0,1,0
+357,2016,Madhya Pradesh,23,Bhopal,396,Bhopal Railway,11,0,8,0,27,0,2,0,0,0,0,0,0,0,0,0,0,0,0
+358,2016,Madhya Pradesh,23,Burhanpur,397,Burhanpur,24,0,17,3,64,0,12,0,12,0,0,0,0,0,0,0,0,0,0
+359,2016,Madhya Pradesh,23,Chhatarpur,398,Chhatarpur,56,6,112,23,212,2,76,0,0,1,0,0,0,0,0,0,0,1,0
+360,2016,Madhya Pradesh,23,Chhindwara,399,Chhindwara,160,0,184,8,236,12,157,0,36,0,0,0,0,0,0,0,0,0,1
+361,2016,Madhya Pradesh,23,Damoh,400,Damoh,36,0,103,20,162,0,134,0,11,0,0,0,0,0,0,0,0,0,0
+362,2016,Madhya Pradesh,23,Datia,401,Datia,25,0,31,5,92,0,34,0,6,0,0,0,0,0,0,0,0,0,0
+363,2016,Madhya Pradesh,23,Dewas,402,Dewas,126,4,63,17,224,19,289,0,10,3,0,84,0,0,0,0,0,3,0
+364,2016,Madhya Pradesh,23,Dhar,403,Dhar,189,2,146,9,195,10,58,0,25,0,0,0,0,0,0,0,0,1,0
+365,2016,Madhya Pradesh,23,Dindori,404,Dindori,82,0,40,3,113,1,86,0,7,0,0,0,0,0,0,0,0,0,0
+366,2016,Madhya Pradesh,23,Guna,406,Guna,87,1,55,7,193,7,96,0,0,2,0,0,0,0,0,0,0,0,0
+367,2016,Madhya Pradesh,23,Gwalior,407,Gwalior,155,0,134,30,268,3,406,0,11,2,0,0,2,0,0,0,0,1,2
+368,2016,Madhya Pradesh,23,Harda,408,Harda,73,0,65,1,72,1,51,0,5,0,0,0,0,0,0,0,0,2,0
+369,2016,Madhya Pradesh,23,Narmadapuram,409,Hoshangabad,89,1,72,12,150,3,91,0,5,0,0,0,0,0,0,0,0,0,0
+370,2016,Madhya Pradesh,23,Indore,410,Indore,236,2,264,28,326,107,308,0,33,0,0,1,8,1,0,0,0,1,1
+371,2016,Madhya Pradesh,23,Indore,410,Indore Railway,5,0,1,0,7,1,1,0,0,0,0,0,0,0,0,0,0,0,0
+372,2016,Madhya Pradesh,23,Jabalpur,411,Jabalpur,194,3,283,15,315,23,147,0,26,1,0,0,0,0,0,0,0,0,3
+373,2016,Madhya Pradesh,23,Jabalpur,411,Jabalpur Railway,2,0,6,1,23,2,0,0,0,0,0,0,0,0,0,0,0,0,0
+374,2016,Madhya Pradesh,23,Jhabua,412,Jhabua,111,0,152,1,123,0,38,0,13,0,0,0,0,0,0,0,0,0,0
+375,2016,Madhya Pradesh,23,Katni,413,Katni,84,0,87,10,146,2,42,0,11,0,0,0,0,0,0,0,0,1,0
+376,2016,Madhya Pradesh,23,Indore,410,Khandwa,84,0,85,1,203,6,55,0,10,0,0,0,0,0,0,0,0,1,0
+377,2016,Madhya Pradesh,23,Khargone,414,Khargone,136,0,74,2,218,4,42,0,15,0,0,0,0,0,0,0,0,0,0
+378,2016,Madhya Pradesh,23,Mandla,415,Mandla,62,0,62,2,79,3,53,0,6,0,0,0,0,0,0,0,0,0,0
+379,2016,Madhya Pradesh,23,Mandsaur,416,Mandsaur,61,0,70,9,134,0,105,0,15,0,0,0,0,0,0,0,0,0,0
+380,2016,Madhya Pradesh,23,Morena,417,Morena,78,0,53,32,142,3,206,0,19,0,0,0,0,0,0,0,0,0,0
+381,2016,Madhya Pradesh,23,Narsinghpur,418,Narsinghpur,91,0,67,19,213,3,143,0,16,0,0,0,0,0,0,0,0,1,0
+382,2016,Madhya Pradesh,23,Neemuch,419,Neemuch,48,0,27,3,90,0,28,0,0,0,0,0,0,0,0,0,0,8,0
+383,2016,Madhya Pradesh,23,Panna,420,Panna,25,0,58,22,72,0,38,0,9,0,0,0,0,0,0,0,0,0,0
+384,2016,Madhya Pradesh,23,Raisen,421,Raisen,113,2,89,17,171,5,21,0,13,0,0,0,0,0,0,0,0,0,0
+385,2016,Madhya Pradesh,23,Rajgarh,422,Rajgarh,84,5,78,6,256,6,308,0,12,0,0,0,0,0,0,0,0,3,0
+386,2016,Madhya Pradesh,23,Ratlam,423,Ratlam,100,0,181,8,246,14,272,0,34,0,0,0,1,0,0,0,0,1,0
+387,2016,Madhya Pradesh,23,Rewa,424,Rewa,137,0,200,32,143,0,93,0,0,2,0,0,0,0,0,0,0,0,1
+388,2016,Madhya Pradesh,23,Sagar,425,Sagar,174,5,126,28,409,6,233,0,19,0,0,0,1,1,0,0,0,3,1
+389,2016,Madhya Pradesh,23,Satna,426,Satna,139,1,160,30,152,0,110,0,17,0,0,0,0,0,0,0,0,0,0
+390,2016,Madhya Pradesh,23,Seoni,428,Seoni,63,1,121,17,152,10,152,0,14,1,0,0,0,0,0,0,0,2,0
+391,2016,Madhya Pradesh,23,Shahdol,429,Shahdol,86,0,130,8,172,4,284,0,18,2,0,0,0,0,0,0,0,1,0
+392,2016,Madhya Pradesh,23,Shajapur,430,Shajapur,60,1,35,7,133,5,72,0,3,0,0,1,0,1,0,0,0,0,0
+393,2016,Madhya Pradesh,23,Sheopur,431,Sheopur,21,0,15,4,52,0,27,0,0,0,0,0,0,0,0,0,0,0,0
+394,2016,Madhya Pradesh,23,Shivpuri,432,Shivpuri,102,0,78,15,226,6,121,0,10,1,0,0,4,0,0,0,0,0,0
+395,2016,Madhya Pradesh,23,Sidhi,433,Sidhi,41,0,96,21,100,5,42,0,8,0,0,0,0,0,0,0,0,1,0
+396,2016,Madhya Pradesh,23,Sehore,427,Sehore,92,1,67,13,174,8,182,0,11,1,0,0,0,1,0,0,0,0,0
+397,2016,Madhya Pradesh,23,Singrauli,638,Singrauli,83,0,54,17,73,2,156,0,20,0,0,3,0,0,0,0,0,2,0
+398,2016,Madhya Pradesh,23,Tikamgarh,434,Tikamgarh,110,3,70,11,184,0,90,0,8,1,0,0,0,0,0,0,0,0,0
+399,2016,Madhya Pradesh,23,Ujjain,435,Ujjain,136,5,181,4,310,20,256,0,15,0,0,0,2,0,0,0,0,1,0
+400,2016,Madhya Pradesh,23,Umaria,436,Umaria,14,0,41,7,74,0,46,0,0,0,0,0,0,0,0,0,0,0,0
+401,2016,Madhya Pradesh,23,Vidisha,437,Vidisha,123,2,93,10,329,5,149,0,13,0,0,0,0,0,0,0,0,0,1
+402,2016,Madhya Pradesh,23,Bhopal,396,Cyber Cell,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+403,2016,Maharashtra,27,Ahmednagar,466,Ahmednagar,139,0,179,4,429,11,213,0,60,0,0,0,2,0,0,0,0,0,0
+404,2016,Maharashtra,27,Akola,467,Akola,68,2,56,4,177,2,147,0,13,0,0,0,0,0,0,0,0,0,0
+405,2016,Maharashtra,27,Amravati,468,Amravati Commr.,55,1,63,1,233,8,178,0,9,0,0,0,0,0,0,0,0,0,0
+406,2016,Maharashtra,27,Amravati,468,Amravati Rural,110,0,98,3,351,4,226,0,29,1,0,0,0,0,0,0,0,0,0
+407,2016,Maharashtra,27,Aurangabad,469,Aurangabad Commr.,90,0,119,6,471,8,300,0,0,0,0,0,3,0,0,0,0,1,0
+408,2016,Maharashtra,27,Aurangabad,469,Aurangabad Rural,62,0,48,17,213,5,234,0,20,0,0,0,0,0,0,0,0,0,0
+409,2016,Maharashtra,27,Beed,470,Beed,57,0,74,12,225,2,343,0,25,0,0,0,3,0,0,0,0,0,1
+410,2016,Maharashtra,27,Bhandara,471,Bhandara,48,1,51,2,98,15,35,0,8,7,0,0,1,0,0,0,0,0,0
+411,2016,Maharashtra,27,Buldhana,472,Buldhana,54,0,50,10,266,15,89,0,30,1,0,0,0,0,0,0,0,0,0
+412,2016,Maharashtra,27,Chandrapur,473,Chandrapur,92,0,79,5,207,69,128,0,14,2,0,0,1,0,0,0,0,0,0
+413,2016,Maharashtra,27,Dhule,474,Dhule,36,0,54,5,101,10,193,0,19,0,0,0,0,0,0,0,0,0,1
+414,2016,Maharashtra,27,Gadchiroli,475,Gadchiroli,35,1,23,2,48,6,10,0,8,0,0,0,0,0,0,0,0,1,0
+415,2016,Maharashtra,27,Gondia,476,Gondia,49,0,49,2,111,7,45,0,0,2,0,0,1,0,0,0,0,0,0
+416,2016,Maharashtra,27,Hingoli,477,Hingoli,19,0,14,3,63,2,89,0,10,0,0,1,0,0,0,0,0,1,0
+417,2016,Maharashtra,27,Jalgaon,478,Jalgaon,63,2,87,3,271,11,319,0,0,1,0,0,3,0,0,0,0,0,2
+418,2016,Maharashtra,27,Jalna,479,Jalna,51,0,46,14,219,0,216,0,12,0,0,0,1,0,0,0,0,0,0
+419,2016,Maharashtra,27,Kolhapur,480,Kolhapur,97,0,133,7,177,8,100,0,13,0,0,0,8,0,0,0,0,0,0
+420,2016,Maharashtra,27,Latur,481,Latur,50,0,102,5,138,1,204,0,23,0,0,0,2,0,0,0,0,0,0
+421,2016,Maharashtra,27,Mumbai,482,Mumbai Commr.,712,1,1142,12,2183,425,587,0,27,2,0,0,26,0,0,0,0,0,11
+422,2016,Maharashtra,27,Mumbai,482,Mumbai Railway,9,0,17,0,74,6,0,0,0,0,0,0,0,0,0,0,0,0,0
+423,2016,Maharashtra,27,Nagpur,484,Nagpur Commr.,171,0,368,6,411,4,248,0,32,5,0,0,125,1,0,0,0,3,2
+424,2016,Maharashtra,27,Nagpur,484,Nagpur Railway,2,0,10,0,22,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+425,2016,Maharashtra,27,Nagpur,484,Nagpur Rural,66,0,81,1,175,13,61,0,28,1,0,0,0,0,0,0,0,0,0
+426,2016,Maharashtra,27,Nanded,485,Nanded,66,0,76,17,191,5,245,0,35,0,0,0,2,0,0,0,0,1,0
+427,2016,Maharashtra,27,Nandurbar,486,Nandurbar,32,0,31,0,55,6,66,0,11,0,0,0,1,0,0,0,0,0,1
+428,2016,Maharashtra,27,Nashik,487,Nasik Commr.,30,0,137,3,113,3,231,0,30,0,0,0,13,0,0,0,0,0,0
+429,2016,Maharashtra,27,Nashik,487,Nasik Rural,89,0,163,14,257,5,250,0,0,0,0,0,1,0,0,0,0,0,0
+430,2016,Maharashtra,27,Mumbai Suburban,483,Navi Mumbai,139,0,174,6,189,18,103,0,20,0,0,0,20,0,0,0,0,0,6
+431,2016,Maharashtra,27,Osmanabad,488,Osmanabad,45,0,41,22,118,0,95,0,7,0,0,0,2,0,0,0,0,0,0
+432,2016,Maharashtra,27,Palghar,665,Palghar,156,0,279,1,190,19,58,0,17,0,0,0,2,0,0,0,0,1,1
+433,2016,Maharashtra,27,Parbhani,489,Parbhani,38,0,49,9,156,0,184,0,13,1,0,0,0,0,0,0,0,0,0
+434,2016,Maharashtra,27,Pune,490,Pune Commr.,354,0,577,10,661,56,379,1,38,0,0,0,34,1,0,0,0,0,2
+435,2016,Maharashtra,27,Pune,490,Pune Railway,4,0,4,0,13,0,0,0,3,0,0,0,0,0,0,0,0,0,0
+436,2016,Maharashtra,27,Pune,490,Pune Rural,157,1,309,3,478,13,220,0,36,0,0,0,9,0,0,0,0,0,2
+437,2016,Maharashtra,27,Raigad,491,Raigad,55,2,53,0,111,15,40,0,9,0,0,0,0,0,0,0,1,0,0
+438,2016,Maharashtra,27,Ratnagiri,492,Ratnagiri,45,0,48,1,86,14,27,0,2,0,0,0,0,0,0,0,0,0,0
+439,2016,Maharashtra,27,Sangli,493,Sangli,79,0,119,11,189,4,95,0,28,0,0,0,5,0,0,0,0,1,0
+440,2016,Maharashtra,27,Satara,494,Satara,104,0,165,4,289,21,139,0,26,0,0,1,2,0,0,0,0,3,0
+441,2016,Maharashtra,27,Sindhudurg,495,Sindhudurg,13,0,21,1,57,3,7,0,2,0,0,0,0,0,0,0,0,0,0
+442,2016,Maharashtra,27,Solapur,496,Solapur Commr.,51,0,51,3,84,10,83,0,4,0,0,0,0,0,0,0,0,0,0
+443,2016,Maharashtra,27,Solapur,496,Solapur Rural,110,0,111,4,255,1,131,0,42,0,0,0,12,0,0,0,1,0,1
+444,2016,Maharashtra,27,Thane,497,Thane Commr.,224,0,489,5,458,49,327,0,15,0,0,0,14,0,0,0,0,0,1
+445,2016,Maharashtra,27,Thane,497,Thane Rural,95,0,127,2,164,8,121,0,19,0,0,0,10,0,0,0,0,0,4
+446,2016,Maharashtra,27,Wardha,498,Wardha,50,1,76,2,167,2,56,0,13,7,0,0,0,0,0,0,0,0,1
+447,2016,Maharashtra,27,Washim,499,Washim,27,0,38,1,100,0,116,0,0,3,0,0,0,0,0,0,0,0,0
+448,2016,Maharashtra,27,Yavatmal,500,Yavatmal,91,0,88,5,352,39,277,0,6,5,0,0,0,0,0,0,0,0,0
+449,2016,Manipur,14,Bishnupur,252,Bishnupur,7,0,20,0,9,3,5,0,0,0,0,0,0,0,0,0,0,0,0
+450,2016,Manipur,14,Chandel,253,Chandel,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+451,2016,Manipur,14,Churachandpur,254,Churachandpur,2,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+452,2016,Manipur,14,Imphal West,256,C. I. D.,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+453,2016,Manipur,14,Imphal East,255,Imphal East,9,0,22,0,14,0,9,0,0,0,0,0,0,0,0,0,0,0,0
+454,2016,Manipur,14,Imphal West,256,Imphal West,21,1,29,0,37,1,6,0,0,0,0,0,0,0,0,0,0,1,0
+455,2016,Manipur,14,Senapati,257,Senapati,1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+456,2016,Manipur,14,Tamenglong,258,Tamenglong,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+457,2016,Manipur,14,Thoubal,259,Thoubal,14,1,18,0,4,1,7,0,0,0,0,0,0,0,0,0,0,0,0
+458,2016,Manipur,14,Ukhrul,260,Ukhrul,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+459,2016,Meghalaya,17,East Garo Hills,273,Garo Hills East,3,1,0,0,1,0,4,0,0,0,0,0,0,0,0,0,0,0,0
+460,2016,Meghalaya,17,North Garo Hills,656,Garo Hills North,8,0,8,0,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+461,2016,Meghalaya,17,South Garo Hills,277,Garo Hills South,4,0,2,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+462,2016,Meghalaya,17,South West Garo Hills,663,Garo Hills South West,2,0,5,0,4,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+463,2016,Meghalaya,17,West Garo Hills,278,Garo Hills West,15,4,7,0,6,4,5,0,0,0,0,0,0,0,0,0,0,0,0
+464,2016,Meghalaya,17,West Jaintia Hills,275,Jaintia Hills West,27,1,5,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+465,2016,Meghalaya,17,East Jaintia Hills,657,Jaintia Hills East,17,0,8,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+466,2016,Meghalaya,17,East Khasi Hills,274,Khasi Hills East,56,1,7,0,30,13,10,0,0,0,0,0,2,0,0,0,0,1,0
+467,2016,Meghalaya,17,South West Khasi Hills,658,Khasi Hills South West,8,0,2,0,3,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+468,2016,Meghalaya,17,West Khasi Hills,279,Khasi Hills West,22,0,1,0,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+469,2016,Meghalaya,17,Ri Bhoi,276,Ri-Bhoi,28,8,6,0,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+470,2016,Mizoram,15,Aizawl,261,Aizawl,5,0,2,0,33,0,13,0,0,0,0,0,2,0,0,0,0,0,0
+471,2016,Mizoram,15,Champhai,262,Champhai,2,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+472,2016,Mizoram,15,Kolasib,263,Kolasib,5,0,0,0,6,0,2,0,0,0,0,0,1,0,0,0,0,0,0
+473,2016,Mizoram,15,Lawngtlai,264,Lawngtlai,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+474,2016,Mizoram,15,Lunglei,265,Lunglei,5,0,1,0,14,1,2,0,0,0,0,0,0,0,0,0,0,0,0
+475,2016,Mizoram,15,Mamit,266,Mamit,1,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0
+476,2016,Mizoram,15,Saiha,267,Saiha,2,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+477,2016,Mizoram,15,Serchhip,268,Serchhip,2,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+478,2016,Mizoram,15,Aizawl,261,Spl Narcotic,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+479,2016,Nagaland,13,Dimapur,244,Dimapur,9,3,47,1,6,0,2,0,0,0,0,0,0,0,0,0,0,0,0
+480,2016,Nagaland,13,Kiphire,614,Kiphire,0,0,1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+481,2016,Nagaland,13,Kohima,245,Kohima,7,0,0,0,0,8,1,0,0,0,0,0,0,0,0,0,0,0,0
+482,2016,Nagaland,13,Longleng,615,Longleng,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+483,2016,Nagaland,13,Mokokchung,246,Mokokchung,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+485,2016,Nagaland,13,Peren,613,Peren,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+486,2016,Nagaland,13,Phek,248,Phek,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+487,2016,Nagaland,13,Tuensang,249,Tuensang,1,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+488,2016,Nagaland,13,Wokha,250,Wokha,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+489,2016,Nagaland,13,Zunheboto,251,Zunheboto,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+490,2016,Odisha,21,Anugul,344,Angul,68,6,69,6,255,28,130,0,0,21,0,0,5,0,0,0,0,5,0
+491,2016,Odisha,21,Baleshwar,346,Balasore,112,11,205,48,708,20,106,0,0,0,2,0,0,1,0,0,0,5,0
+492,2016,Odisha,21,Bargarh,347,Baragarh,62,6,57,10,489,14,143,0,0,0,0,0,0,0,0,0,0,2,0
+493,2016,Odisha,21,Baleshwar,346,Berhampur,30,0,50,7,203,24,24,0,0,74,0,0,2,0,0,0,0,2,0
+494,2016,Odisha,21,Bhadrak,348,Bhadrak,87,11,115,19,382,16,50,0,0,204,0,0,2,1,0,0,0,0,0
+495,2016,Odisha,21,Balangir,345,Bolangir,74,1,98,0,370,15,221,0,0,0,0,0,0,1,0,0,0,4,0
+496,2016,Odisha,21,Boudh,349,Boudh,21,2,20,4,102,9,32,0,0,39,0,0,0,0,0,0,0,2,0
+497,2016,Odisha,21,Cuttack,350,Cuttack,45,2,59,25,102,3,44,0,0,132,0,0,0,0,0,0,0,0,0
+498,2016,Odisha,21,Khordha,362,Dcp Bbsr,71,6,139,25,266,12,116,0,0,0,0,0,19,2,0,0,0,7,0
+499,2016,Odisha,21,Cuttack,350,Dcp Ctc,63,1,82,13,117,4,174,0,0,174,0,0,0,1,0,0,0,3,0
+500,2016,Odisha,21,Deogarh,351,Deogarh,27,3,22,1,100,4,23,0,0,32,0,0,0,0,0,0,0,0,0
+501,2016,Odisha,21,Dhenkanal,352,Dhenkanal,38,2,60,0,375,16,36,0,0,0,0,0,0,0,0,0,0,0,0
+502,2016,Odisha,21,Gajapati,353,Gajapati,24,0,6,4,58,6,20,0,2,28,0,0,0,0,0,0,0,4,0
+503,2016,Odisha,21,Ganjam,354,Ganjam,57,1,84,20,354,50,121,0,0,0,0,0,0,1,0,0,0,2,0
+504,2016,Odisha,21,Jagatsinghapur,355,Jagatsinghpur,38,8,84,21,281,10,125,0,0,0,0,0,0,0,0,0,0,0,0
+505,2016,Odisha,21,Jajapur,356,Jajpur,82,15,111,41,281,6,69,0,0,172,0,0,0,0,0,0,0,0,0
+506,2016,Odisha,21,Jharsuguda,357,Jharsuguda,26,0,37,2,103,1,24,0,0,24,0,0,0,0,0,0,0,0,1
+507,2016,Odisha,21,Kalahandi,358,Kalahandi,69,4,72,8,390,18,47,0,0,0,0,0,0,0,0,0,0,6,0
+508,2016,Odisha,21,Kandhamal,359,Kandhamal,89,5,54,5,179,15,52,0,0,77,0,0,0,1,0,0,0,5,0
+509,2016,Odisha,21,Kendrapara,360,Kendrapara,61,18,86,24,176,27,261,0,0,0,0,0,0,0,0,0,0,1,0
+510,2016,Odisha,21,Kendujhar,361,Keonjhar,89,7,111,11,389,13,65,0,0,0,1,0,0,0,0,0,0,1,0
+511,2016,Odisha,21,Khordha,362,Khurda,40,3,45,17,154,15,36,0,0,0,0,0,0,0,0,0,0,0,0
+512,2016,Odisha,21,Koraput,363,Koraput,103,4,25,2,262,8,98,0,0,80,0,0,0,0,0,0,0,1,0
+513,2016,Odisha,21,Malkangiri,364,Malkangiri,35,1,47,2,91,9,32,0,0,0,0,0,0,0,0,0,0,4,0
+514,2016,Odisha,21,Mayurbhanj,365,Mayurbhanj,146,14,96,0,308,22,200,0,3,0,0,0,0,0,0,0,0,5,0
+515,2016,Odisha,21,Nayagarh,367,Nayagarh,35,7,36,15,94,4,22,0,0,0,0,0,3,1,0,0,0,0,0
+516,2016,Odisha,21,Nabarangpur,366,Nabarangpur,82,3,38,5,267,22,106,0,0,34,0,0,0,0,0,0,0,1,0
+517,2016,Odisha,21,Nuapada,368,Nuapada,24,2,34,5,150,4,48,0,0,31,0,0,0,0,0,0,0,0,0
+518,2016,Odisha,21,Puri,369,Puri,70,4,110,31,394,12,63,0,0,137,0,0,6,2,0,0,0,0,0
+519,2016,Odisha,21,Rayagada,370,Rayagada,49,5,57,11,106,4,63,0,0,0,0,0,0,0,0,0,0,1,0
+520,2016,Odisha,21,Sundargarh,373,Rourkela,45,4,84,1,215,9,80,0,0,70,0,0,0,0,0,0,0,0,0
+521,2016,Odisha,21,Sambalpur,371,Sambalpur,61,3,41,7,284,12,45,0,0,71,0,0,1,0,0,0,0,0,0
+522,2016,Odisha,21,Sonepur,372,Sonepur,10,0,14,6,108,1,38,0,0,0,0,0,0,0,0,0,0,0,0
+523,2016,Odisha,21,Cuttack,350,Srp (Cuttack),1,1,3,0,5,0,0,0,0,0,0,0,0,0,0,0,0,4,0
+524,2016,Odisha,21,Sundargarh,373,Srp (Rourkela),1,0,2,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+525,2016,Odisha,21,Sundargarh,373,Sundargarh,47,1,38,1,130,3,67,0,0,0,0,0,0,1,0,0,0,4,0
+526,2016,Odisha,21,Cuttack,350,"Cid, Cb",1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+601,2016,Sikkim,11,Gangtok,225,East,42,0,11,0,22,9,2,0,0,0,0,0,0,0,0,0,0,0,0
+602,2016,Sikkim,11,Mangan,226,North,8,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+603,2016,Sikkim,11,Namchi,227,South,24,0,1,0,5,2,0,0,0,0,0,0,0,0,0,0,0,0,0
+604,2016,Sikkim,11,Gyalshing,228,West,18,2,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+605,2016,Tamil Nadu,33,Ariyalur,610,Ariyalur,3,0,4,1,9,0,3,0,0,2,0,0,0,0,0,0,0,0,0
+606,2016,Tamil Nadu,33,Chennai,568,Chennai,25,0,15,5,63,3,178,0,37,9,0,0,205,0,0,0,0,1,0
+607,2016,Tamil Nadu,33,Coimbatore,569,Coimbatore,7,0,12,1,25,0,50,0,0,0,0,0,7,0,0,0,0,0,0
+608,2016,Tamil Nadu,33,Coimbatore,569,Coimbatore City,0,0,4,1,19,0,37,0,0,0,0,0,41,0,0,0,0,0,0
+609,2016,Tamil Nadu,33,Cuddalore,570,Cuddalore,17,0,12,1,39,0,39,0,0,0,0,0,0,0,0,0,0,0,0
+610,2016,Tamil Nadu,33,Dharmapuri,571,Dharmapuri,3,0,61,0,26,2,10,0,6,0,0,0,10,0,0,0,0,0,0
+611,2016,Tamil Nadu,33,Dindigul,572,Dindigul,18,1,62,2,44,0,90,0,0,1,0,0,21,0,0,0,0,0,0
+612,2016,Tamil Nadu,33,Erode,573,Erode,1,0,11,0,13,0,20,0,0,0,0,0,15,0,0,0,0,0,0
+613,2016,Tamil Nadu,33,Kanchipuram,574,Kanchipuram,10,0,9,2,3,0,6,0,0,2,0,0,2,0,0,0,0,0,0
+614,2016,Tamil Nadu,33,Kanniyakumari,575,Kanyakumari,5,0,9,2,3,0,7,0,0,41,0,0,8,0,0,0,0,0,0
+615,2016,Tamil Nadu,33,Karur,576,Karur,1,0,3,0,14,0,1,0,0,4,0,0,3,0,0,0,0,0,0
+616,2016,Tamil Nadu,33,Krishnagiri,577,Krishnagiri,5,2,30,5,15,0,15,0,22,0,1,0,3,0,0,0,0,0,0
+617,2016,Tamil Nadu,33,Madurai,578,Madurai,34,0,107,2,59,2,182,0,0,69,0,0,1,0,0,0,0,0,0
+597,2016,Rajasthan,08,Jaipur,102,Jaipur Metro,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+618,2016,Tamil Nadu,33,Madurai,578,Madurai City,6,0,11,5,22,4,77,0,6,0,0,0,15,0,0,0,0,9,0
+619,2016,Tamil Nadu,33,Nagapattinam,579,Nagapattinam,15,0,46,0,15,1,13,0,0,5,0,0,3,0,0,0,0,0,0
+620,2016,Tamil Nadu,33,Namakkal,580,Namakkal,3,2,41,0,27,1,12,0,8,4,0,0,0,0,0,0,0,0,0
+621,2016,Tamil Nadu,33,The Nilgiris,587,Nilgiris,1,0,1,0,8,0,3,0,0,1,0,0,13,0,0,0,0,0,0
+622,2016,Tamil Nadu,33,Perambalur,581,Perambalur,1,0,3,0,18,0,1,0,0,1,0,0,0,0,0,0,0,0,0
+623,2016,Tamil Nadu,33,Pudukkottai,582,Pudukottai,2,0,15,6,20,0,17,0,0,0,0,0,0,0,0,0,0,0,0
+624,2016,Tamil Nadu,33,Ramanathapuram,583,Ramnathapuram,9,0,12,0,15,2,17,0,0,19,0,0,1,0,0,0,0,0,0
+625,2016,Tamil Nadu,33,Chennai,568,Railway Chennai,0,0,0,0,13,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+626,2016,Tamil Nadu,33,Tiruchirappalli,591,Railway Trichy,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+627,2016,Tamil Nadu,33,Salem,584,Salem,7,0,35,2,77,0,12,0,17,2,0,0,0,0,0,0,0,0,0
+628,2016,Tamil Nadu,33,Salem,584,Salem City,3,0,4,1,8,0,19,0,0,2,0,0,7,0,0,0,0,0,0
+629,2016,Tamil Nadu,33,Sivaganga,585,Sivagangai,10,2,45,5,24,0,56,0,7,0,0,0,4,0,0,0,0,0,0
+630,2016,Tamil Nadu,33,Thanjavur,586,Thanjavur,7,0,26,1,53,0,24,0,0,1,0,0,0,0,0,0,0,0,0
+631,2016,Tamil Nadu,33,Theni,588,Theni,4,0,15,3,11,0,52,0,11,0,0,0,4,0,0,0,0,0,0
+632,2016,Tamil Nadu,33,Tirunelveli,592,Thirunelveli,15,0,28,2,41,0,44,0,3,10,0,0,3,1,0,0,0,0,0
+633,2016,Tamil Nadu,33,Tirunelveli,592,Thirunelveli City,3,1,1,0,3,0,11,0,0,10,0,0,3,0,0,0,0,0,0
+634,2016,Tamil Nadu,33,Thiruvallur,589,Thiruvallur,10,0,4,2,1,0,9,0,0,0,0,0,2,0,0,0,0,0,0
+635,2016,Tamil Nadu,33,Tiruvannamalai,593,Thiruvannamalai,10,7,53,1,4,2,34,0,0,5,0,0,2,0,0,0,0,1,0
+636,2016,Tamil Nadu,33,Thiruvarur,590,Thiruvarur,2,0,12,0,7,3,9,0,0,1,0,0,0,0,0,0,0,0,0
+637,2016,Tamil Nadu,33,Tuticorin,594,Thoothukudi,16,0,10,1,13,1,48,0,2,17,0,0,8,0,0,0,0,0,0
+638,2016,Tamil Nadu,33,Tiruppur,634,Tiruppur,2,0,9,0,11,0,22,0,0,0,0,0,2,0,0,0,0,0,0
+639,2016,Tamil Nadu,33,Tiruppur,634,Tiruppur City,0,0,1,0,5,0,7,0,3,1,0,0,5,0,0,0,0,0,0
+640,2016,Tamil Nadu,33,Tiruchirappalli,591,Trichy,5,0,12,0,17,1,9,0,0,0,0,0,8,0,0,0,0,0,0
+641,2016,Tamil Nadu,33,Tiruchirappalli,591,Trichy City,4,0,4,2,9,0,23,0,0,4,0,0,12,0,0,0,0,0,0
+642,2016,Tamil Nadu,33,Vellore,595,Vellore,12,0,54,2,38,4,34,0,0,11,0,0,9,0,0,0,0,0,0
+643,2016,Tamil Nadu,33,Villupuram,596,Villupuram,31,0,245,3,47,0,47,0,0,18,0,0,2,0,0,0,0,0,0
+644,2016,Tamil Nadu,33,Virudhunagar,597,Virudhunagar,12,2,17,0,14,1,18,0,0,55,0,0,13,0,0,0,0,0,0
+645,2016,Tamil Nadu,33,Chennai,568,Cyber Cell,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+646,2016,Tamil Nadu,33,Chennai,568,Other Units,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+647,2016,Telangana,36,Adilabad,501,Adilabad,102,5,36,15,289,63,685,0,25,0,0,0,4,0,0,0,0,3,0
+648,2016,Telangana,36,Ranga Reddy,518,Cyberabad,229,16,139,47,810,264,1865,0,136,0,0,0,141,0,0,0,0,0,0
+649,2016,Telangana,36,Hyderabad,507,Hyderabad City,170,0,227,18,387,205,1311,0,30,0,0,1,63,0,0,0,0,1,2
+650,2016,Telangana,36,Karimnagar,508,Karimnagar,101,0,84,34,385,47,643,0,45,0,0,0,12,0,0,0,0,0,0
+651,2016,Telangana,36,Khammam,509,Khammam,148,6,137,19,476,107,567,0,46,0,0,0,9,0,0,0,0,1,0
+652,2016,Telangana,36,Mahabubnagar,512,Mahaboob Nagar,136,0,93,16,303,14,387,0,80,0,0,0,0,0,0,0,0,0,0
+653,2016,Telangana,36,Medak,513,Medak,103,0,24,33,300,41,438,0,43,0,0,0,0,0,0,0,0,0,0
+654,2016,Telangana,36,Nalgonda,514,Nalgonda,112,6,62,17,316,84,382,0,43,0,0,0,4,0,0,0,0,4,0
+655,2016,Telangana,36,Nizamabad,516,Nizamabad,36,2,18,18,154,92,435,0,30,0,2,0,2,0,0,1,0,0,0
+656,2016,Telangana,36,Ranga Reddy,518,Ranga Reddy,38,0,18,6,55,10,156,0,9,0,0,0,1,0,0,0,0,0,0
+657,2016,Telangana,36,Hyderabad,507,Secunderabad Railway,1,0,1,5,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0
+658,2016,Telangana,36,Warangal,522,Warangal Rural,74,4,140,11,185,34,96,0,54,0,0,0,0,0,0,0,0,0,0
+659,2016,Telangana,36,Warangal,522,Warangal City,28,5,8,15,105,40,237,0,19,4,0,0,4,0,0,0,0,0,0
+660,2016,Tripura,16,Dhalai,269,Dhalai,28,3,7,0,23,0,26,0,0,0,0,0,0,0,0,0,0,0,0
+661,2016,Tripura,16,Gomati,654,Gomati,27,1,12,4,21,0,80,0,0,0,0,0,0,0,0,0,0,0,0
+662,2016,Tripura,16,West Tripura,272,G. R. P.,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+663,2016,Tripura,16,Khowai,652,Kowai,18,5,10,3,16,0,30,0,0,0,0,0,0,0,0,0,0,0,0
+664,2016,Tripura,16,North Tripura,270,North,13,1,18,2,20,0,48,0,0,0,0,0,0,0,0,0,0,0,0
+665,2016,Tripura,16,Sepahijala,653,Sipahijala,19,0,16,2,30,0,50,0,0,0,0,0,0,0,0,0,0,0,0
+666,2016,Tripura,16,South Tripura,271,South,24,6,17,2,27,0,70,0,4,0,0,0,0,0,0,0,0,0,0
+667,2016,Tripura,16,Unakoti,655,Unakoti,24,0,11,1,13,1,39,0,1,0,0,0,0,0,0,0,0,0,0
+668,2016,Tripura,16,West Tripura,272,West,54,0,28,5,63,0,87,0,0,0,0,0,0,1,0,0,0,0,0
+758,2016,West Bengal,19,24 Paraganas North,303,North 24 Parganas,120,150,444,43,172,16,1955,2,54,0,0,0,2,1,2,0,0,16,0
+759,2016,West Bengal,19,24 Paraganas South,304,South 24 Parganas (Old),56,104,748,49,166,16,3227,0,0,0,0,0,0,5,0,0,0,12,0
+760,2016,West Bengal,19,Alipurduar,664,Alipurduar,24,27,82,7,80,3,292,0,12,0,0,0,0,0,1,0,0,10,0
+761,2016,West Bengal,19,Paschim Bardhaman,704,Asansol-Durgapur Pc,23,21,82,20,44,2,370,0,4,0,0,0,0,1,0,0,0,0,0
+762,2016,West Bengal,19,Bankura,305,Bankura,32,17,89,19,83,10,329,0,12,0,0,0,0,1,1,0,0,1,0
+763,2016,West Bengal,19,24 Paraganas North,303,Barrackpur Pc,33,16,141,21,582,32,1260,1,19,0,0,1,3,1,5,2,16,5,2
+764,2016,West Bengal,19,24 Paraganas North,303,Bidhannagar Pc,11,8,89,9,117,17,426,0,8,0,0,0,9,2,1,0,0,3,0
+765,2016,West Bengal,19,Birbhum,307,Birbhum,20,47,77,14,78,0,268,0,19,0,0,0,0,1,0,0,0,0,0
+766,2016,West Bengal,19,Purba Bardhaman,306,Burdwan (Old),46,79,183,24,203,0,545,0,19,0,0,0,11,3,0,0,0,0,0
+767,2016,West Bengal,19,Coochbehar,308,Coochbehar,79,90,52,27,115,3,633,0,24,0,0,0,1,0,0,0,10,1,0
+768,2016,West Bengal,19,Dinajpur Dakshin,310,Dakshin Dinajpur,19,46,38,12,89,1,285,1,7,0,0,0,0,1,0,0,0,1,0
+769,2016,West Bengal,19,Darjeeling,309,Darjeeling,11,7,60,5,54,0,152,1,4,0,0,0,0,1,0,0,0,8,0
+770,2016,West Bengal,19,Hooghly,312,Hooghly Rural Police,24,52,251,47,197,2,1077,0,40,0,0,3,3,2,0,0,0,0,0
+771,2016,West Bengal,19,Howrah,313,Howrah G. R. P.,0,0,2,1,14,2,1,0,2,0,0,0,1,0,0,0,0,0,0
+772,2016,West Bengal,19,Howrah,313,Howrah Pc,8,8,64,7,119,26,413,0,13,0,0,0,1,1,0,0,0,0,0
+773,2016,West Bengal,19,Howrah,313,Howrah Rural,21,31,132,15,152,1,659,0,5,0,0,0,0,2,1,0,9,1,0
+774,2016,West Bengal,19,Jalpaiguri,314,Jalpaiguri,44,27,126,10,140,0,228,0,13,0,0,0,3,0,0,0,0,3,0
+775,2016,West Bengal,19,Jhargram,703,Jhargram,3,5,22,5,41,0,84,0,1,0,0,0,0,0,0,0,0,0,0
+776,2016,West Bengal,19,Medinipur West,318,Kharagpur G. R. P.,1,0,1,0,9,0,4,0,0,0,0,0,0,0,0,0,0,0,0
+777,2016,West Bengal,19,Kolkata,315,Kolkata,15,3,116,10,348,243,886,4,21,0,0,1,5,1,1,0,0,10,0
+778,2016,West Bengal,19,Maldah,316,Malda,88,93,302,27,122,11,646,0,31,0,0,0,4,2,0,0,0,3,1
+779,2016,West Bengal,19,Murshidabad,319,Murshidabad,226,389,145,51,209,7,1701,1,42,0,0,0,6,1,1,0,5,3,0
+780,2016,West Bengal,19,Nadia,320,Nadia,53,213,407,47,124,6,1212,0,0,0,0,0,16,10,0,0,0,19,0
+781,2016,West Bengal,19,Medinipur West,318,Paschim Medinipur,45,42,205,19,403,14,709,0,18,0,0,0,1,1,0,0,2,0,0
+782,2016,West Bengal,19,Medinipur East,317,Purab Medinipur,36,54,236,17,95,1,799,0,20,0,0,0,0,1,1,0,0,5,0
+783,2016,West Bengal,19,Purulia,321,Purulia,13,25,50,8,212,0,191,0,11,0,0,0,1,1,0,0,0,0,0
+784,2016,West Bengal,19,Kolkata,315,Sealdah G. R. P.,2,0,6,1,15,1,0,0,4,0,0,0,0,0,0,0,0,0,0
+785,2016,West Bengal,19,Darjeeling,309,Siliguri G. R. P.,0,0,1,0,9,1,1,0,0,0,0,0,0,0,0,0,0,3,0
+786,2016,West Bengal,19,Darjeeling,309,Siliguri Pc,26,18,92,6,133,25,538,0,0,0,0,0,12,0,0,0,0,9,0
+787,2016,West Bengal,19,Dinajpur Uttar,311,Uttar Dinajpur,31,74,241,14,52,9,411,0,17,0,0,0,8,1,0,0,3,7,0
+788,2016,Andaman And Nicobar Islands,35,South Andamans,602,South Andaman,18,0,12,0,21,0,5,0,0,0,0,0,0,0,0,0,0,0,0
+789,2016,Andaman And Nicobar Islands,35,North And Middle Andaman,632,North And Middle Andaman,11,0,7,0,22,2,2,0,0,0,0,0,0,0,0,0,0,0,0
+790,2016,Andaman And Nicobar Islands,35,Nicobars,603,Nicobar,1,0,2,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+792,2016,Dadra And Nagar Haveli,26,Dadra And Nagar Haveli,465,D And N Haveli,14,0,5,0,1,1,6,0,0,0,0,0,0,0,0,0,0,0,0
+793,2016,Daman And Diu,25,Daman,463,Daman,11,0,8,0,4,1,5,0,0,0,0,0,4,0,0,0,0,2,0
+794,2016,Daman And Diu,25,Diu,464,Diu,1,0,1,0,0,1,3,0,0,0,0,0,0,0,0,0,0,0,0
+814,2016,Lakshadweep,31,Lakshadweep District,553,Lakshadweep,5,0,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0
+815,2016,Puducherry,34,Karaikal,598,Karaikal,5,0,0,0,13,0,10,0,0,2,0,0,0,0,0,0,0,0,0
+816,2016,Puducherry,34,Pondicherry,600,Puducherry,1,0,11,0,30,3,5,0,1,13,1,0,0,0,0,0,0,0,0
+210,2016,Haryana,06,Nuh,604,Mewat,46,1,38,12,41,0,68,0,2,1,0,5,0,0,0,0,0,1,0
+211,2016,Haryana,06,Palwal,619,Palwal,32,4,62,15,116,0,119,0,1,0,0,0,0,0,0,0,0,0,0
+237,2016,Jammu And Kashmir,01,Bandipora,623,Bandipora,4,0,25,0,24,2,2,0,5,0,0,0,0,0,0,0,0,0,0
+243,2016,Jammu And Kashmir,01,Ganderbal,626,Ganderbal,0,3,27,0,81,0,11,0,10,0,0,0,0,0,0,0,0,0,0
+248,2016,Jammu And Kashmir,01,Kishtwar,620,Kishtwar,10,0,15,0,18,3,8,0,0,0,0,0,0,0,0,0,0,0,0
+240,2016,Jammu And Kashmir,01,Jammu,005,Crime Jammu,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+249,2016,Jammu And Kashmir,01,Kulgam,622,Kulgam,6,0,41,0,82,7,1,0,0,0,0,0,0,0,0,0,0,0,0
+256,2016,Jammu And Kashmir,01,Reasi,627,Railways Katra,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+258,2016,Jammu And Kashmir,01,Ramban,621,Ramban,13,0,15,0,23,5,5,0,1,0,0,0,0,0,0,0,0,0,0
+259,2016,Jammu And Kashmir,01,Reasi,627,Reasi,11,1,14,0,16,0,4,0,0,0,0,0,0,0,0,0,0,0,0
+260,2016,Jammu And Kashmir,01,Samba,624,Samba,11,0,14,2,11,7,1,0,0,0,0,0,0,0,0,0,0,0,0
+261,2016,Jammu And Kashmir,01,Shopian,625,Shopian,7,0,18,0,56,0,11,0,0,0,0,0,0,0,0,0,0,0,0
+528,2016,Punjab,03,Barnala,605,Barnala,12,4,37,0,34,0,25,0,2,0,0,0,1,0,0,0,0,0,0
+536,2016,Punjab,03,Fazilka,651,Fazilka,49,3,30,3,27,1,31,0,5,0,0,0,4,1,0,0,0,1,1
+548,2016,Punjab,03,Pathankot,662,Pathankot,18,0,27,1,21,0,23,0,0,0,0,0,1,0,0,0,0,0,0
+552,2016,Punjab,03,S.A.S Nagar,608,Sas Nagar,44,2,88,7,42,0,116,0,0,0,0,0,1,0,0,0,0,0,0
+554,2016,Punjab,03,Tarn Taran,609,Tarn Taran,33,3,42,4,32,0,39,0,9,0,0,0,0,0,0,0,0,0,0
+570,2016,Rajasthan,08,Jodhpur,107,G.R.P.Jodhpur,0,0,1,1,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+571,2016,Rajasthan,08,Ganganagar,100,Ganganagar,182,6,105,11,164,0,809,0,11,0,0,0,6,1,0,0,0,0,0
+572,2016,Rajasthan,08,Hanumangarh,101,Hanumangarh,101,14,76,15,119,0,622,0,8,0,0,0,2,0,0,0,0,0,0
+573,2016,Rajasthan,08,Jaipur,102,Jaipur East,71,1,82,11,71,0,206,0,4,1,0,0,2,1,0,0,0,0,0
+574,2016,Rajasthan,08,Jaipur,102,Jaipur North,59,0,90,2,45,0,228,0,0,0,0,0,0,0,0,0,0,0,0
+575,2016,Rajasthan,08,Jaipur (Gramin),783,Jaipur Rural,99,15,87,9,87,0,239,0,2,0,0,0,0,0,0,0,0,0,0
+576,2016,Rajasthan,08,Jaipur,102,Jaipur South,85,3,66,9,76,0,215,0,1,0,0,0,2,0,0,0,0,0,0
+577,2016,Rajasthan,08,Jaipur,102,Jaipur West,115,0,139,9,109,0,359,0,4,0,0,0,6,0,0,0,0,0,0
+578,2016,Rajasthan,08,Jaisalmer,103,Jaisalmer,10,0,12,9,69,0,45,0,1,0,0,0,0,0,0,0,0,0,0
+579,2016,Rajasthan,08,Jalore,104,Jalore,49,1,45,10,69,0,154,0,1,0,0,0,0,0,0,0,0,0,0
+580,2016,Rajasthan,08,Jhalawar,105,Jhalawar,102,17,139,7,242,2,374,0,4,0,0,0,0,0,0,0,0,0,2
+581,2016,Rajasthan,08,Jhunjhunu,106,Jhunjhunu,68,0,99,9,85,0,446,0,6,0,0,0,0,0,0,0,0,0,0
+582,2016,Rajasthan,08,Jodhpur,107,Jodhpur East,27,0,62,5,93,3,202,0,1,0,1,0,4,0,0,0,0,0,0
+583,2016,Rajasthan,08,Jodhpur,107,Jodhpur West,44,0,48,4,89,0,213,0,3,0,0,0,2,0,0,0,0,0,0
+584,2016,Rajasthan,08,Jodhpur,107,Jodhpur Rural,55,0,58,15,92,0,141,0,2,0,1,0,0,0,0,0,0,0,0
+585,2016,Rajasthan,08,Karauli,108,Karauli,80,24,78,14,73,0,205,0,0,0,0,0,0,0,0,0,0,0,0
+586,2016,Rajasthan,08,Kota,109,Kota City,94,1,137,9,115,0,320,0,2,0,0,0,0,0,0,0,0,0,0
+587,2016,Rajasthan,08,Kota,109,Kota Rural,56,0,65,4,151,0,187,0,3,0,0,0,0,0,0,0,0,0,0
+588,2016,Rajasthan,08,Nagaur,110,Nagaur,98,0,106,12,85,0,441,0,8,0,0,0,2,0,0,0,0,0,0
+589,2016,Rajasthan,08,Pali,111,Pali,92,0,148,6,190,0,465,0,4,0,0,0,1,0,0,0,0,0,0
+590,2016,Rajasthan,08,Pratapgarh,629,Pratapgarh,134,4,60,6,124,0,231,0,5,0,0,0,0,0,0,0,0,0,0
+591,2016,Rajasthan,08,Rajsamand,112,Rajsamand,43,0,33,5,52,2,226,0,4,0,1,0,2,0,0,0,0,0,0
+592,2016,Rajasthan,08,Sawai Madhopur,113,Sawai Madhopur,64,19,90,8,89,0,230,0,2,0,0,0,11,0,0,0,0,0,0
+593,2016,Rajasthan,08,Sikar,114,Sikar,76,6,98,13,117,0,419,0,2,0,0,0,0,0,0,0,0,0,0
+594,2016,Rajasthan,08,Sirohi,115,Sirohi,44,7,67,3,71,0,189,0,2,0,0,0,0,0,0,0,0,0,0
+595,2016,Rajasthan,08,Tonk,116,Tonk,33,10,63,1,78,0,303,0,8,0,0,0,2,0,0,0,0,0,0
+596,2016,Rajasthan,08,Udaipur,117,Udaipur,185,18,227,11,292,1,600,0,12,0,1,0,1,0,0,0,0,0,0
+598,2016,Rajasthan,08,Jaipur,102,Scrb,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+599,2016,Rajasthan,08,Jaipur,102,Sog,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+600,2016,Rajasthan,08,Jaipur,102,Ssb,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+669,2016,Uttar Pradesh,09,Agra,118,Agra,110,63,404,86,414,0,565,0,9,0,5,0,7,1,1,0,1,3,0
+670,2016,Uttar Pradesh,09,Aligarh,119,Aligarh,101,33,318,57,224,0,279,0,8,0,0,0,0,1,0,0,0,2,1
+671,2016,Uttar Pradesh,09,Prayagraj,120,Allahabad,84,20,286,69,283,2,364,0,11,0,0,0,3,1,0,34,0,0,8
+672,2016,Uttar Pradesh,09,Ambedkar Nagar,121,Ambedkar Nagar,48,2,98,11,50,1,6,0,0,45,0,0,0,1,0,0,7,0,0
+673,2016,Uttar Pradesh,09,Amethi,640,Amethi,37,29,144,9,87,0,0,0,1,80,0,0,0,0,0,0,0,0,0
+674,2016,Uttar Pradesh,09,Amroha,154,Amroha,93,81,92,13,131,0,181,0,0,32,0,0,0,0,0,0,18,0,0
+675,2016,Uttar Pradesh,09,Auraiya,122,Auraiya,19,6,138,27,95,0,151,0,9,35,0,0,0,0,0,0,1,0,0
+676,2016,Uttar Pradesh,09,Azamgarh,123,Azamgarh,73,10,201,41,176,0,133,0,1,0,0,0,0,1,0,0,15,0,0
+677,2016,Uttar Pradesh,09,Budaun,133,Badaun,97,6,224,45,201,0,97,0,6,2,0,0,0,1,0,0,1,0,4
+678,2016,Uttar Pradesh,09,Baghpat,124,Baghpat,35,7,103,13,77,1,103,0,6,0,0,0,0,0,0,0,20,0,0
+679,2016,Uttar Pradesh,09,Bahraich,125,Bahraich,42,18,200,56,119,0,1,0,0,238,0,0,0,0,0,0,0,3,5
+680,2016,Uttar Pradesh,09,Ballia,126,Ballia,40,9,175,23,139,3,85,0,4,0,1,0,1,1,0,0,8,0,0
+681,2016,Uttar Pradesh,09,Balrampur,127,Balrampur,17,16,46,10,71,0,4,0,0,41,0,0,0,0,0,0,0,1,0
+682,2016,Uttar Pradesh,09,Banda,128,Banda,41,0,75,24,89,0,71,0,2,0,0,0,0,0,0,0,0,0,0
+683,2016,Uttar Pradesh,09,Barabanki,129,Barabanki,29,0,163,44,77,0,150,0,0,145,0,0,0,0,0,0,0,0,0
+684,2016,Uttar Pradesh,09,Bareilly,130,Bareilly,125,250,416,73,483,1,449,0,0,8,0,0,1,1,0,0,45,0,30
+685,2016,Uttar Pradesh,09,Basti,131,Basti,35,9,131,31,67,0,0,0,2,122,0,0,0,0,1,0,4,0,0
+686,2016,Uttar Pradesh,09,Bijnor,132,Bijnor,125,58,225,22,177,0,173,0,1,31,0,0,0,1,0,0,0,0,44
+687,2016,Uttar Pradesh,09,Bulandshahr,134,Bulandshahar,113,15,255,55,262,1,253,0,2,0,0,0,1,1,1,0,1,0,0
+688,2016,Uttar Pradesh,09,Chandauli,135,Chandoli,28,3,68,26,75,0,76,0,8,0,0,0,0,0,0,0,7,0,1
+689,2016,Uttar Pradesh,09,Chitrakoot,136,Chitrakoot,28,8,65,25,99,0,46,0,5,1,0,0,1,0,0,0,0,0,0
+690,2016,Uttar Pradesh,09,Deoria,137,Deoria,62,8,202,22,127,0,49,0,2,21,0,0,0,2,0,0,0,1,0
+691,2016,Uttar Pradesh,09,Etah,138,Etah,76,30,93,34,134,2,68,0,0,0,0,0,0,2,0,0,4,0,0
+692,2016,Uttar Pradesh,09,Etawah,139,Etawah,38,9,175,44,131,0,185,0,8,4,0,0,1,0,0,0,2,1,0
+693,2016,Uttar Pradesh,09,Ayodhya,140,Faizabad,41,8,159,19,103,0,9,0,4,93,0,1,0,0,0,0,2,0,1
+694,2016,Uttar Pradesh,09,Farrukhabad,141,Fatehgarh,32,13,130,42,91,0,197,0,1,167,0,0,0,0,1,0,0,1,1
+695,2016,Uttar Pradesh,09,Fatehpur,142,Fatehpur,60,25,161,39,174,0,96,0,1,4,0,0,0,0,0,0,0,0,0
+696,2016,Uttar Pradesh,09,Firozabad,143,Firozabad,41,11,269,66,109,0,179,0,9,0,0,0,2,1,0,0,0,1,0
+697,2016,Uttar Pradesh,09,Lucknow,162,G. R. P.,7,1,14,2,65,0,0,0,0,16,0,0,0,0,0,0,0,4,0
+698,2016,Uttar Pradesh,09,Gautam Buddha Nagar,144,Gautambudh Nagar,84,48,230,24,208,7,262,0,1,0,0,0,1,1,0,0,0,0,0
+699,2016,Uttar Pradesh,09,Ghaziabad,145,Ghaziabad,187,14,390,40,287,1,526,0,1,0,0,0,0,0,1,0,2,1,0
+700,2016,Uttar Pradesh,09,Ghazipur,146,Ghazipur,43,51,132,18,102,3,86,0,8,0,0,0,0,1,1,0,0,0,0
+701,2016,Uttar Pradesh,09,Gonda,147,Gonda,51,97,141,27,110,0,1,0,8,176,0,0,0,2,0,0,2,1,0
+702,2016,Uttar Pradesh,09,Gorakhpur,148,Gorakhpur,167,59,367,53,240,0,0,0,5,293,0,0,1,0,0,0,0,1,6
+703,2016,Uttar Pradesh,09,Hamirpur,149,Hamirpur,37,0,70,21,103,0,57,0,6,39,2,0,0,0,0,0,0,0,0
+704,2016,Uttar Pradesh,09,Hapur,661,Hapur,53,22,114,11,109,0,40,0,1,0,0,0,0,0,0,0,2,0,0
+705,2016,Uttar Pradesh,09,Hardoi,150,Hardoi,109,8,160,41,156,0,96,0,0,0,0,0,0,0,0,0,1,1,0
+706,2016,Uttar Pradesh,09,Hathras,163,Hathras,32,27,96,24,105,0,165,0,2,10,0,0,0,0,0,0,7,0,0
+707,2016,Uttar Pradesh,09,Jalaun,151,Jalaun,33,28,69,33,120,1,45,0,6,0,0,0,0,1,0,0,0,0,0
+708,2016,Uttar Pradesh,09,Jaunpur,152,Jaunpur,78,11,197,46,106,1,0,0,0,52,0,0,0,3,0,0,0,2,0
+709,2016,Uttar Pradesh,09,Jhansi,153,Jhansi,45,9,137,36,144,1,205,0,6,8,0,1,2,1,0,0,3,1,2
+710,2016,Uttar Pradesh,09,Kannauj,155,Kannauj,64,10,131,24,119,0,119,0,2,24,0,0,0,0,0,0,0,0,0
+711,2016,Uttar Pradesh,09,Kanpur Dehat,156,Kanpur Dehat,40,4,199,46,148,0,172,0,5,0,0,0,0,0,0,0,0,0,0
+712,2016,Uttar Pradesh,09,Kanpur Nagar,157,Kanpur Nagar,76,5,390,80,260,1,455,0,18,125,0,0,1,1,0,0,0,0,0
+713,2016,Uttar Pradesh,09,Kasganj,633,Kasganj,53,10,95,18,97,0,42,0,2,0,0,0,0,1,0,0,0,0,1
+714,2016,Uttar Pradesh,09,Kaushambi,158,Kaushambi,27,7,160,27,141,0,119,0,4,0,0,0,0,0,0,0,13,0,0
+715,2016,Uttar Pradesh,09,Kheri,159,Khiri,70,12,311,51,166,0,149,0,4,17,0,0,0,1,0,0,4,2,10
+716,2016,Uttar Pradesh,09,Kushi Nagar,160,Kushi Nagar,75,66,165,29,173,0,70,0,2,0,0,0,1,0,0,0,10,0,0
+717,2016,Uttar Pradesh,09,Lalitpur,161,Lalitpur,26,1,43,16,65,0,27,0,13,0,0,0,0,0,0,4,0,2,0
+718,2016,Uttar Pradesh,09,Lucknow,162,Lucknow,202,54,798,65,523,1,1185,0,0,0,0,0,3,0,0,0,91,1,77
+719,2016,Uttar Pradesh,09,Maharajganj,164,Maharajganj,64,0,44,30,59,0,56,0,5,0,0,0,0,0,0,0,0,0,0
+720,2016,Uttar Pradesh,09,Mahoba,165,Mahoba,28,1,68,19,107,1,39,0,7,32,0,1,0,1,0,0,0,1,0
+721,2016,Uttar Pradesh,09,Mainpuri,166,Mainpuri,68,9,143,34,103,0,103,0,8,5,0,1,0,0,0,0,3,0,0
+722,2016,Uttar Pradesh,09,Mathura,167,Mathura,55,50,168,40,160,0,238,0,11,0,0,0,0,2,0,0,0,0,0
+723,2016,Uttar Pradesh,09,Mau,168,Mau,27,9,111,27,59,0,5,0,0,57,0,0,0,0,0,0,0,0,0
+724,2016,Uttar Pradesh,09,Meerut,169,Meerut,96,63,168,35,327,0,488,0,14,0,0,0,7,2,0,0,9,0,0
+725,2016,Uttar Pradesh,09,Mirzapur,170,Mirzapur,30,7,27,18,9,0,12,0,3,74,0,0,2,1,0,0,0,0,0
+726,2016,Uttar Pradesh,09,Moradabad,171,Moradabad,208,23,294,33,497,2,421,0,0,0,0,0,2,3,0,0,3,1,0
+727,2016,Uttar Pradesh,09,Muzaffarnagar,172,Muzaffarnagar,38,25,205,32,97,0,280,0,1,0,0,0,0,1,0,45,0,0,0
+728,2016,Uttar Pradesh,09,Pilibhit,173,Pilibhit,86,48,84,30,206,0,186,0,6,69,0,0,1,0,0,0,11,0,0
+729,2016,Uttar Pradesh,09,Pratapgarh,174,Pratapgarh,66,10,232,26,148,0,215,0,4,76,0,0,1,2,1,0,1,0,0
+730,2016,Uttar Pradesh,09,Rae Bareli,175,Raibareilly,54,20,109,17,82,0,71,0,0,0,0,0,0,0,0,0,0,0,0
+731,2016,Uttar Pradesh,09,Rampur,176,Rampur,111,150,153,24,154,0,90,0,0,220,0,19,6,2,0,0,41,0,108
+732,2016,Uttar Pradesh,09,Saharanpur,177,Saharanpur,51,10,175,21,122,0,114,0,0,2,0,0,0,1,0,0,12,2,31
+733,2016,Uttar Pradesh,09,Sambhal,659,Sambhal,52,30,173,28,113,0,145,0,0,46,0,0,1,2,0,0,10,0,2
+734,2016,Uttar Pradesh,09,Sant Kabeer Nagar,178,Sant Kabirnagar,27,3,68,21,35,0,38,0,0,0,0,0,0,0,0,0,1,0,0
+735,2016,Uttar Pradesh,09,Shahjahanpur,180,Shahjahanpur,90,7,225,45,280,0,145,0,4,96,0,0,0,0,0,0,15,0,0
+736,2016,Uttar Pradesh,09,Shamli,660,Shamli,17,79,39,6,62,2,120,0,0,0,0,0,1,0,0,0,11,0,30
+737,2016,Uttar Pradesh,09,Shravasti,181,Shrawasti,11,5,67,11,66,0,1,0,0,45,6,0,1,0,0,0,0,0,0
+738,2016,Uttar Pradesh,09,Siddharth Nagar,182,Sidharthnagar,36,0,104,22,75,0,0,0,0,41,0,0,0,0,0,0,0,0,0
+739,2016,Uttar Pradesh,09,Sitapur,183,Sitapur,103,10,255,69,214,0,36,0,3,140,0,0,0,0,0,1,11,1,0
+740,2016,Uttar Pradesh,09,Sonbhadra,184,Sonbhadra,42,3,41,18,35,1,37,0,4,0,0,0,0,0,0,0,0,1,1
+741,2016,Uttar Pradesh,09,Bhadohi,179,Bhadohi,9,6,51,12,37,0,6,0,3,65,0,0,0,0,0,0,0,0,0
+742,2016,Uttar Pradesh,09,Sultanpur,185,Sultanpur,31,57,129,21,80,0,13,0,1,70,0,0,0,0,0,0,8,0,0
+743,2016,Uttar Pradesh,09,Unnao,186,Unnao,82,3,240,44,145,0,181,0,4,0,2,0,2,0,0,0,0,0,0
+744,2016,Uttar Pradesh,09,Varanasi,187,Varanasi,105,39,196,32,251,2,325,0,14,0,0,0,0,0,0,34,0,2,0
+808,2016,Delhi,07,South East,670,South-East,275,1,453,14,510,137,326,0,4,5,0,0,0,2,1,1,0,1,2
+795,2016,Delhi,07,Central,077,Central,104,1,129,7,233,49,103,0,0,0,0,0,0,1,0,0,0,1,0
+197,2016,Haryana,06,Ambala,058,Ambala (Urban),25,5,59,5,48,7,70,0,0,1,0,0,1,0,0,0,0,1,1
+198,2016,Haryana,06,Bhiwani,059,Bhiwani,51,17,34,22,93,1,127,0,11,0,0,0,3,1,0,0,0,0,0
+199,2016,Haryana,06,Faridabad,060,Faridabad,144,8,292,23,131,8,418,0,1,0,0,0,6,2,2,1,0,0,0
+200,2016,Haryana,06,Fatehabad,061,Fatehabad,39,1,27,4,69,1,81,0,7,0,0,0,2,0,0,0,1,1,2
+201,2016,Haryana,06,Ambala,058,G. R. P.,0,0,11,4,6,0,0,0,10,0,0,0,0,0,0,0,0,0,0
+202,2016,Haryana,06,Gurugram,062,Gurgaon,201,15,290,20,316,55,315,0,11,1,0,0,8,1,0,0,0,2,1
+203,2016,Haryana,06,Hisar,063,Hissar,70,2,56,14,101,3,244,0,8,0,0,3,0,0,1,0,0,2,1
+204,2016,Haryana,06,Jhajjar,064,Jhajjar,27,1,30,22,57,3,144,0,4,0,0,0,0,0,0,0,0,0,0
+205,2016,Haryana,06,Jind,065,Jind,31,7,82,13,53,0,103,0,7,1,0,0,0,1,0,0,0,0,0
+206,2016,Haryana,06,Kaithal,066,Kaithal,42,1,88,6,59,0,96,0,1,0,0,0,6,0,0,0,0,0,0
+207,2016,Haryana,06,Karnal,067,Karnal,89,18,317,17,116,18,218,0,18,4,0,0,5,1,0,0,0,0,0
+208,2016,Haryana,06,Kurukshetra,068,Kurukshetra,28,8,91,6,55,2,179,0,4,0,0,0,2,0,0,0,0,1,0
+209,2016,Haryana,06,Mahendragarh,069,Mahendergarh,16,5,27,9,38,2,75,0,3,0,0,0,2,0,0,0,0,0,1
+212,2016,Haryana,06,Panchkula,070,Panchkula,20,0,36,1,21,3,67,0,3,0,0,0,5,0,0,0,0,1,0
+213,2016,Haryana,06,Panipat,071,Panipat,57,3,404,11,102,6,217,0,11,0,0,0,2,1,0,0,0,0,0
+214,2016,Haryana,06,Rewari,072,Rewari,47,7,36,14,69,7,92,0,0,0,0,0,1,0,0,0,0,0,0
+215,2016,Haryana,06,Rohtak,073,Rohtak,61,10,259,15,125,1,201,0,8,0,0,0,6,0,0,0,0,1,0
+216,2016,Haryana,06,Sirsa,074,Sirsa,48,6,49,5,66,4,134,0,0,0,0,2,0,0,0,0,0,0,0
+217,2016,Haryana,06,Sonipat,075,Sonipat,75,6,133,17,106,2,224,0,13,0,0,0,3,0,0,0,0,1,0
+218,2016,Haryana,06,Yamunanagar,076,Yamunanagar,38,12,276,5,72,1,121,0,0,0,0,0,7,1,0,0,0,0,2
+219,2016,Haryana,06,Gurugram,062,Irrigation And Power,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+220,2016,Himachal Pradesh,02,Solan,025,Baddi,12,0,12,0,13,2,12,0,2,0,0,0,2,0,0,0,0,0,0
+221,2016,Himachal Pradesh,02,Bilaspur,015,Bilaspur,15,0,20,1,36,5,22,0,3,0,0,0,0,0,0,0,0,0,0
+222,2016,Himachal Pradesh,02,Chamba,016,Chamba,25,0,13,0,22,0,8,0,8,0,0,0,0,0,0,0,0,0,0
+223,2016,Himachal Pradesh,02,Shimla,023,C. I. D.,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+224,2016,Himachal Pradesh,02,Shimla,023,G. R. P.,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+225,2016,Himachal Pradesh,02,Hamirpur,017,Hamirpur,13,0,10,1,25,4,12,0,4,0,0,3,0,0,0,0,0,0,0
+226,2016,Himachal Pradesh,02,Kangra,018,Kangra,41,2,33,0,65,18,39,0,17,1,0,7,1,0,0,0,0,0,0
+227,2016,Himachal Pradesh,02,Kinnaur,019,Kinnaur,8,1,2,0,3,0,3,0,1,0,0,0,0,0,0,0,0,0,0
+228,2016,Himachal Pradesh,02,Kullu,020,Kullu,17,0,14,0,24,1,15,0,8,0,0,1,2,0,0,0,0,0,0
+229,2016,Himachal Pradesh,02,Lahul And Spiti,021,Lahaul And Spiti,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+230,2016,Himachal Pradesh,02,Mandi,022,Mandi,30,0,30,1,91,16,23,0,13,0,0,0,0,0,0,0,0,0,0
+231,2016,Himachal Pradesh,02,Shimla,023,Shimla,28,0,16,0,44,2,25,0,4,0,0,0,1,0,0,0,1,0,0
+232,2016,Himachal Pradesh,02,Sirmaur,024,Sirmaur,34,0,24,0,37,0,21,0,3,0,0,0,1,0,0,0,0,0,0
+233,2016,Himachal Pradesh,02,Solan,025,Solan,13,0,10,0,22,0,3,0,1,0,0,0,0,0,0,0,0,0,0
+234,2016,Himachal Pradesh,02,Una,026,Una,15,0,17,0,28,1,31,0,2,0,0,0,0,0,0,0,0,0,0
+235,2016,Jammu And Kashmir,01,Anantnag,001,Anantnag,6,2,61,0,84,11,10,0,0,0,0,0,0,0,0,0,0,0,0
+236,2016,Jammu And Kashmir,01,Pulwama,011,Awantipora,4,0,22,0,43,0,2,0,0,0,0,0,0,0,0,0,0,0,0
+238,2016,Jammu And Kashmir,01,Baramulla,003,Baramulla,6,0,40,0,87,14,10,0,0,0,0,0,0,0,0,0,0,0,0
+239,2016,Jammu And Kashmir,01,Budgam,002,Budgam,10,0,42,0,50,3,5,0,21,0,0,0,0,0,0,0,0,0,0
+241,2016,Jammu And Kashmir,01,Jammu,005,Crime Srinagar,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+242,2016,Jammu And Kashmir,01,Doda,004,Doda,14,0,28,0,26,4,7,0,0,0,0,0,0,0,0,0,0,0,0
+244,2016,Jammu And Kashmir,01,Kupwara,008,Handwara,5,0,21,0,55,2,3,0,0,0,0,0,0,0,0,0,0,0,0
+245,2016,Jammu And Kashmir,01,Jammu,005,Jammu,43,0,115,2,120,27,91,0,0,0,0,0,0,0,0,0,0,0,0
+246,2016,Jammu And Kashmir,01,Kargil,006,Kargil,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+247,2016,Jammu And Kashmir,01,Kathua,007,Kathua,10,7,39,2,40,11,15,0,2,0,0,0,0,0,0,0,0,0,0
+250,2016,Jammu And Kashmir,01,Kupwara,008,Kupwara,14,0,37,0,20,1,12,0,18,0,0,0,0,0,0,0,0,0,0
+251,2016,Jammu And Kashmir,01,Leh Ladakh,009,Leh,2,0,2,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+252,2016,Jammu And Kashmir,01,Poonch,010,Poonch,11,0,31,0,38,3,24,0,1,0,0,0,0,0,0,0,0,0,0
+253,2016,Jammu And Kashmir,01,Pulwama,011,Pulwama,2,0,13,0,27,1,2,0,0,0,0,0,0,0,0,0,0,0,0
+254,2016,Jammu And Kashmir,01,Jammu,005,Railways Jammu,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+255,2016,Jammu And Kashmir,01,Jammu,005,Railways Kashmir,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+257,2016,Jammu And Kashmir,01,Rajouri,012,Rajouri,37,1,47,0,54,9,39,0,1,0,0,0,0,0,0,0,0,0,1
+262,2016,Jammu And Kashmir,01,Baramulla,003,Sopore,2,0,27,0,79,5,9,0,4,0,0,0,0,0,0,0,0,0,0
+263,2016,Jammu And Kashmir,01,Srinagar,013,Srinagar,8,1,53,0,163,23,42,0,0,0,0,0,1,0,0,0,0,0,0
+264,2016,Jammu And Kashmir,01,Udhampur,014,Udhampur,20,2,26,0,32,14,28,0,1,0,0,0,0,0,0,0,0,0,0
+527,2016,Punjab,03,Amritsar,027,Amritsar Rural,29,6,66,5,46,0,46,0,0,0,0,0,0,0,0,0,0,0,1
+529,2016,Punjab,03,Gurdaspur,032,Batala,21,4,29,4,22,0,35,0,0,0,0,1,0,1,0,0,0,0,0
+530,2016,Punjab,03,Bathinda,028,Bathinda,41,3,57,10,78,2,64,0,9,0,0,0,6,0,0,0,0,0,2
+531,2016,Punjab,03,Amritsar,027,Cp Amritsar,35,2,69,2,42,0,81,0,11,1,0,0,9,1,0,0,0,0,0
+532,2016,Punjab,03,Jalandhar,034,Cp Jalandhar,36,2,63,2,75,0,167,0,9,0,0,0,7,1,0,0,0,0,1
+533,2016,Punjab,03,Ludhiana,036,Cp Ludhiana,88,13,148,6,121,3,179,0,19,1,0,1,8,0,0,0,0,0,0
+534,2016,Punjab,03,Faridkot,029,Faridkot,13,1,14,2,24,1,19,0,4,0,0,0,2,0,0,0,0,0,0
+535,2016,Punjab,03,Fatehgarh Sahib,030,Fatehgarh Sahib,22,0,29,0,14,0,29,0,5,0,0,0,0,0,0,0,0,0,0
+537,2016,Punjab,03,Ferozepur,031,Ferozepur,37,2,41,0,23,0,30,0,0,0,0,0,5,0,0,0,0,0,0
+538,2016,Punjab,03,Patiala,041,G. R. P.,4,0,1,1,6,0,0,0,5,0,0,0,0,0,0,0,0,0,0
+539,2016,Punjab,03,Gurdaspur,032,Gurdaspur,10,4,23,1,18,0,44,0,6,0,0,0,1,0,1,0,0,0,0
+540,2016,Punjab,03,Hoshiarpur,033,Hoshiarpur,34,7,38,6,24,0,119,0,14,0,0,0,0,0,0,0,0,0,0
+541,2016,Punjab,03,Jalandhar,034,Jalandhar Rural,30,5,21,5,39,0,56,0,7,0,0,0,0,0,0,0,0,0,0
+542,2016,Punjab,03,Kapurthala,035,Kapurthala,13,5,24,3,31,1,46,0,3,0,0,0,0,1,0,0,0,0,0
+543,2016,Punjab,03,Ludhiana,036,Khanna,15,4,44,1,15,0,37,0,6,0,0,0,1,0,0,0,0,0,0
+544,2016,Punjab,03,Ludhiana,036,Ludhiana Rural,14,1,39,1,32,0,23,0,2,0,0,0,0,0,0,0,0,0,0
+545,2016,Punjab,03,Mansa,037,Mansa,20,3,16,2,19,0,31,0,13,2,0,0,2,0,0,0,0,0,0
+546,2016,Punjab,03,Moga,038,Moga,23,2,34,1,31,0,33,0,7,0,0,0,6,0,0,0,0,0,0
+547,2016,Punjab,03,Sri Muktsar Sahib,039,Muktsar,39,6,34,1,37,2,26,0,6,1,0,0,5,0,0,0,0,0,0
+549,2016,Punjab,03,Patiala,041,Patiala,63,5,87,4,77,0,133,0,14,0,0,0,2,0,0,0,0,0,2
+550,2016,Punjab,03,Rupnagar,042,Ropar,17,3,28,1,36,0,37,0,8,0,0,0,0,0,0,0,0,0,0
+551,2016,Punjab,03,Sangrur,043,Sangrur,59,2,60,7,47,0,57,0,0,0,0,0,2,0,0,0,0,0,0
+553,2016,Punjab,03,Shahid Bhagat Singh Nagar,040,Sbs Nagar,19,3,19,0,12,0,42,0,6,0,0,0,1,0,0,0,0,0,0
+555,2016,Rajasthan,08,Ajmer,086,Ajmer,139,9,165,14,169,0,794,0,9,0,1,0,6,0,0,0,0,0,1
+556,2016,Rajasthan,08,Alwar,087,Alwar,239,97,236,44,231,0,633,0,2,1,0,0,5,0,0,0,0,0,0
+557,2016,Rajasthan,08,Banswara,088,Banswara,150,11,109,14,90,0,218,0,10,0,0,4,0,0,0,0,0,0,0
+558,2016,Rajasthan,08,Baran,089,Baran,97,9,125,5,242,4,405,0,3,0,0,0,0,0,0,0,0,0,2
+559,2016,Rajasthan,08,Barmer,090,Barmer,106,0,34,36,268,0,231,0,1,0,0,0,0,0,0,0,0,0,0
+560,2016,Rajasthan,08,Bharatpur,091,Bharatpur,186,31,186,37,73,0,572,0,4,0,0,0,1,0,0,0,0,0,0
+561,2016,Rajasthan,08,Bhilwara,092,Bhilwara,76,4,220,8,194,0,665,0,11,0,1,0,0,0,0,0,0,0,0
+562,2016,Rajasthan,08,Bikaner,093,Bikaner,89,0,58,22,83,1,473,0,2,1,2,0,0,0,0,0,0,0,0
+563,2016,Rajasthan,08,Bundi,094,Bundi,88,0,140,3,212,1,283,0,4,0,0,0,0,0,0,0,0,0,0
+564,2016,Rajasthan,08,Chittorgarh,095,Chittorgarh,97,3,156,9,138,0,545,0,6,0,0,0,1,0,0,0,0,0,0
+565,2016,Rajasthan,08,Churu,096,Churu,92,9,48,14,103,0,335,0,4,0,0,0,0,0,0,0,0,0,0
+566,2016,Rajasthan,08,Dausa,097,Dausa,79,0,74,8,25,0,200,0,1,0,0,0,0,0,0,0,0,0,0
+567,2016,Rajasthan,08,Dholpur,098,Dholpur,75,18,72,24,41,0,266,0,3,0,0,0,0,0,0,0,0,0,0
+568,2016,Rajasthan,08,Dungarpur,099,Dungarpur,71,3,100,3,111,0,122,0,5,0,0,0,0,0,0,0,0,0,0
+569,2016,Rajasthan,08,Ajmer,086,G.R.P.Ajmer,6,0,6,3,10,1,0,0,2,0,0,0,0,0,0,0,0,1,0
+745,2016,Uttarakhand,05,Almora,045,Almora,6,0,1,0,7,0,3,0,1,0,0,0,0,0,0,0,0,0,0
+746,2016,Uttarakhand,05,Bageshwar,046,Bageshwar,10,0,13,3,9,0,3,0,0,0,0,0,0,0,0,0,0,0,0
+747,2016,Uttarakhand,05,Chamoli,047,Chamoli,2,0,21,1,11,0,1,0,1,0,0,0,0,0,0,0,0,0,0
+748,2016,Uttarakhand,05,Champawat,048,Champawat,4,0,4,0,2,0,0,0,2,1,0,0,0,0,0,0,0,1,0
+749,2016,Uttarakhand,05,Dehradun,049,Dehradun,63,5,24,8,56,0,140,0,11,1,0,0,8,0,0,0,0,0,1
+750,2016,Uttarakhand,05,Haridwar,050,Haridwar,104,0,73,13,86,0,68,0,0,24,0,0,0,0,0,0,0,0,1
+751,2016,Uttarakhand,05,Nainital,051,Nainital,46,0,50,13,48,0,32,0,1,0,0,0,3,0,0,0,0,0,0
+752,2016,Uttarakhand,05,Pauri Garhwal,052,Pauri Garhwal,4,0,27,1,15,0,7,0,0,1,0,0,0,0,0,0,0,0,0
+753,2016,Uttarakhand,05,Pithoragarh,053,Pithoragarh,3,0,4,1,2,0,5,0,0,0,0,0,0,0,0,0,0,0,0
+754,2016,Uttarakhand,05,Rudra Prayag,054,Rudra Prayag,6,0,27,0,4,0,1,0,0,0,0,0,0,0,0,0,0,0,0
+755,2016,Uttarakhand,05,Tehri Garhwal,055,Tehri Garhwal,10,0,22,2,4,1,6,0,0,0,0,0,0,0,0,0,0,0,0
+756,2016,Uttarakhand,05,Udam Singh Nagar,056,Udhamsingh Nagar,71,0,100,15,94,2,123,1,0,0,0,1,0,0,0,0,0,0,0
+757,2016,Uttarakhand,05,Uttar Kashi,057,Uttarkashi,7,1,10,0,6,0,3,0,0,0,0,0,0,0,0,0,0,1,0
+791,2016,Chandigarh,04,Chandigarh,044,Chandigarh,68,4,112,4,76,13,122,0,7,1,0,0,0,0,0,0,0,1,2
+796,2016,Delhi,07,North West,082,Crime Branch,1,0,1,0,2,1,0,0,0,0,0,0,1,0,0,0,0,0,0
+797,2016,Delhi,07,East,078,East,221,3,377,17,380,100,445,0,3,1,0,0,1,3,1,0,0,0,3
+798,2016,Delhi,07,New Delhi,079,Eow,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+799,2016,Delhi,07,New Delhi,079,Igi Airport,0,0,0,0,11,3,0,0,0,0,0,0,0,0,0,0,0,0,0
+800,2016,Delhi,07,North West,082,Metro,1,0,3,0,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+801,2016,Delhi,07,New Delhi,079,New Delhi,23,1,17,1,57,9,11,0,0,0,0,0,0,0,0,0,0,0,0
+802,2016,Delhi,07,North,080,North,65,0,140,6,171,17,125,0,3,0,0,0,0,0,0,0,0,0,0
+803,2016,Delhi,07,North East,081,North-East,223,5,480,19,333,21,654,0,0,0,0,0,1,1,1,0,0,0,8
+804,2016,Delhi,07,North West,082,North-West,190,6,354,16,371,68,347,0,3,1,0,0,0,0,4,0,0,2,1
+805,2016,Delhi,07,North West,082,Outer,372,1,614,28,530,131,589,0,7,1,0,0,0,1,0,0,0,2,3
+806,2016,Delhi,07,New Delhi,079,Railway,7,0,28,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+807,2016,Delhi,07,South,083,South,246,9,385,9,708,239,166,0,0,5,0,0,1,0,0,0,0,1,4
+809,2016,Delhi,07,South West,084,South-West,171,1,445,22,389,71,326,0,0,1,0,0,0,1,1,0,0,1,1
+810,2016,Delhi,07,North West,082,Spl Cell,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+811,2016,Delhi,07,New Delhi,079,Spuwac,0,0,0,0,0,0,234,0,0,0,0,0,0,0,0,0,0,0,0
+812,2016,Delhi,07,New Delhi,079,Vigilance,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+813,2016,Delhi,07,West,085,West,256,1,465,23,450,72,551,0,0,4,0,1,0,1,1,0,0,1,4
