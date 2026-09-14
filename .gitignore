@@ -5,3 +5,4 @@ dist/
 .env
 models/womensafety_research_pipeline_rf.joblib
 ml/artifacts/
+data/pipeline.db*
