@@ -83,3 +83,22 @@ def test_reset_gives_a_fresh_file(conn, tmp_path):
     conn.close()                       # reset requires no open connections (Windows enforces it)
     fresh = reset(tmp_path / "t.db")
     assert table_counts(fresh)["records"] == 0
+
+
+def test_store_built_by_older_code_is_refused_with_the_fix_in_the_message(tmp_path):
+    old = connect(tmp_path / "old.db")
+    old.execute("UPDATE meta SET value = '1' WHERE key = 'schema_version'")
+    old.commit()
+    old.close()
+    with pytest.raises(RuntimeError, match="reset --yes"):
+        connect(tmp_path / "old.db")
+
+
+def test_receipts_are_counted_per_provider_for_the_last_day(conn):
+    from agents.store import add_attempt, usage_last_24h
+    add_attempt(conn, run_id="r", tag="t", cache_key="k", provider="gemini", model="m", outcome="ok",
+                prompt_tokens=100, completion_tokens=20)
+    add_attempt(conn, run_id="r", tag="t", cache_key="k", provider="gemini", model="m", outcome="transient_error")
+    add_attempt(conn, run_id="r", tag="t", cache_key="k", provider="groq", model="g", outcome="ok", prompt_tokens=7)
+    assert usage_last_24h(conn, "gemini", "m") == (2, 120)
+    assert usage_last_24h(conn, "groq", "g") == (1, 7)

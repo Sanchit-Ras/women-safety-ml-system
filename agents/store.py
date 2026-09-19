@@ -17,10 +17,13 @@ Design rules the schema enforces, so that no module has to remember them:
 * ``district_code`` on ``records`` is nullable on purpose: Era A records exist
   before the resolver has run. The validator refuses to mark a record valid
   while it is NULL.
-* ``llm_calls`` is both the cache and the cost ledger. The cache key is a hash
-  of the *request* (intended model, temperature, prompt, schema); the row
-  records which provider actually answered, so fallback answers are cached
-  for reproducibility but never mislabelled.
+* ``llm_calls`` holds saved answers (the cache). The cache key is a hash of the
+  *request* (intended model, temperature, prompt, schema); the row records
+  which provider actually answered, so fallback answers are cached for
+  reproducibility but never mislabelled.
+* ``llm_attempts`` is the receipt book: one row per network try, including
+  failed ones, because a failed try still uses quota and tokens. Rate-limit
+  accounting and cost reports read this table, never the cache.
 
 Run ``python -m agents.store init | counts | reset`` to manage the file.
 """
@@ -37,7 +40,7 @@ from dotenv import load_dotenv
 from agents.schemas import CORE_CATEGORIES, Era
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 ERAS: tuple[str, ...] = get_args(Era)
 
 _era_check = "(" + ", ".join(f"'{e}'" for e in ERAS) + ")"
@@ -135,7 +138,7 @@ CREATE TABLE IF NOT EXISTS crosswalk (
     PRIMARY KEY (era, source_column)
 );
 
--- Cache + cost ledger. One row per real (non-cached) LLM call.
+-- Saved answers (the cache). One row per distinct question that got a valid answer.
 CREATE TABLE IF NOT EXISTS llm_calls (
     cache_key         TEXT PRIMARY KEY,            -- sha256(intended model|temperature|prompt|schema)
     run_id            TEXT NOT NULL,
@@ -155,6 +158,24 @@ CREATE TABLE IF NOT EXISTS llm_calls (
 CREATE INDEX IF NOT EXISTS ix_llm_calls_run ON llm_calls(run_id);
 CREATE INDEX IF NOT EXISTS ix_llm_calls_tag ON llm_calls(tag);
 
+-- Receipt book. One row per network try, successful or not. Append-only.
+CREATE TABLE IF NOT EXISTS llm_attempts (
+    id                INTEGER PRIMARY KEY,
+    run_id            TEXT NOT NULL,
+    tag               TEXT NOT NULL,
+    cache_key         TEXT NOT NULL,
+    provider          TEXT NOT NULL,
+    model             TEXT NOT NULL,
+    outcome           TEXT NOT NULL CHECK (outcome IN ('ok', 'invalid_output', 'transient_error', 'permanent_error')),
+    detail            TEXT,                        -- short error text; never a prompt or a key
+    prompt_tokens     INTEGER,
+    completion_tokens INTEGER,
+    latency_ms        INTEGER,
+    created_at        TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS ix_llm_attempts_provider_time ON llm_attempts(provider, model, created_at);
+CREATE INDEX IF NOT EXISTS ix_llm_attempts_run ON llm_attempts(run_id);
+
 -- Human review queue. Nothing is silently dropped; it lands here with a reason.
 CREATE TABLE IF NOT EXISTS escalations (
     id              INTEGER PRIMARY KEY,
@@ -170,7 +191,7 @@ CREATE INDEX IF NOT EXISTS ix_escalations_status ON escalations(status, kind);
 """
 
 TABLES = ("meta", "states", "districts", "district_lineage", "raw_rows", "records",
-          "unit_map", "crosswalk", "llm_calls", "escalations")
+          "unit_map", "crosswalk", "llm_calls", "llm_attempts", "escalations")
 
 
 def db_path(path: str | os.PathLike | None = None) -> Path:
@@ -196,6 +217,13 @@ def connect(path: str | os.PathLike | None = None) -> sqlite3.Connection:
     conn.executescript(DDL)
     conn.execute("INSERT OR IGNORE INTO meta (key, value) VALUES ('schema_version', ?)", (str(SCHEMA_VERSION),))
     conn.commit()
+    found = int(conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0])
+    if found != SCHEMA_VERSION:
+        conn.close()
+        raise RuntimeError(
+            f"{p} was built with schema v{found} but the code expects v{SCHEMA_VERSION}. "
+            "The store is a rebuildable workbench: run `python -m agents.store reset --yes`."
+        )
     return conn
 
 
@@ -236,6 +264,30 @@ def put_call(conn: sqlite3.Connection, *, cache_key: str, run_id: str, tag: str,
          prompt_tokens, completion_tokens, latency_ms, attempts, response_json),
     )
     conn.commit()
+
+
+def add_attempt(conn: sqlite3.Connection, *, run_id: str, tag: str, cache_key: str, provider: str, model: str,
+                outcome: str, detail: str | None = None, prompt_tokens: int | None = None,
+                completion_tokens: int | None = None, latency_ms: int | None = None) -> None:
+    """Write one receipt. Called for every network try, whatever happened."""
+    conn.execute(
+        """INSERT INTO llm_attempts
+           (run_id, tag, cache_key, provider, model, outcome, detail, prompt_tokens, completion_tokens, latency_ms)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+        (run_id, tag, cache_key, provider, model, outcome, detail, prompt_tokens, completion_tokens, latency_ms),
+    )
+    conn.commit()
+
+
+def usage_last_24h(conn: sqlite3.Connection, provider: str, model: str) -> tuple[int, int]:
+    """(tries, tokens) this provider+model has used in the last 24 hours, from the receipts."""
+    row = conn.execute(
+        """SELECT COUNT(*), COALESCE(SUM(COALESCE(prompt_tokens, 0) + COALESCE(completion_tokens, 0)), 0)
+           FROM llm_attempts
+           WHERE provider = ? AND model = ? AND created_at >= datetime('now', '-1 day')""",
+        (provider, model),
+    ).fetchone()
+    return int(row[0]), int(row[1])
 
 
 # ---- CLI ---------------------------------------------------------------------------
