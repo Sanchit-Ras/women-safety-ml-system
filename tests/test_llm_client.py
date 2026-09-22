@@ -36,10 +36,11 @@ class FakeProvider:
 
     def __init__(self, name, script, *, limits=BIG, max_output_tokens=100):
         self.name, self.model, self.limits, self.max_output_tokens = name, f"{name}-model", limits, max_output_tokens
-        self.script, self.prompts = list(script), []
+        self.script, self.prompts, self.systems = list(script), [], []
 
-    def generate(self, prompt, schema, temperature):
+    def generate(self, prompt, schema, temperature, system=None):
         self.prompts.append(prompt)
+        self.systems.append(system)
         item = self.script.pop(0)              # an unexpected extra call fails loudly here
         if isinstance(item, Exception):
             raise item
@@ -80,6 +81,15 @@ def test_fingerprint_changes_with_model_prompt_schema_and_temperature():
     others = {make_cache_key("m2", 0.0, "p", "s"), make_cache_key("m", 0.0, "p2", "s"),
               make_cache_key("m", 0.0, "p", "s2"), make_cache_key("m", 0.5, "p", "s")}
     assert len(others | {base}) == 5
+
+
+def test_system_text_reaches_the_provider_and_is_part_of_the_fingerprint(conn):
+    p = FakeProvider("gemini", [GOOD, GOOD])
+    client, _ = make(conn, [p])
+    a = client.complete("q", Reply, tag="t", system="context A")
+    b = client.complete("q", Reply, tag="t", system="context B")
+    assert p.systems == ["context A", "context B"]
+    assert a.cache_key != b.cache_key and not b.cached
 
 
 # ---- retry, then switch -------------------------------------------------------------------

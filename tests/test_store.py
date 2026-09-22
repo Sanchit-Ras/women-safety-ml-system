@@ -102,3 +102,24 @@ def test_receipts_are_counted_per_provider_for_the_last_day(conn):
     add_attempt(conn, run_id="r", tag="t", cache_key="k", provider="groq", model="g", outcome="ok", prompt_tokens=7)
     assert usage_last_24h(conn, "gemini", "m") == (2, 120)
     assert usage_last_24h(conn, "groq", "g") == (1, 7)
+
+
+def test_circles_belong_to_a_real_district_and_new_enum_values_are_accepted(conn):
+    conn.execute("INSERT INTO circles (district_code, circle_norm, circle_name, first_seen_year, last_seen_year) "
+                 "VALUES (502, 'guntakal railway', 'Guntakal Railway', 2016, 2022)")
+    with pytest.raises(sqlite3.IntegrityError):
+        conn.execute("INSERT INTO circles (district_code, circle_norm, circle_name, first_seen_year, last_seen_year) "
+                     "VALUES (999, 'x', 'X', 2016, 2016)")
+    conn.execute("INSERT INTO unit_map (era, state, unit, district_code, stage, confidence) "
+                 "VALUES ('2001_2014', 'andhra pradesh', 'guntakal rly', 502, 'circle', 1.0)")
+    conn.execute("INSERT INTO states (state_code, name) VALUES (8, 'rajasthan')")
+    conn.execute("INSERT INTO districts (district_code, state_code, name, first_seen_year, last_seen_year) VALUES (102, 8, 'jaipur', 2016, 2022)")
+    conn.execute("INSERT INTO district_lineage (parent_code, child_code, kind, source) VALUES (502, 102, 'recode', 'human')")
+
+
+def test_an_identical_open_escalation_is_queued_only_once(conn):
+    from agents.store import add_escalation
+    first = add_escalation(conn, kind="unit", ref={"district_code": 783}, violations=[{"rule": "code_disappeared"}])
+    second = add_escalation(conn, kind="unit", ref={"district_code": 783}, violations=[{"rule": "code_disappeared"}])
+    assert (first, second) == (True, False)
+    assert conn.execute("SELECT COUNT(*) FROM escalations").fetchone()[0] == 1

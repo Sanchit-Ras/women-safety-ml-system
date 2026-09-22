@@ -1,6 +1,7 @@
 """The one door every model call in this project goes through.
 
-    result = client.complete(prompt, schema=SomePydanticModel, tag="crosswalk:2017_plus")
+    result = client.complete(prompt, schema=SomePydanticModel, tag="crosswalk:2017_plus",
+                             system=PROJECT_CONTEXT)           # system text is optional
     result.parsed      -> a validated SomePydanticModel
     result.provider    -> who actually answered ("gemini" / "groq")
     result.cached      -> True when no network call happened
@@ -134,18 +135,19 @@ class Provider(Protocol):
     limits: Limits
     max_output_tokens: int
 
-    def generate(self, prompt: str, schema: type[BaseModel], temperature: float) -> RawResponse: ...
+    def generate(self, prompt: str, schema: type[BaseModel], temperature: float, system: str | None) -> RawResponse: ...
 
 
 def estimate_tokens(text: str) -> int:
     return len(text) // CHARS_PER_TOKEN + 1
 
 
-def make_cache_key(intended_model: str, temperature: float, prompt: str, schema_json: str) -> str:
-    """Fingerprint of the *question*. The model in it is the one we meant to ask
-    (first in the chain), so a fallback answer is found again on the next run."""
-    blob = json.dumps({"model": intended_model, "temperature": temperature, "prompt": prompt, "schema": schema_json},
-                      sort_keys=True)
+def make_cache_key(intended_model: str, temperature: float, prompt: str, schema_json: str, system: str = "") -> str:
+    """Fingerprint of the *question*: everything that could change the answer.
+    The model in it is the one we meant to ask (first in the chain), so a
+    fallback answer is found again on the next run."""
+    blob = json.dumps({"model": intended_model, "temperature": temperature, "prompt": prompt, "schema": schema_json,
+                       "system": system}, sort_keys=True)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 
@@ -204,8 +206,18 @@ class GeminiProvider:
         self.model, self.limits, self.max_output_tokens = model, limits, max_output_tokens
         self._types = types
         self._client = genai.Client(api_key=api_key, http_options=types.HttpOptions(timeout=timeout_s * 1000))
+        # We process official crime statistics. Offence names ("rape", "dowry death",
+        # "sexual assault of children") are legal categories, not harmful content, so the
+        # four configurable filters are told not to block. Google's separate child-safety
+        # filter cannot be configured: if it blocks a prompt, the door treats that as
+        # permanent, moves to the next provider, and the receipt says why.
+        self._safety = [types.SafetySetting(category=c, threshold=types.HarmBlockThreshold.BLOCK_NONE)
+                        for c in (types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+                                  types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                                  types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                                  types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT)]
 
-    def generate(self, prompt: str, schema: type[BaseModel], temperature: float) -> RawResponse:
+    def generate(self, prompt: str, schema: type[BaseModel], temperature: float, system: str | None) -> RawResponse:
         import httpx
         from google.genai import errors
         try:
@@ -213,6 +225,8 @@ class GeminiProvider:
                 model=self.model,
                 contents=prompt,
                 config=self._types.GenerateContentConfig(
+                    system_instruction=system,
+                    safety_settings=self._safety,
                     temperature=temperature,
                     seed=SEED,
                     max_output_tokens=self.max_output_tokens,
@@ -248,10 +262,13 @@ class GroqProvider:
         self.model, self.limits, self.max_output_tokens = model, limits, max_output_tokens
         self._client = Groq(api_key=api_key, max_retries=0, timeout=timeout_s)   # retries are ours, so they are counted
 
-    def generate(self, prompt: str, schema: type[BaseModel], temperature: float) -> RawResponse:
+    def generate(self, prompt: str, schema: type[BaseModel], temperature: float, system: str | None) -> RawResponse:
         import groq
-        system = ("You are a careful data assistant. Reply with a single JSON object and nothing else. "
-                  "The JSON object must conform to this JSON Schema:\n" + json.dumps(schema.model_json_schema()))
+        # Groq's JSON mode does not take a schema, so the schema travels in the system
+        # message, after whatever project context the caller supplied.
+        schema_text = ("Reply with a single JSON object and nothing else. The JSON object must conform to this "
+                       "JSON Schema:\n" + json.dumps(schema.model_json_schema()))
+        system_text = (system.rstrip() + "\n\n" if system else "You are a careful data assistant. ") + schema_text
         try:
             resp = self._client.chat.completions.create(
                 model=self.model,
@@ -259,7 +276,7 @@ class GroqProvider:
                 seed=SEED,
                 max_completion_tokens=self.max_output_tokens,
                 response_format={"type": "json_object"},
-                messages=[{"role": "system", "content": system}, {"role": "user", "content": prompt}],
+                messages=[{"role": "system", "content": system_text}, {"role": "user", "content": prompt}],
             )
         except groq.RateLimitError as e:
             header = e.response.headers.get("retry-after") if getattr(e, "response", None) is not None else None
@@ -318,9 +335,9 @@ class LLMClient:
 
     # -- the one public method ---------------------------------------------------------------------------
 
-    def complete(self, prompt: str, schema: type[T], *, tag: str) -> LLMResult[T]:
+    def complete(self, prompt: str, schema: type[T], *, tag: str, system: str | None = None) -> LLMResult[T]:
         schema_json = json.dumps(schema.model_json_schema(), sort_keys=True)
-        key = make_cache_key(self.providers[0].model, self.temperature, prompt, schema_json)
+        key = make_cache_key(self.providers[0].model, self.temperature, prompt, schema_json, system=system or "")
 
         saved = store.get_cached_call(self.conn, key)                                   # 1. saved answers
         if saved is not None:
@@ -349,7 +366,7 @@ class LLMClient:
                 limiter.acquire(estimate)                                               # 3. gatekeeper (minute)
                 started = self._clock()
                 try:
-                    raw = p.generate(current_prompt, schema, self.temperature)
+                    raw = p.generate(current_prompt, schema, self.temperature, system)
                 except TransientError as e:
                     self._receipt(p, tag, key, "transient_error", detail=str(e),
                                   latency_ms=int((self._clock() - started) * 1000))

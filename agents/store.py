@@ -17,6 +17,10 @@ Design rules the schema enforces, so that no module has to remember them:
 * ``district_code`` on ``records`` is nullable on purpose: Era A records exist
   before the resolver has run. The validator refuses to mark a record valid
   while it is NULL.
+* ``circles`` lists the police reporting units under each district (2016+).
+  They are how old-file unit names such as ``guntakal rly.`` find their
+  district, and they live apart from district aliases because a circle is
+  *inside* a district, not another name for it.
 * ``llm_calls`` holds saved answers (the cache). The cache key is a hash of the
   *request* (intended model, temperature, prompt, schema); the row records
   which provider actually answered, so fallback answers are cached for
@@ -30,6 +34,7 @@ Run ``python -m agents.store init | counts | reset`` to manage the file.
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import sqlite3
 from pathlib import Path
@@ -40,7 +45,7 @@ from dotenv import load_dotenv
 from agents.schemas import CORE_CATEGORIES, Era
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 ERAS: tuple[str, ...] = get_args(Era)
 
 _era_check = "(" + ", ".join(f"'{e}'" for e in ERAS) + ")"
@@ -71,12 +76,26 @@ CREATE TABLE IF NOT EXISTS districts (
     last_seen_year  INTEGER NOT NULL
 );
 
--- Boundary changes between eras (splits, merges, renames). Filled by the
--- resolver; lets an analyst know a 2001-2014 series covers a larger area.
+-- Police reporting units ("registration circles") under each district, 2016+.
+-- One district has many circles. Kept apart from name aliases on purpose.
+CREATE TABLE IF NOT EXISTS circles (
+    district_code   INTEGER NOT NULL REFERENCES districts(district_code),
+    circle_norm     TEXT NOT NULL,                 -- normalised, what the resolver matches on
+    circle_name     TEXT NOT NULL,                 -- latest spelling, for display
+    first_seen_year INTEGER NOT NULL,
+    last_seen_year  INTEGER NOT NULL,
+    PRIMARY KEY (district_code, circle_norm)
+);
+CREATE INDEX IF NOT EXISTS ix_circles_norm ON circles(circle_norm);
+
+-- Boundary changes over time. 'split': child was carved out of parent.
+-- 'merge': child absorbed parent. 'recode': same district, the files switched
+-- to a new code. 'rename': same code, new name. Proposed by data hints and the
+-- model, verified by a human; this table drives the stable-unit graph.
 CREATE TABLE IF NOT EXISTS district_lineage (
     parent_code INTEGER NOT NULL REFERENCES districts(district_code),
     child_code  INTEGER NOT NULL REFERENCES districts(district_code),
-    kind        TEXT NOT NULL CHECK (kind IN ('split', 'merge', 'rename')),
+    kind        TEXT NOT NULL CHECK (kind IN ('split', 'merge', 'recode', 'rename')),
     year        INTEGER,
     source      TEXT NOT NULL,                     -- 'llm:<model>' | 'human'
     verified    INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
@@ -119,7 +138,7 @@ CREATE TABLE IF NOT EXISTS unit_map (
     state         TEXT NOT NULL,                   -- normalised source spelling
     unit          TEXT NOT NULL,                   -- normalised source spelling
     district_code INTEGER REFERENCES districts(district_code),   -- NULL = unresolved
-    stage         TEXT NOT NULL CHECK (stage IN ('exact', 'alias', 'fuzzy', 'llm', 'human', 'unresolved')),
+    stage         TEXT NOT NULL CHECK (stage IN ('exact', 'alias', 'circle', 'fuzzy', 'llm', 'human', 'unresolved')),
     confidence    REAL CHECK (confidence BETWEEN 0 AND 1),
     reason        TEXT,
     verified      INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
@@ -133,7 +152,7 @@ CREATE TABLE IF NOT EXISTS crosswalk (
     source_column TEXT NOT NULL,
     core_category TEXT CHECK (core_category IN {_category_check}),
     reason        TEXT NOT NULL,
-    proposed_by   TEXT NOT NULL,                   -- 'llm:<model>' | 'human'
+    proposed_by   TEXT NOT NULL,                   -- 'llm:<model>' | 'human' | 'definition'
     verified      INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
     PRIMARY KEY (era, source_column)
 );
@@ -190,7 +209,7 @@ CREATE TABLE IF NOT EXISTS escalations (
 CREATE INDEX IF NOT EXISTS ix_escalations_status ON escalations(status, kind);
 """
 
-TABLES = ("meta", "states", "districts", "district_lineage", "raw_rows", "records",
+TABLES = ("meta", "states", "districts", "circles", "district_lineage", "raw_rows", "records",
           "unit_map", "crosswalk", "llm_calls", "llm_attempts", "escalations")
 
 
@@ -244,6 +263,37 @@ def reset(path: str | os.PathLike | None = None) -> sqlite3.Connection:
 
 def table_counts(conn: sqlite3.Connection) -> dict[str, int]:
     return {t: conn.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0] for t in TABLES}
+
+
+# ---- registry + escalation helpers (consumers: data_ingestion/registry.py, crosswalk.py) ----
+
+def replace_registry(conn: sqlite3.Connection, states: list[tuple], districts: list[tuple], circles: list[tuple]) -> None:
+    """Rewrite the canonical geography wholesale. The registry is *derived* from
+    the 2016+ files, so it is rebuilt, never edited by hand. If records or
+    mappings already point at a district that would vanish, the foreign keys
+    make this fail instead of leaving dangling references."""
+    with conn:                                     # one transaction: all or nothing
+        conn.execute("DELETE FROM circles")
+        conn.execute("DELETE FROM districts")
+        conn.execute("DELETE FROM states")
+        conn.executemany("INSERT INTO states (state_code, name, aliases_json) VALUES (?, ?, ?)", states)
+        conn.executemany("INSERT INTO districts (district_code, state_code, name, aliases_json, first_seen_year, "
+                         "last_seen_year) VALUES (?, ?, ?, ?, ?, ?)", districts)
+        conn.executemany("INSERT INTO circles (district_code, circle_norm, circle_name, first_seen_year, "
+                         "last_seen_year) VALUES (?, ?, ?, ?, ?)", circles)
+
+
+def add_escalation(conn: sqlite3.Connection, *, kind: str, ref: dict, violations: list[dict]) -> bool:
+    """Queue something for a human. Returns False when an identical item is
+    already open, so re-running a build never duplicates the queue."""
+    ref_json = json.dumps(ref, sort_keys=True)
+    if conn.execute("SELECT 1 FROM escalations WHERE kind = ? AND ref_json = ? AND status = 'open'",
+                    (kind, ref_json)).fetchone():
+        return False
+    conn.execute("INSERT INTO escalations (kind, ref_json, violations_json) VALUES (?, ?, ?)",
+                 (kind, ref_json, json.dumps(violations)))
+    conn.commit()
+    return True
 
 
 # ---- llm_calls helpers (consumer: agents/llm_client.py) --------------------------
