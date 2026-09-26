@@ -1,0 +1,33 @@
+{
+ "generated": "2026-09-27",
+ "old_source": "india_district.geojson",
+ "new_source": "LGD_Districts.geojson",
+ "old_polygons": 594,
+ "new_polygons": 785,
+ "rows": 1470,
+ "min_share": 0.01,
+ "checks": {
+  "old_polygons": 594,
+  "old_with_rows": 594,
+  "share_sum": {
+   "min": 0.6747295068303771,
+   "max": 1.4223643176723786,
+   "below_0.95": 5,
+   "above_1.05": 1
+  },
+  "old_without_overlap": [],
+  "new_without_cover": [
+   {
+    "code": 599,
+    "name": "Mahe",
+    "state_name": "PUDUCHERRY"
+   },
+   {
+    "code": 0,
+    "name": "Mirpur",
+    "state_name": "JAMMU & KASHMIR"
+   }
+  ]
+ },
+ "area_note": "Areas are computed in WGS84 degrees (no projection library installed). Absolute areas are distorted by latitude; the shares within one old polygon are ratios of areas on the same patch of ground and are only slightly affected at district scale."
+}
