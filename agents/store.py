@@ -45,7 +45,7 @@ from dotenv import load_dotenv
 from agents.schemas import CORE_CATEGORIES, EXTENDED_CATEGORIES, Era
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 ERAS: tuple[str, ...] = get_args(Era)
 
 _era_check = "(" + ", ".join(f"'{e}'" for e in ERAS) + ")"
@@ -96,9 +96,11 @@ CREATE INDEX IF NOT EXISTS ix_circles_norm ON circles(circle_norm);
 CREATE TABLE IF NOT EXISTS district_lineage (
     parent_code INTEGER NOT NULL REFERENCES districts(district_code),
     child_code  INTEGER NOT NULL REFERENCES districts(district_code),
-    kind        TEXT NOT NULL CHECK (kind IN ('split', 'merge', 'recode', 'rename')),
+    kind        TEXT NOT NULL CHECK (kind IN ('split', 'merge', 'recode', 'rename', 'reported_together')),
     year        INTEGER,
-    source      TEXT NOT NULL,                     -- 'llm:<model>' | 'human'
+    confidence  REAL CHECK (confidence BETWEEN 0 AND 1),
+    reason      TEXT,
+    source      TEXT NOT NULL,                     -- 'llm:<model>' | 'human' | 'geometry' | 'rule'
     verified    INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
     PRIMARY KEY (parent_code, child_code)
 );
@@ -139,7 +141,10 @@ CREATE TABLE IF NOT EXISTS unit_map (
     state         TEXT NOT NULL,                   -- normalised source spelling
     unit          TEXT NOT NULL,                   -- normalised source spelling
     district_code INTEGER REFERENCES districts(district_code),   -- NULL = unresolved
-    stage         TEXT NOT NULL CHECK (stage IN ('exact', 'alias', 'circle', 'fuzzy', 'llm', 'human', 'unresolved')),
+    kind          TEXT CHECK (kind IN ('district', 'circle', 'railway', 'commissionerate', 'headquarters_town',
+                                       'rename', 'not_a_district', 'unknown')),
+    stage         TEXT NOT NULL CHECK (stage IN ('exact', 'alias', 'circle', 'rule', 'successor', 'fuzzy', 'geometry',
+                                                 'llm', 'human', 'unresolved')),
     confidence    REAL CHECK (confidence BETWEEN 0 AND 1),
     reason        TEXT,
     verified      INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
