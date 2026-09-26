@@ -328,39 +328,41 @@ def fidelity(rows: dict, reference: pd.DataFrame | None = None, frames_by_mode: 
 
 
 def fidelity_hints(rows: dict, table: pd.DataFrame, frames: dict[str, pd.DataFrame]) -> dict[tuple, str]:
-    """For every published figure the file misses, name the single column whose own total
-    closes the gap. A short total points at a column mapped elsewhere; an excess points at a
-    column that should not be in the category."""
+    """For every category the file gets wrong, name the single column whose own total closes
+    the gap in EVERY published year of that era. Matching one year is a coincidence; matching
+    all of them is evidence. A short total points at a column mapped elsewhere; an excess
+    points at a column that should not be in the category."""
     _, col_totals = category_totals(rows, frames)
-    found: dict[tuple, list[tuple[int, int, int, str]]] = {}          # (year, gap, column total, category)
+    published = {(r.category, int(r.year)): int(r.published) for r in table.itertuples()}
+    gaps: dict[tuple[str, str], dict[int, int]] = {}                  # (era, category) -> {year: gap}
     for r in table.itertuples():
         if r.category == "total" or r.with_fixes is None or pd.isna(r.with_fixes):
             continue
         gap = int(r.published - r.with_fixes)
-        if abs(gap) <= FIDELITY_TOLERANCE * r.published:
-            continue
         era = "2016" if r.year == 2016 else ("2017_plus" if r.year >= 2017 else None)
+        if era and abs(gap) > FIDELITY_TOLERANCE * r.published:
+            gaps.setdefault((era, r.category), {})[int(r.year)] = gap
+    hints: dict[tuple, str] = {}
+    for (era, cat), by_year in gaps.items():
+        signs = {g > 0 for g in by_year.values()}
+        if len(signs) != 1:                                           # short in one year, over in another: no single column explains it
+            continue
+        short = signs.pop()
         for (e, col), totals in col_totals.items():
-            if e != era:
+            same = rows[(e, col)].get("category") == cat
+            if e != era or (short and same) or (not short and not same):
                 continue
-            same = rows[(e, col)].get("category") == r.category
-            v = totals.get(int(r.year), 0)
-            if v and ((gap > 0 and not same and abs(v - gap) <= FIDELITY_TOLERANCE * r.published)
-                      or (gap < 0 and same and abs(v + gap) <= FIDELITY_TOLERANCE * r.published)):
-                found.setdefault((e, col), []).append((int(r.year), gap, v, r.category))
-    hints = {}
-    for key, items in found.items():
-        years = ", ".join(f"{y}: {v:,}" for y, _, v, _ in items)
-        gap0, target = items[0][1], items[0][3]
-        current = rows[key]["category"]
-        if gap0 > 0:
-            hints[key] = (f"auto-fidelity: {target} falls short of NCRB's published figure by exactly this column's total "
-                          f"({years}). Mapping it to {target} would match; it is currently {current}.")
-        else:
-            hints[key] = (f"auto-fidelity: {target} exceeds NCRB's published figure by exactly this column's total "
-                          f"({years}). Removing it from {target} would match.")
+            if all(totals.get(y, 0) and abs(totals[y] - abs(g)) <= FIDELITY_TOLERANCE * published[(cat, y)]
+                   for y, g in by_year.items()):
+                years = ", ".join(f"{y}: {totals[y]:,}" for y in sorted(by_year))
+                if short:
+                    hints[(e, col)] = (f"auto-fidelity: {cat} falls short of NCRB's published figure by exactly this "
+                                       f"column's total in every published year ({years}). Mapping it to {cat} would "
+                                       f"match; it is currently {rows[(e, col)]['category']}.")
+                else:
+                    hints[(e, col)] = (f"auto-fidelity: {cat} exceeds NCRB's published figure by exactly this column's "
+                                       f"total in every published year ({years}). Removing it from {cat} would match.")
     return hints
-
 
 def merge_evidence(rows: dict, new: dict[tuple, str], prefix: str) -> None:
     """Write one tool's notes into the evidence column, replacing only that tool's old notes."""
