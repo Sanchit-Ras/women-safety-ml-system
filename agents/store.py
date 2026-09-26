@@ -42,14 +42,15 @@ from typing import get_args
 
 from dotenv import load_dotenv
 
-from agents.schemas import CORE_CATEGORIES, Era
+from agents.schemas import CORE_CATEGORIES, EXTENDED_CATEGORIES, Era
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 ERAS: tuple[str, ...] = get_args(Era)
 
 _era_check = "(" + ", ".join(f"'{e}'" for e in ERAS) + ")"
 _category_check = "(" + ", ".join(f"'{c}'" for c in CORE_CATEGORIES) + ")"
+_extended_check = "(" + ", ".join(f"'{c}'" for c in EXTENDED_CATEGORIES) + ")"
 _count_columns = ",\n    ".join(f"{c} INTEGER NOT NULL CHECK ({c} >= 0)" for c in CORE_CATEGORIES)
 _total_expr = " + ".join(CORE_CATEGORIES)
 
@@ -146,11 +147,14 @@ CREATE TABLE IF NOT EXISTS unit_map (
 );
 CREATE INDEX IF NOT EXISTS ix_unit_map_district ON unit_map(district_code);
 
--- Category crosswalk: source column -> core category (NULL = not one of the seven).
+-- Category crosswalk: one harmonised category per source column (2016+ detail).
+-- core_category is the same name when it is one of the seven that exist in every
+-- era (the 2001-2022 series), else NULL. The CHECK makes that a rule, not a habit.
 CREATE TABLE IF NOT EXISTS crosswalk (
     era           TEXT NOT NULL CHECK (era IN {_era_check}),
     source_column TEXT NOT NULL,
-    core_category TEXT CHECK (core_category IN {_category_check}),
+    category      TEXT NOT NULL CHECK (category IN {_extended_check}),
+    core_category TEXT CHECK (core_category IS NULL OR (core_category = category AND core_category IN {_category_check})),
     reason        TEXT NOT NULL,
     proposed_by   TEXT NOT NULL,                   -- 'llm:<model>' | 'human' | 'definition'
     verified      INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),

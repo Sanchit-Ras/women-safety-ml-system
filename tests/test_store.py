@@ -123,3 +123,19 @@ def test_an_identical_open_escalation_is_queued_only_once(conn):
     second = add_escalation(conn, kind="unit", ref={"district_code": 783}, violations=[{"rule": "code_disappeared"}])
     assert (first, second) == (True, False)
     assert conn.execute("SELECT COUNT(*) FROM escalations").fetchone()[0] == 1
+
+
+def test_crosswalk_core_is_a_rule_not_a_habit(conn):
+    conn.execute("INSERT INTO crosswalk (era, source_column, category, core_category, reason, proposed_by) "
+                 "VALUES ('2016', 'rape', 'rape', 'rape', 'r', 'human')")
+    conn.execute("INSERT INTO crosswalk (era, source_column, category, core_category, reason, proposed_by) "
+                 "VALUES ('2016', 'acid_attack', 'acid_attack', NULL, 'r', 'human')")
+    with pytest.raises(sqlite3.IntegrityError):                       # core must equal category ...
+        conn.execute("INSERT INTO crosswalk (era, source_column, category, core_category, reason, proposed_by) "
+                     "VALUES ('2016', 'a', 'acid_attack', 'rape', 'r', 'human')")
+    with pytest.raises(sqlite3.IntegrityError):                       # ... and be one of the seven
+        conn.execute("INSERT INTO crosswalk (era, source_column, category, core_category, reason, proposed_by) "
+                     "VALUES ('2016', 'b', 'acid_attack', 'acid_attack', 'r', 'human')")
+    with pytest.raises(sqlite3.IntegrityError):                       # unknown category
+        conn.execute("INSERT INTO crosswalk (era, source_column, category, core_category, reason, proposed_by) "
+                     "VALUES ('2016', 'c', 'murder', NULL, 'r', 'human')")

@@ -1,0 +1,6 @@
+era,year_from,year_to,file_column,actual_column,evidence,verified,reviewer_note
+2017_plus,2018,2022,attempt_to_commit_rape_girls_below_18,rape_girls_below_18,"2018: 24044 (above 18) + 9312 (this column) = 33356 = NCRB published Rape; 2019: 27093 + 4940 = 32033 = published. The file's own rape_girls_below_18 column gives 37566 / 42708 instead.",0,
+2017_plus,2018,2022,assault_on_women_below_18,attempt_to_commit_rape_girls_below_18,"2019: 3608 (above 18) + 336 (this column) = 3944 = NCRB published Attempt to commit rape. 2017 (aligned year) had 457 here.",0,
+2017_plus,2018,2022,insult_to_the_modesty_of_women_below_18,assault_on_women_below_18,"2018: 81067 (above 18) + 8030 (this column) = 89097 = NCRB published Assault (354); 2019: 84139 + 4228 = 88367 = published. 2017 (aligned year) had 8269 here.",0,
+2017_plus,2018,2022,kidnp_and_abductn_of_girls_below_18_for_marrg,insult_to_the_modesty_of_women_below_18,"2018: 6820 (above 18) + 172 (this column) = 6992 = NCRB published Insult (509); 2019: 6839 + 100 = 6939 = published. 2017 (aligned year) had 312 here.",0,
+2017_plus,2018,2022,rape_girls_below_18,kidnp_and_abductn_of_girls_below_18_for_marrg,"2018: header + other sub-columns + 13522 (this column) = 72806 vs NCRB published K&A 72709 (0.13%); 2019: 57114 + 15615 = 72729 vs 72780 (0.07%). 2017 (aligned year) had 12170 here.",0,

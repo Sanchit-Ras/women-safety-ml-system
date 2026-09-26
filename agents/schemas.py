@@ -31,6 +31,28 @@ CORE_CATEGORIES: tuple[str, ...] = (
     "importation_of_girls",
 )
 
+# Harmonised fine categories for the 2016+ files. The first seven are the core
+# categories; the rest exist only from 2016 (or 2017) and are kept and shown for
+# those years, never stretched back to 2001. One decision per source column:
+# which of these does it belong to. A column may take a core name only if the
+# 2001-2014 NCRB head would have counted the same cases.
+EXTENDED_CATEGORIES: tuple[str, ...] = CORE_CATEGORIES + (
+    "attempt_to_rape",              # IPC 376/511, a separate NCRB head since 2014
+    "murder_with_rape",             # IPC 376A (2017+)
+    "acid_attack",                  # IPC 326A
+    "attempt_to_acid_attack",       # IPC 326B
+    "abetment_of_suicide",          # IPC 306
+    "miscarriage_offences",         # IPC 312-318
+    "human_trafficking",            # IPC 370 / 370A
+    "unnatural_offences",           # IPC 377 (2016 file only)
+    "dowry_prohibition_act",        # Dowry Prohibition Act, 1961
+    "domestic_violence_act",        # Protection of Women from Domestic Violence Act, 2005
+    "immoral_traffic_act",          # Immoral Traffic (Prevention) Act, 1956
+    "indecent_representation_act",  # Indecent Representation of Women (Prohibition) Act, 1986
+    "pocso_act",                    # POCSO Act, 2012, all heads (2017+)
+    "cyber_crimes",                 # IT Act and other women-centric cyber crimes (2017+)
+)
+
 
 class CrimeRecord(BaseModel):
     """One reporting unit, one year, the seven core categories.
