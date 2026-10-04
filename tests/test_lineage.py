@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 from agents import store
-from agents.lineage import (CSV_COLUMNS, LineageBatch, LineageEdge, build_units, detect_candidates, load_nodes,
+from agents.lineage import (CSV_COLUMNS, LineageBatch, LineageEdge, apply, build_units, detect_candidates, load_nodes,
                             propose, read_rows, size_distribution, totals_by_district, unusable_edges, write_report,
                             write_rows, write_stable_units)
 from agents.llm_client import LLMResult
@@ -92,10 +92,13 @@ UNIT_MAP = pd.DataFrame([
     ("2001_2014", "andhra pradesh", 28, "ranga reddy", 2001, 2014, 14, 518, "exact", 1),
     ("2001_2014", "rajasthan", 8, "jaipur rural", 2005, 2014, 10, 102, "circle", 0),          # 102 first seen 2005
     ("2001_2014", "telangana", 36, "kamareddy", 2010, 2014, 5, 685, "exact", 1),               # born after 2016 too
+    ("2001_2014", "telangana", 36, "hyderabad", 2001, 2014, 14, 507, "exact", 1),             # continuous since 2001
+    ("2001_2014", "andhra pradesh", 28, "anantapur", 2001, 2014, 14, 502, "exact", 1),
+    ("2001_2014", "rajasthan", 8, "jaipur gramin", 2001, 2014, 14, 783, "exact", 1),
     ("2001_2014", "rajasthan", 8, "stf", 2003, 2014, 12, None, "unresolved", 0),               # unresolved: ignored
 ], columns=["era", "state", "state_code", "unit", "first_year", "last_year", "n_years", "district_code", "stage", "verified"])
 
-ALL_HINTS = {("born_after_2016", 685), ("vanished", 518), ("vanished", 783), ("born_in_era_a", 102), ("reported_together", 507)}
+ALL_HINTS = {("born_after_2014", 685), ("vanished", 518), ("vanished", 783), ("born_in_era_a", 102), ("reported_together", 507)}
 
 
 def by_hint(cands, hint):
@@ -108,8 +111,8 @@ def hints(existing):
 
 # ---- candidate detection ------------------------------------------------------------------------------
 
-def test_born_after_2016_needs_parents_and_carries_the_top_overlaps():
-    cands = by_hint(detect_candidates(REGISTRY, NODES, OVERLAP, UNIT_MAP), "born_after_2016")
+def test_born_after_2014_needs_parents_and_carries_the_top_overlaps():
+    cands = by_hint(detect_candidates(REGISTRY, NODES, OVERLAP, UNIT_MAP), "born_after_2014")
     assert list(cands) == [685]
     c = cands[685]
     assert (c["child_name"], c["state_code"], c["year_hint"]) == ("Kamareddy", 36, 2017)
@@ -127,7 +130,7 @@ def test_vanished_codes_carry_their_circles_and_where_those_circles_reappear():
     assert "circle 'jaipur rural' also under 102 Jaipur as 'Jaipur Rural' (2017-2022)" in cands[783]["evidence"]
 
 
-def test_a_unit_first_seen_late_in_era_a_needs_a_parent_unless_it_is_already_born_after_2016():
+def test_a_unit_first_seen_late_in_era_a_needs_a_parent_unless_it_is_already_born_after_2014():
     cands = by_hint(detect_candidates(REGISTRY, NODES, OVERLAP, UNIT_MAP), "born_in_era_a")
     assert list(cands) == [102]                     # 516/518 seen from 2001; 685 is in (a); the unresolved row is ignored
     c = cands[102]
@@ -156,7 +159,7 @@ def test_skipping_is_role_aware_a_split_where_the_code_is_only_the_parent_answer
     # 685 is the parent of a verified split: where 685 itself came from is still open; 507, the child, is answered
     assert hints({("685", "507", "split"): csv_row(685, 507, "split", verified="1")}) == ALL_HINTS - {("reported_together", 507)}
     # 518 is the parent of a verified split: that does not say where 518 went, so 'vanished' stays; 685 is answered
-    assert hints({("518", "685", "split"): csv_row(518, 685, "split", verified="1")}) == ALL_HINTS - {("born_after_2016", 685)}
+    assert hints({("518", "685", "split"): csv_row(518, 685, "split", verified="1")}) == ALL_HINTS - {("born_after_2014", 685)}
     # 518 is the parent of a verified merge: where it went is known
     assert hints({("518", "516", "merge"): csv_row(518, 516, "merge", verified="1")}) == ALL_HINTS - {("vanished", 518)}
 
@@ -196,7 +199,7 @@ def test_propose_writes_unverified_rows_with_evidence_one_call_per_state(tmp_pat
     assert "  9999 | Medchal Malkajgiri | seen never | in data files: no" in prompt
     assert "  102 | Jaipur" not in prompt                                        # other states stay out
     assert "  502 | Ananthapuramu" in prompt                                    # the successor state's districts are listed
-    assert "hint: born_after_2016 | year: 2017 | evidence: Nizamabad (Andhra Pradesh): 0.90" in prompt
+    assert "hint: born_after_2014 | year: 2017 | evidence: Nizamabad (Andhra Pradesh): 0.90" in prompt
 
     rows = read_rows(path)
     assert list(rows) == [("518", "507", "reported_together"), ("516", "685", "split")]     # every candidate answered
@@ -248,12 +251,12 @@ def test_a_placeholder_names_every_open_hint_of_the_code(tmp_path):
                                        [("warangal commissionerate", "Warangal Commissionerate", 2017, 2022)])]}
     nodes = nodes_of(registry)
     cands = detect_candidates(registry, nodes)
-    assert [c["kind_hint"] for c in cands] == ["born_after_2016", "reported_together"]
+    assert [c["kind_hint"] for c in cands] == ["born_after_2014", "reported_together"]
     propose(FakeClient([batch()]), cands, registry, nodes, csv_path=tmp_path / "l.csv")
     rows = read_rows(tmp_path / "l.csv")
     assert list(rows) == [("", "700", "")]
     ph = rows[("", "700", "")]
-    assert ph["reason"] == "NOT PROPOSED: hints born_after_2016, reported_together; the model returned no relationship"
+    assert ph["reason"] == "NOT PROPOSED: hints born_after_2014, reported_together; the model returned no relationship"
     assert ph["evidence"] == "circle 'Warangal Commissionerate' (2017-2022) is filed under 700 Bhupalpally but is not named after it"
     assert ph["year"] == "2017"
 
@@ -272,7 +275,7 @@ def test_an_edge_from_one_state_batch_answers_a_candidate_of_its_successor_state
                 "districts": [district(900, "Old Unit", 28, 2016, 2016), district(901, "New Unit", 36, 2017, 2022)]}
     nodes = nodes_of(registry)
     cands = detect_candidates(registry, nodes)
-    assert {(c["state_code"], c["kind_hint"]) for c in cands} == {(28, "vanished"), (36, "born_after_2016")}
+    assert {(c["state_code"], c["kind_hint"]) for c in cands} == {(28, "vanished"), (36, "born_after_2014")}
     client = FakeClient([batch(edge(900, 901, "recode")), batch()])      # Andhra Pradesh (28) answers first; Telangana says nothing
     summary = propose(client, cands, registry, nodes, csv_path=tmp_path / "l.csv")
     assert [t for t, _, _ in client.calls] == ["lineage:28", "lineage:36"]
@@ -383,3 +386,32 @@ def test_2022_totals_add_every_category_column_per_district():
                        "district_code": [507, 507, 507], "district_name": ["Hyderabad"] * 3,
                        "rape_women_above_18": [1.0, 2.0, 100.0], "dowry_deaths": [3.0, 0.0, 100.0]})
     assert totals_by_district(df) == {507: 6}
+
+
+def test_a_district_first_seen_in_2016_with_no_2001_14_unit_is_born_after_2014():
+    registry = {"meta": {"years": [2016, 2022]}, "states": STATES,
+                "districts": [district(709, "Hojai", 36, 2016, 2022), district(516, "Nizamabad", 36, 2016, 2022)]}
+    nodes = nodes_of(registry)
+    with_map = {(c["kind_hint"], c["child_code"]) for c in detect_candidates(registry, nodes, None, UNIT_MAP)}
+    assert with_map == {("born_after_2014", 709)}             # Nizamabad has a 2001-14 unit, Hojai has none
+    assert detect_candidates(registry, nodes) == []            # without a unit map the gap cannot be told from continuity
+
+
+def test_apply_loads_verified_edges_and_names_an_unknown_code(tmp_path):
+    conn = store.connect(tmp_path / "t.db")
+    store.replace_registry(conn, states=[(36, "Telangana", "[]")],
+                           districts=[(518, 36, "Ranga Reddy", "[]", 2016, 2016), (507, 36, "Hyderabad", "[]", 2016, 2022)],
+                           circles=[])
+    path = tmp_path / "l.csv"
+    rows = {("518", "507", "reported_together"): csv_row(518, 507, "reported_together", verified="1", proposed_by="human",
+                                                         reason="Cyberabad is filed under Hyderabad"),
+            ("518", "685", "split"): csv_row(518, 685, "split")}
+    write_rows(path, rows)
+    assert apply(conn, csv_path=path) == {"loaded": 1, "still_unverified": 1}
+    got = conn.execute("SELECT parent_code, child_code, kind, year, source, verified FROM district_lineage").fetchone()
+    assert tuple(got) == (518, 507, "reported_together", None, "human", 1)
+    rows[("518", "685", "split")]["verified"] = "1"                     # 685 is not in this store's districts
+    write_rows(path, rows)
+    with pytest.raises(ValueError, match=r"518 -> 685 \(split\): district_code 685 is not in the districts table"):
+        apply(conn, csv_path=path)
+    conn.close()

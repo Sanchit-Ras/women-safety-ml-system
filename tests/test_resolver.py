@@ -417,3 +417,18 @@ def test_apply_loads_only_verified_rows_into_the_store(reg_path, tmp_path):
     with pytest.raises(ValueError, match="stage 'guess'"):
         apply(conn, csv_path=path)
     conn.close()
+
+
+def test_apply_names_the_row_whose_code_the_store_does_not_know(reg_path, tmp_path):
+    conn = store.connect(tmp_path / "t.db")
+    geography = dict(states=[(28, "Andhra Pradesh", "[]")], districts=[(502, 28, "Anantapur", "[]", 2016, 2022)], circles=[])
+    store.replace_registry(conn, **geography)
+    _, rows, path = run_units(reg_path, tmp_path, [("andhra pradesh", "anantapur")])
+    rows[("andhra pradesh", "anantapur")].update(district_code="526", district_name="Bengaluru Rural")
+    write_rows(path, rows)
+    with pytest.raises(ValueError, match="anantapur: district_code 526 is not in the districts table"):
+        apply(conn, csv_path=path)
+    store.replace_registry(conn, **geography, map_only=[(526, 28, "Bengaluru Rural")])     # the map-only code arrives
+    assert apply(conn, csv_path=path)["loaded"] == 1
+    assert tuple(conn.execute("SELECT in_files, first_seen_year FROM districts WHERE district_code = 526").fetchone()) == (0, None)
+    conn.close()

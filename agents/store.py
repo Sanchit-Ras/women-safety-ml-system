@@ -45,14 +45,63 @@ from dotenv import load_dotenv
 from agents.schemas import CORE_CATEGORIES, EXTENDED_CATEGORIES, Era
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 ERAS: tuple[str, ...] = get_args(Era)
 
 _era_check = "(" + ", ".join(f"'{e}'" for e in ERAS) + ")"
 _category_check = "(" + ", ".join(f"'{c}'" for c in CORE_CATEGORIES) + ")"
 _extended_check = "(" + ", ".join(f"'{c}'" for c in EXTENDED_CATEGORIES) + ")"
+_extended_only_check = "(" + ", ".join(f"'{c}'" for c in EXTENDED_CATEGORIES if c not in CORE_CATEGORIES) + ")"
 _count_columns = ",\n    ".join(f"{c} INTEGER NOT NULL CHECK ({c} >= 0)" for c in CORE_CATEGORIES)
 _total_expr = " + ".join(CORE_CATEGORIES)
+
+
+def _districts_ddl(name: str) -> str:
+    """The districts table, by name so a migration can build it under a temporary name.
+    ``first_seen_year``/``last_seen_year`` are NULL and ``in_files`` is 0 for a district that is on the
+    LGD map but in none of the data files (Bengaluru Rural, Medchal-Malkajgiri): the map needs its code
+    and the unit map and lineage may point at it, but no record ever will."""
+    return f"""
+CREATE TABLE IF NOT EXISTS {name} (
+    district_code   INTEGER PRIMARY KEY,
+    state_code      INTEGER NOT NULL REFERENCES states(state_code),
+    name            TEXT NOT NULL,                 -- canonical = latest-year spelling
+    aliases_json    TEXT NOT NULL DEFAULT '[]',    -- every spelling seen in any source
+    first_seen_year INTEGER,                       -- NULL = never seen in a data file
+    last_seen_year  INTEGER,
+    in_files        INTEGER NOT NULL DEFAULT 1 CHECK (in_files IN (0, 1))
+);"""
+
+
+def _lineage_ddl(name: str) -> str:
+    """Boundary changes over time. 'split': child was carved out of parent. 'merge': child absorbed parent.
+    'recode': same district, the files switched to a new code. 'rename': same code, new name.
+    'reported_together': the parent's crimes are filed inside the child's row. Proposed by data hints and the
+    model, verified by a human; this table drives the stable-unit graph. One pair can carry two facts
+    (a split and, later, reported_together), so the kind is part of the key."""
+    return f"""
+CREATE TABLE IF NOT EXISTS {name} (
+    parent_code INTEGER NOT NULL REFERENCES districts(district_code),
+    child_code  INTEGER NOT NULL REFERENCES districts(district_code),
+    kind        TEXT NOT NULL CHECK (kind IN ('split', 'merge', 'recode', 'rename', 'reported_together')),
+    year        INTEGER,
+    confidence  REAL CHECK (confidence BETWEEN 0 AND 1),
+    reason      TEXT,
+    source      TEXT NOT NULL,                     -- 'llm:<model>' | 'human' | 'geometry' | 'rule'
+    verified    INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
+    PRIMARY KEY (parent_code, child_code, kind)
+);"""
+
+
+EXTENDED_DDL = f"""
+-- The 14 categories the 2016+ files add beyond the seven core ones (acid attack, POCSO, ...).
+-- One row per (record, category): kept for district summaries, never part of the comparable series.
+CREATE TABLE IF NOT EXISTS extended_counts (
+    record_id INTEGER NOT NULL REFERENCES records(id),
+    category  TEXT NOT NULL CHECK (category IN {_extended_only_check}),
+    count     INTEGER NOT NULL CHECK (count >= 0),
+    PRIMARY KEY (record_id, category)
+);"""
 
 DDL = f"""
 CREATE TABLE IF NOT EXISTS meta (
@@ -68,14 +117,7 @@ CREATE TABLE IF NOT EXISTS states (
     aliases_json TEXT NOT NULL DEFAULT '[]'
 );
 
-CREATE TABLE IF NOT EXISTS districts (
-    district_code   INTEGER PRIMARY KEY,
-    state_code      INTEGER NOT NULL REFERENCES states(state_code),
-    name            TEXT NOT NULL,                 -- canonical = latest-year spelling
-    aliases_json    TEXT NOT NULL DEFAULT '[]',    -- every spelling seen in any source
-    first_seen_year INTEGER NOT NULL,
-    last_seen_year  INTEGER NOT NULL
-);
+{_districts_ddl('districts')}
 
 -- Police reporting units ("registration circles") under each district, 2016+.
 -- One district has many circles. Kept apart from name aliases on purpose.
@@ -89,21 +131,8 @@ CREATE TABLE IF NOT EXISTS circles (
 );
 CREATE INDEX IF NOT EXISTS ix_circles_norm ON circles(circle_norm);
 
--- Boundary changes over time. 'split': child was carved out of parent.
--- 'merge': child absorbed parent. 'recode': same district, the files switched
--- to a new code. 'rename': same code, new name. Proposed by data hints and the
--- model, verified by a human; this table drives the stable-unit graph.
-CREATE TABLE IF NOT EXISTS district_lineage (
-    parent_code INTEGER NOT NULL REFERENCES districts(district_code),
-    child_code  INTEGER NOT NULL REFERENCES districts(district_code),
-    kind        TEXT NOT NULL CHECK (kind IN ('split', 'merge', 'recode', 'rename', 'reported_together')),
-    year        INTEGER,
-    confidence  REAL CHECK (confidence BETWEEN 0 AND 1),
-    reason      TEXT,
-    source      TEXT NOT NULL,                     -- 'llm:<model>' | 'human' | 'geometry' | 'rule'
-    verified    INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
-    PRIMARY KEY (parent_code, child_code)
-);
+-- Boundary changes over time; see _lineage_ddl for the kinds.
+{_lineage_ddl('district_lineage')}
 
 -- Immutable provenance: every source row exactly as it came, once.
 CREATE TABLE IF NOT EXISTS raw_rows (
@@ -133,6 +162,7 @@ CREATE TABLE IF NOT EXISTS records (
 );
 CREATE INDEX IF NOT EXISTS ix_records_district_year ON records(district_code, year);
 CREATE INDEX IF NOT EXISTS ix_records_era_status ON records(era, validation_status);
+{EXTENDED_DDL}
 
 -- Resolver output: which canonical district a source unit name refers to,
 -- and how we know. Committed to data/unit_map.json once verified.
@@ -218,8 +248,43 @@ CREATE TABLE IF NOT EXISTS escalations (
 CREATE INDEX IF NOT EXISTS ix_escalations_status ON escalations(status, kind);
 """
 
-TABLES = ("meta", "states", "districts", "circles", "district_lineage", "raw_rows", "records",
+TABLES = ("meta", "states", "districts", "circles", "district_lineage", "raw_rows", "records", "extended_counts",
           "unit_map", "crosswalk", "llm_calls", "llm_attempts", "escalations")
+
+
+# ---- migrations ---------------------------------------------------------------------------------------------
+# One function per version step. A step runs inside one transaction and leaves every other table, the LLM
+# cache and the receipts untouched; ``reset`` is for a broken file, not for a version bump.
+
+def _migrate_5_to_6(conn: sqlite3.Connection) -> None:
+    """v5 -> v6: districts may be map-only (seen-years nullable, ``in_files`` flag), district_lineage is keyed
+    by kind as well, extended_counts is added. SQLite cannot drop NOT NULL or change a primary key in place,
+    so each changed table is rebuilt the way the ALTER TABLE documentation prescribes: foreign keys off,
+    copy into a new table, drop the old one, rename, check, all inside one transaction."""
+    conn.executescript(f"""
+PRAGMA foreign_keys = OFF;
+BEGIN;
+{_districts_ddl('districts_new')}
+INSERT INTO districts_new (district_code, state_code, name, aliases_json, first_seen_year, last_seen_year, in_files)
+    SELECT district_code, state_code, name, aliases_json, first_seen_year, last_seen_year, 1 FROM districts;
+DROP TABLE districts;
+ALTER TABLE districts_new RENAME TO districts;
+{_lineage_ddl('district_lineage_new')}
+INSERT INTO district_lineage_new (parent_code, child_code, kind, year, confidence, reason, source, verified)
+    SELECT parent_code, child_code, kind, year, confidence, reason, source, verified FROM district_lineage;
+DROP TABLE district_lineage;
+ALTER TABLE district_lineage_new RENAME TO district_lineage;
+{EXTENDED_DDL}
+UPDATE meta SET value = '6' WHERE key = 'schema_version';
+COMMIT;
+PRAGMA foreign_keys = ON;
+""")
+    dangling = conn.execute("PRAGMA foreign_key_check").fetchall()
+    if dangling:
+        raise RuntimeError(f"migration v5->v6 left {len(dangling)} dangling foreign key(s): {[tuple(d) for d in dangling[:5]]}")
+
+
+MIGRATIONS = {5: _migrate_5_to_6}
 
 
 def db_path(path: str | os.PathLike | None = None) -> Path:
@@ -246,12 +311,18 @@ def connect(path: str | os.PathLike | None = None) -> sqlite3.Connection:
     conn.execute("INSERT OR IGNORE INTO meta (key, value) VALUES ('schema_version', ?)", (str(SCHEMA_VERSION),))
     conn.commit()
     found = int(conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0])
-    if found != SCHEMA_VERSION:
+    if found > SCHEMA_VERSION:
         conn.close()
-        raise RuntimeError(
-            f"{p} was built with schema v{found} but the code expects v{SCHEMA_VERSION}. "
-            "The store is a rebuildable workbench: run `python -m agents.store reset --yes`."
-        )
+        raise RuntimeError(f"{p} was built with schema v{found} but this code expects v{SCHEMA_VERSION}: update the code.")
+    for version in range(found, SCHEMA_VERSION):          # bring an older file forward one step at a time
+        step = MIGRATIONS.get(version)
+        if step is None:
+            conn.close()
+            raise RuntimeError(
+                f"{p} was built with schema v{found} and there is no migration from v{version}. "
+                "The store is a rebuildable workbench: run `python -m agents.store reset --yes`."
+            )
+        step(conn)
     return conn
 
 
@@ -276,11 +347,14 @@ def table_counts(conn: sqlite3.Connection) -> dict[str, int]:
 
 # ---- registry + escalation helpers (consumers: data_ingestion/registry.py, crosswalk.py) ----
 
-def replace_registry(conn: sqlite3.Connection, states: list[tuple], districts: list[tuple], circles: list[tuple]) -> None:
+def replace_registry(conn: sqlite3.Connection, states: list[tuple], districts: list[tuple], circles: list[tuple],
+                     map_only: list[tuple] = ()) -> None:
     """Rewrite the canonical geography wholesale. The registry is *derived* from
     the 2016+ files, so it is rebuilt, never edited by hand. If records or
     mappings already point at a district that would vanish, the foreign keys
-    make this fail instead of leaving dangling references."""
+    make this fail instead of leaving dangling references.
+    ``map_only``: (district_code, state_code, name) for districts on the LGD map
+    that appear in no data file; stored with ``in_files = 0`` and no seen-years."""
     with conn:                                     # one transaction: all or nothing
         conn.execute("DELETE FROM circles")
         conn.execute("DELETE FROM districts")
@@ -288,6 +362,8 @@ def replace_registry(conn: sqlite3.Connection, states: list[tuple], districts: l
         conn.executemany("INSERT INTO states (state_code, name, aliases_json) VALUES (?, ?, ?)", states)
         conn.executemany("INSERT INTO districts (district_code, state_code, name, aliases_json, first_seen_year, "
                          "last_seen_year) VALUES (?, ?, ?, ?, ?, ?)", districts)
+        conn.executemany("INSERT INTO districts (district_code, state_code, name, aliases_json, first_seen_year, "
+                         "last_seen_year, in_files) VALUES (?, ?, ?, '[]', NULL, NULL, 0)", map_only)
         conn.executemany("INSERT INTO circles (district_code, circle_norm, circle_name, first_seen_year, "
                          "last_seen_year) VALUES (?, ?, ?, ?, ?)", circles)
 

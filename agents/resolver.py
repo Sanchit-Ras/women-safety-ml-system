@@ -651,6 +651,7 @@ def apply(conn, *, csv_path: Path = CSV_PATH) -> dict:
     checked against the table's allowed stages and kinds so a typo fails with a message,
     not a constraint error."""
     loaded, pending = 0, 0
+    known = {row[0] for row in conn.execute("SELECT district_code FROM districts")}
     for (state, unit), r in read_rows(csv_path).items():
         if r.get("verified") != "1":
             pending += 1
@@ -661,6 +662,9 @@ def apply(conn, *, csv_path: Path = CSV_PATH) -> dict:
         if kind and kind not in KINDS:
             raise ValueError(f"{state}/{unit}: kind '{kind}' is not one of {KINDS}")
         code = int(r["district_code"]) if r["district_code"].strip() else None
+        if code is not None and code not in known:      # say which row, not 'FOREIGN KEY constraint failed'
+            raise ValueError(f"{state}/{unit}: district_code {code} is not in the districts table; "
+                             "run `python -m data_ingestion.registry` (it loads the map-only codes from data/lgd_districts.csv)")
         confidence = float(r["confidence"]) if r["confidence"].strip() else None
         conn.execute("INSERT OR REPLACE INTO unit_map (era, state, unit, district_code, kind, stage, confidence, reason, "
                      "verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)",

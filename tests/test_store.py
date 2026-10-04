@@ -4,7 +4,7 @@ import sqlite3
 import pytest
 
 from agents.schemas import CORE_CATEGORIES
-from agents.store import TABLES, connect, get_cached_call, put_call, reset, table_counts
+from agents.store import DDL, TABLES, _districts_ddl, connect, get_cached_call, put_call, reset, table_counts
 
 COUNTS = {c: 1 for c in CORE_CATEGORIES}
 
@@ -139,3 +139,46 @@ def test_crosswalk_core_is_a_rule_not_a_habit(conn):
     with pytest.raises(sqlite3.IntegrityError):                       # unknown category
         conn.execute("INSERT INTO crosswalk (era, source_column, category, core_category, reason, proposed_by) "
                      "VALUES ('2016', 'c', 'murder', NULL, 'r', 'human')")
+
+
+V5_DISTRICTS = """
+CREATE TABLE IF NOT EXISTS districts (
+    district_code   INTEGER PRIMARY KEY,
+    state_code      INTEGER NOT NULL REFERENCES states(state_code),
+    name            TEXT NOT NULL,
+    aliases_json    TEXT NOT NULL DEFAULT '[]',
+    first_seen_year INTEGER NOT NULL,
+    last_seen_year  INTEGER NOT NULL
+);"""
+
+
+def test_a_v5_store_is_migrated_in_place_with_its_cache_mappings_and_edges(tmp_path):
+    path = tmp_path / "v5.db"
+    old = sqlite3.connect(path)
+    old.executescript(DDL.replace(_districts_ddl("districts"), V5_DISTRICTS))     # v5 shape of the table that changed
+    old.execute("INSERT INTO meta (key, value) VALUES ('schema_version', '5')")
+    old.execute("INSERT INTO states (state_code, name) VALUES (28, 'andhra pradesh')")
+    old.execute("INSERT INTO districts (district_code, state_code, name, first_seen_year, last_seen_year) "
+                "VALUES (502, 28, 'anantapur', 2016, 2022)")
+    old.execute("INSERT INTO unit_map (era, state, unit, district_code, kind, stage, confidence, reason, verified) "
+                "VALUES ('2001_2014', 'andhra pradesh', 'anantapur', 502, 'district', 'exact', 1.0, 'r', 1)")
+    old.execute("INSERT INTO district_lineage (parent_code, child_code, kind, year, source, verified) "
+                "VALUES (502, 502, 'rename', 2017, 'human', 1)")
+    put_call(old, cache_key="k", run_id="r", tag="t", provider="gemini", model="m", temperature=0.0, prompt_hash="p",
+             schema_hash="s", prompt_tokens=1, completion_tokens=1, latency_ms=1, attempts=1, response_json="{}")
+    old.commit()
+    old.close()
+
+    conn = connect(path)                                                         # migrates 5 -> 6 on open
+    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "6"
+    assert "in_files" in {r[1] for r in conn.execute("PRAGMA table_info(districts)")}
+    assert tuple(conn.execute("SELECT district_code, in_files FROM districts").fetchone()) == (502, 1)
+    assert conn.execute("SELECT district_code FROM unit_map WHERE unit = 'anantapur'").fetchone()[0] == 502
+    assert conn.execute("SELECT COUNT(*) FROM district_lineage").fetchone()[0] == 1
+    assert get_cached_call(conn, "k")["provider"] == "gemini"                    # the cache survived
+    assert conn.execute("PRAGMA foreign_key_check").fetchall() == []
+    conn.execute("INSERT INTO districts (district_code, state_code, name, in_files) VALUES (526, 28, 'bengaluru rural', 0)")
+    with pytest.raises(sqlite3.IntegrityError):                                  # the rebuilt table still binds
+        conn.execute("INSERT INTO unit_map (era, state, unit, district_code, kind, stage, confidence, reason, verified) "
+                     "VALUES ('2001_2014', 'x', 'y', 999, 'district', 'exact', 1.0, 'r', 1)")
+    conn.close()

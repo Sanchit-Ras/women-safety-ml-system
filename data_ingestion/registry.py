@@ -16,6 +16,7 @@ tables. Run with ``python -m data_ingestion.registry``.
 """
 from __future__ import annotations
 
+import csv
 import json
 from datetime import date
 from pathlib import Path
@@ -28,6 +29,7 @@ from data_ingestion.normalize import norm, norm_state
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
 OUT = ROOT / "data" / "registry.json"
+LGD_CSV = ROOT / "data" / "lgd_districts.csv"          # written by data_ingestion.geometry: every polygon's code
 SOURCES = {
     "2016": RAW / "districtwise-crime-against-women-2016.csv",
     "2017_plus": RAW / "districtwise-crime-against-women-2017-onwards.csv",
@@ -96,14 +98,21 @@ def build_registry(keys: pd.DataFrame) -> dict:
     }
 
 
-def write_registry(conn, reg: dict) -> dict:
-    """Load the registry into the store and queue every unresolved fact for a human."""
+def write_registry(conn, reg: dict, lgd_list: list[dict] = ()) -> dict:
+    """Load the registry into the store and queue every unresolved fact for a human.
+    ``lgd_list`` (data/lgd_districts.csv) adds the districts that are on the LGD map but in no data file,
+    so the unit map and lineage can point at them; they carry ``in_files = 0`` and no seen-years."""
     states = [(s["state_code"], s["name"], json.dumps(s["aliases"])) for s in reg["states"]]
     districts = [(d["district_code"], d["state_code"], d["name"], json.dumps(d["aliases"]),
                   d["first_seen_year"], d["last_seen_year"]) for d in reg["districts"]]
     circles = [(d["district_code"], c["norm"], c["name"], c["first_seen_year"], c["last_seen_year"])
                for d in reg["districts"] for c in d["circles"]]
-    store.replace_registry(conn, states, districts, circles)
+    known_states = {s["state_code"] for s in reg["states"]}
+    seen = {d["district_code"] for d in reg["districts"]}
+    map_only = [(int(n["district_code"]), int(n["state_code"]), n["name"]) for n in lgd_list
+                if int(n["district_code"]) not in seen and int(n["district_code"]) != 0       # 0 = unassigned polygons
+                and int(n["state_code"]) in known_states]
+    store.replace_registry(conn, states, districts, circles, map_only=map_only)
 
     queued, last_year = 0, reg["meta"]["years"][1]
     for d in reg["checks"]["codes_that_disappear_before_last_year"]:
@@ -116,13 +125,22 @@ def write_registry(conn, reg: dict) -> dict:
         queued += store.add_escalation(conn, kind="unit", ref={"state_code": a["state_code"], "name": a["name"]},
                                        violations=[{"rule": "name_maps_to_many_codes",
                                                     "message": f"'{a['name']}' appears under {a['codes']} different codes"}])
-    return {"states": len(states), "districts": len(districts), "circles": len(circles), "escalations_queued": queued}
+    return {"states": len(states), "districts": len(districts), "map_only_districts": len(map_only),
+            "circles": len(circles), "escalations_queued": queued}
+
+
+def load_lgd_list(path: Path = LGD_CSV) -> list[dict]:
+    """The LGD map's district list, if the geometry step has produced it; empty otherwise."""
+    if not path.exists():
+        return []
+    with open(path, newline="", encoding="utf-8") as fh:
+        return list(csv.DictReader(fh))
 
 
 def main() -> None:
     reg = build_registry(load_keys())
     conn = store.connect()
-    summary = write_registry(conn, reg)
+    summary = write_registry(conn, reg, load_lgd_list())
     OUT.write_text(json.dumps(reg, indent=1, ensure_ascii=False), encoding="utf-8")
     print(f"registry: {summary}")
     print(f"years {reg['meta']['years']}")

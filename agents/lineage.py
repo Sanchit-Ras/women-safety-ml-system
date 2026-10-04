@@ -33,12 +33,9 @@ when it exists, else the 754 codes of ``data/registry.json``. A verified edge th
 names a code outside the node list cannot be used; ``build`` lists such edges in
 the JSON meta and on screen instead of dropping them in silence.
 
-No database writes yet: the ``districts`` table only holds the 754 codes from the
-files, while lineage edges may reference GeoJSON-only codes. Loading verified
-edges into ``district_lineage`` happens once the districts table is extended.
-
     python -m agents.lineage candidates   # detected candidates by kind, no model
     python -m agents.lineage propose      # model proposals -> data/lineage.csv (verified rows untouched)
+    python -m agents.lineage apply        # verified edges -> district_lineage (the districts table must know every code)
     python -m agents.lineage build        # verified edges -> data/stable_units.json + data/reports/<date>_stable_units.md
 """
 from __future__ import annotations
@@ -73,7 +70,7 @@ CSV_COLUMNS = ["parent_code", "parent_name", "child_code", "child_name", "kind",
                "reason", "proposed_by", "verified", "reviewer_note"]
 KINDS = ("split", "merge", "recode", "rename", "reported_together")
 PARENT_ANSWERS = ("merge", "recode", "reported_together")     # kinds in which the parent is the district that disappeared
-KIND_HINTS = ("born_after_2016", "vanished", "born_in_era_a", "reported_together")
+KIND_HINTS = ("born_after_2014", "vanished", "born_in_era_a", "reported_together")
 ERA_A_LATE_BIRTH = 2003         # a unit first seen in 2003 or later did not exist in 2001: it needs a parent
 TOP_OVERLAPS = 3
 NOT_PROPOSED = "NOT PROPOSED"
@@ -246,9 +243,12 @@ def detect_candidates(registry: dict, lgd_list: list[dict], overlap: pd.DataFram
     out: list[dict] = []
     for d in registry["districts"]:
         code = d["district_code"]
-        born_late = d["first_seen_year"] > 2016
+        # Born after the 2001-14 era: first seen after 2016, or first seen in the 2016 file with no 2001-14
+        # unit mapped to it (Hojai, Namsai: created 2015-16). The second test needs a unit map to be meaningful.
+        born_late = d["first_seen_year"] > 2016 or (bool(era_a_first) and d["first_seen_year"] == 2016
+                                                     and code not in era_a_first)
         if born_late:
-            out.append(_candidate(d, "born_after_2016", d["first_seen_year"], _overlap_evidence(overlap, code)))
+            out.append(_candidate(d, "born_after_2014", d["first_seen_year"], _overlap_evidence(overlap, code)))
         if d["last_seen_year"] < last_year:
             lines = [f"last seen {d['last_seen_year']}, files run to {last_year}"]
             lines += [f"had circle '{c['name']}' ({c['first_seen_year']}-{c['last_seen_year']})" for c in d["circles"]]
@@ -298,7 +298,8 @@ def build_prompt(state_name: str, state_code: int, districts: list[dict], candid
                      f"evidence: {c['evidence'] or 'none'}")
     lines += [
         "",
-        "Hints: 'born_after_2016' = the code first appears after 2016, so it needs the parent(s) it was carved out of; "
+        "Hints: 'born_after_2014' = the code first appears in the 2016+ files and no 2001-2014 unit maps to it, so it "
+        "needs the parent(s) it was carved out of; "
         "'vanished' = the code stops appearing before 2022, so it was re-coded, merged or renamed; "
         "'born_in_era_a' = the unit first appears in the 2001-2014 file in the year given, so it needs a parent for the "
         "years before; 'reported_together' = the district files a police commissionerate named after somewhere else, "
@@ -433,6 +434,34 @@ def propose(client, candidates: list[dict], registry: dict, lgd_list: list[dict]
     return summary
 
 
+# ---- into the store ---------------------------------------------------------------------------------------
+
+def apply(conn, *, csv_path: Path = CSV_PATH) -> dict:
+    """Load verified edges into district_lineage. Unverified rows and placeholders stay out. A code the
+    districts table does not know fails with a message naming the row, not a bare constraint error."""
+    known = {row[0] for row in conn.execute("SELECT district_code FROM districts")}
+    loaded = pending = 0
+    for (p, c, kind), r in read_rows(csv_path).items():
+        if r.get("verified") != "1":
+            pending += 1
+            continue
+        if kind not in KINDS:
+            raise ValueError(f"{p} -> {c}: kind '{kind}' is not one of {KINDS}")
+        parent, child = int(p), int(c)
+        for code in (parent, child):
+            if code not in known:
+                raise ValueError(f"{parent} -> {child} ({kind}): district_code {code} is not in the districts table; "
+                                 "run `python -m data_ingestion.registry` (it loads the map-only codes from data/lgd_districts.csv)")
+        year = int(r["year"]) if r.get("year", "").strip() else None
+        confidence = float(r["confidence"]) if r.get("confidence", "").strip() else None
+        conn.execute("INSERT OR REPLACE INTO district_lineage (parent_code, child_code, kind, year, confidence, reason, "
+                     "source, verified) VALUES (?, ?, ?, ?, ?, ?, ?, 1)",
+                     (parent, child, kind, year, confidence, r.get("reason", ""), r.get("proposed_by", "")))
+        loaded += 1
+    conn.commit()
+    return {"loaded": loaded, "still_unverified": pending}
+
+
 # ---- stable units (union-find over verified edges) -------------------------------------------------------
 
 def _usable(e: dict) -> bool:
@@ -539,7 +568,7 @@ def _load_inputs() -> tuple[dict, list[dict], pd.DataFrame | None, pd.DataFrame 
 
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser(description="District lineage: detect candidates, propose with the model, build stable units.")
-    ap.add_argument("command", choices=["candidates", "propose", "build"])
+    ap.add_argument("command", choices=["candidates", "propose", "apply", "build"])
     args = ap.parse_args(argv)
 
     if args.command == "candidates":
@@ -563,6 +592,8 @@ def main(argv: list[str] | None = None) -> None:
             print(f"state {state_code}: {s}")
         print(f"\nescalations (edges with a code outside the state): {summary['escalations']}")
         print(f"review file -> {CSV_PATH}")
+    elif args.command == "apply":
+        print(apply(store.connect()))
     else:
         registry = load_registry()
         nodes = load_nodes(registry)
