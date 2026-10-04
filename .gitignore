@@ -7,3 +7,5 @@ models/womensafety_research_pipeline_rf.joblib
 ml/artifacts/
 data/pipeline.db*
 data/raw/LGD_Districts.geojson
+data/traces/*.jsonl
+!data/traces/latest.jsonl

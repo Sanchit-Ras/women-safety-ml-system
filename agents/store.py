@@ -164,6 +164,20 @@ CREATE INDEX IF NOT EXISTS ix_records_district_year ON records(district_code, ye
 CREATE INDEX IF NOT EXISTS ix_records_era_status ON records(era, validation_status);
 {EXTENDED_DDL}
 
+-- The observed panel: one row per unit and year, summed over the unit's valid/escalated records.
+-- Derived: rebuilt by agents.panel on every build, never edited. unit_id = 'd<code>' or 's<state>u'.
+CREATE TABLE IF NOT EXISTS panel_observed (
+    unit_id       TEXT NOT NULL,
+    state_code    INTEGER NOT NULL REFERENCES states(state_code),
+    district_code INTEGER REFERENCES districts(district_code),      -- NULL = the state's unallocated bucket
+    year          INTEGER NOT NULL,
+    era           TEXT NOT NULL CHECK (era IN {_era_check}),
+    {_count_columns},
+    total         INTEGER NOT NULL CHECK (total >= 0),
+    n_records     INTEGER NOT NULL CHECK (n_records >= 1),
+    PRIMARY KEY (unit_id, year)
+);
+
 -- Resolver output: which canonical district a source unit name refers to,
 -- and how we know. Committed to data/unit_map.json once verified.
 CREATE TABLE IF NOT EXISTS unit_map (
@@ -249,7 +263,7 @@ CREATE INDEX IF NOT EXISTS ix_escalations_status ON escalations(status, kind);
 """
 
 TABLES = ("meta", "states", "districts", "circles", "district_lineage", "raw_rows", "records", "extended_counts",
-          "unit_map", "crosswalk", "llm_calls", "llm_attempts", "escalations")
+          "panel_observed", "unit_map", "crosswalk", "llm_calls", "llm_attempts", "escalations")
 
 
 # ---- migrations ---------------------------------------------------------------------------------------------
