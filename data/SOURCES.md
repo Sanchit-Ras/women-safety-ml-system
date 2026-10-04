@@ -10,6 +10,7 @@ files, not to create them.
 | File | Years | Rows | Schema era | Notes |
 |---|---|---|---|---|
 | `raw/crimes_against_women_2001-2014.csv` | 2001–2014 | 10,677 | **Era A** — 7 categories | Reporting unit is the police district / railway unit, not the administrative district. Includes `TOTAL` rows per state that must be dropped. State names are spelled inconsistently across years. |
+| `raw/ncrb_district_wise_crimes_against_women_2015.xlsx` | 2015 | 815 district rows | **Era 2015** — 60 heads | NCRB's own workbook, *Crime in India 2015 → Additional Tables → District Wise Reports*: <https://www.ncrb.gov.in/uploads/2022/July/11/custom/crime-in-india/5-District-wise-Crimes-committed-against-Women_2015.xlsx> (279,426 bytes, sha256 `f0c049c0c0521888…`, downloaded 2026-10-04). One sheet, header in row 2, `State: <name>` marker rows, `Total District(s)` rows per state, totals and their parts side by side (`Kidnapping & Abduction_Total` + five parts). No LGD codes: units are police districts, resolved like Era A. |
 | `raw/districtwise-crime-against-women-2016.csv` | 2016 | 817 | **Era B** — 19 categories | Adds `state_code`, `district_code`, `registration_circles`. |
 | `raw/districtwise-crime-against-women-2017-onwards.csv` | 2017–2022 | 5,322 | **Era C** — 42 categories | Same key columns as Era B; categories split by victim age (above/below 18) and add POCSO / cyber offences. |
 | `raw/india_district.geojson` | — | 594 features | — | Old (pre-2014) administrative boundaries (`NAME_1` = state, `NAME_2` = district). Kept for area-overlap checks between old and current districts; no longer the map. |
@@ -19,8 +20,11 @@ files, not to create them.
 
 ## Known gaps and caveats (stated up front, on purpose)
 
-- **2015 is missing.** It exists only inside the NCRB *Crime in India 2015* PDF. Filling it is an
-  optional later module (PDF extraction); the model tolerates a one-year hole.
+- **2015 comes from a different shape of file.** The India Data Portal has no 2015 district file; NCRB
+  publishes it as an Excel workbook (row above). Its district rows add up to slightly less than the
+  published national figures (rape 34,637 vs 34,651; kidnapping 59,081 vs 59,283; cruelty 113,256 vs
+  113,403; assault and insult exact): NCRB's district tables leave out a few state-level reporting
+  units. Within the fidelity tolerance for every core head.
 - **Three schemas.** The category set changed in 2016 and again in 2017. A verified crosswalk
   maps every era down to the seven categories that exist in all three, so a 22-year time series
   measures the same quantity in every year. Finer-grained columns are preserved but excluded
