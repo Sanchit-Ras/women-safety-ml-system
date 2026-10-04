@@ -2,9 +2,9 @@
  "meta": {
   "generated": "2026-10-04",
   "n_nodes": 784,
-  "n_groups": 777,
-  "n_edges_used": 7,
-  "largest_group_size": 3,
+  "n_groups": 567,
+  "n_edges_used": 226,
+  "largest_group_size": 28,
   "n_edges_skipped": 0,
   "skipped_edges": []
  },
@@ -41,27 +41,51 @@
    "name": "Baramulla",
    "largest_member_code": 3,
    "members": [
-    3
+    3,
+    623
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 3,
+     "child_code": 623,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_4",
    "name": "Doda",
    "largest_member_code": 4,
    "members": [
-    4
+    4,
+    620
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 4,
+     "child_code": 620,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_5",
    "name": "Jammu",
    "largest_member_code": 5,
    "members": [
-    5
+    5,
+    624
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 5,
+     "child_code": 624,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_6",
@@ -113,9 +137,17 @@
    "name": "Pulwama",
    "largest_member_code": 11,
    "members": [
-    11
+    11,
+    625
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 11,
+     "child_code": 625,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_12",
@@ -290,21 +322,37 @@
   },
   {
    "unit_id": "su_31",
-   "name": "Ferozepur",
-   "largest_member_code": 31,
+   "name": "Fazilka",
+   "largest_member_code": 651,
    "members": [
-    31
+    31,
+    651
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 31,
+     "child_code": 651,
+     "kind": "split",
+     "year": 2011
+    }
+   ]
   },
   {
    "unit_id": "su_32",
    "name": "Gurdaspur",
    "largest_member_code": 32,
    "members": [
-    32
+    32,
+    662
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 32,
+     "child_code": 662,
+     "kind": "split",
+     "year": 2011
+    }
+   ]
   },
   {
    "unit_id": "su_33",
@@ -380,30 +428,44 @@
   },
   {
    "unit_id": "su_41",
-   "name": "Patiala",
-   "largest_member_code": 41,
+   "name": "S.A.S Nagar",
+   "largest_member_code": 608,
    "members": [
-    41
+    41,
+    42,
+    608
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_42",
-   "name": "Rupnagar",
-   "largest_member_code": 42,
-   "members": [
-    42
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 41,
+     "child_code": 608,
+     "kind": "split",
+     "year": 2006
+    },
+    {
+     "parent_code": 42,
+     "child_code": 608,
+     "kind": "split",
+     "year": 2006
+    }
+   ]
   },
   {
    "unit_id": "su_43",
    "name": "Sangrur",
    "largest_member_code": 43,
    "members": [
-    43
+    43,
+    737
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 43,
+     "child_code": 737,
+     "kind": "split",
+     "year": 2021
+    }
+   ]
   },
   {
    "unit_id": "su_44",
@@ -545,18 +607,34 @@
    "name": "Bhiwani",
    "largest_member_code": 59,
    "members": [
-    59
+    59,
+    701
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 59,
+     "child_code": 701,
+     "kind": "split",
+     "year": 2017
+    }
+   ]
   },
   {
    "unit_id": "su_60",
    "name": "Faridabad",
    "largest_member_code": 60,
    "members": [
-    60
+    60,
+    619
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 60,
+     "child_code": 619,
+     "kind": "split",
+     "year": 2006
+    }
+   ]
   },
   {
    "unit_id": "su_61",
@@ -572,9 +650,17 @@
    "name": "Gurugram",
    "largest_member_code": 62,
    "members": [
-    62
+    62,
+    604
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 62,
+     "child_code": 604,
+     "kind": "split",
+     "year": 2005
+    }
+   ]
   },
   {
    "unit_id": "su_63",
@@ -713,12 +799,27 @@
   },
   {
    "unit_id": "su_78",
-   "name": "East",
-   "largest_member_code": 78,
+   "name": "North East",
+   "largest_member_code": 81,
    "members": [
-    78
+    78,
+    81,
+    671
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 78,
+     "child_code": 671,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 81,
+     "child_code": 671,
+     "kind": "split",
+     "year": 2017
+    }
+   ]
   },
   {
    "unit_id": "su_79",
@@ -739,15 +840,6 @@
    "edges": []
   },
   {
-   "unit_id": "su_81",
-   "name": "North East",
-   "largest_member_code": 81,
-   "members": [
-    81
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_82",
    "name": "North West",
    "largest_member_code": 82,
@@ -758,12 +850,20 @@
   },
   {
    "unit_id": "su_83",
-   "name": "South",
-   "largest_member_code": 83,
+   "name": "South East",
+   "largest_member_code": 670,
    "members": [
-    83
+    83,
+    670
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 83,
+     "child_code": 670,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_84",
@@ -788,27 +888,141 @@
    "name": "Ajmer",
    "largest_member_code": 86,
    "members": [
-    86
+    86,
+    92,
+    111,
+    116,
+    774,
+    780,
+    781
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 774,
+     "child_code": 86,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 781,
+     "child_code": 86,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 774,
+     "child_code": 92,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 780,
+     "child_code": 92,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 774,
+     "child_code": 111,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 781,
+     "child_code": 116,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_87",
-   "name": "Alwar",
-   "largest_member_code": 87,
+   "name": "Jaipur",
+   "largest_member_code": 102,
    "members": [
-    87
+    87,
+    102,
+    769,
+    770,
+    782,
+    783
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 782,
+     "child_code": 87,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 769,
+     "child_code": 102,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 782,
+     "child_code": 102,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 783,
+     "child_code": 102,
+     "kind": "reported_together",
+     "year": 2017
+    },
+    {
+     "parent_code": 87,
+     "child_code": 770,
+     "kind": "split",
+     "year": 2019
+    },
+    {
+     "parent_code": 102,
+     "child_code": 783,
+     "kind": "split",
+     "year": 2006
+    }
+   ]
   },
   {
    "unit_id": "su_88",
-   "name": "Banswara",
-   "largest_member_code": 88,
+   "name": "Udaipur",
+   "largest_member_code": 117,
    "members": [
-    88
+    88,
+    95,
+    117,
+    629,
+    777
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 777,
+     "child_code": 117,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 88,
+     "child_code": 629,
+     "kind": "split",
+     "year": 2008
+    },
+    {
+     "parent_code": 95,
+     "child_code": 629,
+     "kind": "split",
+     "year": 2008
+    },
+    {
+     "parent_code": 117,
+     "child_code": 629,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_89",
@@ -824,36 +1038,58 @@
    "name": "Barmer",
    "largest_member_code": 90,
    "members": [
-    90
+    90,
+    775
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 775,
+     "child_code": 90,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_91",
    "name": "Bharatpur",
    "largest_member_code": 91,
    "members": [
-    91
+    91,
+    767
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_92",
-   "name": "Bhilwara",
-   "largest_member_code": 92,
-   "members": [
-    92
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 767,
+     "child_code": 91,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_93",
-   "name": "Bikaner",
-   "largest_member_code": 93,
+   "name": "Ganganagar",
+   "largest_member_code": 100,
    "members": [
-    93
+    93,
+    100,
+    776
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 776,
+     "child_code": 93,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 776,
+     "child_code": 100,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_94",
@@ -861,15 +1097,6 @@
    "largest_member_code": 94,
    "members": [
     94
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_95",
-   "name": "Chittorgarh",
-   "largest_member_code": 95,
-   "members": [
-    95
    ],
    "edges": []
   },
@@ -910,29 +1137,11 @@
    "edges": []
   },
   {
-   "unit_id": "su_100",
-   "name": "Ganganagar",
-   "largest_member_code": 100,
-   "members": [
-    100
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_101",
    "name": "Hanumangarh",
    "largest_member_code": 101,
    "members": [
     101
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_102",
-   "name": "Jaipur",
-   "largest_member_code": 102,
-   "members": [
-    102
    ],
    "edges": []
   },
@@ -950,9 +1159,17 @@
    "name": "Jalore",
    "largest_member_code": 104,
    "members": [
-    104
+    104,
+    779
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 779,
+     "child_code": 104,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_105",
@@ -965,30 +1182,75 @@
   },
   {
    "unit_id": "su_106",
-   "name": "Jhunjhunu",
-   "largest_member_code": 106,
+   "name": "Sikar",
+   "largest_member_code": 114,
    "members": [
-    106
+    106,
+    114,
+    773
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 773,
+     "child_code": 106,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 773,
+     "child_code": 114,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_107",
    "name": "Jodhpur",
    "largest_member_code": 107,
    "members": [
-    107
+    107,
+    772,
+    778
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 772,
+     "child_code": 107,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 778,
+     "child_code": 107,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_108",
    "name": "Karauli",
    "largest_member_code": 108,
    "members": [
-    108
+    108,
+    113,
+    771
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 771,
+     "child_code": 108,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 771,
+     "child_code": 113,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_109",
@@ -1004,18 +1266,17 @@
    "name": "Nagaur",
    "largest_member_code": 110,
    "members": [
-    110
+    110,
+    768
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_111",
-   "name": "Pali",
-   "largest_member_code": 111,
-   "members": [
-    111
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 768,
+     "child_code": 110,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_112",
@@ -1027,47 +1288,11 @@
    "edges": []
   },
   {
-   "unit_id": "su_113",
-   "name": "Sawai Madhopur",
-   "largest_member_code": 113,
-   "members": [
-    113
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_114",
-   "name": "Sikar",
-   "largest_member_code": 114,
-   "members": [
-    114
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_115",
    "name": "Sirohi",
    "largest_member_code": 115,
    "members": [
     115
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_116",
-   "name": "Tonk",
-   "largest_member_code": 116,
-   "members": [
-    116
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_117",
-   "name": "Udaipur",
-   "largest_member_code": 117,
-   "members": [
-    117
    ],
    "edges": []
   },
@@ -1211,9 +1436,24 @@
    "name": "Budaun",
    "largest_member_code": 133,
    "members": [
-    133
+    133,
+    171,
+    659
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 133,
+     "child_code": 659,
+     "kind": "split",
+     "year": 2011
+    },
+    {
+     "parent_code": 171,
+     "child_code": 659,
+     "kind": "split",
+     "year": 2011
+    }
+   ]
   },
   {
    "unit_id": "su_134",
@@ -1253,12 +1493,20 @@
   },
   {
    "unit_id": "su_138",
-   "name": "Etah",
-   "largest_member_code": 138,
+   "name": "Kasganj",
+   "largest_member_code": 633,
    "members": [
-    138
+    138,
+    633
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 138,
+     "child_code": 633,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_139",
@@ -1319,9 +1567,17 @@
    "name": "Ghaziabad",
    "largest_member_code": 145,
    "members": [
-    145
+    145,
+    661
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 145,
+     "child_code": 661,
+     "kind": "split",
+     "year": 2011
+    }
+   ]
   },
   {
    "unit_id": "su_146",
@@ -1549,22 +1805,21 @@
    "edges": []
   },
   {
-   "unit_id": "su_171",
-   "name": "Moradabad",
-   "largest_member_code": 171,
-   "members": [
-    171
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_172",
-   "name": "Muzaffarnagar",
-   "largest_member_code": 172,
+   "name": "Shamli",
+   "largest_member_code": 660,
    "members": [
-    172
+    172,
+    660
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 172,
+     "child_code": 660,
+     "kind": "split",
+     "year": 2011
+    }
+   ]
   },
   {
    "unit_id": "su_173",
@@ -1586,12 +1841,27 @@
   },
   {
    "unit_id": "su_175",
-   "name": "Rae Bareli",
-   "largest_member_code": 175,
+   "name": "Sultanpur",
+   "largest_member_code": 185,
    "members": [
-    175
+    175,
+    185,
+    640
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 175,
+     "child_code": 640,
+     "kind": "split",
+     "year": 2010
+    },
+    {
+     "parent_code": 185,
+     "child_code": 640,
+     "kind": "split",
+     "year": 2010
+    }
+   ]
   },
   {
    "unit_id": "su_176",
@@ -1671,15 +1941,6 @@
    "largest_member_code": 184,
    "members": [
     184
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_185",
-   "name": "Sultanpur",
-   "largest_member_code": 185,
-   "members": [
-    185
    ],
    "edges": []
   },
@@ -2039,9 +2300,17 @@
    "name": "Gangtok",
    "largest_member_code": 225,
    "members": [
-    225
+    225,
+    741
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 225,
+     "child_code": 741,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_226",
@@ -2066,9 +2335,17 @@
    "name": "Gyalshing",
    "largest_member_code": 228,
    "members": [
-    228
+    228,
+    742
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 228,
+     "child_code": 742,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_229",
@@ -2081,38 +2358,99 @@
   },
   {
    "unit_id": "su_230",
-   "name": "Dibang Valley",
-   "largest_member_code": 230,
+   "name": "Lower Dibang Valley",
+   "largest_member_code": 235,
    "members": [
-    230
+    230,
+    235
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 230,
+     "child_code": 235,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_231",
    "name": "East Kameng",
    "largest_member_code": 231,
    "members": [
-    231
+    231,
+    723
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 231,
+     "child_code": 723,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_232",
-   "name": "East Siang",
-   "largest_member_code": 232,
+   "name": "West Siang",
+   "largest_member_code": 243,
    "members": [
-    232
+    232,
+    243,
+    679,
+    719,
+    724,
+    725
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 232,
+     "child_code": 679,
+     "kind": "split",
+     "year": 2016
+    },
+    {
+     "parent_code": 243,
+     "child_code": 679,
+     "kind": "split",
+     "year": 2016
+    },
+    {
+     "parent_code": 232,
+     "child_code": 719,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 243,
+     "child_code": 719,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 243,
+     "child_code": 724,
+     "kind": "split",
+     "year": 2018
+    },
+    {
+     "parent_code": 243,
+     "child_code": 725,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_233",
-   "name": "Lower Subansiri",
-   "largest_member_code": 236,
+   "name": "Upper Subansiri",
+   "largest_member_code": 241,
    "members": [
     233,
-    236
+    236,
+    241,
+    677,
+    718
    ],
    "edges": [
     {
@@ -2120,6 +2458,24 @@
      "child_code": 233,
      "kind": "split",
      "year": 2003
+    },
+    {
+     "parent_code": 233,
+     "child_code": 677,
+     "kind": "split",
+     "year": 2019
+    },
+    {
+     "parent_code": 236,
+     "child_code": 718,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 241,
+     "child_code": 718,
+     "kind": "split",
+     "year": 2017
     }
    ]
   },
@@ -2128,27 +2484,41 @@
    "name": "Lohit",
    "largest_member_code": 234,
    "members": [
-    234
+    234,
+    628,
+    678
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_235",
-   "name": "Lower Dibang Valley",
-   "largest_member_code": 235,
-   "members": [
-    235
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 234,
+     "child_code": 628,
+     "kind": "split",
+     "year": 2009
+    },
+    {
+     "parent_code": 234,
+     "child_code": 678,
+     "kind": "split",
+     "year": 2016
+    }
+   ]
   },
   {
    "unit_id": "su_237",
    "name": "Papum Pare",
    "largest_member_code": 237,
    "members": [
-    237
+    237,
+    766
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 766,
+     "child_code": 237,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_238",
@@ -2161,12 +2531,20 @@
   },
   {
    "unit_id": "su_239",
-   "name": "Tirap",
-   "largest_member_code": 239,
+   "name": "Longding",
+   "largest_member_code": 666,
    "members": [
-    239
+    239,
+    666
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 239,
+     "child_code": 666,
+     "kind": "split",
+     "year": 2013
+    }
+   ]
   },
   {
    "unit_id": "su_240",
@@ -2174,15 +2552,6 @@
    "largest_member_code": 240,
    "members": [
     240
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_241",
-   "name": "Upper Subansiri",
-   "largest_member_code": 241,
-   "members": [
-    241
    ],
    "edges": []
   },
@@ -2196,31 +2565,45 @@
    "edges": []
   },
   {
-   "unit_id": "su_243",
-   "name": "West Siang",
-   "largest_member_code": 243,
-   "members": [
-    243
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_244",
    "name": "Dimapur",
    "largest_member_code": 244,
    "members": [
-    244
+    244,
+    758,
+    764
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 758,
+     "child_code": 244,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 764,
+     "child_code": 244,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_245",
    "name": "Kohima",
    "largest_member_code": 245,
    "members": [
-    245
+    245,
+    757
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 757,
+     "child_code": 245,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_246",
@@ -2254,9 +2637,31 @@
    "name": "Tuensang",
    "largest_member_code": 249,
    "members": [
-    249
+    249,
+    615,
+    736,
+    765
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 736,
+     "child_code": 249,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 765,
+     "child_code": 249,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 249,
+     "child_code": 615,
+     "kind": "split",
+     "year": 2007
+    }
+   ]
   },
   {
    "unit_id": "su_250",
@@ -2287,30 +2692,54 @@
   },
   {
    "unit_id": "su_253",
-   "name": "Chandel",
-   "largest_member_code": 253,
+   "name": "Tengnoupal",
+   "largest_member_code": 716,
    "members": [
-    253
+    253,
+    716
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 253,
+     "child_code": 716,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_254",
    "name": "Churachandpur",
    "largest_member_code": 254,
    "members": [
-    254
+    254,
+    715
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 254,
+     "child_code": 715,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_255",
    "name": "Imphal East",
    "largest_member_code": 255,
    "members": [
-    255
+    255,
+    713
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 255,
+     "child_code": 713,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_256",
@@ -2326,54 +2755,99 @@
    "name": "Senapati",
    "largest_member_code": 257,
    "members": [
-    257
+    257,
+    712
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 257,
+     "child_code": 712,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_258",
    "name": "Tamenglong",
    "largest_member_code": 258,
    "members": [
-    258
+    258,
+    714
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 258,
+     "child_code": 714,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_259",
    "name": "Thoubal",
    "largest_member_code": 259,
    "members": [
-    259
+    259,
+    711
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 259,
+     "child_code": 711,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_260",
    "name": "Ukhrul",
    "largest_member_code": 260,
    "members": [
-    260
+    260,
+    717
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 260,
+     "child_code": 717,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_261",
    "name": "Aizawl",
    "largest_member_code": 261,
    "members": [
-    261
+    261,
+    262,
+    727,
+    728
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_262",
-   "name": "Champhai",
-   "largest_member_code": 262,
-   "members": [
-    262
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 261,
+     "child_code": 727,
+     "kind": "split",
+     "year": 2020
+    },
+    {
+     "parent_code": 262,
+     "child_code": 727,
+     "kind": "split",
+     "year": 2020
+    },
+    {
+     "parent_code": 262,
+     "child_code": 728,
+     "kind": "split",
+     "year": 2020
+    }
+   ]
   },
   {
    "unit_id": "su_263",
@@ -2398,9 +2872,17 @@
    "name": "Lunglei",
    "largest_member_code": 265,
    "members": [
-    265
+    265,
+    726
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 265,
+     "child_code": 726,
+     "kind": "split",
+     "year": 2020
+    }
+   ]
   },
   {
    "unit_id": "su_266",
@@ -2440,39 +2922,78 @@
   },
   {
    "unit_id": "su_270",
-   "name": "North Tripura",
-   "largest_member_code": 270,
+   "name": "Unakoti",
+   "largest_member_code": 655,
    "members": [
-    270
+    270,
+    655
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 270,
+     "child_code": 655,
+     "kind": "split",
+     "year": 2012
+    }
+   ]
   },
   {
    "unit_id": "su_271",
-   "name": "South Tripura",
-   "largest_member_code": 271,
+   "name": "Gomati",
+   "largest_member_code": 654,
    "members": [
-    271
+    271,
+    654
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 271,
+     "child_code": 654,
+     "kind": "split",
+     "year": 2012
+    }
+   ]
   },
   {
    "unit_id": "su_272",
    "name": "West Tripura",
    "largest_member_code": 272,
    "members": [
-    272
+    272,
+    652,
+    653
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 272,
+     "child_code": 652,
+     "kind": "split",
+     "year": 2012
+    },
+    {
+     "parent_code": 272,
+     "child_code": 653,
+     "kind": "split",
+     "year": 2012
+    }
+   ]
   },
   {
    "unit_id": "su_273",
    "name": "East Garo Hills",
    "largest_member_code": 273,
    "members": [
-    273
+    273,
+    656
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 273,
+     "child_code": 656,
+     "kind": "split",
+     "year": 2013
+    }
+   ]
   },
   {
    "unit_id": "su_274",
@@ -2488,9 +3009,17 @@
    "name": "West Jaintia Hills",
    "largest_member_code": 275,
    "members": [
-    275
+    275,
+    657
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 275,
+     "child_code": 657,
+     "kind": "split",
+     "year": 2013
+    }
+   ]
   },
   {
    "unit_id": "su_276",
@@ -2515,36 +3044,116 @@
    "name": "West Garo Hills",
    "largest_member_code": 278,
    "members": [
-    278
+    278,
+    663
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 278,
+     "child_code": 663,
+     "kind": "split",
+     "year": 2013
+    }
+   ]
   },
   {
    "unit_id": "su_279",
    "name": "West Khasi Hills",
    "largest_member_code": 279,
    "members": [
-    279
+    279,
+    658,
+    740
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 279,
+     "child_code": 658,
+     "kind": "split",
+     "year": 2013
+    },
+    {
+     "parent_code": 279,
+     "child_code": 740,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_280",
-   "name": "Barpeta",
-   "largest_member_code": 280,
+   "name": "Kamrup",
+   "largest_member_code": 291,
    "members": [
-    280
+    280,
+    291,
+    298,
+    616,
+    739,
+    756
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 280,
+     "child_code": 616,
+     "kind": "split",
+     "year": 2005
+    },
+    {
+     "parent_code": 298,
+     "child_code": 616,
+     "kind": "split",
+     "year": 2005
+    },
+    {
+     "parent_code": 280,
+     "child_code": 739,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 291,
+     "child_code": 756,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 298,
+     "child_code": 756,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 616,
+     "child_code": 756,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_281",
-   "name": "Bongaigaon",
-   "largest_member_code": 281,
+   "name": "Kokrajhar",
+   "largest_member_code": 294,
    "members": [
-    281
+    281,
+    294,
+    612
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 281,
+     "child_code": 612,
+     "kind": "split",
+     "year": 2005
+    },
+    {
+     "parent_code": 294,
+     "child_code": 612,
+     "kind": "split",
+     "year": 2005
+    }
+   ]
   },
   {
    "unit_id": "su_282",
@@ -2560,9 +3169,17 @@
    "name": "Darrang",
    "largest_member_code": 283,
    "members": [
-    283
+    283,
+    617
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 283,
+     "child_code": 617,
+     "kind": "split",
+     "year": 2005
+    }
+   ]
   },
   {
    "unit_id": "su_284",
@@ -2578,9 +3195,17 @@
    "name": "Dhubri",
    "largest_member_code": 285,
    "members": [
-    285
+    285,
+    707
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 285,
+     "child_code": 707,
+     "kind": "split",
+     "year": 2016
+    }
+   ]
   },
   {
    "unit_id": "su_286",
@@ -2623,27 +3248,34 @@
    "name": "Jorhat",
    "largest_member_code": 290,
    "members": [
-    290
+    290,
+    706
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_291",
-   "name": "Kamrup",
-   "largest_member_code": 291,
-   "members": [
-    291
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 290,
+     "child_code": 706,
+     "kind": "split",
+     "year": 2016
+    }
+   ]
   },
   {
    "unit_id": "su_292",
    "name": "Karbi Anglong",
    "largest_member_code": 292,
    "members": [
-    292
+    292,
+    710
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 292,
+     "child_code": 710,
+     "kind": "split",
+     "year": 2012
+    }
+   ]
   },
   {
    "unit_id": "su_293",
@@ -2651,15 +3283,6 @@
    "largest_member_code": 293,
    "members": [
     293
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_294",
-   "name": "Kokrajhar",
-   "largest_member_code": 294,
-   "members": [
-    294
    ],
    "edges": []
   },
@@ -2686,18 +3309,17 @@
    "name": "Nagaon",
    "largest_member_code": 297,
    "members": [
-    297
+    297,
+    709
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_298",
-   "name": "Nalbari",
-   "largest_member_code": 298,
-   "members": [
-    298
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 297,
+     "child_code": 709,
+     "kind": "split",
+     "year": 2016
+    }
+   ]
   },
   {
    "unit_id": "su_299",
@@ -2713,18 +3335,34 @@
    "name": "Sivasagar",
    "largest_member_code": 300,
    "members": [
-    300
+    300,
+    708
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 300,
+     "child_code": 708,
+     "kind": "split",
+     "year": 2016
+    }
+   ]
   },
   {
    "unit_id": "su_301",
    "name": "Sonitpur",
    "largest_member_code": 301,
    "members": [
-    301
+    301,
+    705
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 301,
+     "child_code": 705,
+     "kind": "split",
+     "year": 2016
+    }
+   ]
   },
   {
    "unit_id": "su_302",
@@ -2767,9 +3405,17 @@
    "name": "Purba Bardhaman",
    "largest_member_code": 306,
    "members": [
-    306
+    306,
+    704
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 306,
+     "child_code": 704,
+     "kind": "split",
+     "year": 2017
+    }
+   ]
   },
   {
    "unit_id": "su_307",
@@ -2794,9 +3440,17 @@
    "name": "Darjeeling",
    "largest_member_code": 309,
    "members": [
-    309
+    309,
+    702
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 309,
+     "child_code": 702,
+     "kind": "split",
+     "year": 2017
+    }
+   ]
   },
   {
    "unit_id": "su_310",
@@ -2836,12 +3490,20 @@
   },
   {
    "unit_id": "su_314",
-   "name": "Jalpaiguri",
-   "largest_member_code": 314,
+   "name": "Alipurduar",
+   "largest_member_code": 664,
    "members": [
-    314
+    314,
+    664
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 314,
+     "child_code": 664,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_315",
@@ -2867,7 +3529,8 @@
    "largest_member_code": 317,
    "members": [
     317,
-    318
+    318,
+    703
    ],
    "edges": [
     {
@@ -2875,6 +3538,12 @@
      "child_code": 317,
      "kind": "split",
      "year": 2002
+    },
+    {
+     "parent_code": 318,
+     "child_code": 703,
+     "kind": "split",
+     "year": 2012
     }
    ]
   },
@@ -3000,9 +3669,17 @@
    "name": "Hazaribagh",
    "largest_member_code": 332,
    "members": [
-    332
+    332,
+    607
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 332,
+     "child_code": 607,
+     "kind": "split",
+     "year": 2007
+    }
+   ]
   },
   {
    "unit_id": "su_333",
@@ -3063,9 +3740,17 @@
    "name": "Ranchi",
    "largest_member_code": 339,
    "members": [
-    339
+    339,
+    606
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 339,
+     "child_code": 606,
+     "kind": "split",
+     "year": 2007
+    }
+   ]
   },
   {
    "unit_id": "su_340",
@@ -3378,27 +4063,65 @@
    "name": "Bastar",
    "largest_member_code": 374,
    "members": [
-    374
+    374,
+    637,
+    643
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 374,
+     "child_code": 637,
+     "kind": "split",
+     "year": 2003
+    },
+    {
+     "parent_code": 374,
+     "child_code": 643,
+     "kind": "split",
+     "year": 2012
+    }
+   ]
   },
   {
    "unit_id": "su_375",
    "name": "Bilaspur",
    "largest_member_code": 375,
    "members": [
-    375
+    375,
+    647,
+    734
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 375,
+     "child_code": 647,
+     "kind": "split",
+     "year": 2012
+    },
+    {
+     "parent_code": 375,
+     "child_code": 734,
+     "kind": "split",
+     "year": 2020
+    }
+   ]
   },
   {
    "unit_id": "su_376",
    "name": "Dantewada",
    "largest_member_code": 376,
    "members": [
-    376
+    376,
+    642
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 376,
+     "child_code": 642,
+     "kind": "split",
+     "year": 2012
+    }
+   ]
   },
   {
    "unit_id": "su_377",
@@ -3414,18 +4137,41 @@
    "name": "Durg",
    "largest_member_code": 378,
    "members": [
-    378
+    378,
+    646,
+    650
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 378,
+     "child_code": 646,
+     "kind": "split",
+     "year": 2012
+    },
+    {
+     "parent_code": 378,
+     "child_code": 650,
+     "kind": "split",
+     "year": 2012
+    }
+   ]
   },
   {
    "unit_id": "su_379",
    "name": "Janjgir-Champa",
    "largest_member_code": 379,
    "members": [
-    379
+    379,
+    762
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 379,
+     "child_code": 762,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_380",
@@ -3465,12 +4211,20 @@
   },
   {
    "unit_id": "su_384",
-   "name": "Korea",
-   "largest_member_code": 384,
+   "name": "Manendragarh Chirimiri Bharatpur",
+   "largest_member_code": 760,
    "members": [
-    384
+    384,
+    760
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 384,
+     "child_code": 760,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_385",
@@ -3483,39 +4237,88 @@
   },
   {
    "unit_id": "su_386",
-   "name": "Raigarh",
-   "largest_member_code": 386,
-   "members": [
-    386
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_387",
    "name": "Raipur",
    "largest_member_code": 387,
    "members": [
-    387
+    386,
+    387,
+    644,
+    645,
+    763
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 387,
+     "child_code": 644,
+     "kind": "split",
+     "year": 2012
+    },
+    {
+     "parent_code": 387,
+     "child_code": 645,
+     "kind": "split",
+     "year": 2011
+    },
+    {
+     "parent_code": 386,
+     "child_code": 763,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 387,
+     "child_code": 763,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 644,
+     "child_code": 763,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_388",
    "name": "Rajnandgaon",
    "largest_member_code": 388,
    "members": [
-    388
+    388,
+    759,
+    761
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 388,
+     "child_code": 759,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 388,
+     "child_code": 761,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_389",
    "name": "Surguja",
    "largest_member_code": 389,
    "members": [
-    389
+    389,
+    648
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 389,
+     "child_code": 648,
+     "kind": "split",
+     "year": 2005
+    }
+   ]
   },
   {
    "unit_id": "su_390",
@@ -3598,12 +4401,20 @@
   },
   {
    "unit_id": "su_397",
-   "name": "Burhanpur",
-   "largest_member_code": 397,
+   "name": "East Nimar",
+   "largest_member_code": 405,
    "members": [
-    397
+    397,
+    405
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 405,
+     "child_code": 397,
+     "kind": "split",
+     "year": 2003
+    }
+   ]
   },
   {
    "unit_id": "su_398",
@@ -3669,15 +4480,6 @@
    "edges": []
   },
   {
-   "unit_id": "su_405",
-   "name": "East Nimar",
-   "largest_member_code": 405,
-   "members": [
-    405
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_407",
    "name": "Gwalior",
    "largest_member_code": 407,
@@ -3727,9 +4529,17 @@
    "name": "Jhabua",
    "largest_member_code": 412,
    "members": [
-    412
+    412,
+    639
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 412,
+     "child_code": 639,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_413",
@@ -3880,9 +4690,17 @@
    "name": "Shajapur",
    "largest_member_code": 430,
    "members": [
-    430
+    430,
+    667
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 430,
+     "child_code": 667,
+     "kind": "split",
+     "year": 2013
+    }
+   ]
   },
   {
    "unit_id": "su_431",
@@ -3904,21 +4722,37 @@
   },
   {
    "unit_id": "su_433",
-   "name": "Sidhi",
-   "largest_member_code": 433,
+   "name": "Singrauli",
+   "largest_member_code": 638,
    "members": [
-    433
+    433,
+    638
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 433,
+     "child_code": 638,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_434",
    "name": "Tikamgarh",
    "largest_member_code": 434,
    "members": [
-    434
+    434,
+    722
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 434,
+     "child_code": 722,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_435",
@@ -3952,9 +4786,24 @@
    "name": "Ahmadabad",
    "largest_member_code": 438,
    "members": [
-    438
+    438,
+    443,
+    676
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 438,
+     "child_code": 676,
+     "kind": "split",
+     "year": 2014
+    },
+    {
+     "parent_code": 443,
+     "child_code": 676,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_439",
@@ -3993,15 +4842,6 @@
    "edges": []
   },
   {
-   "unit_id": "su_443",
-   "name": "Bhavnagar",
-   "largest_member_code": 443,
-   "members": [
-    443
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_444",
    "name": "Dang",
    "largest_member_code": 444,
@@ -4033,18 +4873,34 @@
    "name": "Jamnagar",
    "largest_member_code": 447,
    "members": [
-    447
+    447,
+    674
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 447,
+     "child_code": 674,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_448",
    "name": "Junagadh",
    "largest_member_code": 448,
    "members": [
-    448
+    448,
+    675
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 448,
+     "child_code": 675,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_449",
@@ -4060,9 +4916,24 @@
    "name": "Kheda",
    "largest_member_code": 450,
    "members": [
-    450
+    450,
+    454,
+    669
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 450,
+     "child_code": 669,
+     "kind": "split",
+     "year": 2014
+    },
+    {
+     "parent_code": 454,
+     "child_code": 669,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_451",
@@ -4092,15 +4963,6 @@
    "edges": []
   },
   {
-   "unit_id": "su_454",
-   "name": "Panch Mahals",
-   "largest_member_code": 454,
-   "members": [
-    454
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_455",
    "name": "Patan",
    "largest_member_code": 455,
@@ -4123,45 +4985,75 @@
    "name": "Rajkot",
    "largest_member_code": 457,
    "members": [
-    457
+    457,
+    460,
+    673
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 457,
+     "child_code": 673,
+     "kind": "split",
+     "year": 2014
+    },
+    {
+     "parent_code": 460,
+     "child_code": 673,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_458",
    "name": "Sabar Kantha",
    "largest_member_code": 458,
    "members": [
-    458
+    458,
+    672
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 458,
+     "child_code": 672,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_459",
    "name": "Surat",
    "largest_member_code": 459,
    "members": [
-    459
+    459,
+    641
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_460",
-   "name": "Surendranagar",
-   "largest_member_code": 460,
-   "members": [
-    460
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 459,
+     "child_code": 641,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_461",
    "name": "Vadodara",
    "largest_member_code": 461,
    "members": [
-    461
+    461,
+    668
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 461,
+     "child_code": 668,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_462",
@@ -4483,9 +5375,17 @@
    "name": "Thane",
    "largest_member_code": 497,
    "members": [
-    497
+    497,
+    665
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 497,
+     "child_code": 665,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
   },
   {
    "unit_id": "su_498",
@@ -4516,210 +5416,463 @@
   },
   {
    "unit_id": "su_501",
-   "name": "Adilabad",
-   "largest_member_code": 501,
+   "name": "Krishna",
+   "largest_member_code": 510,
    "members": [
-    501
+    501,
+    505,
+    508,
+    509,
+    510,
+    513,
+    520,
+    522,
+    523,
+    680,
+    681,
+    682,
+    683,
+    684,
+    686,
+    687,
+    688,
+    689,
+    690,
+    691,
+    692,
+    699,
+    720,
+    744,
+    745,
+    746,
+    747,
+    748
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 686,
+     "child_code": 522,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 689,
+     "child_code": 522,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 501,
+     "child_code": 680,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 508,
+     "child_code": 681,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 508,
+     "child_code": 682,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 684,
+     "child_code": 682,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 508,
+     "child_code": 683,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 501,
+     "child_code": 684,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 508,
+     "child_code": 686,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 508,
+     "child_code": 687,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 522,
+     "child_code": 687,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 509,
+     "child_code": 688,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 522,
+     "child_code": 688,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 522,
+     "child_code": 689,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 509,
+     "child_code": 690,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 513,
+     "child_code": 691,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 508,
+     "child_code": 692,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 513,
+     "child_code": 692,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 522,
+     "child_code": 692,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 501,
+     "child_code": 699,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 509,
+     "child_code": 720,
+     "kind": "split",
+     "year": 2019
+    },
+    {
+     "parent_code": 522,
+     "child_code": 720,
+     "kind": "split",
+     "year": 2019
+    },
+    {
+     "parent_code": 520,
+     "child_code": 744,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 505,
+     "child_code": 745,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 509,
+     "child_code": 745,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 520,
+     "child_code": 745,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 505,
+     "child_code": 746,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 505,
+     "child_code": 747,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 509,
+     "child_code": 748,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 510,
+     "child_code": 748,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 523,
+     "child_code": 748,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_502",
    "name": "Anantapur",
    "largest_member_code": 502,
    "members": [
-    502
+    502,
+    754
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 502,
+     "child_code": 754,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_503",
-   "name": "Chittoor",
-   "largest_member_code": 503,
+   "name": "Spsr Nellore",
+   "largest_member_code": 515,
    "members": [
-    503
+    503,
+    504,
+    515,
+    752,
+    753
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_504",
-   "name": "Y.S.R.",
-   "largest_member_code": 504,
-   "members": [
-    504
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_505",
-   "name": "East Godavari",
-   "largest_member_code": 505,
-   "members": [
-    505
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 503,
+     "child_code": 752,
+     "kind": "split",
+     "year": 2010
+    },
+    {
+     "parent_code": 515,
+     "child_code": 752,
+     "kind": "split",
+     "year": 2010
+    },
+    {
+     "parent_code": 503,
+     "child_code": 753,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 504,
+     "child_code": 753,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_506",
    "name": "Guntur",
    "largest_member_code": 506,
    "members": [
-    506
+    506,
+    517,
+    750,
+    751
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 506,
+     "child_code": 750,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 517,
+     "child_code": 750,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 506,
+     "child_code": 751,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_507",
    "name": "Hyderabad",
    "largest_member_code": 507,
    "members": [
-    507
+    507,
+    512,
+    514,
+    518,
+    693,
+    694,
+    695,
+    696,
+    697,
+    698,
+    700,
+    721
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_508",
-   "name": "Karimnagar",
-   "largest_member_code": 508,
-   "members": [
-    508
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_509",
-   "name": "Khammam",
-   "largest_member_code": 509,
-   "members": [
-    509
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_510",
-   "name": "Krishna",
-   "largest_member_code": 510,
-   "members": [
-    510
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 518,
+     "child_code": 507,
+     "kind": "reported_together",
+     "year": 2017
+    },
+    {
+     "parent_code": 700,
+     "child_code": 507,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 512,
+     "child_code": 693,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 512,
+     "child_code": 694,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 512,
+     "child_code": 695,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 514,
+     "child_code": 696,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 514,
+     "child_code": 697,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 518,
+     "child_code": 697,
+     "kind": "reported_together",
+     "year": 2017
+    },
+    {
+     "parent_code": 700,
+     "child_code": 697,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 512,
+     "child_code": 698,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 518,
+     "child_code": 698,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 512,
+     "child_code": 721,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
   },
   {
    "unit_id": "su_511",
-   "name": "Kurnool",
-   "largest_member_code": 511,
+   "name": "Nandyal",
+   "largest_member_code": 755,
    "members": [
-    511
+    511,
+    755
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_512",
-   "name": "Mahabubnagar",
-   "largest_member_code": 512,
-   "members": [
-    512
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_513",
-   "name": "Medak",
-   "largest_member_code": 513,
-   "members": [
-    513
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_514",
-   "name": "Nalgonda",
-   "largest_member_code": 514,
-   "members": [
-    514
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_515",
-   "name": "Spsr Nellore",
-   "largest_member_code": 515,
-   "members": [
-    515
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 511,
+     "child_code": 755,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_516",
    "name": "Nizamabad",
    "largest_member_code": 516,
    "members": [
-    516
+    516,
+    685
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_517",
-   "name": "Prakasam",
-   "largest_member_code": 517,
-   "members": [
-    517
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_518",
-   "name": "Ranga Reddy",
-   "largest_member_code": 518,
-   "members": [
-    518
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 516,
+     "child_code": 685,
+     "kind": "split",
+     "year": 2017
+    }
+   ]
   },
   {
    "unit_id": "su_519",
-   "name": "Srikakulam",
-   "largest_member_code": 519,
-   "members": [
-    519
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_520",
-   "name": "Visakhapatanam",
-   "largest_member_code": 520,
-   "members": [
-    520
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_521",
    "name": "Vizianagaram",
    "largest_member_code": 521,
    "members": [
-    521
+    519,
+    521,
+    743
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_522",
-   "name": "Warangal",
-   "largest_member_code": 522,
-   "members": [
-    522
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_523",
-   "name": "West Godavari",
-   "largest_member_code": 523,
-   "members": [
-    523
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 519,
+     "child_code": 743,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 521,
+     "child_code": 743,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_524",
@@ -4765,12 +5918,27 @@
   },
   {
    "unit_id": "su_528",
-   "name": "Ballari",
-   "largest_member_code": 528,
+   "name": "Davangere",
+   "largest_member_code": 535,
    "members": [
-    528
+    528,
+    535,
+    738
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 528,
+     "child_code": 738,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 535,
+     "child_code": 738,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_529",
@@ -4827,15 +5995,6 @@
    "edges": []
   },
   {
-   "unit_id": "su_535",
-   "name": "Davangere",
-   "largest_member_code": 535,
-   "members": [
-    535
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_536",
    "name": "Dharwad",
    "largest_member_code": 536,
@@ -4858,9 +6017,17 @@
    "name": "Kalaburagi",
    "largest_member_code": 538,
    "members": [
-    538
+    538,
+    635
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 538,
+     "child_code": 635,
+     "kind": "split",
+     "year": 2010
+    }
+   ]
   },
   {
    "unit_id": "su_539",
@@ -4891,12 +6058,20 @@
   },
   {
    "unit_id": "su_542",
-   "name": "Kolar",
-   "largest_member_code": 542,
+   "name": "Chikkaballapura",
+   "largest_member_code": 630,
    "members": [
-    542
+    542,
+    630
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 542,
+     "child_code": 630,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_543",
@@ -5137,9 +6312,24 @@
    "name": "Coimbatore",
    "largest_member_code": 569,
    "members": [
-    569
+    569,
+    573,
+    634
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 569,
+     "child_code": 634,
+     "kind": "split",
+     "year": 2009
+    },
+    {
+     "parent_code": 573,
+     "child_code": 634,
+     "kind": "split",
+     "year": 2009
+    }
+   ]
   },
   {
    "unit_id": "su_570",
@@ -5155,9 +6345,17 @@
    "name": "Dharmapuri",
    "largest_member_code": 571,
    "members": [
-    571
+    571,
+    577
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 571,
+     "child_code": 577,
+     "kind": "split",
+     "year": 2004
+    }
+   ]
   },
   {
    "unit_id": "su_572",
@@ -5169,22 +6367,21 @@
    "edges": []
   },
   {
-   "unit_id": "su_573",
-   "name": "Erode",
-   "largest_member_code": 573,
-   "members": [
-    573
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_574",
-   "name": "Kanchipuram",
-   "largest_member_code": 574,
+   "name": "Chengalpattu",
+   "largest_member_code": 730,
    "members": [
-    574
+    574,
+    730
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 574,
+     "child_code": 730,
+     "kind": "split",
+     "year": 2020
+    }
+   ]
   },
   {
    "unit_id": "su_575",
@@ -5205,15 +6402,6 @@
    "edges": []
   },
   {
-   "unit_id": "su_577",
-   "name": "Krishnagiri",
-   "largest_member_code": 577,
-   "members": [
-    577
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_578",
    "name": "Madurai",
    "largest_member_code": 578,
@@ -5227,9 +6415,17 @@
    "name": "Nagapattinam",
    "largest_member_code": 579,
    "members": [
-    579
+    579,
+    735
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 735,
+     "child_code": 579,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_580",
@@ -5344,9 +6540,17 @@
    "name": "Tirunelveli",
    "largest_member_code": 592,
    "members": [
-    592
+    592,
+    733
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 592,
+     "child_code": 733,
+     "kind": "split",
+     "year": 2020
+    }
+   ]
   },
   {
    "unit_id": "su_593",
@@ -5368,21 +6572,44 @@
   },
   {
    "unit_id": "su_595",
-   "name": "Vellore",
-   "largest_member_code": 595,
+   "name": "Tirupathur",
+   "largest_member_code": 732,
    "members": [
-    595
+    595,
+    731,
+    732
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 595,
+     "child_code": 731,
+     "kind": "split",
+     "year": 2020
+    },
+    {
+     "parent_code": 595,
+     "child_code": 732,
+     "kind": "split",
+     "year": 2020
+    }
+   ]
   },
   {
    "unit_id": "su_596",
    "name": "Villupuram",
    "largest_member_code": 596,
    "members": [
-    596
+    596,
+    729
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 596,
+     "child_code": 729,
+     "kind": "split",
+     "year": 2020
+    }
+   ]
   },
   {
    "unit_id": "su_597",
@@ -5395,39 +6622,34 @@
   },
   {
    "unit_id": "su_598",
-   "name": "Karaikal",
-   "largest_member_code": 598,
-   "members": [
-    598
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_599",
-   "name": "Mahe",
-   "largest_member_code": 599,
-   "members": [
-    599
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_600",
    "name": "Pondicherry",
    "largest_member_code": 600,
    "members": [
-    600
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_601",
-   "name": "Yanam",
-   "largest_member_code": 601,
-   "members": [
+    598,
+    599,
+    600,
     601
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 600,
+     "child_code": 598,
+     "kind": "split",
+     "year": 2006
+    },
+    {
+     "parent_code": 599,
+     "child_code": 600,
+     "kind": "reported_together",
+     "year": 2001
+    },
+    {
+     "parent_code": 601,
+     "child_code": 600,
+     "kind": "reported_together",
+     "year": 2001
+    }
+   ]
   },
   {
    "unit_id": "su_602",
@@ -5456,47 +6678,11 @@
    "edges": []
   },
   {
-   "unit_id": "su_604",
-   "name": "Nuh",
-   "largest_member_code": 604,
-   "members": [
-    604
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_605",
    "name": "Barnala",
    "largest_member_code": 605,
    "members": [
     605
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_606",
-   "name": "Khunti",
-   "largest_member_code": 606,
-   "members": [
-    606
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_607",
-   "name": "Ramgarh",
-   "largest_member_code": 607,
-   "members": [
-    607
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_608",
-   "name": "S.A.S Nagar",
-   "largest_member_code": 608,
-   "members": [
-    608
    ],
    "edges": []
   },
@@ -5528,15 +6714,6 @@
    "edges": []
   },
   {
-   "unit_id": "su_612",
-   "name": "Chirang",
-   "largest_member_code": 612,
-   "members": [
-    612
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_613",
    "name": "Peren",
    "largest_member_code": 613,
@@ -5555,56 +6732,11 @@
    "edges": []
   },
   {
-   "unit_id": "su_615",
-   "name": "Longleng",
-   "largest_member_code": 615,
-   "members": [
-    615
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_616",
-   "name": "Baksa",
-   "largest_member_code": 616,
-   "members": [
-    616
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_617",
-   "name": "Udalguri",
-   "largest_member_code": 617,
-   "members": [
-    617
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_618",
    "name": "Kamrup Metro",
    "largest_member_code": 618,
    "members": [
     618
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_619",
-   "name": "Palwal",
-   "largest_member_code": 619,
-   "members": [
-    619
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_620",
-   "name": "Kishtwar",
-   "largest_member_code": 620,
-   "members": [
-    620
    ],
    "edges": []
   },
@@ -5627,33 +6759,6 @@
    "edges": []
   },
   {
-   "unit_id": "su_623",
-   "name": "Bandipora",
-   "largest_member_code": 623,
-   "members": [
-    623
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_624",
-   "name": "Samba",
-   "largest_member_code": 624,
-   "members": [
-    624
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_625",
-   "name": "Shopian",
-   "largest_member_code": 625,
-   "members": [
-    625
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_626",
    "name": "Ganderbal",
    "largest_member_code": 626,
@@ -5672,173 +6777,11 @@
    "edges": []
   },
   {
-   "unit_id": "su_628",
-   "name": "Anjaw",
-   "largest_member_code": 628,
-   "members": [
-    628
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_629",
-   "name": "Pratapgarh",
-   "largest_member_code": 629,
-   "members": [
-    629
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_630",
-   "name": "Chikkaballapura",
-   "largest_member_code": 630,
-   "members": [
-    630
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_633",
-   "name": "Kasganj",
-   "largest_member_code": 633,
-   "members": [
-    633
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_634",
-   "name": "Tiruppur",
-   "largest_member_code": 634,
-   "members": [
-    634
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_635",
-   "name": "Yadgir",
-   "largest_member_code": 635,
-   "members": [
-    635
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_636",
    "name": "Bijapur",
    "largest_member_code": 636,
    "members": [
     636
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_637",
-   "name": "Narayanpur",
-   "largest_member_code": 637,
-   "members": [
-    637
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_638",
-   "name": "Singrauli",
-   "largest_member_code": 638,
-   "members": [
-    638
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_639",
-   "name": "Alirajpur",
-   "largest_member_code": 639,
-   "members": [
-    639
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_640",
-   "name": "Amethi",
-   "largest_member_code": 640,
-   "members": [
-    640
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_641",
-   "name": "Tapi",
-   "largest_member_code": 641,
-   "members": [
-    641
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_642",
-   "name": "Sukma",
-   "largest_member_code": 642,
-   "members": [
-    642
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_643",
-   "name": "Kondagaon",
-   "largest_member_code": 643,
-   "members": [
-    643
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_644",
-   "name": "Baloda Bazar",
-   "largest_member_code": 644,
-   "members": [
-    644
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_645",
-   "name": "Gariyaband",
-   "largest_member_code": 645,
-   "members": [
-    645
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_646",
-   "name": "Balod",
-   "largest_member_code": 646,
-   "members": [
-    646
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_647",
-   "name": "Mungeli",
-   "largest_member_code": 647,
-   "members": [
-    647
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_648",
-   "name": "Surajpur",
-   "largest_member_code": 648,
-   "members": [
-    648
    ],
    "edges": []
   },
@@ -5852,1208 +6795,11 @@
    "edges": []
   },
   {
-   "unit_id": "su_650",
-   "name": "Bemetara",
-   "largest_member_code": 650,
-   "members": [
-    650
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_651",
-   "name": "Fazilka",
-   "largest_member_code": 651,
-   "members": [
-    651
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_652",
-   "name": "Khowai",
-   "largest_member_code": 652,
-   "members": [
-    652
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_653",
-   "name": "Sepahijala",
-   "largest_member_code": 653,
-   "members": [
-    653
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_654",
-   "name": "Gomati",
-   "largest_member_code": 654,
-   "members": [
-    654
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_655",
-   "name": "Unakoti",
-   "largest_member_code": 655,
-   "members": [
-    655
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_656",
-   "name": "North Garo Hills",
-   "largest_member_code": 656,
-   "members": [
-    656
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_657",
-   "name": "East Jaintia Hills",
-   "largest_member_code": 657,
-   "members": [
-    657
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_658",
-   "name": "South West Khasi Hills",
-   "largest_member_code": 658,
-   "members": [
-    658
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_659",
-   "name": "Sambhal",
-   "largest_member_code": 659,
-   "members": [
-    659
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_660",
-   "name": "Shamli",
-   "largest_member_code": 660,
-   "members": [
-    660
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_661",
-   "name": "Hapur",
-   "largest_member_code": 661,
-   "members": [
-    661
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_662",
-   "name": "Pathankot",
-   "largest_member_code": 662,
-   "members": [
-    662
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_663",
-   "name": "South West Garo Hills",
-   "largest_member_code": 663,
-   "members": [
-    663
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_664",
-   "name": "Alipurduar",
-   "largest_member_code": 664,
-   "members": [
-    664
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_665",
-   "name": "Palghar",
-   "largest_member_code": 665,
-   "members": [
-    665
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_666",
-   "name": "Longding",
-   "largest_member_code": 666,
-   "members": [
-    666
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_667",
-   "name": "Agar Malwa",
-   "largest_member_code": 667,
-   "members": [
-    667
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_668",
-   "name": "Chhotaudepur",
-   "largest_member_code": 668,
-   "members": [
-    668
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_669",
-   "name": "Mahisagar",
-   "largest_member_code": 669,
-   "members": [
-    669
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_670",
-   "name": "South East",
-   "largest_member_code": 670,
-   "members": [
-    670
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_671",
-   "name": "Shahdara",
-   "largest_member_code": 671,
-   "members": [
-    671
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_672",
-   "name": "Arvalli",
-   "largest_member_code": 672,
-   "members": [
-    672
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_673",
-   "name": "Morbi",
-   "largest_member_code": 673,
-   "members": [
-    673
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_674",
-   "name": "Devbhumi Dwarka",
-   "largest_member_code": 674,
-   "members": [
-    674
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_675",
-   "name": "Gir Somnath",
-   "largest_member_code": 675,
-   "members": [
-    675
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_676",
-   "name": "Botad",
-   "largest_member_code": 676,
-   "members": [
-    676
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_677",
-   "name": "Kra Daadi",
-   "largest_member_code": 677,
-   "members": [
-    677
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_678",
-   "name": "Namsai",
-   "largest_member_code": 678,
-   "members": [
-    678
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_679",
-   "name": "Siang",
-   "largest_member_code": 679,
-   "members": [
-    679
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_680",
-   "name": "Nirmal",
-   "largest_member_code": 680,
-   "members": [
-    680
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_681",
-   "name": "Jagitial",
-   "largest_member_code": 681,
-   "members": [
-    681
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_682",
-   "name": "Peddapalli",
-   "largest_member_code": 682,
-   "members": [
-    682
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_683",
-   "name": "Rajanna Sircilla",
-   "largest_member_code": 683,
-   "members": [
-    683
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_684",
-   "name": "Mancherial",
-   "largest_member_code": 684,
-   "members": [
-    684
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_685",
-   "name": "Kamareddy",
-   "largest_member_code": 685,
-   "members": [
-    685
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_686",
-   "name": "Hanumakonda",
-   "largest_member_code": 686,
-   "members": [
-    686
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_687",
-   "name": "Jayashankar Bhupalapally",
-   "largest_member_code": 687,
-   "members": [
-    687
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_688",
-   "name": "Mahabubabad",
-   "largest_member_code": 688,
-   "members": [
-    688
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_689",
-   "name": "Jangoan",
-   "largest_member_code": 689,
-   "members": [
-    689
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_690",
-   "name": "Bhadradri Kothagudem",
-   "largest_member_code": 690,
-   "members": [
-    690
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_691",
-   "name": "Sangareddy",
-   "largest_member_code": 691,
-   "members": [
-    691
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_692",
-   "name": "Siddipet",
-   "largest_member_code": 692,
-   "members": [
-    692
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_693",
-   "name": "Wanaparthy",
-   "largest_member_code": 693,
-   "members": [
-    693
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_694",
-   "name": "Nagarkurnool",
-   "largest_member_code": 694,
-   "members": [
-    694
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_695",
-   "name": "Jogulamba Gadwal",
-   "largest_member_code": 695,
-   "members": [
-    695
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_696",
-   "name": "Suryapet",
-   "largest_member_code": 696,
-   "members": [
-    696
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_697",
-   "name": "Yadadri Bhuvanagiri",
-   "largest_member_code": 697,
-   "members": [
-    697
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_698",
-   "name": "Vikarabad",
-   "largest_member_code": 698,
-   "members": [
-    698
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_699",
-   "name": "Kumuram Bheem Asifabad",
-   "largest_member_code": 699,
-   "members": [
-    699
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_700",
-   "name": "Medchal Malkajgiri",
-   "largest_member_code": 700,
-   "members": [
-    700
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_701",
-   "name": "Charki Dadri",
-   "largest_member_code": 701,
-   "members": [
-    701
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_702",
-   "name": "Kalimpong",
-   "largest_member_code": 702,
-   "members": [
-    702
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_703",
-   "name": "Jhargram",
-   "largest_member_code": 703,
-   "members": [
-    703
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_704",
-   "name": "Paschim Bardhaman",
-   "largest_member_code": 704,
-   "members": [
-    704
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_705",
-   "name": "Biswanath",
-   "largest_member_code": 705,
-   "members": [
-    705
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_706",
-   "name": "Majuli",
-   "largest_member_code": 706,
-   "members": [
-    706
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_707",
-   "name": "South Salmara Mancachar",
-   "largest_member_code": 707,
-   "members": [
-    707
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_708",
-   "name": "Charaideo",
-   "largest_member_code": 708,
-   "members": [
-    708
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_709",
-   "name": "Hojai",
-   "largest_member_code": 709,
-   "members": [
-    709
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_710",
-   "name": "West Karbi Anglong",
-   "largest_member_code": 710,
-   "members": [
-    710
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_711",
-   "name": "Kakching",
-   "largest_member_code": 711,
-   "members": [
-    711
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_712",
-   "name": "Kangpokpi",
-   "largest_member_code": 712,
-   "members": [
-    712
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_713",
-   "name": "Jiribam",
-   "largest_member_code": 713,
-   "members": [
-    713
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_714",
-   "name": "Noney",
-   "largest_member_code": 714,
-   "members": [
-    714
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_715",
-   "name": "Pherzawl",
-   "largest_member_code": 715,
-   "members": [
-    715
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_716",
-   "name": "Tengnoupal",
-   "largest_member_code": 716,
-   "members": [
-    716
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_717",
-   "name": "Kamjong",
-   "largest_member_code": 717,
-   "members": [
-    717
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_718",
-   "name": "Kamle",
-   "largest_member_code": 718,
-   "members": [
-    718
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_719",
-   "name": "Lower Siang",
-   "largest_member_code": 719,
-   "members": [
-    719
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_720",
-   "name": "Mulugu",
-   "largest_member_code": 720,
-   "members": [
-    720
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_721",
-   "name": "Narayanpet",
-   "largest_member_code": 721,
-   "members": [
-    721
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_722",
-   "name": "Niwari",
-   "largest_member_code": 722,
-   "members": [
-    722
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_723",
-   "name": "Pakke Kessang",
-   "largest_member_code": 723,
-   "members": [
-    723
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_724",
-   "name": "Leparada",
-   "largest_member_code": 724,
-   "members": [
-    724
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_725",
-   "name": "Shi Yomi",
-   "largest_member_code": 725,
-   "members": [
-    725
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_726",
-   "name": "Hnahthial",
-   "largest_member_code": 726,
-   "members": [
-    726
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_727",
-   "name": "Saitual",
-   "largest_member_code": 727,
-   "members": [
-    727
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_728",
-   "name": "Khawzawl",
-   "largest_member_code": 728,
-   "members": [
-    728
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_729",
-   "name": "Kallakurichi",
-   "largest_member_code": 729,
-   "members": [
-    729
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_730",
-   "name": "Chengalpattu",
-   "largest_member_code": 730,
-   "members": [
-    730
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_731",
-   "name": "Ranipet",
-   "largest_member_code": 731,
-   "members": [
-    731
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_732",
-   "name": "Tirupathur",
-   "largest_member_code": 732,
-   "members": [
-    732
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_733",
-   "name": "Tenkasi",
-   "largest_member_code": 733,
-   "members": [
-    733
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_734",
-   "name": "Gaurella Pendra Marwahi",
-   "largest_member_code": 734,
-   "members": [
-    734
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_735",
-   "name": "Mayiladuthurai",
-   "largest_member_code": 735,
-   "members": [
-    735
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_736",
-   "name": "Noklak",
-   "largest_member_code": 736,
-   "members": [
-    736
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_737",
-   "name": "Malerkotla",
-   "largest_member_code": 737,
-   "members": [
-    737
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_738",
-   "name": "Vijayanagar",
-   "largest_member_code": 738,
-   "members": [
-    738
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_739",
-   "name": "Bajali",
-   "largest_member_code": 739,
-   "members": [
-    739
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_740",
-   "name": "Eastern West Khasi Hills",
-   "largest_member_code": 740,
-   "members": [
-    740
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_741",
-   "name": "Pakyong",
-   "largest_member_code": 741,
-   "members": [
-    741
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_742",
-   "name": "Soreng",
-   "largest_member_code": 742,
-   "members": [
-    742
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_743",
-   "name": "Parvathipuram Manyam",
-   "largest_member_code": 743,
-   "members": [
-    743
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_744",
-   "name": "Anakapalli",
-   "largest_member_code": 744,
-   "members": [
-    744
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_745",
-   "name": "Alluri Sitharama Raju",
-   "largest_member_code": 745,
-   "members": [
-    745
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_746",
-   "name": "Kakinada",
-   "largest_member_code": 746,
-   "members": [
-    746
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_747",
-   "name": "Konaseema",
-   "largest_member_code": 747,
-   "members": [
-    747
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_748",
-   "name": "Eluru",
-   "largest_member_code": 748,
-   "members": [
-    748
-   ],
-   "edges": []
-  },
-  {
    "unit_id": "su_749",
    "name": "Ntr",
    "largest_member_code": 749,
    "members": [
     749
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_750",
-   "name": "Bapatla",
-   "largest_member_code": 750,
-   "members": [
-    750
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_751",
-   "name": "Palnadu",
-   "largest_member_code": 751,
-   "members": [
-    751
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_752",
-   "name": "Tirupati",
-   "largest_member_code": 752,
-   "members": [
-    752
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_753",
-   "name": "Annamayya",
-   "largest_member_code": 753,
-   "members": [
-    753
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_754",
-   "name": "Sri Sathya Sai",
-   "largest_member_code": 754,
-   "members": [
-    754
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_755",
-   "name": "Nandyal",
-   "largest_member_code": 755,
-   "members": [
-    755
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_756",
-   "name": "Tamulpur",
-   "largest_member_code": 756,
-   "members": [
-    756
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_757",
-   "name": "Tseminyu",
-   "largest_member_code": 757,
-   "members": [
-    757
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_758",
-   "name": "Chumoukedima",
-   "largest_member_code": 758,
-   "members": [
-    758
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_759",
-   "name": "Khairgarh Chhuikhadan Gandai",
-   "largest_member_code": 759,
-   "members": [
-    759
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_760",
-   "name": "Manendragarh Chirimiri Bharatpur",
-   "largest_member_code": 760,
-   "members": [
-    760
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_761",
-   "name": "Mohla Manpur Ambagarh Chouki",
-   "largest_member_code": 761,
-   "members": [
-    761
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_762",
-   "name": "Sakti",
-   "largest_member_code": 762,
-   "members": [
-    762
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_763",
-   "name": "Sarangarh Bilaigarh",
-   "largest_member_code": 763,
-   "members": [
-    763
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_764",
-   "name": "Niuland",
-   "largest_member_code": 764,
-   "members": [
-    764
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_765",
-   "name": "Shamator",
-   "largest_member_code": 765,
-   "members": [
-    765
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_766",
-   "name": "Itanagar capital complex",
-   "largest_member_code": 766,
-   "members": [
-    766
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_767",
-   "name": "Deeg",
-   "largest_member_code": 767,
-   "members": [
-    767
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_768",
-   "name": "Didwana Kuchaman",
-   "largest_member_code": 768,
-   "members": [
-    768
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_769",
-   "name": "Dudu",
-   "largest_member_code": 769,
-   "members": [
-    769
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_770",
-   "name": "Khairthal-Tijara",
-   "largest_member_code": 770,
-   "members": [
-    770
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_771",
-   "name": "Gangapurcity",
-   "largest_member_code": 771,
-   "members": [
-    771
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_772",
-   "name": "Phalodi",
-   "largest_member_code": 772,
-   "members": [
-    772
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_773",
-   "name": "Neem Ka Thana",
-   "largest_member_code": 773,
-   "members": [
-    773
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_774",
-   "name": "Beawar",
-   "largest_member_code": 774,
-   "members": [
-    774
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_775",
-   "name": "Balotra",
-   "largest_member_code": 775,
-   "members": [
-    775
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_776",
-   "name": "Anoopgarh",
-   "largest_member_code": 776,
-   "members": [
-    776
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_777",
-   "name": "Salumbar",
-   "largest_member_code": 777,
-   "members": [
-    777
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_778",
-   "name": "Jodhpur Gramin",
-   "largest_member_code": 778,
-   "members": [
-    778
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_779",
-   "name": "Sanchor",
-   "largest_member_code": 779,
-   "members": [
-    779
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_780",
-   "name": "Shahpura",
-   "largest_member_code": 780,
-   "members": [
-    780
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_781",
-   "name": "Kekri",
-   "largest_member_code": 781,
-   "members": [
-    781
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_782",
-   "name": "Kotputli-Behror",
-   "largest_member_code": 782,
-   "members": [
-    782
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_783",
-   "name": "Jaipur Gramin",
-   "largest_member_code": 783,
-   "members": [
-    783
    ],
    "edges": []
   }
