@@ -1,10 +1,10 @@
 {
  "meta": {
-  "generated": "2026-09-27",
+  "generated": "2026-10-04",
   "n_nodes": 784,
-  "n_groups": 784,
-  "n_edges_used": 0,
-  "largest_group_size": 1,
+  "n_groups": 777,
+  "n_edges_used": 7,
+  "largest_group_size": 3,
   "n_edges_skipped": 0,
   "skipped_edges": []
  },
@@ -2108,12 +2108,20 @@
   },
   {
    "unit_id": "su_233",
-   "name": "Kurung Kumey",
-   "largest_member_code": 233,
+   "name": "Lower Subansiri",
+   "largest_member_code": 236,
    "members": [
-    233
+    233,
+    236
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 236,
+     "child_code": 233,
+     "kind": "split",
+     "year": 2003
+    }
+   ]
   },
   {
    "unit_id": "su_234",
@@ -2130,15 +2138,6 @@
    "largest_member_code": 235,
    "members": [
     235
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_236",
-   "name": "Lower Subansiri",
-   "largest_member_code": 236,
-   "members": [
-    236
    ],
    "edges": []
   },
@@ -2867,18 +2866,17 @@
    "name": "Medinipur East",
    "largest_member_code": 317,
    "members": [
-    317
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_318",
-   "name": "Medinipur West",
-   "largest_member_code": 318,
-   "members": [
+    317,
     318
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 318,
+     "child_code": 317,
+     "kind": "split",
+     "year": 2002
+    }
+   ]
   },
   {
    "unit_id": "su_319",
@@ -3521,21 +3519,37 @@
   },
   {
    "unit_id": "su_390",
-   "name": "Anuppur",
-   "largest_member_code": 390,
+   "name": "Shahdol",
+   "largest_member_code": 429,
    "members": [
-    390
+    390,
+    429
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 429,
+     "child_code": 390,
+     "kind": "split",
+     "year": 2003
+    }
+   ]
   },
   {
    "unit_id": "su_391",
    "name": "Ashoknagar",
    "largest_member_code": 391,
    "members": [
-    391
+    391,
+    406
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 406,
+     "child_code": 391,
+     "kind": "split",
+     "year": 2003
+    }
+   ]
   },
   {
    "unit_id": "su_392",
@@ -3660,15 +3674,6 @@
    "largest_member_code": 405,
    "members": [
     405
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_406",
-   "name": "Guna",
-   "largest_member_code": 406,
-   "members": [
-    406
    ],
    "edges": []
   },
@@ -3867,15 +3872,6 @@
    "largest_member_code": 428,
    "members": [
     428
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_429",
-   "name": "Shahdol",
-   "largest_member_code": 429,
-   "members": [
-    429
    ],
    "edges": []
   },
@@ -4739,18 +4735,24 @@
    "name": "Bengaluru Urban",
    "largest_member_code": 525,
    "members": [
-    525
+    525,
+    526,
+    631
    ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_526",
-   "name": "Bengaluru Rural",
-   "largest_member_code": 526,
-   "members": [
-    526
-   ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 526,
+     "child_code": 525,
+     "kind": "reported_together",
+     "year": 2016
+    },
+    {
+     "parent_code": 526,
+     "child_code": 631,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_527",
@@ -5432,9 +5434,17 @@
    "name": "South Andamans",
    "largest_member_code": 602,
    "members": [
-    602
+    602,
+    632
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 602,
+     "child_code": 632,
+     "kind": "split",
+     "year": 2012
+    }
+   ]
   },
   {
    "unit_id": "su_603",
@@ -5685,24 +5695,6 @@
    "largest_member_code": 630,
    "members": [
     630
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_631",
-   "name": "Ramanagara",
-   "largest_member_code": 631,
-   "members": [
-    631
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_632",
-   "name": "North And Middle Andaman",
-   "largest_member_code": 632,
-   "members": [
-    632
    ],
    "edges": []
   },
