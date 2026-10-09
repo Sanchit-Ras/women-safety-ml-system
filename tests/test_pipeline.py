@@ -3,6 +3,7 @@ records come only from verified decisions, every rule leaves a visible mark, and
 import csv
 import json
 
+import openpyxl
 import pandas as pd
 import pytest
 
@@ -21,8 +22,8 @@ def write_csv(path, header, rows):
     return path
 
 
-def unit_row(unit, code, kind, stage, verified, state="andhra pradesh"):
-    return {"era": "2001_2014", "state": state, "state_code": "28", "unit": unit, "first_year": "2001", "last_year": "2014",
+def unit_row(unit, code, kind, stage, verified, state="andhra pradesh", era="2001_2014"):
+    return {"era": era, "state": state, "state_code": "28", "unit": unit, "first_year": "2001", "last_year": "2014",
             "n_years": "14", "district_code": code, "district_name": "", "kind": kind, "stage": stage, "confidence": "1",
             "reason": "fixture", "candidates": "", "geo_code": "", "geo_share": "", "proposed_by": "rule",
             "verified": verified, "reviewer_note": ""}
@@ -59,9 +60,22 @@ def world(tmp_path):
             [2, 2018, "Andhra Pradesh", 28, "Y.S.R.", 504, "Kadapa", 10, 2, 0, 3, ""],            # ransom empty for all of 2018
         ]),
     }
+    wb = openpyxl.Workbook()                                                                  # NCRB's 2015 workbook shape
+    ws = wb.active
+    ws.append(["District-wise Crimes committed against Women during 2015"])
+    ws.append(["SL", "District", "YEAR", "Rape", "Rape_Gang Rape", "Attempt to commit Rape"])
+    ws.append(["State: Andhra Pradesh"])
+    ws.append([1, "Anantapur", 2015, 40, 2, 3])
+    ws.append([2, "Guntakal Railway", 2015, 1, 0, 0])
+    ws.append([3, "Total District(s)", None, 41, 2, 3])
+    ws.append(["Source: Crime in India"])
+    wb.save(tmp_path / "d.xlsx")
+    raw["2015"] = tmp_path / "d.xlsx"
     csvs = {"crosswalk": tmp_path / "crosswalk.csv", "column_fixes": tmp_path / "fixes.csv",
             "unit_map": tmp_path / "unit_map.csv", "lineage": tmp_path / "lineage.csv"}
-    xrows = [xwalk_row("2016", "rape", "rape"), xwalk_row("2016", "acid_attack", "acid_attack"),
+    xrows = [xwalk_row("2015", "Rape", "rape"), xwalk_row("2015", "Rape_Gang Rape", "excluded"),
+             xwalk_row("2015", "Attempt to commit Rape", "attempt_to_rape"),
+             xwalk_row("2016", "rape", "rape"), xwalk_row("2016", "acid_attack", "acid_attack"),
              xwalk_row("2017_plus", "rape_women_above_18", "rape"), xwalk_row("2017_plus", "rape_girls_below_18", "rape"),
              xwalk_row("2017_plus", "attempt_to_commit_rape_girls_below_18", "attempt_to_rape"),
              xwalk_row("2017_plus", "acid_attack", "acid_attack"), xwalk_row("2017_plus", "kidnapping_for_ransom", "kidnapping_abduction")]
@@ -71,9 +85,12 @@ def world(tmp_path):
         w.writerows(xrows)
     write_csv(csvs["column_fixes"], ["era", "year_from", "year_to", "file_column", "actual_column", "evidence", "verified", "reviewer_note"],
               [["2017_plus", 2018, 2022, "attempt_to_commit_rape_girls_below_18", "rape_girls_below_18", "fixture", 1, ""]])
-    resolver.write_rows(csvs["unit_map"], {("andhra pradesh", "anantapur"): unit_row("anantapur", "502", "district", "exact", "1"),
-                                           ("andhra pradesh", "railways"): unit_row("railways", "", "railway", "llm", "1"),
-                                           ("andhra pradesh", "mystery"): unit_row("mystery", "", "unknown", "unresolved", "0")})
+    resolver.write_rows(csvs["unit_map"], {
+        ("2001_2014", "andhra pradesh", "anantapur"): unit_row("anantapur", "502", "district", "exact", "1"),
+        ("2001_2014", "andhra pradesh", "railways"): unit_row("railways", "", "railway", "llm", "1"),
+        ("2001_2014", "andhra pradesh", "mystery"): unit_row("mystery", "", "unknown", "unresolved", "0"),
+        ("2015", "andhra pradesh", "anantapur"): unit_row("anantapur", "502", "district", "exact", "1", era="2015"),
+        ("2015", "andhra pradesh", "guntakal railway"): unit_row("guntakal railway", "", "railway", "llm", "1", era="2015")})
     lineage.write_rows(csvs["lineage"], {
         ("502", "504", "split"): {"parent_code": "502", "parent_name": "Anantapur", "child_code": "504", "child_name": "Y.S.R.",
                                   "kind": "split", "year": "2017", "evidence": "", "confidence": "1.00", "reason": "fixture",
@@ -151,6 +168,23 @@ def test_a_verified_unit_map_row_for_a_model_era_overrides_the_file_code(world):
     assert record(conn, district="Y.S.R.", year=2018)["district_code"] == 502
 
 
+def test_the_2015_workbook_counts_totals_not_parts_and_resolves_units_through_the_unit_map(world):
+    conn = world["conn"]
+    crosswalk.apply(conn, csv_path=world["csvs"]["crosswalk"])
+    resolver.apply(conn, csv_path=world["csvs"]["unit_map"])
+    loaders.load_raw_rows(conn, "2015", world["raw"]["2015"])
+    s = loaders.build_records(conn, "2015", registry=REGISTRY)
+    assert (s["records"], s["unallocated"], s["unmapped_units"], s["extended_rows"]) == (2, 1, [], 2)   # a zero count is still a row
+    r = record(conn, district="Anantapur", year=2015)
+    assert (r["rape"], r["district_code"], r["state_code"], r["registration_circle"]) == (40, 502, 28, None)  # the gang-rape part is excluded: 40, not 42
+    assert record(conn, district="Guntakal Railway", year=2015)["district_code"] is None
+    raw = json.loads(conn.execute("SELECT payload_json FROM raw_rows WHERE era = '2015' AND source_row = 4").fetchone()[0])
+    assert (raw["state_name"], raw["district"], raw["Rape"]) == ("Andhra Pradesh", "Anantapur", "40")
+    ext = conn.execute("SELECT r.district, e.category, e.count FROM extended_counts e JOIN records r ON r.id = e.record_id "
+                       "WHERE r.era = '2015' ORDER BY r.id").fetchall()
+    assert [tuple(x) for x in ext] == [("Anantapur", "attempt_to_rape", 3), ("Guntakal Railway", "attempt_to_rape", 0)]
+
+
 def test_validator_marks_every_rule_and_never_changes_a_count(world):
     conn = world["conn"]
     resolver.apply(conn, csv_path=world["csvs"]["unit_map"])
@@ -172,18 +206,21 @@ def test_validator_marks_every_rule_and_never_changes_a_count(world):
 def test_build_produces_the_panel_the_parquet_file_and_a_trace_and_is_a_no_op_when_rerun(world):
     conn = world["conn"]
     out = run_build(world)
-    assert out["panel"] == {"rows": 10, "districts": 2, "unallocated_rows": 1, "years": [2001, 2018], "records_left_out_pending": 1,
+    assert out["panel"] == {"rows": 12, "districts": 2, "unallocated_rows": 2, "years": [2001, 2018], "records_left_out_pending": 1,
                             "parquet": str(world["tmp"] / "panel.parquet")}
     table = {(r["unit_id"], r["year"]): dict(r) for r in conn.execute("SELECT * FROM panel_observed")}
     assert table[("d502", 2004)]["rape"] == 500 and table[("d502", 2004)]["n_records"] == 1
     assert (table[("s28u", 2001)]["rape"], table[("s28u", 2001)]["n_records"]) == (1, 2)          # the two railway rows, summed; MYSTERY left out
+    assert table[("d502", 2015)]["rape"] == 40 and table[("s28u", 2015)]["era"] == "2015"           # the workbook year fills the gap
     assert table[("d502", 2018)]["rape"] == 36 and table[("d504", 2018)]["era"] == "2017_plus"
-    assert len(pd.read_parquet(world["tmp"] / "panel.parquet")) == 10
+    assert len(pd.read_parquet(world["tmp"] / "panel.parquet")) == 12
     steps = [json.loads(l)["step"] for l in open(out["trace"], encoding="utf-8")]
-    assert steps == ["inputs", "wipe_derived", "crosswalk_apply", "unit_map_apply", "lineage_apply", "raw_rows:2001_2014", "raw_rows:2016",
-                     "raw_rows:2017_plus", "records:2001_2014", "records:2016", "records:2017_plus", "validate", "panel"]
+    assert steps == ["inputs", "wipe_derived", "crosswalk_apply", "unit_map_apply", "lineage_apply", "raw_rows:2001_2014", "raw_rows:2015",
+                     "raw_rows:2016", "raw_rows:2017_plus", "records:2001_2014", "records:2015", "records:2016", "records:2017_plus",
+                     "validate", "panel"]
     first = json.loads(open(out["trace"], encoding="utf-8").readline())
-    assert set(first["result"]["files"]) == {"raw:2001_2014", "raw:2016", "raw:2017_plus", "csv:crosswalk", "csv:column_fixes", "csv:unit_map", "csv:lineage"}
+    assert set(first["result"]["files"]) == {"raw:2001_2014", "raw:2015", "raw:2016", "raw:2017_plus", "csv:crosswalk", "csv:column_fixes",
+                                             "csv:unit_map", "csv:lineage"}
     assert (world["tmp"] / "traces" / "latest.jsonl").read_text(encoding="utf-8") == open(out["trace"], encoding="utf-8").read()
     escalations = conn.execute("SELECT COUNT(*) FROM escalations").fetchone()[0]
 
@@ -191,5 +228,5 @@ def test_build_produces_the_panel_the_parquet_file_and_a_trace_and_is_a_no_op_wh
     lines = [json.loads(l) for l in open(again["trace"], encoding="utf-8")]
     assert all(l["result"]["inserted"] == 0 for l in lines if l["step"].startswith("raw_rows"))  # nothing new to copy
     assert conn.execute("SELECT COUNT(*) FROM escalations").fetchone()[0] == escalations           # nothing queued twice
-    assert conn.execute("SELECT COUNT(*) FROM panel_observed").fetchone()[0] == 10
+    assert conn.execute("SELECT COUNT(*) FROM panel_observed").fetchone()[0] == 12
     assert conn.execute("SELECT COUNT(*) FROM district_lineage").fetchone()[0] == 1

@@ -37,6 +37,20 @@ def conn(tmp_path):
     c.close()
 
 
+def test_an_excluded_column_is_a_verified_decision_that_never_reaches_the_loaders(conn, tmp_path):
+    path = tmp_path / "x.csv"
+    rows = {("2015", "Rape"): row("2015", "Rape", "rape"),
+            ("2015", "Rape_Gang Rape"): row("2015", "Rape_Gang Rape", "excluded"),
+            ("2015", "Total Crimes against Women"): row("2015", "Total Crimes against Women", "excluded")}
+    write_rows(path, rows, {})
+    assert read_rows(path)[("2015", "Rape_Gang Rape")]["core_category"] == ""
+    assert apply(conn, csv_path=path) == {"loaded": {"2015": 3}, "still_unverified": {}}
+    assert verified_mapping(conn, "2015") == {"Rape": "rape"}                     # the part is decided, and not counted
+    got = conn.execute("SELECT category, core_category FROM crosswalk WHERE source_column = 'Rape_Gang Rape'").fetchone()
+    assert tuple(got) == ("excluded", None)
+    assert ColumnMapping(source_column="x", category="excluded", reason="part of Rape").category == "excluded"
+
+
 def test_propose_writes_definitions_as_verified_and_model_rows_as_unverified(conn, tmp_path):
     path = tmp_path / "cw.csv"
     client = FakeClient([proposal(rape="rape", acid_attack="acid_attack"), proposal(rape_women_above_18="rape")])

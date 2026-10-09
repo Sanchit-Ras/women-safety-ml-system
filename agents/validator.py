@@ -26,14 +26,18 @@ import numpy as np
 import pandas as pd
 
 from agents import store
-from agents.loaders import ERA_A, UNALLOCATED_KINDS
+from agents.loaders import NAME_KEYED_ERAS, UNALLOCATED_KINDS
 from agents.schemas import CORE_CATEGORIES
 from data_ingestion.normalize import norm, norm_state
 
 SPIKE_FACTOR = 10
 SPIKE_MIN = 50
 MIN_YEARS_FOR_SPIKE = 4                  # a median over fewer years says little
-ERA_YEARS = {ERA_A: (2001, 2014), "2016": (2016, 2016), "2017_plus": (2017, 2022)}
+
+
+def era_years(conn) -> dict[str, tuple[int, int]]:
+    """Each era's year range, from the eras table (one source of truth, seeded by the store)."""
+    return {r["era"]: (int(r["first_year"]), int(r["last_year"])) for r in conn.execute("SELECT era, first_year, last_year FROM eras")}
 
 
 def _records(conn, era: str | None) -> pd.DataFrame:
@@ -52,7 +56,7 @@ def _unit_key(df: pd.DataFrame) -> pd.Series:
     keys = []
     for era, state, district, code, circle in zip(df["era"], df["state"], df["district"], df["district_code"],
                                                   df["registration_circle"]):
-        if era == ERA_A:
+        if era in NAME_KEYED_ERAS:
             keys.append(f"{era}|{norm_state(state)}|{norm(district)}")
         else:
             keys.append(f"{era}|{'' if pd.isna(code) else int(code)}|{norm(circle or '')}")
@@ -102,8 +106,9 @@ def validate(conn, era: str | None = None) -> dict:
             add(r["id"], {"rule": "unresolved", "field": "district_code", "message": "no district and no verified bucket"})
 
     # year inside the era
+    ranges = era_years(conn)
     for idx in df.index:
-        lo, hi = ERA_YEARS[df.at[idx, "era"]]
+        lo, hi = ranges[df.at[idx, "era"]]
         if not lo <= df.at[idx, "year"] <= hi:
             add(df.at[idx, "id"], {"rule": "year_in_era", "field": "year", "message": f"{df.at[idx, 'year']} is outside {lo}-{hi}"})
 

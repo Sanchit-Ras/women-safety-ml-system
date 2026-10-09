@@ -14,7 +14,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field, computed_field
 
-Era = Literal["2001_2014", "2016", "2017_plus"]
+Era = Literal["2001_2014", "2015", "2016", "2017_plus"]     # mirrored by store.ERA_ROWS, which the database enforces
 
 # The seven categories that exist, with the same legal definition, in all
 # three source eras. This is the lowest common denominator: later eras can be

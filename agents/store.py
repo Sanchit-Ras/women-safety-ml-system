@@ -45,12 +45,26 @@ from dotenv import load_dotenv
 from agents.schemas import CORE_CATEGORIES, EXTENDED_CATEGORIES, Era
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_VERSION = 6
-ERAS: tuple[str, ...] = get_args(Era)
+SCHEMA_VERSION = 7
 
-_era_check = "(" + ", ".join(f"'{e}'" for e in ERAS) + ")"
+# The source eras in time order: one row each in the ``eras`` table. The five tables that carry an era
+# column reference it, so a new source file is a new row here, not a schema change. ``Era`` in
+# schemas.py mirrors this list for the pydantic side; the assert keeps the two from drifting.
+ERA_ROWS: list[tuple] = [
+    # era, first_year, last_year, source_file, format, notes
+    ("2001_2014", 2001, 2014, "crimes_against_women_2001-2014.csv", "csv", "7 heads; police units, no codes"),
+    ("2015", 2015, 2015, "ncrb_district_wise_crimes_against_women_2015.xlsx", "xlsx",
+     "NCRB workbook; 60 heads with totals beside their parts; police units, no codes"),
+    ("2016", 2016, 2016, "districtwise-crime-against-women-2016.csv", "csv", "19 heads; LGD codes"),
+    ("2017_plus", 2017, 2022, "districtwise-crime-against-women-2017-onwards.csv", "csv",
+     "42 heads; LGD codes; 2018-22 column rotation undone at load"),
+]
+ERAS: tuple[str, ...] = tuple(r[0] for r in ERA_ROWS)
+assert ERAS == get_args(Era), "agents.schemas.Era and store.ERA_ROWS must list the same eras"
+
 _category_check = "(" + ", ".join(f"'{c}'" for c in CORE_CATEGORIES) + ")"
 _extended_check = "(" + ", ".join(f"'{c}'" for c in EXTENDED_CATEGORIES) + ")"
+_crosswalk_category_check = "(" + ", ".join(f"'{c}'" for c in (*EXTENDED_CATEGORIES, "excluded")) + ")"
 _extended_only_check = "(" + ", ".join(f"'{c}'" for c in EXTENDED_CATEGORIES if c not in CORE_CATEGORIES) + ")"
 _count_columns = ",\n    ".join(f"{c} INTEGER NOT NULL CHECK ({c} >= 0)" for c in CORE_CATEGORIES)
 _total_expr = " + ".join(CORE_CATEGORIES)
@@ -103,6 +117,111 @@ CREATE TABLE IF NOT EXISTS extended_counts (
     PRIMARY KEY (record_id, category)
 );"""
 
+ERAS_DDL = """
+-- The source eras. Every table with an era column points here; a new source file is a new row.
+CREATE TABLE IF NOT EXISTS eras (
+    era         TEXT PRIMARY KEY,
+    first_year  INTEGER NOT NULL,
+    last_year   INTEGER NOT NULL CHECK (last_year >= first_year),
+    source_file TEXT NOT NULL,
+    format      TEXT NOT NULL CHECK (format IN ('csv', 'xlsx')),
+    notes       TEXT
+);"""
+
+
+def _seed_eras_sql() -> str:
+    values = ", ".join("(" + ", ".join(f"'{str(v).replace(chr(39), chr(39) * 2)}'" for v in r) + ")" for r in ERA_ROWS)
+    return f"INSERT OR IGNORE INTO eras (era, first_year, last_year, source_file, format, notes) VALUES {values};"
+
+
+def _raw_rows_ddl(name: str) -> str:
+    return f"""
+-- Immutable provenance: every source row exactly as it came, once.
+CREATE TABLE IF NOT EXISTS {name} (
+    id           INTEGER PRIMARY KEY,
+    era          TEXT NOT NULL REFERENCES eras(era),
+    source_file  TEXT NOT NULL,
+    source_row   INTEGER NOT NULL,
+    payload_json TEXT NOT NULL,
+    UNIQUE (source_file, source_row)
+);"""
+
+
+def _records_ddl(name: str) -> str:
+    return f"""
+-- One CrimeRecord per raw row, in the seven core categories.
+CREATE TABLE IF NOT EXISTS {name} (
+    id                  INTEGER PRIMARY KEY,
+    raw_row_id          INTEGER NOT NULL UNIQUE REFERENCES raw_rows(id),
+    era                 TEXT NOT NULL REFERENCES eras(era),
+    state               TEXT NOT NULL,
+    district            TEXT NOT NULL,
+    registration_circle TEXT,
+    state_code          INTEGER REFERENCES states(state_code),
+    district_code       INTEGER REFERENCES districts(district_code),   -- NULL until resolved
+    year                INTEGER NOT NULL CHECK (year BETWEEN 2001 AND 2030),
+    {_count_columns},
+    total               INTEGER GENERATED ALWAYS AS ({_total_expr}) STORED,
+    validation_status   TEXT NOT NULL DEFAULT 'pending'
+                        CHECK (validation_status IN ('pending', 'valid', 'escalated'))
+);"""
+
+
+def _unit_map_ddl(name: str) -> str:
+    return f"""
+-- Resolver output: which canonical district a source unit name refers to, and how we know.
+-- Loaded from data/unit_map.csv once verified.
+CREATE TABLE IF NOT EXISTS {name} (
+    era           TEXT NOT NULL REFERENCES eras(era),
+    state         TEXT NOT NULL,                   -- normalised source spelling
+    unit          TEXT NOT NULL,                   -- normalised source spelling
+    district_code INTEGER REFERENCES districts(district_code),   -- NULL = unresolved
+    kind          TEXT CHECK (kind IN ('district', 'circle', 'railway', 'commissionerate', 'headquarters_town',
+                                       'rename', 'not_a_district', 'unknown')),
+    stage         TEXT NOT NULL CHECK (stage IN ('exact', 'alias', 'circle', 'rule', 'successor', 'fuzzy', 'geometry',
+                                                 'llm', 'human', 'unresolved')),
+    confidence    REAL CHECK (confidence BETWEEN 0 AND 1),
+    reason        TEXT,
+    verified      INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
+    PRIMARY KEY (era, state, unit)
+);"""
+
+
+def _crosswalk_ddl(name: str) -> str:
+    return f"""
+-- Category crosswalk: one harmonised category per source column (2015+ detail).
+-- core_category is the same name when it is one of the seven that exist in every
+-- era (the 2001-2022 series), else NULL. The CHECK makes that a rule, not a habit.
+-- 'excluded' = a column that must not be counted: a part of a total listed beside it,
+-- a grand total, or a head that is not a crime against women.
+CREATE TABLE IF NOT EXISTS {name} (
+    era           TEXT NOT NULL REFERENCES eras(era),
+    source_column TEXT NOT NULL,
+    category      TEXT NOT NULL CHECK (category IN {_crosswalk_category_check}),
+    core_category TEXT CHECK (core_category IS NULL OR (core_category = category AND core_category IN {_category_check})),
+    reason        TEXT NOT NULL,
+    proposed_by   TEXT NOT NULL,                   -- 'llm:<model>' | 'human' | 'definition'
+    verified      INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
+    PRIMARY KEY (era, source_column)
+);"""
+
+
+def _panel_ddl(name: str) -> str:
+    return f"""
+-- The observed panel: one row per unit and year, summed over the unit's valid/escalated records.
+-- Derived: rebuilt by agents.panel on every build, never edited. unit_id = 'd<code>' or 's<state>u'.
+CREATE TABLE IF NOT EXISTS {name} (
+    unit_id       TEXT NOT NULL,
+    state_code    INTEGER NOT NULL REFERENCES states(state_code),
+    district_code INTEGER REFERENCES districts(district_code),      -- NULL = the state's unallocated bucket
+    year          INTEGER NOT NULL,
+    era           TEXT NOT NULL REFERENCES eras(era),
+    {_count_columns},
+    total         INTEGER NOT NULL CHECK (total >= 0),
+    n_records     INTEGER NOT NULL CHECK (n_records >= 1),
+    PRIMARY KEY (unit_id, year)
+);"""
+
 DDL = f"""
 CREATE TABLE IF NOT EXISTS meta (
     key   TEXT PRIMARY KEY,
@@ -133,82 +252,16 @@ CREATE INDEX IF NOT EXISTS ix_circles_norm ON circles(circle_norm);
 
 -- Boundary changes over time; see _lineage_ddl for the kinds.
 {_lineage_ddl('district_lineage')}
-
--- Immutable provenance: every source row exactly as it came, once.
-CREATE TABLE IF NOT EXISTS raw_rows (
-    id           INTEGER PRIMARY KEY,
-    era          TEXT NOT NULL CHECK (era IN {_era_check}),
-    source_file  TEXT NOT NULL,
-    source_row   INTEGER NOT NULL,
-    payload_json TEXT NOT NULL,
-    UNIQUE (source_file, source_row)
-);
-
--- One CrimeRecord per raw row, in the seven core categories.
-CREATE TABLE IF NOT EXISTS records (
-    id                  INTEGER PRIMARY KEY,
-    raw_row_id          INTEGER NOT NULL UNIQUE REFERENCES raw_rows(id),
-    era                 TEXT NOT NULL CHECK (era IN {_era_check}),
-    state               TEXT NOT NULL,
-    district            TEXT NOT NULL,
-    registration_circle TEXT,
-    state_code          INTEGER REFERENCES states(state_code),
-    district_code       INTEGER REFERENCES districts(district_code),   -- NULL until resolved
-    year                INTEGER NOT NULL CHECK (year BETWEEN 2001 AND 2030),
-    {_count_columns},
-    total               INTEGER GENERATED ALWAYS AS ({_total_expr}) STORED,
-    validation_status   TEXT NOT NULL DEFAULT 'pending'
-                        CHECK (validation_status IN ('pending', 'valid', 'escalated'))
-);
+{ERAS_DDL}
+{_raw_rows_ddl('raw_rows')}
+{_records_ddl('records')}
 CREATE INDEX IF NOT EXISTS ix_records_district_year ON records(district_code, year);
 CREATE INDEX IF NOT EXISTS ix_records_era_status ON records(era, validation_status);
 {EXTENDED_DDL}
-
--- The observed panel: one row per unit and year, summed over the unit's valid/escalated records.
--- Derived: rebuilt by agents.panel on every build, never edited. unit_id = 'd<code>' or 's<state>u'.
-CREATE TABLE IF NOT EXISTS panel_observed (
-    unit_id       TEXT NOT NULL,
-    state_code    INTEGER NOT NULL REFERENCES states(state_code),
-    district_code INTEGER REFERENCES districts(district_code),      -- NULL = the state's unallocated bucket
-    year          INTEGER NOT NULL,
-    era           TEXT NOT NULL CHECK (era IN {_era_check}),
-    {_count_columns},
-    total         INTEGER NOT NULL CHECK (total >= 0),
-    n_records     INTEGER NOT NULL CHECK (n_records >= 1),
-    PRIMARY KEY (unit_id, year)
-);
-
--- Resolver output: which canonical district a source unit name refers to,
--- and how we know. Committed to data/unit_map.json once verified.
-CREATE TABLE IF NOT EXISTS unit_map (
-    era           TEXT NOT NULL CHECK (era IN {_era_check}),
-    state         TEXT NOT NULL,                   -- normalised source spelling
-    unit          TEXT NOT NULL,                   -- normalised source spelling
-    district_code INTEGER REFERENCES districts(district_code),   -- NULL = unresolved
-    kind          TEXT CHECK (kind IN ('district', 'circle', 'railway', 'commissionerate', 'headquarters_town',
-                                       'rename', 'not_a_district', 'unknown')),
-    stage         TEXT NOT NULL CHECK (stage IN ('exact', 'alias', 'circle', 'rule', 'successor', 'fuzzy', 'geometry',
-                                                 'llm', 'human', 'unresolved')),
-    confidence    REAL CHECK (confidence BETWEEN 0 AND 1),
-    reason        TEXT,
-    verified      INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
-    PRIMARY KEY (era, state, unit)
-);
+{_panel_ddl('panel_observed')}
+{_unit_map_ddl('unit_map')}
 CREATE INDEX IF NOT EXISTS ix_unit_map_district ON unit_map(district_code);
-
--- Category crosswalk: one harmonised category per source column (2016+ detail).
--- core_category is the same name when it is one of the seven that exist in every
--- era (the 2001-2022 series), else NULL. The CHECK makes that a rule, not a habit.
-CREATE TABLE IF NOT EXISTS crosswalk (
-    era           TEXT NOT NULL CHECK (era IN {_era_check}),
-    source_column TEXT NOT NULL,
-    category      TEXT NOT NULL CHECK (category IN {_extended_check}),
-    core_category TEXT CHECK (core_category IS NULL OR (core_category = category AND core_category IN {_category_check})),
-    reason        TEXT NOT NULL,
-    proposed_by   TEXT NOT NULL,                   -- 'llm:<model>' | 'human' | 'definition'
-    verified      INTEGER NOT NULL DEFAULT 0 CHECK (verified IN (0, 1)),
-    PRIMARY KEY (era, source_column)
-);
+{_crosswalk_ddl('crosswalk')}
 
 -- Saved answers (the cache). One row per distinct question that got a valid answer.
 CREATE TABLE IF NOT EXISTS llm_calls (
@@ -262,7 +315,7 @@ CREATE TABLE IF NOT EXISTS escalations (
 CREATE INDEX IF NOT EXISTS ix_escalations_status ON escalations(status, kind);
 """
 
-TABLES = ("meta", "states", "districts", "circles", "district_lineage", "raw_rows", "records", "extended_counts",
+TABLES = ("meta", "eras", "states", "districts", "circles", "district_lineage", "raw_rows", "records", "extended_counts",
           "panel_observed", "unit_map", "crosswalk", "llm_calls", "llm_attempts", "escalations")
 
 
@@ -298,7 +351,32 @@ PRAGMA foreign_keys = ON;
         raise RuntimeError(f"migration v5->v6 left {len(dangling)} dangling foreign key(s): {[tuple(d) for d in dangling[:5]]}")
 
 
-MIGRATIONS = {5: _migrate_5_to_6}
+def _migrate_6_to_7(conn: sqlite3.Connection) -> None:
+    """v6 -> v7: the era list moves from CHECK constraints typed into five tables to the ``eras`` table those
+    tables reference, so a new era (2015) is a row, not a rebuild. Each of the five is rebuilt once, with
+    its rows; the crosswalk's category check gains 'excluded'. Same recipe as v5 -> v6."""
+    counts = ", ".join(CORE_CATEGORIES)
+    rebuilds = [
+        ("raw_rows", _raw_rows_ddl, "id, era, source_file, source_row, payload_json"),
+        ("records", _records_ddl, "id, raw_row_id, era, state, district, registration_circle, state_code, district_code, "
+                                  f"year, {counts}, validation_status"),
+        ("unit_map", _unit_map_ddl, "era, state, unit, district_code, kind, stage, confidence, reason, verified"),
+        ("crosswalk", _crosswalk_ddl, "era, source_column, category, core_category, reason, proposed_by, verified"),
+        ("panel_observed", _panel_ddl, f"unit_id, state_code, district_code, year, era, {counts}, total, n_records"),
+    ]
+    script = ["PRAGMA foreign_keys = OFF;", "BEGIN;", ERAS_DDL, _seed_eras_sql()]
+    for name, ddl, columns in rebuilds:
+        script += [ddl(f"{name}_new"), f"INSERT INTO {name}_new ({columns}) SELECT {columns} FROM {name};",
+                   f"DROP TABLE {name};", f"ALTER TABLE {name}_new RENAME TO {name};"]
+    script += ["UPDATE meta SET value = '7' WHERE key = 'schema_version';", "COMMIT;", "PRAGMA foreign_keys = ON;"]
+    conn.executescript("\n".join(script))
+    conn.executescript(DDL)                                   # the indexes went with the dropped tables; recreate
+    dangling = conn.execute("PRAGMA foreign_key_check").fetchall()
+    if dangling:
+        raise RuntimeError(f"migration v6->v7 left {len(dangling)} dangling foreign key(s): {[tuple(d) for d in dangling[:5]]}")
+
+
+MIGRATIONS = {5: _migrate_5_to_6, 6: _migrate_6_to_7}
 
 
 def db_path(path: str | os.PathLike | None = None) -> Path:
@@ -337,6 +415,8 @@ def connect(path: str | os.PathLike | None = None) -> sqlite3.Connection:
                 "The store is a rebuildable workbench: run `python -m agents.store reset --yes`."
             )
         step(conn)
+    conn.execute(_seed_eras_sql())                            # new eras in ERA_ROWS become rows; existing rows untouched
+    conn.commit()
     return conn
 
 

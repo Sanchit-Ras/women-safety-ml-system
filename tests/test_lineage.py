@@ -388,6 +388,13 @@ def test_2022_totals_add_every_category_column_per_district():
     assert totals_by_district(df) == {507: 6}
 
 
+def test_first_seen_years_come_from_the_2001_14_rows_only():
+    from agents.lineage import _era_a_first_years
+    um = pd.DataFrame([("2001_2014", "x", 28, "u", 2005, 2014, 10, 502, "exact", 1),
+                       ("2015", "x", 28, "v", 2015, 2015, 1, 507, "exact", 1)], columns=UNIT_MAP.columns)
+    assert _era_a_first_years(um) == {502: 2005}                                  # the 2015 workbook never says "born"
+
+
 def test_a_district_first_seen_in_2016_with_no_2001_14_unit_is_born_after_2014():
     registry = {"meta": {"years": [2016, 2022]}, "states": STATES,
                 "districts": [district(709, "Hojai", 36, 2016, 2022), district(516, "Nizamabad", 36, 2016, 2022)]}

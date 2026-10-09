@@ -30,7 +30,7 @@ from data_ingestion.crosswalk import ERA_FILES
 
 ROOT = Path(__file__).resolve().parents[1]
 TRACES_DIR = ROOT / "data" / "traces"
-ERAS = ("2001_2014", "2016", "2017_plus")
+ERAS = store.ERAS                                            # time order, from the eras table's seed list
 DERIVED = ("panel_observed", "extended_counts", "records", "unit_map", "district_lineage", "crosswalk")
 
 

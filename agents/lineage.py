@@ -221,6 +221,8 @@ def _era_a_first_years(unit_map: pd.DataFrame | None) -> dict[int, int]:
     if unit_map is None or unit_map.empty:
         return {}
     um = unit_map.copy()
+    if "era" in um.columns:                               # the unit map also holds 2015 rows; only 2001-14 says "born late"
+        um = um[um["era"] == "2001_2014"]
     for col in ("district_code", "first_year"):
         um[col] = pd.to_numeric(um[col], errors="coerce")
     um = um.dropna(subset=["district_code", "first_year"])

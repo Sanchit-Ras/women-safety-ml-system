@@ -44,6 +44,7 @@ from agents import store
 from agents.llm_client import build_client
 from agents.prompts import PROJECT_CONTEXT
 from agents.schemas import CORE_CATEGORIES, EXTENDED_CATEGORIES
+from data_ingestion import ncrb_xlsx
 from data_ingestion.profile import KEY_COLS_BC
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -52,12 +53,14 @@ CSV_PATH = ROOT / "data" / "crosswalk.csv"
 FIXES_PATH = ROOT / "data" / "column_fixes.csv"
 REFERENCE_PATH = ROOT / "data" / "reference" / "ncrb_published_national.csv"
 ERA_FILES = {"2001_2014": RAW / "crimes_against_women_2001-2014.csv",
+             "2015": RAW / "ncrb_district_wise_crimes_against_women_2015.xlsx",
              "2016": RAW / "districtwise-crime-against-women-2016.csv",
              "2017_plus": RAW / "districtwise-crime-against-women-2017-onwards.csv"}
-MODEL_ERAS = ("2016", "2017_plus")
-ERA_LABEL = {"2016": "2016", "2017_plus": "2017-2022"}
-ERA_ORDER = {"2001_2014": 0, "2016": 1, "2017_plus": 2}
-BOUNDARY = {"2016": (2014, 2016), "2017_plus": (2016, 2017)}     # last year of the previous era -> first year of this one
+MODEL_ERAS = ("2015", "2016", "2017_plus")                       # eras whose columns the model maps
+ERA_LABEL = {"2015": "2015 (NCRB district workbook)", "2016": "2016", "2017_plus": "2017-2022"}
+ERA_ORDER = {"2001_2014": 0, "2015": 1, "2016": 2, "2017_plus": 3}
+BOUNDARY = {"2015": (2014, 2015), "2016": (2015, 2016), "2017_plus": (2016, 2017)}     # last year of the previous era -> first of this
+EXCLUDED = "excluded"                                            # a column that must not be counted (see build_prompt rule 9)
 CSV_COLUMNS = ["era", "source_column", "category", "core_category", "reason", "ambiguous", "evidence",
                "proposed_by", "verified", "reviewer_note"]
 FIDELITY_TOLERANCE = 0.005      # a reconstructed national total must land within 0.5% of NCRB's published figure
@@ -91,7 +94,7 @@ EXTENDED_NOTES: dict[str, str] = {
     "cyber_crimes": "IT Act and other women-centric cyber crimes; 2017+ only",
 }
 
-Category = Literal[EXTENDED_CATEGORIES]
+Category = Literal[(*EXTENDED_CATEGORIES, EXCLUDED)]
 
 
 class ColumnMapping(BaseModel):
@@ -112,6 +115,8 @@ def core_of(category: str) -> str:
 
 def era_columns(era: str) -> list[str]:
     """The category columns of one era's file, in file order (header only, no rows read)."""
+    if ERA_FILES[era].suffix.lower() == ".xlsx":
+        return ncrb_xlsx.crime_columns(ERA_FILES[era])
     return [c for c in pd.read_csv(ERA_FILES[era], nrows=0).columns if c not in KEY_COLS_BC]
 
 
@@ -125,8 +130,9 @@ def build_prompt(era: str, columns: list[str], missing=(), unknown=()) -> str:
         "CORE categories (exist in every year 2001-2022; defined by the 2001-2014 table columns):",
         core,
         "",
-        "EXTENDED categories (exist only from 2016 or 2017; kept for those years, never stretched back):",
+        "EXTENDED categories (exist only from 2015, 2016 or 2017; kept for those years, never stretched back):",
         extended,
+        f"  {EXCLUDED:<28} not counted: a part of a total listed beside it, a grand total, or not a crimes-against-women head",
         "",
         f"Below are the {len(columns)} category columns of the {ERA_LABEL[era]} file.",
         "",
@@ -145,6 +151,13 @@ def build_prompt(era: str, columns: list[str], missing=(), unknown=()) -> str:
         "6. Map by legal meaning (the section or act), not by similar words.",
         "7. Set ambiguous = true when reasonable statisticians could disagree, and say why in the reason.",
         "8. reason: one line, cite the section or act.",
+        "9. A TOTAL column (named '..._Total', or a head listed immediately before its own sub-heads, such as 'Rape' "
+        "before 'Custodial Rape' and 'Rape other than Custodial') takes the category; every one of its sub-heads takes "
+        "'excluded' with the reason 'part of <total>'. Counting a total and its parts would double count.",
+        "10. 'excluded' is also the answer for a grand total ('Total Crimes against Women', 'Total Crimes in which "
+        "Women was Victim') and for an IPC head that is not a crimes-against-women head even when the victim was a "
+        "woman (murder, attempt to murder, culpable homicide, hurt, dacoity, robbery, arson, 'other IPC crimes', "
+        "'other SLL crimes'); say which case applies in the reason.",
         "",
         "Columns:",
         *[f"- {c}" for c in columns],
@@ -268,7 +281,8 @@ def load_era_frames(fixes: str = "proposed") -> dict[str, pd.DataFrame]:
     'verified' = only rows a human has verified (what the loaders will use)."""
     a = pd.read_csv(ERA_FILES["2001_2014"])
     a = a[~a["DISTRICT"].str.upper().str.contains("TOTAL")]      # state total rows would double count
-    frames = {"2001_2014": a, "2016": pd.read_csv(ERA_FILES["2016"]), "2017_plus": pd.read_csv(ERA_FILES["2017_plus"])}
+    frames = {"2001_2014": a, "2015": ncrb_xlsx.frame(ERA_FILES["2015"]), "2016": pd.read_csv(ERA_FILES["2016"]),
+              "2017_plus": pd.read_csv(ERA_FILES["2017_plus"])}
     if fixes != "none":
         fx = read_fixes(only_verified=(fixes == "verified"))
         for era in MODEL_ERAS:
@@ -289,13 +303,15 @@ def category_totals(rows: dict, frames: dict[str, pd.DataFrame]) -> tuple[pd.Dat
             totals.setdefault(cat, {})
             totals[cat][int(y)] = totals[cat].get(int(y), 0) + int(v)
     for era in MODEL_ERAS:
+        if era not in frames:                                     # a check run on a subset of the files
+            continue
         by_year = frames[era].groupby("year").sum(numeric_only=True)
         for (e, col), r in rows.items():
             if e != era or col not in by_year.columns:
                 continue
             col_totals[(era, col)] = {int(y): int(v) for y, v in by_year[col].items()}
             cat = r.get("category", "")
-            if cat:
+            if cat and cat != EXCLUDED:
                 totals.setdefault(cat, {})
                 for y, v in col_totals[(era, col)].items():
                     totals[cat][y] = totals[cat].get(y, 0) + v
@@ -392,14 +408,17 @@ def continuity(rows: dict, frames: dict[str, pd.DataFrame] | None = None) -> tup
         cat = core_of(r.get("category", ""))
         if era not in BOUNDARY or not cat or (era, col) not in col_totals:
             continue
-        y0, y1 = BOUNDARY[era]
-        if y0 not in table.columns or y1 not in table.columns or table.at[cat, y0] <= 0:
+        y1 = BOUNDARY[era][1]
+        earlier = [y for y in table.columns if y < y1]                 # the latest year the files have before this era
+        if not earlier or y1 not in table.columns:
+            continue
+        y0 = max(earlier)
+        if table.at[cat, y0] <= 0:
             continue
         base, with_col = table.at[cat, y0], table.at[cat, y1]
         alone = col_totals[(era, col)].get(y1, 0)
-        in_era = [y for y in table.columns if y <= 2014] if era == "2016" else [y for y in table.columns if y >= 2017]
-        gap = " (two-year gap, 2015 missing)" if era == "2016" else ""
-        evidence[(era, col)] = (f"auto: {cat} {y0}->{y1}{gap} is {with_col / base - 1:+.0%} with this column, "
+        in_era = [y for y in table.columns if y <= 2014] if era in ("2015", "2016") else [y for y in table.columns if y >= 2017]
+        evidence[(era, col)] = (f"auto: {cat} {y0}->{y1} is {with_col / base - 1:+.0%} with this column, "
                                 f"{(with_col - alone) / base - 1:+.0%} without; typical in-era yearly change "
                                 f"{typical_change(table.loc[cat], sorted(in_era)):.0%}; this column alone = {alone:,} in {y1}")
     return table.loc[[c for c in CORE_CATEGORIES if c in table.index]], evidence
@@ -424,8 +443,8 @@ def apply(conn, *, csv_path: Path = CSV_PATH) -> dict:
             pending[era] = pending.get(era, 0) + 1
             continue
         category = r["category"].strip()
-        if category not in EXTENDED_CATEGORIES:
-            raise ValueError(f"{era}/{col}: '{category}' is not a known category; allowed: {EXTENDED_CATEGORIES}")
+        if category not in EXTENDED_CATEGORIES and category != EXCLUDED:
+            raise ValueError(f"{era}/{col}: '{category}' is not a known category; allowed: {(*EXTENDED_CATEGORIES, EXCLUDED)}")
         core = core_of(category)                                  # the CSV's core column is ignored: it is derived
         conn.execute("INSERT OR REPLACE INTO crosswalk (era, source_column, category, core_category, reason, proposed_by, "
                      "verified) VALUES (?, ?, ?, ?, ?, ?, 1)", (era, col, category, core or None, r["reason"], r["proposed_by"]))
@@ -435,9 +454,11 @@ def apply(conn, *, csv_path: Path = CSV_PATH) -> dict:
 
 
 def verified_mapping(conn, era: str) -> dict[str, str]:
-    """For the loaders: source column -> harmonised category. Use core_of() for the seven-category series."""
+    """For the loaders: source column -> harmonised category, verified rows only, 'excluded' columns left out.
+    Use core_of() for the seven-category series."""
     return {r["source_column"]: r["category"]
-            for r in conn.execute("SELECT source_column, category FROM crosswalk WHERE era = ? AND verified = 1", (era,))}
+            for r in conn.execute("SELECT source_column, category FROM crosswalk WHERE era = ? AND verified = 1 "
+                                  "AND category != ?", (era, EXCLUDED))}
 
 
 def main(argv: list[str] | None = None) -> None:

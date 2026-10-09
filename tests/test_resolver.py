@@ -108,7 +108,7 @@ def test_load_units_drops_state_totals_and_counts_distinct_years(tmp_path):
     pd.DataFrame({"STATE/UT": ["A & N Islands", "A&N Islands", "A & N Islands", "A & N Islands"],
                   "DISTRICT": ["Andaman", "ANDAMAN", "Total", "Nicobar"], "Year": [2001, 2002, 2002, 2003],
                   "Rape": [1, 2, 3, 4]}).to_csv(raw, index=False)
-    out = load_units(raw)
+    out = load_units(path=raw)
     assert out.columns.tolist() == UNIT_COLUMNS
     assert out.values.tolist() == [["a n islands", "andaman", 2001, 2002, 2], ["a n islands", "nicobar", 2003, 2003, 1]]
 
@@ -215,7 +215,7 @@ def test_an_identity_match_that_looks_like_a_police_unit_is_held_for_review(reg_
     assert (res.district_code, res.kind, res.stage, res.confidence, res.needs_review) == (568, "circle", "circle", 1.0, True)
     assert res.reason.endswith("; held for review: the name looks like a police unit with no district geography")
     _, rows, _ = run_units(reg_path, tmp_path, [("tamil nadu", "crime branch chennai"), ("tamil nadu", "chennai")])
-    held, plain = rows[("tamil nadu", "crime branch chennai")], rows[("tamil nadu", "chennai")]
+    held, plain = rows[("2001_2014", "tamil nadu", "crime branch chennai")], rows[("2001_2014", "tamil nadu", "chennai")]
     assert (held["stage"], held["district_code"], held["proposed_by"], held["verified"]) == ("circle", "568", "rule", "0")
     assert (plain["stage"], plain["verified"]) == ("exact", "1")
 
@@ -228,7 +228,7 @@ def test_a_spelling_two_districts_claim_is_never_an_identity_match(reg_path, tmp
     assert resolve_free("uttar pradesh", "grp lucknow", pools[9]).stage == "rule"     # a spelling that identifies one district still does
 
     _, rows, _ = run_units(reg_path, tmp_path, [("uttar pradesh", "grp")])
-    r = rows[("uttar pradesh", "grp")]
+    r = rows[("2001_2014", "uttar pradesh", "grp")]
     assert (r["stage"], r["district_code"], r["verified"]) == ("unresolved", "", "0")
     assert r["reason"] == "model stage not run; 'grp' is listed under 2 districts: 49 Dehradun, 162 Lucknow"
 
@@ -237,7 +237,7 @@ def test_a_spelling_two_districts_claim_is_never_an_identity_match(reg_path, tmp
     prompt = client.calls[0][1]
     assert "- grp (seen 2001-2014) hints: 49:Dehradun:100 | 162:Lucknow:100" in prompt
     assert "162 | Lucknow | spellings: lucknow | circles: lucknow, grp" in prompt and "49 | Dehradun" in prompt
-    r = rows[("uttar pradesh", "grp")]
+    r = rows[("2001_2014", "uttar pradesh", "grp")]
     assert (r["stage"], r["district_code"], r["district_name"], r["kind"], r["verified"]) == ("llm", "162", "Lucknow", "railway", "0")
 
 
@@ -271,10 +271,10 @@ def test_run_reads_the_overlap_csv_and_matches_the_era_a_state_spelling(reg_path
     overlap_frame(("andaman and nicobar islands", "diglipur", 632, "North And Middle Andaman", 0.8),
                   ("andaman and nicobar islands", "nicobar", 603, "Nicobars", 0.99)).to_csv(ov_path, index=False)
     _, rows, _ = run_units(reg_path, tmp_path, [("a n islands", "diglipur"), ("a n islands", "nicobar")], overlap_path=ov_path)
-    geo = rows[("a n islands", "diglipur")]
+    geo = rows[("2001_2014", "a n islands", "diglipur")]
     assert (geo["stage"], geo["district_code"], geo["district_name"], geo["geo_code"], geo["geo_share"], geo["verified"]) == \
         ("geometry", "632", "North And Middle Andaman", "632", "0.8", "0")
-    assert (rows[("a n islands", "nicobar")]["stage"], rows[("a n islands", "nicobar")]["geo_code"]) == ("exact", "603")
+    assert (rows[("2001_2014", "a n islands", "nicobar")]["stage"], rows[("2001_2014", "a n islands", "nicobar")]["geo_code"]) == ("exact", "603")
 
 
 # ---- the model stage --------------------------------------------------------------------------------
@@ -291,7 +291,7 @@ def test_model_stage_gets_one_call_per_state_with_candidates_and_hints(reg_path,
     assert "522 | Warangal" in prompt                                         # successor-state districts are candidates too
     assert "- kadapa (seen 2001-2014) hints:" in prompt and "anantapur" not in prompt.split("Names to resolve")[1]
     assert "hints: 204:Purbi Champaran:90 | 205:Pashchim Champaran:90 | 203:Patna:54" in client.calls[1][1]
-    r = rows[("andhra pradesh", "kadapa")]
+    r = rows[("2001_2014", "andhra pradesh", "kadapa")]
     assert (r["stage"], r["district_code"], r["district_name"], r["kind"], r["confidence"], r["reason"], r["proposed_by"],
             r["verified"]) == ("llm", "504", "Y.S.R.", "rename", "0.9", "because", "llm:fake-model", "0")
     assert summary["by_stage"] == {"llm": 2, "exact": 1} and summary["pending_states"] == 2
@@ -300,11 +300,11 @@ def test_model_stage_gets_one_call_per_state_with_candidates_and_hints(reg_path,
 def test_a_code_outside_the_candidate_list_is_rejected(reg_path, tmp_path):
     client = FakeClient([batch(kadapa=(999, "district"), nellur=(203, "district"))])   # 203 is Patna: a real code, wrong state
     _, rows, _ = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa"), ("andhra pradesh", "nellur")], client)
-    r = rows[("andhra pradesh", "kadapa")]
+    r = rows[("2001_2014", "andhra pradesh", "kadapa")]
     assert (r["stage"], r["kind"], r["district_code"], r["district_name"], r["proposed_by"], r["verified"]) == \
         ("unresolved", "unknown", "", "", "llm:fake-model", "0")
     assert r["reason"] == "model proposed code 999 which is not a candidate for this state"
-    assert rows[("andhra pradesh", "nellur")]["reason"] == "model proposed code 203 which is not a candidate for this state"
+    assert rows[("2001_2014", "andhra pradesh", "nellur")]["reason"] == "model proposed code 203 which is not a candidate for this state"
 
 
 def test_a_forgotten_unit_gets_one_repair_call_then_is_unresolved(reg_path, tmp_path):
@@ -312,41 +312,41 @@ def test_a_forgotten_unit_gets_one_repair_call_then_is_unresolved(reg_path, tmp_
     _, rows, _ = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa"), ("andhra pradesh", "nellur")], client)
     assert [tag for tag, _, _ in client.calls] == ["resolve:28", "resolve:28:repair"]
     assert "Missing names that MUST be included: ['nellur']" in client.calls[1][1]
-    assert rows[("andhra pradesh", "nellur")]["reason"] == "not answered by the model"
-    assert rows[("andhra pradesh", "nellur")]["stage"] == "unresolved"
-    assert rows[("andhra pradesh", "kadapa")]["stage"] == "llm"
+    assert rows[("2001_2014", "andhra pradesh", "nellur")]["reason"] == "not answered by the model"
+    assert rows[("2001_2014", "andhra pradesh", "nellur")]["stage"] == "unresolved"
+    assert rows[("2001_2014", "andhra pradesh", "kadapa")]["stage"] == "llm"
 
 
 def test_without_a_client_pending_rows_say_the_model_stage_was_skipped(reg_path, tmp_path):
     summary, rows, _ = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa"), ("bihar", "champaran")])
     assert summary["model_stage"] == "skipped" and summary["by_stage"] == {"unresolved": 2}
-    assert rows[("andhra pradesh", "kadapa")]["reason"] == "model stage not run; no deterministic match"
-    assert rows[("bihar", "champaran")]["reason"].startswith("model stage not run; ambiguous fuzzy match")
-    assert rows[("bihar", "champaran")]["proposed_by"] == "none"
+    assert rows[("2001_2014", "andhra pradesh", "kadapa")]["reason"] == "model stage not run; no deterministic match"
+    assert rows[("2001_2014", "bihar", "champaran")]["reason"].startswith("model stage not run; ambiguous fuzzy match")
+    assert rows[("2001_2014", "bihar", "champaran")]["proposed_by"] == "none"
 
 
 # ---- the decision record ------------------------------------------------------------------------------
 
 def test_verified_rows_survive_a_rerun_and_are_not_asked_again(reg_path, tmp_path):
     _, rows, path = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa")], FakeClient([batch(kadapa=(504, "rename"))]))
-    rows[("andhra pradesh", "kadapa")].update(district_code="503", district_name="Chittoor", stage="human",
+    rows[("2001_2014", "andhra pradesh", "kadapa")].update(district_code="503", district_name="Chittoor", stage="human",
                                               proposed_by="human", verified="1", reviewer_note="checked the gazette")
     write_rows(path, rows)
     client = FakeClient([batch(kadapa=(502, "district"))])
     summary, rows, _ = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa")], client)
-    r = rows[("andhra pradesh", "kadapa")]
+    r = rows[("2001_2014", "andhra pradesh", "kadapa")]
     assert (r["district_code"], r["stage"], r["verified"], r["reviewer_note"]) == ("503", "human", "1", "checked the gazette")
     assert client.calls == [] and summary["kept_verified"] == 1
 
 
 def test_a_verified_row_stays_when_the_input_no_longer_produces_its_key(reg_path, tmp_path):
     _, rows, path = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa")])
-    rows[("andhra pradesh", "kadapa")].update(district_code="504", district_name="Y.S.R.", stage="human",
+    rows[("2001_2014", "andhra pradesh", "kadapa")].update(district_code="504", district_name="Y.S.R.", stage="human",
                                               proposed_by="human", verified="1", reviewer_note="checked")
     write_rows(path, rows)
     summary, rows, _ = run_units(reg_path, tmp_path, [("andhra pradesh", "anantapur")])    # kadapa gone from the input
-    assert list(rows) == [("andhra pradesh", "anantapur"), ("andhra pradesh", "kadapa")]
-    k = rows[("andhra pradesh", "kadapa")]
+    assert list(rows) == [("2001_2014", "andhra pradesh", "anantapur"), ("2001_2014", "andhra pradesh", "kadapa")]
+    k = rows[("2001_2014", "andhra pradesh", "kadapa")]
     assert (k["district_code"], k["stage"], k["verified"], k["reviewer_note"]) == ("504", "human", "1", "checked")
     assert (summary["total"], summary["kept_verified"], summary["verified_not_in_input"]) == (2, 0, 1)
     assert summary["by_stage"] == {"exact": 1, "human": 1}
@@ -354,10 +354,10 @@ def test_a_verified_row_stays_when_the_input_no_longer_produces_its_key(reg_path
 
 def test_reviewer_note_is_kept_on_unverified_rows_but_the_rest_is_refreshed(reg_path, tmp_path):
     _, rows, path = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa")])
-    rows[("andhra pradesh", "kadapa")].update(reviewer_note="ask the AP archive", district_code="123")
+    rows[("2001_2014", "andhra pradesh", "kadapa")].update(reviewer_note="ask the AP archive", district_code="123")
     write_rows(path, rows)
     _, rows, _ = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa")], FakeClient([batch(kadapa=(504, "rename"))]))
-    r = rows[("andhra pradesh", "kadapa")]
+    r = rows[("2001_2014", "andhra pradesh", "kadapa")]
     assert (r["reviewer_note"], r["district_code"], r["stage"]) == ("ask the AP archive", "504", "llm")
 
 
@@ -379,8 +379,8 @@ def test_csv_columns_are_exactly_the_contract_and_rows_are_ordered_by_state_then
     assert CSV_COLUMNS == ["era", "state", "state_code", "unit", "first_year", "last_year", "n_years", "district_code",
                            "district_name", "kind", "stage", "confidence", "reason", "candidates", "geo_code",
                            "geo_share", "proposed_by", "verified", "reviewer_note"]
-    assert list(rows) == [("andhra pradesh", "anantapur"), ("andhra pradesh", "ysr"), ("bihar", "patna")]
-    r = rows[("andhra pradesh", "anantapur")]
+    assert list(rows) == [("2001_2014", "andhra pradesh", "anantapur"), ("2001_2014", "andhra pradesh", "ysr"), ("2001_2014", "bihar", "patna")]
+    r = rows[("2001_2014", "andhra pradesh", "anantapur")]
     assert (r["era"], r["state_code"], r["first_year"], r["last_year"], r["n_years"]) == ("2001_2014", "28", "2001", "2014", "14")
     assert r["candidates"].startswith("502:Anantapur:100")
 
@@ -391,7 +391,7 @@ def test_report_writes_the_markdown_file(reg_path, tmp_path):
     assert (tmp_path / "reports" / "2026-09-27_resolver.md").read_text(encoding="utf-8") == text
     assert "| exact | 1 | 33.3% |" in text and "| unresolved | 2 | 66.7% |" in text
     assert "1 of 2 rows that can have a district have one (50.0%); 1 rows are police units" in text
-    assert "## Unresolved (1)" in text and "| andhra pradesh | kadapa |" in text and "caw" not in text.split("## Unresolved")[1]
+    assert "### Unresolved (1)" in text and "| andhra pradesh | kadapa |" in text and "caw" not in text.split("### Unresolved")[1]
 
 
 def test_apply_loads_only_verified_rows_into_the_store(reg_path, tmp_path):
@@ -400,7 +400,7 @@ def test_apply_loads_only_verified_rows_into_the_store(reg_path, tmp_path):
                            districts=[(502, 28, "Anantapur", "[]", 2016, 2022), (504, 28, "Y.S.R.", "[]", 2016, 2022)], circles=[])
     _, rows, path = run_units(reg_path, tmp_path, [("andhra pradesh", "anantapur"), ("andhra pradesh", "kadapa"), ("bihar", "caw")],
                               FakeClient([batch(kadapa=(504, "rename"))]))
-    rows[("bihar", "caw")]["verified"] = "1"                                  # a human confirms the police-unit call
+    rows[("2001_2014", "bihar", "caw")]["verified"] = "1"                                  # a human confirms the police-unit call
     write_rows(path, rows)
     assert apply(conn, csv_path=path) == {"loaded": 2, "still_unverified": 1}
     got = {r["unit"]: dict(r) for r in conn.execute("SELECT * FROM unit_map ORDER BY unit")}
@@ -412,7 +412,7 @@ def test_apply_loads_only_verified_rows_into_the_store(reg_path, tmp_path):
     assert apply(conn, csv_path=path)["loaded"] == 2                          # INSERT OR REPLACE: a re-apply is idempotent
     assert conn.execute("SELECT COUNT(*) FROM unit_map").fetchone()[0] == 2
 
-    rows[("andhra pradesh", "kadapa")].update(verified="1", stage="guess")
+    rows[("2001_2014", "andhra pradesh", "kadapa")].update(verified="1", stage="guess")
     write_rows(path, rows)
     with pytest.raises(ValueError, match="stage 'guess'"):
         apply(conn, csv_path=path)
@@ -424,7 +424,7 @@ def test_apply_names_the_row_whose_code_the_store_does_not_know(reg_path, tmp_pa
     geography = dict(states=[(28, "Andhra Pradesh", "[]")], districts=[(502, 28, "Anantapur", "[]", 2016, 2022)], circles=[])
     store.replace_registry(conn, **geography)
     _, rows, path = run_units(reg_path, tmp_path, [("andhra pradesh", "anantapur")])
-    rows[("andhra pradesh", "anantapur")].update(district_code="526", district_name="Bengaluru Rural")
+    rows[("2001_2014", "andhra pradesh", "anantapur")].update(district_code="526", district_name="Bengaluru Rural")
     write_rows(path, rows)
     with pytest.raises(ValueError, match="anantapur: district_code 526 is not in the districts table"):
         apply(conn, csv_path=path)

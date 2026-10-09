@@ -33,7 +33,8 @@ def insert_record(conn, raw_row_id=1, district_code=502, **overrides):
 def test_all_tables_exist_and_start_empty(tmp_path):
     counts = table_counts(connect(tmp_path / "t.db"))
     assert set(counts) == set(TABLES)
-    assert counts["meta"] == 1 and all(v == 0 for t, v in counts.items() if t != "meta")
+    assert counts["meta"] == 1 and counts["eras"] == 4                            # the version row and the seeded eras
+    assert all(v == 0 for t, v in counts.items() if t not in ("meta", "eras"))
 
 
 def test_total_is_generated_from_the_parts(conn):
@@ -141,6 +142,40 @@ def test_crosswalk_core_is_a_rule_not_a_habit(conn):
                      "VALUES ('2016', 'c', 'murder', NULL, 'r', 'human')")
 
 
+def test_a_v6_store_is_migrated_to_the_eras_table_keeping_its_rows(tmp_path):
+    path = tmp_path / "v6.db"
+    v6_ddl = DDL.replace("REFERENCES eras(era)", "CHECK (era IN ('2001_2014', '2016', '2017_plus'))")   # eras typed in
+    old = sqlite3.connect(path)
+    old.executescript(v6_ddl)
+    old.execute("INSERT INTO meta (key, value) VALUES ('schema_version', '6')")
+    old.execute("INSERT INTO states (state_code, name) VALUES (28, 'andhra pradesh')")
+    old.execute("INSERT INTO districts (district_code, state_code, name, first_seen_year, last_seen_year) "
+                "VALUES (502, 28, 'anantapur', 2016, 2022)")
+    old.execute("INSERT INTO raw_rows (id, era, source_file, source_row, payload_json) VALUES (1, '2016', 'f.csv', 0, '{}')")
+    old.execute(f"INSERT INTO records (raw_row_id, era, state, district, year, district_code, {', '.join(COUNTS)}) "
+                f"VALUES (1, '2016', 'ap', 'anantapur', 2016, 502, {', '.join('1' for _ in COUNTS)})")
+    old.execute("INSERT INTO unit_map (era, state, unit, district_code, kind, stage, confidence, reason, verified) "
+                "VALUES ('2001_2014', 'ap', 'x', 502, 'district', 'exact', 1.0, 'r', 1)")
+    old.execute("INSERT INTO crosswalk (era, source_column, category, core_category, reason, proposed_by, verified) "
+                "VALUES ('2016', 'rape', 'rape', 'rape', 'r', 'human', 1)")
+    old.commit()
+    old.close()
+
+    conn = connect(path)                                                         # migrates 6 -> 7 on open
+    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "7"
+    assert [r[0] for r in conn.execute("SELECT era FROM eras ORDER BY first_year")] == ["2001_2014", "2015", "2016", "2017_plus"]
+    assert "REFERENCES eras(era)" in conn.execute("SELECT sql FROM sqlite_master WHERE name = 'records'").fetchone()[0]
+    assert tuple(conn.execute("SELECT era, total FROM records").fetchone()) == ("2016", len(COUNTS))
+    assert conn.execute("SELECT COUNT(*) FROM unit_map").fetchone()[0] == 1 and conn.execute("SELECT COUNT(*) FROM crosswalk").fetchone()[0] == 1
+    assert conn.execute("PRAGMA foreign_key_check").fetchall() == []
+    conn.execute("INSERT INTO raw_rows (era, source_file, source_row, payload_json) VALUES ('2015', 'w.xlsx', 4, '{}')")   # a row, not a rebuild
+    conn.execute("INSERT INTO crosswalk (era, source_column, category, reason, proposed_by) "
+                 "VALUES ('2015', 'Rape_Gang Rape', 'excluded', 'part of Rape', 'human')")
+    with pytest.raises(sqlite3.IntegrityError):                                  # an era nobody declared
+        conn.execute("INSERT INTO raw_rows (era, source_file, source_row, payload_json) VALUES ('bogus', 'x', 1, '{}')")
+    conn.close()
+
+
 V5_DISTRICTS = """
 CREATE TABLE IF NOT EXISTS districts (
     district_code   INTEGER PRIMARY KEY,
@@ -155,7 +190,8 @@ CREATE TABLE IF NOT EXISTS districts (
 def test_a_v5_store_is_migrated_in_place_with_its_cache_mappings_and_edges(tmp_path):
     path = tmp_path / "v5.db"
     old = sqlite3.connect(path)
-    old.executescript(DDL.replace(_districts_ddl("districts"), V5_DISTRICTS))     # v5 shape of the table that changed
+    old.executescript(DDL.replace(_districts_ddl("districts"), V5_DISTRICTS)       # v5 shape of the table that changed
+                         .replace("REFERENCES eras(era)", "CHECK (era IN ('2001_2014', '2016', '2017_plus'))"))   # eras typed in
     old.execute("INSERT INTO meta (key, value) VALUES ('schema_version', '5')")
     old.execute("INSERT INTO states (state_code, name) VALUES (28, 'andhra pradesh')")
     old.execute("INSERT INTO districts (district_code, state_code, name, first_seen_year, last_seen_year) "
@@ -170,7 +206,7 @@ def test_a_v5_store_is_migrated_in_place_with_its_cache_mappings_and_edges(tmp_p
     old.close()
 
     conn = connect(path)                                                         # migrates 5 -> 6 on open
-    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "6"
+    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "7"
     assert "in_files" in {r[1] for r in conn.execute("PRAGMA table_info(districts)")}
     assert tuple(conn.execute("SELECT district_code, in_files FROM districts").fetchone()) == (502, 1)
     assert conn.execute("SELECT district_code FROM unit_map WHERE unit = 'anantapur'").fetchone()[0] == 502

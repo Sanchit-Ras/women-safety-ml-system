@@ -65,6 +65,7 @@ from rapidfuzz import fuzz, process
 from agents import store
 from agents.llm_client import build_client
 from agents.prompts import PROJECT_CONTEXT
+from data_ingestion import ncrb_xlsx
 from data_ingestion.normalize import norm, norm_state
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -74,6 +75,8 @@ OVERLAP_PATH = ROOT / "data" / "area_overlap.csv"
 CSV_PATH = ROOT / "data" / "unit_map.csv"
 REPORTS_DIR = ROOT / "data" / "reports"
 ERA = "2001_2014"
+NAME_KEYED_ERAS = ("2001_2014", "2015")                # the files without codes: what this module resolves
+ERA_2015_PATH = ROOT / "data" / "raw" / "ncrb_district_wise_crimes_against_women_2015.xlsx"
 
 CSV_COLUMNS = ["era", "state", "state_code", "unit", "first_year", "last_year", "n_years", "district_code",
                "district_name", "kind", "stage", "confidence", "reason", "candidates", "geo_code", "geo_share",
@@ -117,12 +120,17 @@ class UnmappedState(ValueError):
 
 # ---- inputs -------------------------------------------------------------------------------
 
-def load_units(path: Path = ERA_A_PATH) -> pd.DataFrame:
-    """Distinct (state, unit) pairs of the 2001-2014 file with the years each appears in.
-    State-total rows are dropped: they are sums, not units."""
-    df = pd.read_csv(path, usecols=["STATE/UT", "DISTRICT", "Year"])
-    df = df[~df["DISTRICT"].str.upper().str.contains("TOTAL", na=False)]
-    df = df.assign(state=df["STATE/UT"].map(norm_state), unit=df["DISTRICT"].map(norm))
+def load_units(era: str = ERA, path: Path | None = None) -> pd.DataFrame:
+    """Distinct (state, unit) pairs of one code-less file with the years each appears in: the 2001-2014
+    CSV (state-total rows dropped: they are sums, not units) or NCRB's 2015 workbook."""
+    if era == "2015":
+        rows = ncrb_xlsx.read_district_rows(path or ERA_2015_PATH)
+        df = pd.DataFrame({"state": [norm_state(r["state_name"]) for r in rows], "unit": [norm(r["district"]) for r in rows],
+                           "Year": [int(r["YEAR"]) for r in rows]})
+    else:
+        df = pd.read_csv(path or ERA_A_PATH, usecols=["STATE/UT", "DISTRICT", "Year"])
+        df = df[~df["DISTRICT"].str.upper().str.contains("TOTAL", na=False)]
+        df = df.assign(state=df["STATE/UT"].map(norm_state), unit=df["DISTRICT"].map(norm))
     g = df.groupby(["state", "unit"])["Year"].agg(first_year="min", last_year="max", n_years="nunique")
     return g.reset_index().sort_values(["state", "unit"]).reset_index(drop=True)
 
@@ -520,15 +528,16 @@ def resolve_llm(client, state_code: int, state_name: str, pending: list[PendingU
 
 # ---- the decision record ---------------------------------------------------------------------------
 
-def read_rows(path: Path) -> dict[tuple[str, str], dict]:
+def read_rows(path: Path) -> dict[tuple[str, str, str], dict]:
+    """The decision record keyed by (era, state, unit): one unit name is decided once per source file."""
     path = Path(path)
     if not path.exists():
         return {}
     with open(path, newline="", encoding="utf-8") as fh:
-        return {(r["state"], r["unit"]): r for r in csv.DictReader(fh)}
+        return {(r["era"], r["state"], r["unit"]): r for r in csv.DictReader(fh)}
 
 
-def write_rows(path: Path, rows: dict[tuple[str, str], dict]) -> None:
+def write_rows(path: Path, rows: dict[tuple[str, str, str], dict]) -> None:
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", newline="", encoding="utf-8") as fh:
@@ -542,9 +551,9 @@ def _fmt(x: float | None) -> str:
     return "" if x is None else f"{x:.3g}"
 
 
-def make_row(u, state_code: int, res: Resolution, names: dict[int, str], reviewer_note: str = "") -> dict:
+def make_row(u, state_code: int, res: Resolution, names: dict[int, str], reviewer_note: str = "", era: str = ERA) -> dict:
     code = res.district_code
-    return {"era": ERA, "state": u.state, "state_code": state_code, "unit": u.unit,
+    return {"era": era, "state": u.state, "state_code": state_code, "unit": u.unit,
             "first_year": int(u.first_year), "last_year": int(u.last_year), "n_years": int(u.n_years),
             "district_code": "" if code is None else code, "district_name": "" if code is None else names.get(code, ""),
             "kind": res.kind, "stage": res.stage, "confidence": _fmt(res.confidence), "reason": res.reason,
@@ -555,14 +564,15 @@ def make_row(u, state_code: int, res: Resolution, names: dict[int, str], reviewe
             "reviewer_note": reviewer_note}
 
 
-def run(client=None, *, csv_path: Path = CSV_PATH, registry_path: Path = REGISTRY_PATH,
+def run(client=None, *, era: str = ERA, csv_path: Path = CSV_PATH, registry_path: Path = REGISTRY_PATH,
         overlap_path: Path = OVERLAP_PATH, units: pd.DataFrame | None = None) -> dict:
-    """Resolve every unit and write the decision record. ``client=None`` skips the model
+    """Resolve every unit of one era and write the decision record. ``client=None`` skips the model
     stage. Rows a human has verified are kept exactly as they are, including any whose
     (state, unit) key the input no longer produces (counted as verified_not_in_input,
-    so a changed normaliser or raw file shows up instead of silently dropping a decision)."""
+    so a changed normaliser or raw file shows up instead of silently dropping a decision).
+    Rows of other eras are never touched."""
     registry = load_registry(registry_path)
-    units = load_units() if units is None else units
+    units = load_units(era) if units is None else units
     state_code = map_states(units["state"].unique(), registry)
     pools = build_pools(registry)
     overlap = load_overlap(overlap_path, registry, state_code)
@@ -570,73 +580,78 @@ def run(client=None, *, csv_path: Path = CSV_PATH, registry_path: Path = REGISTR
     state_names = {s["state_code"]: s["name"] for s in registry["states"]}
 
     existing = read_rows(csv_path)
-    rows = {k: r for k, r in existing.items() if r.get("verified") == "1"}     # a human decision outlives its input row
-    in_input = set(zip(units["state"], units["unit"]))
-    stale = sum(k not in in_input for k in rows)
+    rows = {k: r for k, r in existing.items() if r.get("verified") == "1" or k[0] != era}   # a human decision outlives its input row
+    in_input = {(era, s, u) for s, u in zip(units["state"], units["unit"])}
+    stale = sum(k[0] == era and k not in in_input for k in rows)
     kept = 0
     pending: dict[int, list[tuple]] = {}                      # state_code -> [(unit row, free Resolution)]
     for u in units.itertuples(index=False):
-        key, old = (u.state, u.unit), existing.get((u.state, u.unit), {})
+        key = (era, u.state, u.unit)
+        old = existing.get(key, {})
         if key in rows:
             kept += 1
             continue
         code = state_code[u.state]
         res = resolve_free(u.state, u.unit, pools[code], overlap)
-        rows[key] = make_row(u, code, res, names, old.get("reviewer_note", ""))
+        rows[key] = make_row(u, code, res, names, old.get("reviewer_note", ""), era=era)
         if res.stage == "unresolved" and res.kind == "unknown":
             pending.setdefault(code, []).append((u, res))
 
     for code, items in pending.items():
         if client is None:
             for u, res in items:
-                rows[(u.state, u.unit)]["reason"] = f"model stage not run; {res.reason}"
+                rows[(era, u.state, u.unit)]["reason"] = f"model stage not run; {res.reason}"
             continue
         asked = [PendingUnit(u.unit, int(u.first_year), int(u.last_year), res.candidates) for u, res in items]
         answers = resolve_llm(client, code, state_names[code], asked, pools[code], registry)
         for u, free in items:
             res = answers[u.unit]
             res.geo_code, res.geo_share = free.geo_code, free.geo_share
-            rows[(u.state, u.unit)] = make_row(u, code, res, names, existing.get((u.state, u.unit), {}).get("reviewer_note", ""))
+            rows[(era, u.state, u.unit)] = make_row(u, code, res, names, existing.get((era, u.state, u.unit), {}).get("reviewer_note", ""),
+                                                    era=era)
 
     write_rows(csv_path, rows)
-    return {"total": len(rows), "kept_verified": kept, "verified_not_in_input": stale,
-            "by_stage": dict(Counter(r["stage"] for r in rows.values())),
+    mine = [r for k, r in rows.items() if k[0] == era]
+    return {"era": era, "total": len(mine), "all_rows": len(rows), "kept_verified": kept, "verified_not_in_input": stale,
+            "by_stage": dict(Counter(r["stage"] for r in mine)),
             "pending_states": len(pending), "model_stage": "run" if client is not None else "skipped"}
 
 
 # ---- report ------------------------------------------------------------------------------------------
 
 def _table(title: str, header: tuple[str, ...], body: list[tuple]) -> list[str]:
-    return [f"## {title}", "", "| " + " | ".join(header) + " |", "|" + "|".join("---" for _ in header) + "|",
+    return [f"### {title}", "", "| " + " | ".join(header) + " |", "|" + "|".join("---" for _ in header) + "|",
             *["| " + " | ".join(str(c) for c in r) + " |" for r in body], ""]
 
 
 def report(csv_path: Path = CSV_PATH, out_dir: Path = REPORTS_DIR, today: datetime.date | None = None) -> str:
-    """Stage and kind tables, the resolution rate, model-vs-geometry agreement and the
+    """Per era: stage and kind tables, the resolution rate, model-vs-geometry agreement and the
     unresolved list. Written to data/reports/<date>_resolver.md and returned."""
-    rows = list(read_rows(csv_path).values())
+    all_rows = list(read_rows(csv_path).values())
     today = today or datetime.date.today()
-    n = max(len(rows), 1)
-    can_have = [r for r in rows if r["kind"] != "not_a_district"]
-    resolved = [r for r in can_have if r["district_code"]]
-    both = [r for r in rows if r["stage"] == "llm" and r["district_code"] and r["geo_code"]]
-    agree = sum(r["district_code"] == r["geo_code"] for r in both)
-    unresolved = [r for r in can_have if not r["district_code"]]
-
-    lines = [f"# Resolver report {today.isoformat()}", "", f"{len(rows)} (state, unit) pairs from the 2001-2014 file.", ""]
-    lines += _table("Stages", ("stage", "rows", "share"),
-                    [(s, c, f"{c / n:.1%}") for s, c in Counter(r["stage"] for r in rows).most_common()])
-    lines += _table("Kinds", ("kind", "rows"), Counter(r["kind"] for r in rows).most_common())
-    lines += ["## Resolution rate", "",
-              f"{len(resolved)} of {len(can_have)} rows that can have a district have one "
-              f"({len(resolved) / max(len(can_have), 1):.1%}); {len(rows) - len(can_have)} rows are police units "
-              "with no district geography.", ""]
-    lines += ["## Model vs geometry", "",
-              (f"{agree} of {len(both)} model answers agree with the old-map overlap ({agree / len(both):.1%})."
-               if both else "no rows have both a model answer and a geometry match."), ""]
-    lines += _table(f"Unresolved ({len(unresolved)})", ("state", "unit", "years", "stage", "reason", "candidates"),
-                    [(r["state"], r["unit"], f"{r['first_year']}-{r['last_year']}", r["stage"], r["reason"],
-                      r["candidates"]) for r in unresolved])
+    lines = [f"# Resolver report {today.isoformat()}", "", f"{len(all_rows)} (era, state, unit) rows in the decision record.", ""]
+    for era in sorted({r["era"] for r in all_rows}):
+        rows = [r for r in all_rows if r["era"] == era]
+        n = max(len(rows), 1)
+        can_have = [r for r in rows if r["kind"] != "not_a_district"]
+        resolved = [r for r in can_have if r["district_code"]]
+        both = [r for r in rows if r["stage"] == "llm" and r["district_code"] and r["geo_code"]]
+        agree = sum(r["district_code"] == r["geo_code"] for r in both)
+        unresolved = [r for r in can_have if not r["district_code"]]
+        lines += [f"## Era {era}: {len(rows)} (state, unit) pairs", ""]
+        lines += _table("Stages", ("stage", "rows", "share"),
+                        [(s, c, f"{c / n:.1%}") for s, c in Counter(r["stage"] for r in rows).most_common()])
+        lines += _table("Kinds", ("kind", "rows"), Counter(r["kind"] for r in rows).most_common())
+        lines += ["### Resolution rate", "",
+                  f"{len(resolved)} of {len(can_have)} rows that can have a district have one "
+                  f"({len(resolved) / max(len(can_have), 1):.1%}); {len(rows) - len(can_have)} rows are police units "
+                  "with no district geography.", ""]
+        lines += ["### Model vs geometry", "",
+                  (f"{agree} of {len(both)} model answers agree with the old-map overlap ({agree / len(both):.1%})."
+                   if both else "no rows have both a model answer and a geometry match."), ""]
+        lines += _table(f"Unresolved ({len(unresolved)})", ("state", "unit", "years", "stage", "reason", "candidates"),
+                        [(r["state"], r["unit"], f"{r['first_year']}-{r['last_year']}", r["stage"], r["reason"],
+                          r["candidates"]) for r in unresolved])
     text = "\n".join(lines)
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -652,7 +667,7 @@ def apply(conn, *, csv_path: Path = CSV_PATH) -> dict:
     not a constraint error."""
     loaded, pending = 0, 0
     known = {row[0] for row in conn.execute("SELECT district_code FROM districts")}
-    for (state, unit), r in read_rows(csv_path).items():
+    for (era, state, unit), r in read_rows(csv_path).items():
         if r.get("verified") != "1":
             pending += 1
             continue
@@ -668,7 +683,7 @@ def apply(conn, *, csv_path: Path = CSV_PATH) -> dict:
         confidence = float(r["confidence"]) if r["confidence"].strip() else None
         conn.execute("INSERT OR REPLACE INTO unit_map (era, state, unit, district_code, kind, stage, confidence, reason, "
                      "verified) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)",
-                     (r["era"], state, unit, code, kind or None, stage, confidence, r["reason"]))
+                     (era, state, unit, code, kind or None, stage, confidence, r["reason"]))
         loaded += 1
     conn.commit()
     return {"loaded": loaded, "still_unverified": pending}
@@ -677,15 +692,17 @@ def apply(conn, *, csv_path: Path = CSV_PATH) -> dict:
 # ---- CLI -----------------------------------------------------------------------------------------------------
 
 def main(argv: list[str] | None = None) -> None:
-    ap = argparse.ArgumentParser(description="Resolve 2001-2014 unit names to district codes; report; apply after review.")
+    ap = argparse.ArgumentParser(description="Resolve code-less unit names to district codes; report; apply after review.")
     ap.add_argument("command", choices=["run", "report", "apply"])
     ap.add_argument("--llm", action="store_true", help="run the model stage (needs provider keys in .env)")
+    ap.add_argument("--era", choices=NAME_KEYED_ERAS, default=ERA, help="which code-less file to resolve")
     args = ap.parse_args(argv)
     if args.command == "run":
         client = build_client(store.connect()) if args.llm else None
-        summary = run(client)
-        print(f"unit_map: {summary['total']} rows, {summary['kept_verified']} kept as verified, "
-              f"model stage {summary['model_stage']} ({summary['pending_states']} states had pending names)")
+        summary = run(client, era=args.era)
+        print(f"unit_map ({summary['era']}): {summary['total']} rows, {summary['kept_verified']} kept as verified, "
+              f"model stage {summary['model_stage']} ({summary['pending_states']} states had pending names); "
+              f"{summary['all_rows']} rows in the file")
         if summary["verified_not_in_input"]:
             print(f"  WARNING: {summary['verified_not_in_input']} verified row(s) have a (state, unit) key the input "
                   "no longer produces; kept as they are, check the normaliser or the raw file")
