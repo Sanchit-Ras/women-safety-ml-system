@@ -419,6 +419,25 @@ def test_apply_loads_only_verified_rows_into_the_store(reg_path, tmp_path):
     conn.close()
 
 
+def test_a_decision_verified_in_one_era_is_carried_to_the_same_name_in_another(reg_path, tmp_path):
+    path = tmp_path / "unit_map.csv"
+    run(None, csv_path=path, registry_path=reg_path, overlap_path=tmp_path / "none.csv", units=units(("andhra pradesh", "anantapur")))
+    rows = read_rows(path)
+    rows[("2001_2014", "andhra pradesh", "anantapur")].update(district_code="504", district_name="Y.S.R.", kind="rename",
+                                                           stage="human", verified="1", reviewer_note="decided by hand")
+    write_rows(path, rows)
+    summary = run(None, era="2015", csv_path=path, registry_path=reg_path, overlap_path=tmp_path / "none.csv",
+                  units=units(("andhra pradesh", "anantapur"), ("andhra pradesh", "kadapa")))
+    rows = read_rows(path)
+    got = rows[("2015", "andhra pradesh", "anantapur")]
+    assert (got["district_code"], got["kind"], got["stage"], got["verified"], got["proposed_by"]) == \
+        ("504", "rename", "human", "1", "carried:2001_2014")                     # the human's call, not the exact match
+    assert got["reviewer_note"] == "carried from 2001_2014: decided by hand"
+    assert rows[("2015", "andhra pradesh", "kadapa")]["stage"] == "unresolved"      # a new name still goes through the stages
+    assert (summary["carried"], summary["total"]) == (1, 2)
+    assert rows[("2001_2014", "andhra pradesh", "anantapur")]["district_code"] == "504"    # the source row is untouched
+
+
 def test_apply_names_the_row_whose_code_the_store_does_not_know(reg_path, tmp_path):
     conn = store.connect(tmp_path / "t.db")
     geography = dict(states=[(28, "Andhra Pradesh", "[]")], districts=[(502, 28, "Anantapur", "[]", 2016, 2022)], circles=[])

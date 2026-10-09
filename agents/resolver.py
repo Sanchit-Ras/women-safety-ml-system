@@ -11,6 +11,9 @@ Stages are tried in order; the first hit wins and every row records which stage
 decided it and how sure it is. Cheap deterministic stages go first so the model
 is only asked about what they cannot do:
 
+    carried      a human already verified this exact (state, unit) spelling in another
+                 era (the 2015 workbook reuses 2001-2014 names): the same decision is
+                 written, stage 'human', proposed_by 'carried:<era>', verified = 1
     exact        the unit is a known spelling of a district in the registry
     circle       the unit is a police circle the 2016+ files list under a district
     rule         strip 'rly', 'commr', 'city', 'urban', ... and look again (patna rly -> Patna)
@@ -581,9 +584,13 @@ def run(client=None, *, era: str = ERA, csv_path: Path = CSV_PATH, registry_path
 
     existing = read_rows(csv_path)
     rows = {k: r for k, r in existing.items() if r.get("verified") == "1" or k[0] != era}   # a human decision outlives its input row
+    carried: dict[tuple[str, str], dict] = {}                 # (state, unit) -> a verified decision from another era
+    for (e, s, u), r in existing.items():
+        if e != era and r.get("verified") == "1" and (s, u) not in carried:
+            carried[(s, u)] = r
     in_input = {(era, s, u) for s, u in zip(units["state"], units["unit"])}
     stale = sum(k[0] == era and k not in in_input for k in rows)
-    kept = 0
+    kept = carried_n = 0
     pending: dict[int, list[tuple]] = {}                      # state_code -> [(unit row, free Resolution)]
     for u in units.itertuples(index=False):
         key = (era, u.state, u.unit)
@@ -592,6 +599,14 @@ def run(client=None, *, era: str = ERA, csv_path: Path = CSV_PATH, registry_path
             kept += 1
             continue
         code = state_code[u.state]
+        src = carried.get((u.state, u.unit))
+        if src is not None:                                    # a human decided this exact name in another era: same answer, no model
+            res = Resolution(int(src["district_code"]) if src["district_code"].strip() else None, src["kind"], "human", 1.0,
+                             f"carried from {src['era']}: {src['reason']}", proposed_by=f"carried:{src['era']}")
+            note = f"carried from {src['era']}" + (f": {src['reviewer_note']}" if src.get("reviewer_note") else "")
+            rows[key] = {**make_row(u, code, res, names, note, era=era), "verified": "1"}
+            carried_n += 1
+            continue
         res = resolve_free(u.state, u.unit, pools[code], overlap)
         rows[key] = make_row(u, code, res, names, old.get("reviewer_note", ""), era=era)
         if res.stage == "unresolved" and res.kind == "unknown":
@@ -612,7 +627,8 @@ def run(client=None, *, era: str = ERA, csv_path: Path = CSV_PATH, registry_path
 
     write_rows(csv_path, rows)
     mine = [r for k, r in rows.items() if k[0] == era]
-    return {"era": era, "total": len(mine), "all_rows": len(rows), "kept_verified": kept, "verified_not_in_input": stale,
+    return {"era": era, "total": len(mine), "all_rows": len(rows), "kept_verified": kept, "carried": carried_n,
+            "verified_not_in_input": stale,
             "by_stage": dict(Counter(r["stage"] for r in mine)),
             "pending_states": len(pending), "model_stage": "run" if client is not None else "skipped"}
 

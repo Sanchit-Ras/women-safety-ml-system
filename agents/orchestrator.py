@@ -75,7 +75,7 @@ def build(conn, *, fixes: str = "verified", registry: bool = True, raw_files: di
     raw_files = {**ERA_FILES, **(raw_files or {})}
     paths = {"crosswalk": crosswalk.CSV_PATH, "column_fixes": crosswalk.FIXES_PATH, "unit_map": resolver.CSV_PATH,
              "lineage": lineage.CSV_PATH, **(csv_paths or {})}
-    run_id = dt.datetime.now().strftime("%Y%m%d-%H%M%S")
+    run_id = dt.datetime.now().strftime("%Y%m%d-%H%M%S-%f")   # microseconds: two builds in one second get two traces
     trace = Trace(run_id, Path(trace_dir) / f"{run_id}.jsonl")
     inputs = {name: file_hash(Path(p)) for name, p in {**{f"raw:{e}": p for e, p in raw_files.items()},
                                                        **{f"csv:{k}": p for k, p in paths.items()}}.items() if Path(p).exists()}
