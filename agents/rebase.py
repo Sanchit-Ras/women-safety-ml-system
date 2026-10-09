@@ -4,23 +4,28 @@ A filed row does not mean the same land in every year: Karimnagar's 2016 row cov
 districts, its 2017 row one. For each year this module works out which of today's districts sit inside
 which filed row (from the verified lineage), divides each such row among them by a share, and writes one
 row per district and year to ``panel_rebased`` and ``data/panel_rebased.parquet``. The pieces add back to
-the filed row exactly, so state and national totals never change.
+the filed row exactly, so national totals never change; rows carry today's state, so state totals are on
+today's states.
 
 Vocabulary. A *holder* is the district whose filed row contains another district's area in a year; that
 other district is *pooled* in it. A *share* is the pooled district's fraction of the holder's row.
 
 The share of a lineage edge is measured where both sides report separately: for a split, the first
 ``BASIS_YEARS`` years from the split year; for a late pooling (``reported_together`` with a year), the last
-years before it. Each year's ratio is the pooled unit's total over the holder unit's total, both units
-taken as the lineage stood at the edge's year (a child's own later children count with it), and a year
-counts only when filed rows cover each unit exactly. The mean of the ratios is the share; ``share_basis``
+years before it. Each year's ratio is the pooled unit's total over the holder unit's total. The pooled
+unit is the member as it stood the year before the edge took effect (its own pooled children count with
+it; a district that joined it later does not), the holder unit is the holder's as the lineage stood just
+before a split or just after a join, and a year counts only when filed rows cover each unit exactly. The mean of the ratios is the share; ``share_basis``
 says how many years it rests on (``crime:3y`` .. ``crime:1y``). With no such year the old map's area share
 stands in (``area``). With neither, nothing is estimated and the report says so.
 
 A district carved from several parents takes a part from each; its filed total is divided among the
 parents by the old map's area overlap before shares are measured (equal parts, flagged, when the map
-cannot tell). A chain (Lower Subansiri held Kurung Kumey, which held Kra Daadi) is peeled outer edge
-first; siblings that split in different years are peeled in year order, each from what remained.
+cannot tell; a parent the map gives no land moves nothing and is listed). A chain (Lower Subansiri held
+Kurung Kumey, which held Kra Daadi) is peeled outer edge first. Within one holder, siblings that split in
+different years are peeled in year order, each from what remained; late poolings are peeled latest first,
+each from what remained, independently of the splits, because every share was measured against the
+holder's unit as it stood at that edge's own year.
 
 Never estimated: map-only districts (never a row of their own in any file; the product says "reported
 with ..."), a year a district simply failed to file (stays empty), and a row a district filed before the
@@ -57,6 +62,7 @@ AREA_PATH = lineage.OVERLAP_CSV
 REPORTS_DIR = lineage.REPORTS_DIR
 GROUP_THRESHOLD = 0.2
 BASIS_YEARS = 3
+MIN_OVERLAP = 0.05           # an old polygon counts as a district's own only if at least this much of it lies there today
 SPLIT, JOIN = "split", "reported_together"
 BASES = ("observed", "remainder", "crime:3y", "crime:2y", "crime:1y", "area")        # strongest first
 COLUMNS = ["unit_id", "state_code", "district_code", "year", *CORE_CATEGORIES, "total",
@@ -128,7 +134,11 @@ class Rebaser:
 
     def __init__(self, panel: pd.DataFrame, poolings: list[Pooling], districts: dict[int, dict],
                  area: pd.DataFrame | None = None, *, threshold: float = GROUP_THRESHOLD, basis_years: int = BASIS_YEARS):
-        self.panel, self.districts, self.area = panel, districts, area
+        self.panel, self.districts = panel, districts
+        self.area = None
+        if area is not None and len(area):
+            self.area = area.copy()
+            self.area["_poly"] = list(zip(self.area["old_state_norm"].astype(str), self.area["old_norm"].astype(str)))
         self.threshold, self.basis_years = threshold, basis_years
         self.names = {code: d["name"] for code, d in districts.items()}
         dist = panel[panel["district_code"].notna()]
@@ -150,7 +160,11 @@ class Rebaser:
             self.in_edges[p.member].append(p)
         self._tops: dict[tuple[int, int], frozenset] = {}
         self._contents: dict[int, dict[int, set[int]]] = {}
-        self._polygons: dict[int, set[str]] = {}
+        self._polygons: dict[int, set[tuple[str, str]]] = {}   # code -> the old map's (state, name) polygons that were it
+        self._claims: dict[str, set[int]] = defaultdict(set)      # normalised name or alias -> the districts bearing it
+        for code in districts:
+            for n in self._holder_names(code):
+                self._claims[n].add(code)
         self.diag: dict[str, list] = defaultdict(list)
         self.weights = self._weights()
         self.shares: dict[Pooling, Share] = {}
@@ -162,12 +176,17 @@ class Rebaser:
         d = self.districts[code]
         return {norm(d["name"]), *(norm(a) for a in d.get("aliases", []))}
 
-    def _holder_polygons(self, code: int) -> set[str]:
-        """The old map's polygons that were this district: same name or alias, or a polygon at least half of
-        which is this district today (catches spellings such as 'Chittaurgarh' and 'Rangareddi')."""
+    def _holder_polygons(self, code: int) -> set[tuple[str, str]]:
+        """The old map's polygons that were this district: a polygon that bears its name or alias and overlaps it
+        today, or one that is at least half of it today and bears no other district's name (so 'Rangareddi' and
+        'Chittaurgarh' are found, while Peddapalli does not inherit 'Karimnagar' and a stray 'Junagadh' polygon that
+        barely touches Junagadh is left out)."""
         if code not in self._polygons:
-            own = self.area[(self.area["new_code"] == code) & (self.area["new_share"] >= 0.5)]["old_norm"]
-            self._polygons[code] = self._holder_names(code) | set(own)
+            own = self.area[(self.area["new_code"] == code) & (self.area["share"] >= MIN_OVERLAP)]
+            names = self._holder_names(code)
+            named = {poly for poly in own["_poly"] if poly[1] in names}
+            adopted = {poly for poly in own[own["new_share"] >= 0.5]["_poly"] if not (self._claims.get(poly[1], set()) - {code})}
+            self._polygons[code] = named | adopted
         return self._polygons[code]
 
     def _area_rows(self, holder: int, member: int) -> pd.DataFrame | None:
@@ -176,14 +195,15 @@ class Rebaser:
         if self.area is None or self.area.empty:
             return None
         polygons = self._holder_polygons(holder)
-        if not (self.area["old_norm"].isin(polygons)).any():
+        if not polygons:
             return None
-        return self.area[(self.area["new_code"] == member) & (self.area["old_norm"].isin(polygons))]
+        mine = self.area["_poly"].map(lambda poly: poly in polygons)
+        return self.area[(self.area["new_code"] == member) & mine]
 
     def area_share(self, holder: int, member: int) -> float | None:
         """Fraction of the holder's old polygon that is the member today: the area analogue of a share."""
         hit = self._area_rows(holder, member)
-        return None if hit is None else float(hit["share"].sum())
+        return None if hit is None else min(float(hit["share"].sum()), 1.0)
 
     def area_cover(self, holder: int, member: int) -> float | None:
         """Fraction of the member's polygon that was the holder's old polygon: how a multi-parent child divides."""
@@ -280,10 +300,15 @@ class Rebaser:
     def measure(self) -> dict[Pooling, Share]:
         for p in self.poolings:
             t = p.year
-            M = self.lineage_set(p.member, t if p.kind == SPLIT else t - 1)
+            M = self.lineage_set(p.member, t - 1)                 # the member's unit just before the edge took effect
             H = self.lineage_set(p.holder, t - 1 if p.kind == SPLIT else t)
             H_rest = {d: w for d, w in H.items() if d not in M}
             a = self.weights[p]
+            area_share = self.area_share(p.holder, p.member)
+            if a == 0:                                            # the old map gives this holder no land in the member
+                self.shares[p] = Share(0.0, "area", [], area_share)
+                self.diag["zero_weight"].append({"edge": p})
+                continue
             candidates = ([y for y in self.years if y >= t] if p.kind == SPLIT else [y for y in reversed(self.years) if y < t])
             ratios, used = [], []
             for y in candidates:
@@ -297,11 +322,10 @@ class Rebaser:
                 used.append(y)
                 if len(ratios) == self.basis_years:
                     break
-            area_share = self.area_share(p.holder, p.member)
             if ratios:
                 self.shares[p] = Share(float(np.mean(ratios)), f"crime:{len(ratios)}y", used, area_share)
             elif area_share is not None:
-                self.shares[p] = Share(min(area_share, 1.0), "area", [], area_share)
+                self.shares[p] = Share(area_share, "area", [], area_share)
             else:
                 self.shares[p] = Share(None, None, [], None)
         return self.shares
@@ -312,19 +336,24 @@ class Rebaser:
         filed_now = {d for d, ys in self.filed_years.items() if y in ys}
         incoming: dict[int, list[Pooling]] = defaultdict(list)
         for p in self.poolings:
-            if p.member in filed_now or not p.active(y):
+            if p.member in filed_now or not p.active(y) or self.weights[p] == 0:
                 continue
             if self.shares[p].share is None:
                 self.diag["no_estimate"].append({"edge": p, "year": y})
-                continue
-            if not self.tops(p.holder, y):                       # the holder is missing too: nothing to divide
-                self.diag["holder_missing"].append({"edge": p, "year": y})
                 continue
             incoming[p.member].append(p)
         for m, ps in list(incoming.items()):
             if len({p.kind for p in ps}) > 1:                   # a split and a late pooling both active: keep the split
                 incoming[m] = [p for p in ps if p.kind == SPLIT]
                 self.diag["conflicting_edges"].append({"member": m, "year": y})
+        while True:                                              # every holder needs a row this year: filed, or estimated itself
+            short = {m: [p.holder for p in ps if p.holder not in filed_now and p.holder not in incoming] for m, ps in incoming.items()}
+            dropped = [m for m, holders in short.items() if holders]
+            if not dropped:
+                break
+            for m in dropped:                                    # one holder short: no row at all rather than a silently partial one
+                self.diag["holder_unresolved"].append({"member": m, "year": y, "holders": short[m]})
+                del incoming[m]
         nodes = filed_now | set(incoming)
         outgoing: dict[int, list[Pooling]] = defaultdict(list)
         for ps in incoming.values():
@@ -335,24 +364,37 @@ class Rebaser:
         received: dict[int, list[tuple[Pooling, np.ndarray, float]]] = defaultdict(list)
         gave: set[int] = set()
         ready, order = sorted(n for n in nodes if indeg[n] == 0), []
+
+        def give(p: Pooling, part: np.ndarray, base: np.ndarray) -> None:
+            amount[p.member] += part
+            received[p.member].append((p, part, float(base.sum())))
+            indeg[p.member] -= 1
+            if indeg[p.member] == 0:
+                ready.append(p.member)
+
         while ready:                                             # holders before members, so a member's amount is complete
             x = ready.pop(0)
             order.append(x)
-            base = amount[x].copy()
-            for _year, group in groupby(sorted(outgoing[x], key=lambda p: (p.year, p.member)), key=lambda p: p.year):
+            row, given = amount[x].copy(), np.zeros(N)
+            base = row.copy()                                    # late poolings: the latest to join is peeled first, from the whole row
+            for p in sorted((p for p in outgoing[x] if p.kind == JOIN), key=lambda p: (-p.year, p.member)):
+                part = self.shares[p].share * base
+                give(p, part, base)
+                base, given = base - part, given + part
+            base = row.copy()                                    # splits: earliest first; one year's siblings from the same remainder
+            for _year, group in groupby(sorted((p for p in outgoing[x] if p.kind == SPLIT), key=lambda p: (p.year, p.member)),
+                                        key=lambda p: p.year):
                 parts = [(p, self.shares[p].share * base) for p in group]
                 for p, part in parts:
-                    amount[p.member] += part
-                    received[p.member].append((p, part, float(base.sum())))
-                    indeg[p.member] -= 1
-                    if indeg[p.member] == 0:
-                        ready.append(p.member)
+                    give(p, part, base)
+                    given = given + part
                 base = base - sum(part for _, part in parts)
+            rem = row - given
+            if (rem < -1e-6 * max(float(row.sum()), 1.0)).any():
+                self.diag["over_assigned"].append({"holder": x, "year": y, "short": float(-rem[rem < 0].sum())})
+            amount[x] = np.clip(rem, 0.0, None)                  # a negative beyond rounding is reported above; none is stored
+            if given.sum() > 0:
                 gave.add(x)
-            if x in gave and (base < -1e-9).any():
-                self.diag["over_assigned"].append({"holder": x, "year": y, "short": float(-base[base < 0].sum())})
-                base = np.clip(base, 0.0, None)
-            amount[x] = base
         if len(order) < len(nodes):
             self.diag["cycles"].append({"year": y, "codes": sorted(nodes - set(order))})
         rows = []
@@ -365,15 +407,15 @@ class Rebaser:
                 basis, est, share, holder = "remainder", 1, (float(vec.sum()) / filed_total if filed_total > 0 else 1.0), None
             else:
                 parts = received[x]
-                basis = max((self.shares[p].basis for p, _, _ in parts), key=BASES.index)
+                basis = max((self.shares[p].basis for p, _, _ in parts), key=BASES.index)     # the weakest basis among its parts
                 est = 1
-                bases_total = sum(b for _, _, b in parts)
+                bases_total = sum(b for _, _, b in parts)                                      # share: received over the holders' bases
                 share = sum(float(part.sum()) for _, part, _ in parts) / bases_total if bases_total > 0 else 0.0
-                holder = max(parts, key=lambda t: float(t[1].sum()))[0].holder
+                holder = max(parts, key=lambda t: float(t[1].sum()))[0].holder                 # the largest part's holder
             rows.append({"unit_id": f"d{x}", "state_code": self.districts[x]["state_code"], "district_code": x, "year": y,
                          **{c: float(v) for c, v in zip(CORE_CATEGORIES, vec)}, "total": float(vec.sum()),
                          "is_estimated": est, "share": min(max(share, 0.0), 1.0), "share_basis": basis, "holder_code": holder})
-        missing = sorted(d for d in self.filed_years if d not in nodes)
+        missing = sorted(d for d in self.filed_years if d not in order)
         self.coverage.append({"year": y, "observed": sum(r["share_basis"] == "observed" for r in rows),
                               "adjusted": sum(r["share_basis"] == "remainder" for r in rows),
                               "estimated": sum(r["is_estimated"] == 1 and r["share_basis"] != "remainder" for r in rows),
@@ -383,6 +425,9 @@ class Rebaser:
     def run(self) -> pd.DataFrame:
         if not self.shares:
             self.measure()
+        self.coverage = []
+        for key in ("no_estimate", "conflicting_edges", "holder_unresolved", "over_assigned", "cycles"):
+            self.diag.pop(key, None)
         rows = [r for y in self.years for r in self.apply_year(y)]
         for r in self.panel[self.panel["district_code"].isna()].itertuples():      # the states' unallocated buckets, as filed
             rows.append({"unit_id": r.unit_id, "state_code": int(r.state_code), "district_code": None, "year": int(r.year),
@@ -437,8 +482,10 @@ class Rebaser:
         out = []
         for p in self.poolings:
             s = self.shares[p]
-            if p.kind == JOIN and p.year > first_year:
-                grouped, why = True, "late pooling: the member's years from then on are estimates"
+            if self.weights[p] == 0:
+                grouped, why = False, "the old map gives this holder no land in the member: nothing moves"
+            elif p.kind == JOIN and p.year > first_year:
+                grouped, why = True, "late pooling: the member's land sits in the holder's row from then on"
             elif s.share is None:
                 grouped, why = False, "no share: nothing estimated"
             else:
@@ -505,7 +552,8 @@ def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path) -
              f"{counts.get('observed', 0):,} observed as filed ({_pct(counts.get('observed', 0), n)}), "
              f"{counts.get('remainder', 0):,} filed rows reduced by the parts of pooled districts, "
              f"{n - counts.get('observed', 0) - counts.get('remainder', 0):,} estimated rows for districts that were pooled.",
-             "", "Every row adds back to its filed row; state and national totals are unchanged.", "",
+             "", "Every row adds back to its filed row, so national totals are unchanged; rows carry today's state, so "
+                 "state totals are on today's states.", "",
              "## Share basis of estimated rows", "", "| basis | rows |", "|---|---|"]
     lines += [f"| {b} | {int(counts.get(b, 0)):,} |" for b in BASES[2:]]
     lines += ["", "## Coverage by year", "", "| year | observed | adjusted | estimated | missing |", "|---|---|---|---|---|"]
@@ -527,6 +575,17 @@ def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path) -
         hm[d["edge"]].append(d["year"])
     lines += ["", f"## Edges whose holder filed nothing that year ({len(hm)}; the member stays missing)", ""]
     lines += [f"- {p.label(names)}: {', '.join(map(str, sorted(ys)))}" for p, ys in sorted(hm.items(), key=lambda kv: kv[0].parent_child)] or ["None."]
+    unresolved = defaultdict(list)
+    for d in rb.diag.get("holder_unresolved", []):
+        unresolved[d["member"]].append(d["year"])
+    lines += ["", f"## Districts left without a row because a holder had none that year ({len(unresolved)})", ""]
+    lines += [f"- {names.get(m)}: {', '.join(map(str, sorted(ys)))}" for m, ys in sorted(unresolved.items())] or ["None."]
+    zero = [d["edge"] for d in rb.diag.get("zero_weight", [])]
+    lines += ["", f"## Edges the old map gives no land ({len(zero)}; nothing moves, the member's other parents carry it)", ""]
+    lines += [f"- {p.label(names)}" for p in zero] or ["None."]
+    odd = rb.diag.get("conflicting_edges", []) + rb.diag.get("cycles", [])
+    lines += ["", f"## Conflicting edges and cycles ({len(odd)})", ""]
+    lines += [f"- {d}" for d in odd] or ["None."]
     part_only = [p for p in rb.poolings if p.kind == JOIN and any(y >= p.year for y in rb.filed_years.get(p.member, ()))]
     lines += ["", f"## Late poolings of a part ({len(part_only)}): the pooled district still files, so only a part of it sits in the "
                   "holder's row; nothing is estimated, the two are grouped", ""]

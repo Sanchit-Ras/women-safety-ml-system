@@ -91,7 +91,7 @@ def test_a_chain_is_peeled_outer_edge_first():
 def test_a_child_of_several_parents_is_divided_by_area_cover_before_shares_are_measured():
     filed = {(1, y): 100 for y in range(2001, 2008)} | {(2, y): 100 for y in range(2001, 2008)} | {(3, y): 100 for y in range(2005, 2008)}
     edges = [Pooling(3, 1, SPLIT, 2005), Pooling(3, 2, SPLIT, 2005)]
-    rb = Rebaser(panel(filed), edges, districts((1, 2, 3)), area([("A", 3, 0.3, 0.75), ("B", 3, 0.1, 0.25)]))
+    rb = Rebaser(panel(filed), edges, districts((1, 2, 3)), area([("A", 1, 0.7, 1.0), ("A", 3, 0.3, 0.75), ("B", 2, 0.9, 1.0), ("B", 3, 0.1, 0.25)]))
     df = rb.run()
     assert rb.weights[edges[0]] == pytest.approx(0.75) and rb.weights[edges[1]] == pytest.approx(0.25)
     assert rb.shares[edges[0]].share == pytest.approx(75 / 175) and rb.shares[edges[1]].share == pytest.approx(25 / 125)
@@ -121,7 +121,7 @@ def test_a_late_pooling_is_measured_on_the_years_before_it_and_always_groups():
 def test_map_only_districts_get_no_rows_and_link_their_holders_only_when_they_move():
     filed = {(1, y): 100 for y in range(2001, 2006)} | {(2, y): 100 for y in range(2001, 2006)}
     edges = [Pooling(5, 1, SPLIT, 2004), Pooling(5, 2, JOIN, 2004)]        # M: inside A to 2003, inside B from 2004
-    rb = Rebaser(panel(filed), edges, districts((1, 2, 5)), area([("A", 5, 0.3, 1.0)]))
+    rb = Rebaser(panel(filed), edges, districts((1, 2, 5)), area([("A", 1, 0.7, 1.0), ("A", 5, 0.3, 1.0)]))
     df = rb.run()
     assert rb.map_only == {5} and rb.poolings == [] and set(df["district_code"]) == {1, 2}
     assert set(df["share_basis"]) == {"observed"}
@@ -133,7 +133,7 @@ def test_map_only_districts_get_no_rows_and_link_their_holders_only_when_they_mo
     rb2 = Rebaser(panel(filed), edges, districts((1, 2, 5)))                # no area share: holders stay apart
     rb2.run()
     assert [u["members"] for u in rb2.build_units()] == [[1], [2], [5]]
-    rb3 = Rebaser(panel(filed), [Pooling(5, 1, JOIN, 2001)], districts((1, 2, 5)), area([("A", 5, 0.9, 1.0)]))
+    rb3 = Rebaser(panel(filed), [Pooling(5, 1, JOIN, 2001)], districts((1, 2, 5)), area([("A", 1, 0.1, 1.0), ("A", 5, 0.9, 1.0)]))
     rb3.run()                                                                # always inside A: nothing moves, no group
     assert not rb3.map_only_notes()[0]["moves"] and [u["members"] for u in rb3.build_units()] == [[1], [2], [5]]
 
@@ -157,7 +157,7 @@ def test_an_edge_with_no_evidence_estimates_nothing_and_is_reported():
     assert {d["year"] for d in rb.diag["no_estimate"]} == {2001, 2002, 2003}
     assert rb.group_edges()[0]["why"] == "no share: nothing estimated"
 
-    with_area = Rebaser(panel(filed), [edge], districts((1, 2)), area([("A", 2, 0.4, 1.0)]))
+    with_area = Rebaser(panel(filed), [edge], districts((1, 2)), area([("A", 1, 0.6, 1.0), ("A", 2, 0.4, 1.0)]))
     df2 = with_area.run()
     assert with_area.shares[edge].basis == "area" and row(df2, 2, 2001)["total"] == pytest.approx(40)
 

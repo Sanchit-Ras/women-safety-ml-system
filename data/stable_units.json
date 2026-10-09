@@ -2,8 +2,8 @@
  "meta": {
   "generated": "2026-10-10",
   "n_nodes": 783,
-  "n_groups": 673,
-  "n_edges_used": 110,
+  "n_groups": 671,
+  "n_edges_used": 112,
   "largest_group_size": 6,
   "n_edges_skipped": 0,
   "skipped_edges": [],
@@ -127,7 +127,7 @@
     "area_share": 0.0,
     "weight": 1.0,
     "grouped": true,
-    "why": "late pooling: the member's years from then on are estimates"
+    "why": "late pooling: the member's land sits in the holder's row from then on"
    },
    {
     "parent_code": 571,
@@ -338,15 +338,17 @@
     "child_code": 616,
     "kind": "split",
     "year": 2005,
-    "share": 0.1003,
-    "share_basis": "crime:1y",
+    "share": 0.1513,
+    "share_basis": "crime:3y",
     "share_years": [
-     2022
+     2005,
+     2006,
+     2007
     ],
     "area_share": 0.2692,
     "weight": 0.3794,
     "grouped": false,
-    "why": "share 0.10 < 0.2"
+    "why": "share 0.15 < 0.2"
    },
    {
     "parent_code": 283,
@@ -778,15 +780,17 @@
     "child_code": 644,
     "kind": "split",
     "year": 2012,
-    "share": 0.2548,
-    "share_basis": "crime:1y",
+    "share": 0.2989,
+    "share_basis": "crime:3y",
     "share_years": [
-     2022
+     2012,
+     2013,
+     2014
     ],
     "area_share": 0.316,
     "weight": 1.0,
     "grouped": true,
-    "why": "share 0.25 >= 0.2"
+    "why": "share 0.30 >= 0.2"
    },
    {
     "parent_code": 387,
@@ -1259,7 +1263,7 @@
      2018,
      2019
     ],
-    "area_share": 0.0203,
+    "area_share": null,
     "weight": 0.5,
     "grouped": true,
     "why": "share 0.32 >= 0.2"
@@ -1276,7 +1280,7 @@
      2018,
      2019
     ],
-    "area_share": 0.0203,
+    "area_share": null,
     "weight": 0.5,
     "grouped": true,
     "why": "share 0.25 >= 0.2"
@@ -1361,7 +1365,7 @@
      2015,
      2016
     ],
-    "area_share": 1.1982,
+    "area_share": 0.2559,
     "weight": 1.0,
     "grouped": true,
     "why": "share 0.39 >= 0.2"
@@ -1779,7 +1783,7 @@
     "child_code": 697,
     "kind": "split",
     "year": 2017,
-    "share": 0.7993,
+    "share": 0.622,
     "share_basis": "crime:3y",
     "share_years": [
      2017,
@@ -1789,20 +1793,20 @@
     "area_share": 0.2236,
     "weight": 1.0,
     "grouped": true,
-    "why": "share 0.80 >= 0.2"
+    "why": "share 0.62 >= 0.2"
    },
    {
     "parent_code": 518,
     "child_code": 697,
     "kind": "reported_together",
     "year": 2017,
-    "share": 0.0,
-    "share_basis": "area",
+    "share": null,
+    "share_basis": null,
     "share_years": [],
-    "area_share": 0.0,
+    "area_share": null,
     "weight": 1.0,
     "grouped": true,
-    "why": "late pooling: the member's years from then on are estimates"
+    "why": "late pooling: the member's land sits in the holder's row from then on"
    },
    {
     "parent_code": 512,
@@ -2166,16 +2170,12 @@
     "kind": "split",
     "year": 2017,
     "share": 0.0,
-    "share_basis": "crime:3y",
-    "share_years": [
-     2017,
-     2018,
-     2019
-    ],
+    "share_basis": "area",
+    "share_years": [],
     "area_share": 0.0,
     "weight": 0.0,
     "grouped": false,
-    "why": "share 0.00 < 0.2"
+    "why": "the old map gives this holder no land in the member: nothing moves"
    },
    {
     "parent_code": 232,
@@ -2586,7 +2586,7 @@
     "share_years": [
      2022
     ],
-    "area_share": 0.3775,
+    "area_share": null,
     "weight": 1.0,
     "grouped": false,
     "why": "share 0.20 < 0.2"
@@ -2911,49 +2911,19 @@
     "why": "share 0.42 >= 0.2"
    },
    {
-    "parent_code": 291,
-    "child_code": 756,
-    "kind": "split",
-    "year": 2022,
-    "share": 0.0193,
-    "share_basis": "crime:1y",
-    "share_years": [
-     2022
-    ],
-    "area_share": 0.062,
-    "weight": 0.3155,
-    "grouped": false,
-    "why": "share 0.02 < 0.2"
-   },
-   {
-    "parent_code": 298,
-    "child_code": 756,
-    "kind": "split",
-    "year": 2022,
-    "share": 0.128,
-    "share_basis": "crime:1y",
-    "share_years": [
-     2022
-    ],
-    "area_share": 0.2577,
-    "weight": 0.6845,
-    "grouped": false,
-    "why": "share 0.13 < 0.2"
-   },
-   {
     "parent_code": 616,
     "child_code": 756,
     "kind": "split",
     "year": 2022,
-    "share": 0.0,
+    "share": 0.4221,
     "share_basis": "crime:1y",
     "share_years": [
      2022
     ],
-    "area_share": 0.0,
-    "weight": 0.0,
-    "grouped": false,
-    "why": "share 0.00 < 0.2"
+    "area_share": null,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.42 >= 0.2"
    },
    {
     "parent_code": 388,
@@ -3020,45 +2990,30 @@
     "child_code": 763,
     "kind": "split",
     "year": 2022,
-    "share": 0.2261,
+    "share": 0.2184,
     "share_basis": "crime:1y",
     "share_years": [
      2022
     ],
     "area_share": 0.2061,
-    "weight": 0.523,
+    "weight": 0.5,
     "grouped": true,
-    "why": "share 0.23 >= 0.2"
-   },
-   {
-    "parent_code": 387,
-    "child_code": 763,
-    "kind": "split",
-    "year": 2022,
-    "share": 0.0454,
-    "share_basis": "crime:1y",
-    "share_years": [
-     2022
-    ],
-    "area_share": 0.0538,
-    "weight": 0.2385,
-    "grouped": false,
-    "why": "share 0.05 < 0.2"
+    "why": "share 0.22 >= 0.2"
    },
    {
     "parent_code": 644,
     "child_code": 763,
     "kind": "split",
     "year": 2022,
-    "share": 0.139,
+    "share": 0.2528,
     "share_basis": "crime:1y",
     "share_years": [
      2022
     ],
-    "area_share": 0.0538,
-    "weight": 0.2385,
-    "grouped": false,
-    "why": "share 0.14 < 0.2"
+    "area_share": null,
+    "weight": 0.5,
+    "grouped": true,
+    "why": "share 0.25 >= 0.2"
    },
    {
     "parent_code": 87,
@@ -7362,28 +7317,13 @@
   },
   {
    "unit_id": "su_386",
-   "name": "Raigarh",
-   "largest_member_code": 386,
-   "members": [
-    386,
-    763
-   ],
-   "edges": [
-    {
-     "parent_code": 386,
-     "child_code": 763,
-     "kind": "split",
-     "year": 2022
-    }
-   ]
-  },
-  {
-   "unit_id": "su_387",
    "name": "Raipur",
    "largest_member_code": 387,
    "members": [
+    386,
     387,
-    644
+    644,
+    763
    ],
    "edges": [
     {
@@ -7391,6 +7331,18 @@
      "child_code": 644,
      "kind": "split",
      "year": 2012
+    },
+    {
+     "parent_code": 386,
+     "child_code": 763,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 644,
+     "child_code": 763,
+     "kind": "split",
+     "year": 2022
     }
    ]
   },
@@ -9721,9 +9673,17 @@
    "name": "Baksa",
    "largest_member_code": 616,
    "members": [
-    616
+    616,
+    756
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 616,
+     "child_code": 756,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
   },
   {
    "unit_id": "su_618",
@@ -10226,15 +10186,6 @@
    "largest_member_code": 752,
    "members": [
     752
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_756",
-   "name": "Tamulpur",
-   "largest_member_code": 756,
-   "members": [
-    756
    ],
    "edges": []
   },

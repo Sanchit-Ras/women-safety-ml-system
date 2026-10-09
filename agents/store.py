@@ -229,8 +229,10 @@ def _panel_rebased_ddl(name: str) -> str:
 -- The re-based panel: one row per today's district and year, filed rows divided among the districts they
 -- pooled (agents.rebase). Counts are REAL so the pieces add back to the filed row exactly. is_estimated = 0
 -- is a row exactly as filed; 1 is a pooled district's estimate ('crime:<n>y' or 'area' basis) or a filed row
--- minus such estimates ('remainder'). share = the fraction of the holder's row this district received, or
--- the fraction the holder kept. Derived: rebuilt on every build, never edited.
+-- minus such estimates ('remainder'). share = the fraction of its holders' rows this district received, or
+-- the fraction the holder kept. holder_code = the district whose row the estimate came from, filed or itself
+-- estimated in a chain; the largest part's holder for a district with several parents. Derived: rebuilt on
+-- every build, never edited.
 CREATE TABLE IF NOT EXISTS {name} (
     unit_id       TEXT NOT NULL,
     state_code    INTEGER NOT NULL REFERENCES states(state_code),          -- today's state
@@ -241,7 +243,7 @@ CREATE TABLE IF NOT EXISTS {name} (
     is_estimated  INTEGER NOT NULL CHECK (is_estimated IN (0, 1)),
     share         REAL NOT NULL CHECK (share >= 0 AND share <= 1),
     share_basis   TEXT NOT NULL CHECK (share_basis IN {_basis_check}),
-    holder_code   INTEGER REFERENCES districts(district_code),              -- whose filed row the estimate came from
+    holder_code   INTEGER REFERENCES districts(district_code),              -- whose row the estimate came from
     PRIMARY KEY (unit_id, year)
 );"""
 
