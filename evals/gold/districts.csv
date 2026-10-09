@@ -1,0 +1,120 @@
+era,state,state_code,unit,gold_code,gold_name,gold_kind,proposed_stage,proposed_code,proposed_kind,proposed_confidence,corrected,reviewer_note
+2001_2014,a n islands,35,a and n islands,602,South Andamans,district,llm,,not_a_district,0.9,1,"The only A&N row in 2007, i.e. the UT total standing in for both districts. Assigned to South Andamans (602) like 'andaman'; Nicobar reports 0 rapes in 2006, 2008 and 2011, so nothing material is misplaced."
+2001_2014,a n islands,35,andaman,602,South Andamans,district,llm,,not_a_district,0.8,1,Undivided Andaman district 2001-2011 ('north' and 'south' only appear from 2012). HQ Port Blair is in South Andamans (602); the split is a lineage edge. not_a_district would have dropped 10 years of A&N data.
+2001_2014,a n islands,35,car,603,Nicobars,circle,llm,603,circle,0.85,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,a n islands,35,north,632,North And Middle Andaman,district,fuzzy,632,district,0.9,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,a n islands,35,north middle andaman,632,North And Middle Andaman,district,fuzzy,632,district,0.95,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,a n islands,35,south,602,South Andamans,district,fuzzy,602,district,0.9,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,andhra pradesh,28,guntakal rly,502,Anantapur,railway,llm,502,railway,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,andhra pradesh,28,mahaboobnagar,512,Mahabubnagar,district,fuzzy,512,district,0.963,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,andhra pradesh,28,secunderabad rly,507,Hyderabad,railway,llm,507,railway,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,andhra pradesh,28,vijayawada,749,Ntr,district,fuzzy,749,district,0.9,0,Vijayawada city lies in today's NTR district (749); the 2016-22 files file Vijayawada City under 749.
+2001_2014,andhra pradesh,28,vijayawada rly,749,Ntr,railway,llm,749,railway,0.95,0,Vijayawada railway police; the 2016-22 files file Vijayawada Railway under 749 NTR.
+2001_2014,arunachal pradesh,12,kkumey,233,Kurung Kumey,rename,llm,233,rename,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,arunachal pradesh,12,rural,237,Papum Pare,district,fuzzy,237,district,0.9,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,arunachal pradesh,12,upper dibang valley,230,Dibang Valley,district,fuzzy,230,district,0.95,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,assam,18,baska,616,Baksa,district,llm,616,district,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,assam,18,nchills,299,Dima Hasao,rename,llm,299,rename,1.0,0,"N.C. Hills = North Cachar Hills, renamed Dima Hasao; the 2014 row 'dima hasao' continues it. Old polygon 98.6% inside 299."
+2001_2014,bihar,10,jamalpur rly,207,Munger,railway,llm,207,railway,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,chhattisgarh,22,kawardha,382,Kabeerdham,district,geometry,382,district,0.977,0,Accepted as proposed; the old polygon lies mostly inside this district.
+2001_2014,d n haveli,26,dn haveli,465,Dadra And Nagar Haveli,district,llm,465,district,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,delhi,7,caw,,,not_a_district,unresolved,,unknown,1,0,Police unit with no district geography; counted in the state's unallocated bucket.
+2001_2014,delhi,7,grprly,79,New Delhi,railway,llm,79,railway,0.85,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,delhi,7,metro rail,82,North West,railway,fuzzy,82,railway,0.9,0,Delhi Metro Rail Police. The 2016-22 files file 'Metro' under North West (82); counted there in every era so the series has no artificial jump.
+2001_2014,delhi,7,stf,,,not_a_district,unresolved,,unknown,1,0,Police unit with no district geography; counted in the state's unallocated bucket.
+2001_2014,gujarat,24,ahmedabad commr,438,Ahmadabad,commissionerate,llm,438,commissionerate,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,gujarat,24,ahwadang,444,Dang,district,fuzzy,444,district,0.9,0,Ahwa is the HQ town of Dang district.
+2001_2014,gujarat,24,himatnagar,458,Sabar Kantha,headquarters_town,llm,458,headquarters_town,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,gujarat,24,kutch,449,Kachchh,district,llm,449,district,0.98,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,gujarat,24,kutch eastg,449,Kachchh,circle,llm,449,circle,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,gujarat,24,kutch westbhuj,449,Kachchh,circle,llm,449,circle,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,gujarat,24,palanpur,441,Banas Kantha,headquarters_town,llm,441,headquarters_town,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,gujarat,24,wrly,,,railway,llm,,railway,0.85,0,"Western Railway police, state-wide: no single district. Counted in the state's unallocated bucket."
+2001_2014,haryana,6,ip haryana,,,not_a_district,llm,,not_a_district,0.9,0,"I&P = Irrigation & Power police unit (2013 only); Panchkula has its own row every year, so this is not Panchkula."
+2001_2014,haryana,6,irrigation power,,,not_a_district,fuzzy,,not_a_district,1,0,"Irrigation & Power police unit, same as 'I&P Haryana' (2013). Not a district; Gurugram was a fuzzy accident ('irrigation and power' is a circle filed under Gurugram)."
+2001_2014,himachal pradesh,2,baddipolicedist,25,Solan,circle,fuzzy,25,circle,0.9,0,Baddi police district lies inside Solan district.
+2001_2014,himachal pradesh,2,lahaul spiti,21,Lahul And Spiti,district,fuzzy,21,district,0.95,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,himachal pradesh,2,lahaulspiti,21,Lahul And Spiti,rename,llm,21,rename,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,jammu kashmir,1,border,,,not_a_district,llm,,not_a_district,0.8,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,jammu kashmir,1,border district,,,not_a_district,llm,,not_a_district,0.8,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,jammu kashmir,1,crime kashmir,,,not_a_district,unresolved,,unknown,1,0,Police unit with no district geography; counted in the state's unallocated bucket.
+2001_2014,jammu kashmir,1,crime srinagar,13,Srinagar,circle,rule,13,circle,1,0,"Counted in Srinagar (13), the same way the 2016-22 files file 'Crime Jammu' under Jammu. ('srinagar' had landed in the kind column by mistake.)"
+2001_2014,jammu kashmir,1,railways,5,Jammu,railway,llm,5,railway,0.7,0,Filed under Jammu in the 2016-22 files; same here.
+2001_2014,jammu kashmir,1,railways kmr,5,Jammu,railway,llm,5,railway,0.7,0,Filed under Jammu in the 2016-22 files; same here.
+2001_2014,karnataka,29,bangalore commr,525,Bengaluru Urban,commissionerate,llm,525,commissionerate,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,karnataka,29,bangalore rural,526,,district,geometry,,district,1,1,"Bengaluru Rural (526), not Ramanagara: 'ramanagar' has its own row from 2008. The 2016-22 files carry no code 526 (the 'Bengaluru District' circle sits under 525 Bengaluru Urban); both facts are lineage edges."
+2001_2014,karnataka,29,belgaum,527,Belagavi,district,geometry,527,district,0.987,0,Accepted as proposed; the old polygon lies mostly inside this district.
+2001_2014,karnataka,29,bellary,528,Ballari,rename,llm,528,rename,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,karnataka,29,bijapur,530,Vijayapura,district,geometry,530,district,0.991,0,Accepted as proposed; the old polygon lies mostly inside this district.
+2001_2014,karnataka,29,cbpura,630,Chikkaballapura,headquarters_town,llm,630,headquarters_town,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,karnataka,29,chickmagalur,532,Chikkamagaluru,rename,llm,532,rename,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,karnataka,29,dakshin kannada,534,Dakshina Kannada,district,fuzzy,534,district,0.968,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,karnataka,29,gulbarga,538,Kalaburagi,district,geometry,538,district,0.67,0,"Gulbarga renamed Kalaburagi (538); Yadgir reports separately from 2010, recorded in lineage."
+2001_2014,karnataka,29,mangalore city,534,Dakshina Kannada,commissionerate,llm,534,commissionerate,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,karnataka,29,mysore commr,545,Mysuru,commissionerate,llm,545,commissionerate,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,karnataka,29,mysore rural,545,Mysuru,district,llm,545,district,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,karnataka,29,railways,525,Bengaluru Urban,railway,fuzzy,525,railway,0.941,0,"Karnataka railway police ('K.Railways'), filed under 525 Bengaluru Urban in the 2016-22 files; same here."
+2001_2014,karnataka,29,ramanagar,631,Ramanagara,district,fuzzy,631,district,0.947,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,karnataka,29,tumkur,548,Tumakuru,district,geometry,548,district,0.972,0,Accepted as proposed; the old polygon lies mostly inside this district.
+2001_2014,karnataka,29,uttar kannada,550,Uttara Kannada,district,fuzzy,550,district,0.963,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,kerala,32,cbcid,,,not_a_district,unresolved,,unknown,1,0,Police unit with no district geography; counted in the state's unallocated bucket.
+2001_2014,kerala,32,trivandrum,565,Thiruvananthapuram,district,fuzzy,565,district,0.9,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,madhya pradesh,23,datiya,401,Datia,district,fuzzy,401,district,0.909,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,madhya pradesh,23,khandwa,405,Khandwa (East Nimar),district,llm,405,district,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,madhya pradesh,23,khargon,414,Khargone (West Nimar),district,fuzzy,414,district,0.933,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,madhya pradesh,23,sihore,427,Sehore,rename,llm,427,rename,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,madhya pradesh,23,umariya,436,Umaria,district,fuzzy,436,district,0.923,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,manipur,14,imphaleast,255,Imphal East,district,fuzzy,255,district,0.952,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,manipur,14,imphalwest,256,Imphal West,district,fuzzy,256,district,0.952,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,meghalaya,17,garo hills south w,663,South West Garo Hills,circle,llm,663,circle,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,meghalaya,17,jaintia hills,275,West Jaintia Hills,district,geometry,,district,1,1,"Undivided Jaintia Hills 2001-2012 kept the old code 275 (West Jaintia Hills, HQ Jowai); 657 East is the new code, split from 2013 is a lineage edge."
+2001_2014,meghalaya,17,khasi hills south w,658,South West Khasi Hills,district,fuzzy,658,district,0.927,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,mizoram,15,spl traffic,,,not_a_district,llm,261,not_a_district,0.8,1,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,mizoram,15,traffic ps,,,not_a_district,llm,,not_a_district,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,odisha,21,malkangir,364,Malkangiri,district,fuzzy,364,district,0.947,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,odisha,21,nowrangpur,366,Nabarangpur,rename,llm,366,rename,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,punjab,3,bhatinda,28,Bathinda,rename,llm,28,rename,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,punjab,3,ferozpur,31,Ferozepur,district,fuzzy,31,district,0.941,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,punjab,3,jagraon,36,Ludhiana,circle,llm,36,circle,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,punjab,3,majitha,27,Amritsar,circle,llm,27,circle,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,punjab,3,nawan shahr,40,Shahid Bhagat Singh Nagar,rename,llm,40,rename,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,punjab,3,sas ngr,608,S.A.S Nagar,rename,llm,608,rename,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,rajasthan,8,discom,,,not_a_district,llm,,not_a_district,0.8,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,rajasthan,8,grp,,,railway,llm,,railway,0.85,0,"Railway police, state-wide (GRP circles exist under several districts in 2016-22): no single district. Unallocated bucket."
+2001_2014,rajasthan,8,jaipur rural,783,Jaipur (Gramin),circle,llm,102,circle,0.95,1,Jaipur Gramin (783) is today's district for the rural area; the 2017-22 pooling under Jaipur (102) is a lineage fact.
+2001_2014,tamil nadu,33,chengai,730,Chengalpattu,rename,llm,730,rename,0.85,0,"Old Chengalpattu police district, roughly today's Chengalpattu district (730, created 2019)."
+2001_2014,tamil nadu,33,chennaisuburban,568,Chennai,circle,fuzzy,568,circle,0.9,0,"Chennai Suburban police district (2008-10), not the railway unit ('Chennai Rly.' is separate). Absorbed by Greater Chennai Police in 2011; area mostly inside today's Chennai district."
+2001_2014,tamil nadu,33,cyber cell,,,not_a_district,unresolved,,unknown,1,0,Police unit with no district geography; counted in the state's unallocated bucket.
+2001_2014,tamil nadu,33,thoothugudi,594,Tuticorin,district,fuzzy,594,district,0.909,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,tamil nadu,33,viluppuram,596,Villupuram,district,fuzzy,596,district,0.9,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,tripura,16,sipahijala,653,Sepahijala,rename,llm,653,circle,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,uttar pradesh,9,bhim nagar,659,Sambhal,rename,llm,659,rename,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,uttar pradesh,9,chitrakoot dham,136,Chitrakoot,district,fuzzy,136,district,0.9,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,uttar pradesh,9,csm nagar,640,Amethi,rename,llm,640,rename,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,uttar pradesh,9,grp,,,railway,llm,,railway,0.95,0,"Railway police, state-wide (GRP circles exist under several districts in 2016-22): no single district. Unallocated bucket."
+2001_2014,uttar pradesh,9,jpnagar,154,Amroha,rename,llm,154,rename,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,uttar pradesh,9,kanshiram nagar,633,Kasganj,rename,llm,633,rename,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,uttar pradesh,9,panchshil nagar,661,Hapur,rename,llm,661,rename,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,uttar pradesh,9,prabuddh nagar,660,Shamli,rename,llm,660,rename,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,uttar pradesh,9,ramabai nagar,156,Kanpur Dehat,rename,llm,156,rename,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,uttar pradesh,9,stravidasnagar,179,Bhadohi,rename,llm,182,rename,0.85,1,Sant Ravidas Nagar = Bhadohi (renamed 2014; the 2014 row 'bhadohi' continues it). Old map polygon 93% inside 179.
+2001_2014,west bengal,19,24 parganas north,303,North 24 Parganas,district,fuzzy,303,district,0.971,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,west bengal,19,24 parganas south,304,South 24 Parganas,district,fuzzy,304,district,0.971,0,Accepted as proposed; spelling variant of the same district.
+2001_2014,west bengal,19,asansol,704,Paschim Bardhaman,commissionerate,fuzzy,704,commissionerate,0.9,0,Asansol-Durgapur Police Commissionerate; Asansol is the HQ of Paschim Bardhaman.
+2001_2014,west bengal,19,bdn cp,303,North 24 Parganas,commissionerate,llm,303,commissionerate,0.85,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,west bengal,19,bkp cp,303,North 24 Parganas,commissionerate,llm,303,commissionerate,0.9,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,west bengal,19,burdwan,306,Purba Bardhaman,district,fuzzy,306,district,0.9,0,"Undivided Burdwan kept the old code 306 (Purba Bardhaman, HQ Bardhaman town); 704 Paschim Bardhaman is the new code, split recorded in lineage."
+2001_2014,west bengal,19,jhargram police district,703,Jhargram,district,llm,703,district,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,west bengal,19,midnapur,318,Paschim Medinipur,district,llm,,rename,0.8,1,"Undivided Midnapore, 2001 only; HQ Midnapore town is in Paschim Medinipur (318). Split into 318/317 from 2002 is a lineage edge."
+2001_2014,west bengal,19,paschim midnapur,318,Paschim Medinipur,rename,llm,318,rename,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,west bengal,19,purab midnapur,317,Purba Medinipur,rename,llm,317,rename,0.95,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
+2001_2014,west bengal,19,siliguripc,309,Darjeeling,commissionerate,fuzzy,309,commissionerate,0.952,0,Siliguri Police Commissionerate; Siliguri is in Darjeeling district.
+2015,assam,18,haren,710,West Karbi Anglong,district,fuzzy,710,district,0.909,0,"Hamren police district, inside West Karbi Anglong (as the 2012-14 'hamren' rows)."
+2015,assam,18,n c hills,299,Dima Hasao,rename,llm,299,rename,0.99,0,"N.C. Hills = North Cachar Hills, renamed Dima Hasao (299); the same call as 'nchills' in 2001-14."
+2015,assam,18,s t f,,,not_a_district,llm,,not_a_district,0.95,0,Special Task Force: a state-level unit with no district geography; unallocated bucket.
+2015,odisha,21,hrpc,,,not_a_district,llm,,not_a_district,0.9,0,Human Rights Protection Cell: a state-level unit with no district geography; unallocated bucket.
+2016,madhya pradesh,23,khandwa,405,Khandwa (East Nimar),district,human,,,,0,Override: the 2016 row is recorded under 405.
+2017_plus,lakshadweep,31,karaikal,598,Karaikal,district,human,,,,0,"Override: the 2017 row is recorded under 598. Its state_code in the records table stays as filed (the file's state), the re-based panel carries today's state."
+2017_plus,rajasthan,8,jaipur rural,783,Jaipur (Gramin),circle,human,,,,0,Override: the circle's 2017-22 rows go to 783; the lineage row 783 -> 102 (reported_together 2017) is rejected in favour of this.
+2017_plus,telangana,36,cyberabad commissionerate,518,Ranga Reddy,commissionerate,human,,,,0,"Override: the circle's 2017-22 rows are recorded under 518. Cyberabad also covers Medchal-Malkajgiri (map-only, reported with Ranga Reddy); the Rachakonda Commissionerate (eastern Ranga Reddy) stays under 697 Yadadri as filed."
+2017_plus,tripura,16,sipahijala,653,Sepahijala,district,human,,,,0,"Override: the 2017-22 rows go to 653, continuing its 2012-2016 series."

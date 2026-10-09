@@ -1,0 +1,2 @@
+date,coverage_all,resolution_precision_automatic,resolution_precision_llm,hallucination_records,hallucination_resolver_rate,escalation_units_2001_2014,escalation_records,resolver_p95_ms,inr_per_1000_resolver_answers,prompt_fingerprint
+2026-10-10,0.9956,0.9266,0.9091,0,0.0,0.1112,0.0195,7397,34.4,972c120696f9/059d3043b7ac/040a0cdebe86/9694d303506f
