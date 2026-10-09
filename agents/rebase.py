@@ -215,18 +215,26 @@ class Rebaser:
     # -- who holds whom, by lineage and by data -----------------------------------------------------------------
 
     def lineage_set(self, x: int, y: int) -> dict[int, float]:
-        """``x`` and everything the lineage says is pooled in it in year ``y``, with the weight of each part."""
-        out, stack = {x: 1.0}, [x]
+        """``x`` and everything the lineage says is pooled in it in year ``y``, with the weight of each part: 1 for
+        a district wholly inside, the area weight for a part, products along a chain. A district reached through
+        two members of the set (a child of two parents both inside) carries the sum of its parts."""
+        members, stack = {x}, [x]
         while stack:
             h = stack.pop()
             for p in self.out_edges[h]:
-                if p.active(y):
-                    w = out[h] * self.weights[p]
-                    if p.member in out:
-                        out[p.member] += w
-                    else:
-                        out[p.member] = w
-                        stack.append(p.member)
+                if p.active(y) and p.member not in members:
+                    members.add(p.member)
+                    stack.append(p.member)
+        out = {x: 1.0}
+        for _ in range(len(members)):                           # settle weights in dependency order (a DAG this size converges fast)
+            nxt = {x: 1.0}
+            for h in members:
+                for p in self.out_edges[h]:
+                    if p.active(y) and p.member in members and h in out:
+                        nxt[p.member] = nxt.get(p.member, 0.0) + out[h] * self.weights[p]
+            if nxt == out:
+                break
+            out = nxt
         return out
 
     def tops(self, d: int, y: int) -> frozenset:
@@ -310,6 +318,7 @@ class Rebaser:
                 self.diag["no_estimate"].append({"edge": p, "year": y})
                 continue
             if not self.tops(p.holder, y):                       # the holder is missing too: nothing to divide
+                self.diag["holder_missing"].append({"edge": p, "year": y})
                 continue
             incoming[p.member].append(p)
         for m, ps in list(incoming.items()):
@@ -513,6 +522,15 @@ def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path) -
     no_ev = sorted({r['edge'] for r in rb.diag.get("no_estimate", [])}, key=lambda p: p.parent_child)
     lines += ["", "## Edges with no share evidence (nothing estimated)", ""]
     lines += [f"- {p.label(names)}" for p in no_ev] or ["None."]
+    hm = defaultdict(list)
+    for d in rb.diag.get("holder_missing", []):
+        hm[d["edge"]].append(d["year"])
+    lines += ["", f"## Edges whose holder filed nothing that year ({len(hm)}; the member stays missing)", ""]
+    lines += [f"- {p.label(names)}: {', '.join(map(str, sorted(ys)))}" for p, ys in sorted(hm.items(), key=lambda kv: kv[0].parent_child)] or ["None."]
+    part_only = [p for p in rb.poolings if p.kind == JOIN and any(y >= p.year for y in rb.filed_years.get(p.member, ()))]
+    lines += ["", f"## Late poolings of a part ({len(part_only)}): the pooled district still files, so only a part of it sits in the "
+                  "holder's row; nothing is estimated, the two are grouped", ""]
+    lines += [f"- {p.label(names)}" for p in part_only] or ["None."]
 
     cva = rb.crime_vs_area()
     lines += ["", f"## Crime share vs area share, disagreement beyond 2x ({len(cva)} edges, information only)", "",
