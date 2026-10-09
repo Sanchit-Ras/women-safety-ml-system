@@ -161,8 +161,8 @@ def test_a_v6_store_is_migrated_to_the_eras_table_keeping_its_rows(tmp_path):
     old.commit()
     old.close()
 
-    conn = connect(path)                                                         # migrates 6 -> 7 on open
-    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "7"
+    conn = connect(path)                                                         # migrates 6 -> 7 -> 8 on open
+    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "8"
     assert [r[0] for r in conn.execute("SELECT era FROM eras ORDER BY first_year")] == ["2001_2014", "2015", "2016", "2017_plus"]
     assert "REFERENCES eras(era)" in conn.execute("SELECT sql FROM sqlite_master WHERE name = 'records'").fetchone()[0]
     assert tuple(conn.execute("SELECT era, total FROM records").fetchone()) == ("2016", len(COUNTS))
@@ -173,6 +173,32 @@ def test_a_v6_store_is_migrated_to_the_eras_table_keeping_its_rows(tmp_path):
                  "VALUES ('2015', 'Rape_Gang Rape', 'excluded', 'part of Rape', 'human')")
     with pytest.raises(sqlite3.IntegrityError):                                  # an era nobody declared
         conn.execute("INSERT INTO raw_rows (era, source_file, source_row, payload_json) VALUES ('bogus', 'x', 1, '{}')")
+    conn.close()
+
+
+def test_a_v7_store_gains_the_rebased_panel_on_open(tmp_path):
+    from agents.store import _panel_rebased_ddl
+    path = tmp_path / "v7.db"
+    old = sqlite3.connect(path)
+    old.executescript(DDL.replace(_panel_rebased_ddl("panel_rebased"), ""))              # v7: no panel_rebased
+    old.execute("INSERT INTO meta (key, value) VALUES ('schema_version', '7')")
+    old.execute("INSERT INTO states (state_code, name) VALUES (28, 'andhra pradesh')")
+    old.execute("INSERT INTO districts (district_code, state_code, name, first_seen_year, last_seen_year, in_files) "
+                "VALUES (502, 28, 'anantapur', 2016, 2022, 1)")
+    old.commit()
+    old.close()
+    assert "panel_rebased" not in {r[0] for r in sqlite3.connect(path).execute("SELECT name FROM sqlite_master")}
+
+    conn = connect(path)                                                         # migrates 7 -> 8 on open
+    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "8"
+    assert conn.execute("SELECT COUNT(*) FROM districts").fetchone()[0] == 1 and conn.execute("PRAGMA foreign_key_check").fetchall() == []
+    counts = ", ".join(COUNTS)
+    conn.execute(f"INSERT INTO panel_rebased (unit_id, state_code, district_code, year, {counts}, total, is_estimated, share, "
+                 f"share_basis, holder_code) VALUES ('d502', 28, 502, 2001, {', '.join('0.5' for _ in COUNTS)}, {0.5 * len(COUNTS)}, "
+                 "1, 0.5, 'crime:3y', 502)")
+    with pytest.raises(sqlite3.IntegrityError):                                  # a share above 1 or an unknown basis is refused
+        conn.execute(f"INSERT INTO panel_rebased (unit_id, state_code, district_code, year, {counts}, total, is_estimated, share, "
+                     f"share_basis) VALUES ('d502', 28, 502, 2002, {', '.join('0' for _ in COUNTS)}, 0, 1, 1.5, 'crime:3y')")
     conn.close()
 
 
@@ -206,7 +232,7 @@ def test_a_v5_store_is_migrated_in_place_with_its_cache_mappings_and_edges(tmp_p
     old.close()
 
     conn = connect(path)                                                         # migrates 5 -> 6 on open
-    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "7"
+    assert conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()[0] == "8"
     assert "in_files" in {r[1] for r in conn.execute("PRAGMA table_info(districts)")}
     assert tuple(conn.execute("SELECT district_code, in_files FROM districts").fetchone()) == (502, 1)
     assert conn.execute("SELECT district_code FROM unit_map WHERE unit = 'anantapur'").fetchone()[0] == 502

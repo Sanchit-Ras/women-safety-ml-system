@@ -45,7 +45,7 @@ from dotenv import load_dotenv
 from agents.schemas import CORE_CATEGORIES, EXTENDED_CATEGORIES, Era
 
 ROOT = Path(__file__).resolve().parents[1]
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 
 # The source eras in time order: one row each in the ``eras`` table. The five tables that carry an era
 # column reference it, so a new source file is a new row here, not a schema change. ``Era`` in
@@ -67,6 +67,8 @@ _extended_check = "(" + ", ".join(f"'{c}'" for c in EXTENDED_CATEGORIES) + ")"
 _crosswalk_category_check = "(" + ", ".join(f"'{c}'" for c in (*EXTENDED_CATEGORIES, "excluded")) + ")"
 _extended_only_check = "(" + ", ".join(f"'{c}'" for c in EXTENDED_CATEGORIES if c not in CORE_CATEGORIES) + ")"
 _count_columns = ",\n    ".join(f"{c} INTEGER NOT NULL CHECK ({c} >= 0)" for c in CORE_CATEGORIES)
+_real_count_columns = ",\n    ".join(f"{c} REAL NOT NULL CHECK ({c} >= 0)" for c in CORE_CATEGORIES)
+_basis_check = "('observed', 'remainder', 'crime:3y', 'crime:2y', 'crime:1y', 'area')"
 _total_expr = " + ".join(CORE_CATEGORIES)
 
 
@@ -222,6 +224,28 @@ CREATE TABLE IF NOT EXISTS {name} (
     PRIMARY KEY (unit_id, year)
 );"""
 
+def _panel_rebased_ddl(name: str) -> str:
+    return f"""
+-- The re-based panel: one row per today's district and year, filed rows divided among the districts they
+-- pooled (agents.rebase). Counts are REAL so the pieces add back to the filed row exactly. is_estimated = 0
+-- is a row exactly as filed; 1 is a pooled district's estimate ('crime:<n>y' or 'area' basis) or a filed row
+-- minus such estimates ('remainder'). share = the fraction of the holder's row this district received, or
+-- the fraction the holder kept. Derived: rebuilt on every build, never edited.
+CREATE TABLE IF NOT EXISTS {name} (
+    unit_id       TEXT NOT NULL,
+    state_code    INTEGER NOT NULL REFERENCES states(state_code),          -- today's state
+    district_code INTEGER REFERENCES districts(district_code),              -- NULL = the state's unallocated bucket
+    year          INTEGER NOT NULL,
+    {_real_count_columns},
+    total         REAL NOT NULL CHECK (total >= 0),
+    is_estimated  INTEGER NOT NULL CHECK (is_estimated IN (0, 1)),
+    share         REAL NOT NULL CHECK (share >= 0 AND share <= 1),
+    share_basis   TEXT NOT NULL CHECK (share_basis IN {_basis_check}),
+    holder_code   INTEGER REFERENCES districts(district_code),              -- whose filed row the estimate came from
+    PRIMARY KEY (unit_id, year)
+);"""
+
+
 DDL = f"""
 CREATE TABLE IF NOT EXISTS meta (
     key   TEXT PRIMARY KEY,
@@ -259,6 +283,7 @@ CREATE INDEX IF NOT EXISTS ix_records_district_year ON records(district_code, ye
 CREATE INDEX IF NOT EXISTS ix_records_era_status ON records(era, validation_status);
 {EXTENDED_DDL}
 {_panel_ddl('panel_observed')}
+{_panel_rebased_ddl('panel_rebased')}
 {_unit_map_ddl('unit_map')}
 CREATE INDEX IF NOT EXISTS ix_unit_map_district ON unit_map(district_code);
 {_crosswalk_ddl('crosswalk')}
@@ -316,7 +341,7 @@ CREATE INDEX IF NOT EXISTS ix_escalations_status ON escalations(status, kind);
 """
 
 TABLES = ("meta", "eras", "states", "districts", "circles", "district_lineage", "raw_rows", "records", "extended_counts",
-          "panel_observed", "unit_map", "crosswalk", "llm_calls", "llm_attempts", "escalations")
+          "panel_observed", "panel_rebased", "unit_map", "crosswalk", "llm_calls", "llm_attempts", "escalations")
 
 
 # ---- migrations ---------------------------------------------------------------------------------------------
@@ -376,7 +401,14 @@ def _migrate_6_to_7(conn: sqlite3.Connection) -> None:
         raise RuntimeError(f"migration v6->v7 left {len(dangling)} dangling foreign key(s): {[tuple(d) for d in dangling[:5]]}")
 
 
-MIGRATIONS = {5: _migrate_5_to_6, 6: _migrate_6_to_7}
+def _migrate_7_to_8(conn: sqlite3.Connection) -> None:
+    """v7 -> v8: the ``panel_rebased`` table. A new derived table, nothing rebuilt: ``connect`` has already run
+    the DDL (CREATE TABLE IF NOT EXISTS), so the step records the version and fills nothing; the next build
+    writes the rows."""
+    conn.executescript(_panel_rebased_ddl("panel_rebased") + "\nUPDATE meta SET value = '8' WHERE key = 'schema_version';")
+
+
+MIGRATIONS = {5: _migrate_5_to_6, 6: _migrate_6_to_7, 7: _migrate_7_to_8}
 
 
 def db_path(path: str | os.PathLike | None = None) -> Path:

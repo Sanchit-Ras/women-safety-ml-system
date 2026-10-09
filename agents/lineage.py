@@ -16,11 +16,13 @@ therefore not the same land in every year. This module does three things:
    and deletes nothing else: an earlier guess the human has not judged stays next
    to the new one. A candidate the model said nothing about gets a ``NOT PROPOSED``
    placeholder row, removed once a later run proposes an edge that answers it.
-3. ``build_units``        joins districts connected by verified facts into groups
-   (union-find) and writes ``data/stable_units.json`` plus a short report. A group
-   is the smallest set of districts whose combined counts mean the same land in
-   every year. Groups are never shown to users; they exist so that time series
-   can be added up over the same land, and for tests.
+3. ``build_units``        joins districts connected by edges into groups (union-find).
+   A group is the smallest set of districts whose combined counts mean the same
+   land in every year. Groups are never shown to users; they exist so that time
+   series can be added up over the same land, and for tests. ``agents.rebase``
+   decides which edges group (by the share each one moves) and writes
+   ``data/stable_units.json`` plus the report; the ``build`` command below shows
+   the ungated view, every verified edge, for comparison.
 
 A district's question is answered by a row where it is the child (where it came
 from) or, for a district that vanished, where it is the parent of a merge, recode
@@ -36,7 +38,7 @@ the JSON meta and on screen instead of dropping them in silence.
     python -m agents.lineage candidates   # detected candidates by kind, no model
     python -m agents.lineage propose      # model proposals -> data/lineage.csv (verified rows untouched)
     python -m agents.lineage apply        # verified edges -> district_lineage (the districts table must know every code)
-    python -m agents.lineage build        # verified edges -> data/stable_units.json + data/reports/<date>_stable_units.md
+    python -m agents.lineage build        # every verified edge, ungated: size distribution on screen (the JSON is agents.rebase's)
 """
 from __future__ import annotations
 
@@ -519,11 +521,11 @@ def build_units(edges: list[dict], nodes: list[dict], totals_2022: dict[int, int
     return sorted(units, key=lambda u: u["members"][0])
 
 
-def write_stable_units(units: list[dict], path: Path = UNITS_PATH, skipped: list[dict] = ()) -> dict:
+def write_stable_units(units: list[dict], path: Path = UNITS_PATH, skipped: list[dict] = (), extra: dict | None = None) -> dict:
     meta = {"generated": date.today().isoformat(), "n_nodes": sum(len(u["members"]) for u in units),
             "n_groups": len(units), "n_edges_used": sum(len(u["edges"]) for u in units),
             "largest_group_size": max((len(u["members"]) for u in units), default=0),
-            "n_edges_skipped": len(skipped), "skipped_edges": list(skipped)}
+            "n_edges_skipped": len(skipped), "skipped_edges": list(skipped), **(extra or {})}
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({"meta": meta, "units": units}, indent=1, ensure_ascii=False), encoding="utf-8")
     return meta
@@ -602,10 +604,8 @@ def main(argv: list[str] | None = None) -> None:
         edges = list(read_rows(CSV_PATH).values())
         units = build_units(edges, nodes, load_totals_2022())
         skipped = unusable_edges(edges, nodes)
-        meta = write_stable_units(units, UNITS_PATH, skipped)
-        report = REPORTS_DIR / f"{date.today().isoformat()}_stable_units.md"
-        write_report(units, report, nodes)
-        print(f"stable units: {meta}")
+        print(f"ungated groups (every verified edge; agents.rebase writes the share-gated {UNITS_PATH.name}): "
+              f"{len(units)} groups, largest {max((len(u['members']) for u in units), default=0)}")
         for label, n in size_distribution(units).items():
             print(f"  size {label:<5} {n:>5} groups")
         if skipped:
@@ -613,7 +613,6 @@ def main(argv: list[str] | None = None) -> None:
                   + (" (no data/lgd_districts.csv: GeoJSON-only codes are unknown here):" if not LGD_CSV.exists() else ":"))
             for u in skipped:
                 print(f"   {u['parent_code']} -> {u['child_code']} {u['kind']} {u['year'] or ''}")
-        print(f"written -> {UNITS_PATH}\nreport  -> {report}")
 
 
 if __name__ == "__main__":

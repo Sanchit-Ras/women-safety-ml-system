@@ -7,7 +7,7 @@ import openpyxl
 import pandas as pd
 import pytest
 
-from agents import lineage, loaders, orchestrator, panel, resolver, store, validator
+from agents import lineage, loaders, orchestrator, panel, rebase, resolver, store, validator
 from data_ingestion import crosswalk
 
 ERA_A_HEADER = ["", "STATE/UT", "DISTRICT", "Year", *crosswalk.ERA_A_DEFINITIONS]
@@ -105,8 +105,11 @@ def world(tmp_path):
 
 
 def run_build(world):
+    tmp = world["tmp"]
     return orchestrator.build(world["conn"], registry=False, raw_files=world["raw"], csv_paths=world["csvs"],
-                              trace_dir=world["tmp"] / "traces", parquet_path=world["tmp"] / "panel.parquet", registry_dict=REGISTRY)
+                              trace_dir=tmp / "traces", parquet_path=tmp / "panel.parquet", registry_dict=REGISTRY,
+                              rebase_paths={"parquet_path": tmp / "rebased.parquet", "units_path": tmp / "stable_units.json",
+                                            "reports_dir": tmp / "reports", "area_path": tmp / "no_area.csv"})
 
 
 def record(conn, **where):
@@ -217,7 +220,7 @@ def test_build_produces_the_panel_the_parquet_file_and_a_trace_and_is_a_no_op_wh
     steps = [json.loads(l)["step"] for l in open(out["trace"], encoding="utf-8")]
     assert steps == ["inputs", "wipe_derived", "crosswalk_apply", "unit_map_apply", "lineage_apply", "raw_rows:2001_2014", "raw_rows:2015",
                      "raw_rows:2016", "raw_rows:2017_plus", "records:2001_2014", "records:2015", "records:2016", "records:2017_plus",
-                     "validate", "panel"]
+                     "validate", "panel", "rebase"]
     first = json.loads(open(out["trace"], encoding="utf-8").readline())
     assert set(first["result"]["files"]) == {"raw:2001_2014", "raw:2015", "raw:2016", "raw:2017_plus", "csv:crosswalk", "csv:column_fixes",
                                              "csv:unit_map", "csv:lineage"}
@@ -229,4 +232,29 @@ def test_build_produces_the_panel_the_parquet_file_and_a_trace_and_is_a_no_op_wh
     assert all(l["result"]["inserted"] == 0 for l in lines if l["step"].startswith("raw_rows"))  # nothing new to copy
     assert conn.execute("SELECT COUNT(*) FROM escalations").fetchone()[0] == escalations           # nothing queued twice
     assert conn.execute("SELECT COUNT(*) FROM panel_observed").fetchone()[0] == 12
+    assert conn.execute("SELECT COUNT(*) FROM panel_rebased").fetchone()[0] == 19
     assert conn.execute("SELECT COUNT(*) FROM district_lineage").fetchone()[0] == 1
+
+
+def test_build_rebases_the_panel_on_the_verified_lineage_and_marks_every_estimate(world):
+    out = run_build(world)
+    conn = world["conn"]
+    # Y.S.R. (504) was carved out of Anantapur (502) in 2017: its 2001-05, 2015 and 2016 are inside Anantapur's rows.
+    obs = {(r["unit_id"], r["year"]): dict(r) for r in conn.execute("SELECT * FROM panel_observed")}
+    reb = {(r["unit_id"], r["year"]): dict(r) for r in conn.execute("SELECT * FROM panel_rebased")}
+    share = obs[("d504", 2018)]["total"] / (obs[("d502", 2018)]["total"] + obs[("d504", 2018)]["total"])   # one separate year
+    grouped = share >= rebase.GROUP_THRESHOLD
+    assert out["rebased"]["rows"] == 19 and out["rebased"]["district_rows"] == 17                 # 12 observed + 7 estimated
+    assert out["rebased"] == {**out["rebased"], "observed": 3, "adjusted": 7, "estimated": 7, "basis": {"crime:1y": 7},
+                              "missing_district_years": 1, "edges": 1, "edges_no_evidence": 0, "map_only": 0,
+                              "groups": 1 if grouped else 2, "largest_group": 2 if grouped else 1, "grouping_edges": int(grouped)}
+    assert reb[("d504", 2001)]["rape"] == pytest.approx(share * obs[("d502", 2001)]["rape"])
+    assert reb[("d502", 2001)]["rape"] == pytest.approx((1 - share) * obs[("d502", 2001)]["rape"])
+    assert (reb[("d504", 2001)]["is_estimated"], reb[("d504", 2001)]["share_basis"], reb[("d504", 2001)]["holder_code"]) == (1, "crime:1y", 502)
+    assert (reb[("d502", 2001)]["is_estimated"], reb[("d502", 2001)]["share_basis"]) == (1, "remainder")
+    assert reb[("d502", 2018)]["share_basis"] == "observed" and ("d504", 2017) not in reb               # 2017: not filed, not pooled
+    assert reb[("s28u", 2001)] == {**reb[("s28u", 2001)], "total": obs[("s28u", 2001)]["total"], "is_estimated": 0}
+    assert len(pd.read_parquet(world["tmp"] / "rebased.parquet")) == 19
+    units = json.loads((world["tmp"] / "stable_units.json").read_text(encoding="utf-8"))
+    assert units["meta"]["edges"][0]["share"] == pytest.approx(share, abs=1e-4) and units["meta"]["edges"][0]["grouped"] == grouped
+    assert {p.name.split("_", 1)[1] for p in (world["tmp"] / "reports").iterdir()} == {"rebasing.md", "stable_units.md"}

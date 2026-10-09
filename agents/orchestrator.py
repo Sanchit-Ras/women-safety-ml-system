@@ -7,7 +7,8 @@ Order, each step rerunnable:
      the LLM cache, the receipts and the escalation queue are kept;
   2. registry: states, districts (plus the map-only codes), circles from the 2016+ files;
   3. crosswalk, unit map and lineage: verified rows from the three CSVs;
-  4. raw rows for the three eras; 5. records for the three eras; 6. validate; 7. panel.
+  4. raw rows for the four eras; 5. records for the four eras; 6. validate; 7. panel; 8. re-basing
+     (panel_rebased, the parquet file, the share-gated stable units and two reports).
 
 The trace (``data/traces/<run_id>.jsonl``, also copied to ``latest.jsonl``) has one line per step with
 what went in (file hashes), what came out (counts) and how long it took. It is the record of a run:
@@ -23,7 +24,7 @@ import shutil
 import time
 from pathlib import Path
 
-from agents import lineage, loaders, panel, store, validator
+from agents import lineage, loaders, panel, rebase, store, validator
 from agents import resolver
 from data_ingestion import crosswalk
 from data_ingestion.crosswalk import ERA_FILES
@@ -31,7 +32,7 @@ from data_ingestion.crosswalk import ERA_FILES
 ROOT = Path(__file__).resolve().parents[1]
 TRACES_DIR = ROOT / "data" / "traces"
 ERAS = store.ERAS                                            # time order, from the eras table's seed list
-DERIVED = ("panel_observed", "extended_counts", "records", "unit_map", "district_lineage", "crosswalk")
+DERIVED = ("panel_rebased", "panel_observed", "extended_counts", "records", "unit_map", "district_lineage", "crosswalk")
 
 
 def file_hash(path: Path) -> str:
@@ -69,9 +70,9 @@ def wipe_derived(conn) -> dict:
 
 def build(conn, *, fixes: str = "verified", registry: bool = True, raw_files: dict | None = None,
           csv_paths: dict | None = None, trace_dir: Path = TRACES_DIR, parquet_path: Path | None = None,
-          registry_dict: dict | None = None) -> dict:
-    """Build the observed panel. ``raw_files``/``csv_paths``/``registry_dict`` exist so tests can run the
-    whole chain on fixture files; the CLI uses the repo's data."""
+          registry_dict: dict | None = None, rebase_paths: dict | None = None) -> dict:
+    """Build the observed and re-based panels. ``raw_files``/``csv_paths``/``registry_dict``/``rebase_paths``
+    exist so tests can run the whole chain on fixture files; the CLI uses the repo's data."""
     raw_files = {**ERA_FILES, **(raw_files or {})}
     paths = {"crosswalk": crosswalk.CSV_PATH, "column_fixes": crosswalk.FIXES_PATH, "unit_map": resolver.CSV_PATH,
              "lineage": lineage.CSV_PATH, **(csv_paths or {})}
@@ -95,8 +96,9 @@ def build(conn, *, fixes: str = "verified", registry: bool = True, raw_files: di
                                                                            registry=registry_dict))
     trace.run("validate", lambda: validator.validate(conn))
     result = trace.run("panel", lambda: panel.build_panel(conn, parquet_path))
+    rebased = trace.run("rebase", lambda: rebase.build_rebased(conn, **(rebase_paths or {})))
     shutil.copyfile(trace.path, Path(trace_dir) / "latest.jsonl")
-    return {"run_id": run_id, "trace": str(trace.path), "steps": len(trace.lines), "panel": result}
+    return {"run_id": run_id, "trace": str(trace.path), "steps": len(trace.lines), "panel": result, "rebased": rebased}
 
 
 def main(argv: list[str] | None = None) -> None:

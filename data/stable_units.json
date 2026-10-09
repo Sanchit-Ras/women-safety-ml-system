@@ -1,23 +1,3511 @@
 {
  "meta": {
-  "generated": "2026-10-04",
-  "n_nodes": 784,
-  "n_groups": 567,
-  "n_edges_used": 226,
-  "largest_group_size": 28,
+  "generated": "2026-10-10",
+  "n_nodes": 783,
+  "n_groups": 673,
+  "n_edges_used": 110,
+  "largest_group_size": 6,
   "n_edges_skipped": 0,
-  "skipped_edges": []
+  "skipped_edges": [],
+  "threshold": 0.2,
+  "basis_years": 3,
+  "edges": [
+   {
+    "parent_code": 236,
+    "child_code": 233,
+    "kind": "split",
+    "year": 2003,
+    "share": 0.4,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2003,
+     2004,
+     2005
+    ],
+    "area_share": 0.0357,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.40 >= 0.2"
+   },
+   {
+    "parent_code": 230,
+    "child_code": 235,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.8586,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.0,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.86 >= 0.2"
+   },
+   {
+    "parent_code": 318,
+    "child_code": 317,
+    "kind": "split",
+    "year": 2002,
+    "share": 0.4295,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2002,
+     2003,
+     2004
+    ],
+    "area_share": 0.0,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.43 >= 0.2"
+   },
+   {
+    "parent_code": 429,
+    "child_code": 390,
+    "kind": "split",
+    "year": 2003,
+    "share": 0.255,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2003,
+     2004,
+     2005
+    ],
+    "area_share": 0.2087,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.25 >= 0.2"
+   },
+   {
+    "parent_code": 406,
+    "child_code": 391,
+    "kind": "split",
+    "year": 2003,
+    "share": 0.372,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2003,
+     2004,
+     2005
+    ],
+    "area_share": 0.0,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.37 >= 0.2"
+   },
+   {
+    "parent_code": 405,
+    "child_code": 397,
+    "kind": "split",
+    "year": 2003,
+    "share": 0.1938,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2003,
+     2004,
+     2005
+    ],
+    "area_share": 0.0,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.19 < 0.2"
+   },
+   {
+    "parent_code": 526,
+    "child_code": 525,
+    "kind": "reported_together",
+    "year": 2014,
+    "share": 0.1659,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2013,
+     2012,
+     2011
+    ],
+    "area_share": 0.0,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "late pooling: the member's years from then on are estimates"
+   },
+   {
+    "parent_code": 571,
+    "child_code": 577,
+    "kind": "split",
+    "year": 2004,
+    "share": 0.5553,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2004,
+     2005,
+     2006
+    ],
+    "area_share": 0.507,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.56 >= 0.2"
+   },
+   {
+    "parent_code": 600,
+    "child_code": 598,
+    "kind": "split",
+    "year": 2006,
+    "share": 0.2333,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2006,
+     2007,
+     2008
+    ],
+    "area_share": null,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.23 >= 0.2"
+   },
+   {
+    "parent_code": 62,
+    "child_code": 604,
+    "kind": "split",
+    "year": 2005,
+    "share": 0.4541,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2005,
+     2006,
+     2007
+    ],
+    "area_share": 0.501,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.45 >= 0.2"
+   },
+   {
+    "parent_code": 339,
+    "child_code": 606,
+    "kind": "split",
+    "year": 2007,
+    "share": 0.0727,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2007,
+     2008,
+     2009
+    ],
+    "area_share": 0.3405,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.07 < 0.2"
+   },
+   {
+    "parent_code": 332,
+    "child_code": 607,
+    "kind": "split",
+    "year": 2007,
+    "share": 0.2832,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2007,
+     2008,
+     2009
+    ],
+    "area_share": 0.2107,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.28 >= 0.2"
+   },
+   {
+    "parent_code": 41,
+    "child_code": 608,
+    "kind": "split",
+    "year": 2006,
+    "share": 0.0698,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2006,
+     2007,
+     2008
+    ],
+    "area_share": 0.0992,
+    "weight": 0.3676,
+    "grouped": false,
+    "why": "share 0.07 < 0.2"
+   },
+   {
+    "parent_code": 42,
+    "child_code": 608,
+    "kind": "split",
+    "year": 2006,
+    "share": 0.2928,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2006,
+     2007,
+     2008
+    ],
+    "area_share": 0.3006,
+    "weight": 0.6324,
+    "grouped": true,
+    "why": "share 0.29 >= 0.2"
+   },
+   {
+    "parent_code": 581,
+    "child_code": 610,
+    "kind": "split",
+    "year": 2009,
+    "share": 0.6786,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2009,
+     2010,
+     2011
+    ],
+    "area_share": 0.0,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.68 >= 0.2"
+   },
+   {
+    "parent_code": 281,
+    "child_code": 612,
+    "kind": "split",
+    "year": 2005,
+    "share": 0.3261,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2005,
+     2006,
+     2007
+    ],
+    "area_share": 0.568,
+    "weight": 0.6516,
+    "grouped": true,
+    "why": "share 0.33 >= 0.2"
+   },
+   {
+    "parent_code": 294,
+    "child_code": 612,
+    "kind": "split",
+    "year": 2005,
+    "share": 0.1683,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2005,
+     2006,
+     2007
+    ],
+    "area_share": 0.2136,
+    "weight": 0.3484,
+    "grouped": false,
+    "why": "share 0.17 < 0.2"
+   },
+   {
+    "parent_code": 249,
+    "child_code": 615,
+    "kind": "split",
+    "year": 2007,
+    "share": 0.3333,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2007,
+     2008,
+     2009
+    ],
+    "area_share": 0.1426,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.33 >= 0.2"
+   },
+   {
+    "parent_code": 280,
+    "child_code": 616,
+    "kind": "split",
+    "year": 2005,
+    "share": 0.0931,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2005,
+     2006,
+     2007
+    ],
+    "area_share": 0.3076,
+    "weight": 0.6206,
+    "grouped": false,
+    "why": "share 0.09 < 0.2"
+   },
+   {
+    "parent_code": 298,
+    "child_code": 616,
+    "kind": "split",
+    "year": 2005,
+    "share": 0.1003,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2692,
+    "weight": 0.3794,
+    "grouped": false,
+    "why": "share 0.10 < 0.2"
+   },
+   {
+    "parent_code": 283,
+    "child_code": 617,
+    "kind": "split",
+    "year": 2005,
+    "share": 0.2609,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2005,
+     2006,
+     2007
+    ],
+    "area_share": 0.5641,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.26 >= 0.2"
+   },
+   {
+    "parent_code": 60,
+    "child_code": 619,
+    "kind": "split",
+    "year": 2006,
+    "share": 0.2732,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2006,
+     2007,
+     2008
+    ],
+    "area_share": 0.6018,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.27 >= 0.2"
+   },
+   {
+    "parent_code": 4,
+    "child_code": 620,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.2688,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.6605,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.27 >= 0.2"
+   },
+   {
+    "parent_code": 3,
+    "child_code": 623,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.3647,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.4892,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.36 >= 0.2"
+   },
+   {
+    "parent_code": 5,
+    "child_code": 624,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.0885,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.2508,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.09 < 0.2"
+   },
+   {
+    "parent_code": 11,
+    "child_code": 625,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.5109,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.3102,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.51 >= 0.2"
+   },
+   {
+    "parent_code": 234,
+    "child_code": 628,
+    "kind": "split",
+    "year": 2009,
+    "share": 0.0455,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2009,
+     2010,
+     2011
+    ],
+    "area_share": 0.5733,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.05 < 0.2"
+   },
+   {
+    "parent_code": 88,
+    "child_code": 629,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.1306,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.1112,
+    "weight": 0.127,
+    "grouped": false,
+    "why": "share 0.13 < 0.2"
+   },
+   {
+    "parent_code": 95,
+    "child_code": 629,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.2432,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.2665,
+    "weight": 0.6455,
+    "grouped": true,
+    "why": "share 0.24 >= 0.2"
+   },
+   {
+    "parent_code": 117,
+    "child_code": 629,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.0897,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.0785,
+    "weight": 0.2275,
+    "grouped": false,
+    "why": "share 0.09 < 0.2"
+   },
+   {
+    "parent_code": 542,
+    "child_code": 630,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.5999,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.5005,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.60 >= 0.2"
+   },
+   {
+    "parent_code": 526,
+    "child_code": 631,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.523,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.5819,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.52 >= 0.2"
+   },
+   {
+    "parent_code": 602,
+    "child_code": 632,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.2712,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.5629,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.27 >= 0.2"
+   },
+   {
+    "parent_code": 138,
+    "child_code": 633,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.3555,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.4324,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.36 >= 0.2"
+   },
+   {
+    "parent_code": 569,
+    "child_code": 634,
+    "kind": "split",
+    "year": 2009,
+    "share": 0.2402,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2009,
+     2010,
+     2011
+    ],
+    "area_share": 0.3428,
+    "weight": 0.5047,
+    "grouped": true,
+    "why": "share 0.24 >= 0.2"
+   },
+   {
+    "parent_code": 573,
+    "child_code": 634,
+    "kind": "split",
+    "year": 2009,
+    "share": 0.4132,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2009,
+     2010,
+     2011
+    ],
+    "area_share": 0.3043,
+    "weight": 0.4953,
+    "grouped": true,
+    "why": "share 0.41 >= 0.2"
+   },
+   {
+    "parent_code": 538,
+    "child_code": 635,
+    "kind": "split",
+    "year": 2010,
+    "share": 0.307,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2010,
+     2011,
+     2012
+    ],
+    "area_share": 0.3219,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.31 >= 0.2"
+   },
+   {
+    "parent_code": 374,
+    "child_code": 637,
+    "kind": "split",
+    "year": 2003,
+    "share": 0.0315,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2003,
+     2004,
+     2005
+    ],
+    "area_share": 0.2507,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.03 < 0.2"
+   },
+   {
+    "parent_code": 433,
+    "child_code": 638,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.5398,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.5374,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.54 >= 0.2"
+   },
+   {
+    "parent_code": 412,
+    "child_code": 639,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.4374,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.4849,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.44 >= 0.2"
+   },
+   {
+    "parent_code": 175,
+    "child_code": 640,
+    "kind": "split",
+    "year": 2010,
+    "share": 0.2067,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2010,
+     2011,
+     2012
+    ],
+    "area_share": 0.14,
+    "weight": 0.2708,
+    "grouped": true,
+    "why": "share 0.21 >= 0.2"
+   },
+   {
+    "parent_code": 185,
+    "child_code": 640,
+    "kind": "split",
+    "year": 2010,
+    "share": 0.4382,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2010,
+     2011,
+     2012
+    ],
+    "area_share": 0.3941,
+    "weight": 0.7292,
+    "grouped": true,
+    "why": "share 0.44 >= 0.2"
+   },
+   {
+    "parent_code": 459,
+    "child_code": 641,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.0366,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.4074,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.04 < 0.2"
+   },
+   {
+    "parent_code": 376,
+    "child_code": 642,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.3874,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.3065,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.39 >= 0.2"
+   },
+   {
+    "parent_code": 374,
+    "child_code": 643,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.2821,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.3343,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.28 >= 0.2"
+   },
+   {
+    "parent_code": 387,
+    "child_code": 644,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.2548,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.316,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.25 >= 0.2"
+   },
+   {
+    "parent_code": 387,
+    "child_code": 645,
+    "kind": "split",
+    "year": 2011,
+    "share": 0.0867,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2011,
+     2012,
+     2013
+    ],
+    "area_share": 0.3764,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.09 < 0.2"
+   },
+   {
+    "parent_code": 378,
+    "child_code": 646,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.1405,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.3862,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.14 < 0.2"
+   },
+   {
+    "parent_code": 375,
+    "child_code": 647,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.1663,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.3314,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.17 < 0.2"
+   },
+   {
+    "parent_code": 389,
+    "child_code": 648,
+    "kind": "split",
+    "year": 2005,
+    "share": 0.4581,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2005,
+     2006,
+     2007
+    ],
+    "area_share": 0.3441,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.46 >= 0.2"
+   },
+   {
+    "parent_code": 378,
+    "child_code": 650,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.1686,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.2561,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.17 < 0.2"
+   },
+   {
+    "parent_code": 31,
+    "child_code": 651,
+    "kind": "split",
+    "year": 2011,
+    "share": 0.4929,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2011,
+     2012,
+     2013
+    ],
+    "area_share": 0.5343,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.49 >= 0.2"
+   },
+   {
+    "parent_code": 272,
+    "child_code": 652,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.1304,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.3357,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.13 < 0.2"
+   },
+   {
+    "parent_code": 272,
+    "child_code": 653,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.3193,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.3359,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.32 >= 0.2"
+   },
+   {
+    "parent_code": 271,
+    "child_code": 654,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.5836,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.4875,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.58 >= 0.2"
+   },
+   {
+    "parent_code": 270,
+    "child_code": 655,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.4196,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.3417,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.42 >= 0.2"
+   },
+   {
+    "parent_code": 273,
+    "child_code": 656,
+    "kind": "split",
+    "year": 2013,
+    "share": 0.6111,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2013,
+     2014,
+     2015
+    ],
+    "area_share": 0.4159,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.61 >= 0.2"
+   },
+   {
+    "parent_code": 275,
+    "child_code": 657,
+    "kind": "split",
+    "year": 2013,
+    "share": 0.4262,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2013,
+     2014,
+     2015
+    ],
+    "area_share": 0.5018,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.43 >= 0.2"
+   },
+   {
+    "parent_code": 279,
+    "child_code": 658,
+    "kind": "split",
+    "year": 2013,
+    "share": 0.3897,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2013,
+     2014,
+     2015
+    ],
+    "area_share": 0.2386,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.39 >= 0.2"
+   },
+   {
+    "parent_code": 133,
+    "child_code": 659,
+    "kind": "split",
+    "year": 2011,
+    "share": 0.261,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2011,
+     2012,
+     2013
+    ],
+    "area_share": 0.1858,
+    "weight": 0.4015,
+    "grouped": true,
+    "why": "share 0.26 >= 0.2"
+   },
+   {
+    "parent_code": 171,
+    "child_code": 659,
+    "kind": "split",
+    "year": 2011,
+    "share": 0.2267,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2011,
+     2012,
+     2013
+    ],
+    "area_share": 0.4138,
+    "weight": 0.5985,
+    "grouped": true,
+    "why": "share 0.23 >= 0.2"
+   },
+   {
+    "parent_code": 172,
+    "child_code": 660,
+    "kind": "split",
+    "year": 2011,
+    "share": 0.2574,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2011,
+     2012,
+     2013
+    ],
+    "area_share": 0.3097,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.26 >= 0.2"
+   },
+   {
+    "parent_code": 145,
+    "child_code": 661,
+    "kind": "split",
+    "year": 2011,
+    "share": 0.2142,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2011,
+     2012,
+     2013
+    ],
+    "area_share": 0.5108,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.21 >= 0.2"
+   },
+   {
+    "parent_code": 32,
+    "child_code": 662,
+    "kind": "split",
+    "year": 2011,
+    "share": 0.2205,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2011,
+     2012,
+     2013
+    ],
+    "area_share": 0.2509,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.22 >= 0.2"
+   },
+   {
+    "parent_code": 278,
+    "child_code": 663,
+    "kind": "split",
+    "year": 2013,
+    "share": 0.2734,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2013,
+     2014,
+     2015
+    ],
+    "area_share": 0.2339,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.27 >= 0.2"
+   },
+   {
+    "parent_code": 314,
+    "child_code": 664,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.4247,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.4486,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.42 >= 0.2"
+   },
+   {
+    "parent_code": 497,
+    "child_code": 665,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.2252,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.5631,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.23 >= 0.2"
+   },
+   {
+    "parent_code": 239,
+    "child_code": 666,
+    "kind": "split",
+    "year": 2013,
+    "share": 0.3241,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2013,
+     2014,
+     2015
+    ],
+    "area_share": 0.4269,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.32 >= 0.2"
+   },
+   {
+    "parent_code": 430,
+    "child_code": 667,
+    "kind": "split",
+    "year": 2013,
+    "share": 0.3519,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2013,
+     2014,
+     2015
+    ],
+    "area_share": 0.4264,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.35 >= 0.2"
+   },
+   {
+    "parent_code": 461,
+    "child_code": 668,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.1032,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.4399,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.10 < 0.2"
+   },
+   {
+    "parent_code": 450,
+    "child_code": 669,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.1749,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.1415,
+    "weight": 0.3712,
+    "grouped": false,
+    "why": "share 0.17 < 0.2"
+   },
+   {
+    "parent_code": 454,
+    "child_code": 669,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.2675,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.2619,
+    "weight": 0.6288,
+    "grouped": true,
+    "why": "share 0.27 >= 0.2"
+   },
+   {
+    "parent_code": 83,
+    "child_code": 670,
+    "kind": "split",
+    "year": 2008,
+    "share": 0.6137,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2008,
+     2009,
+     2010
+    ],
+    "area_share": 0.0615,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.61 >= 0.2"
+   },
+   {
+    "parent_code": 78,
+    "child_code": 671,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.3176,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.0203,
+    "weight": 0.5,
+    "grouped": true,
+    "why": "share 0.32 >= 0.2"
+   },
+   {
+    "parent_code": 81,
+    "child_code": 671,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.2507,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.0203,
+    "weight": 0.5,
+    "grouped": true,
+    "why": "share 0.25 >= 0.2"
+   },
+   {
+    "parent_code": 458,
+    "child_code": 672,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.3629,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.4184,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.36 >= 0.2"
+   },
+   {
+    "parent_code": 457,
+    "child_code": 673,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.102,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.3067,
+    "weight": 0.746,
+    "grouped": false,
+    "why": "share 0.10 < 0.2"
+   },
+   {
+    "parent_code": 460,
+    "child_code": 673,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.1448,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.111,
+    "weight": 0.254,
+    "grouped": false,
+    "why": "share 0.14 < 0.2"
+   },
+   {
+    "parent_code": 447,
+    "child_code": 674,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.2512,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.3618,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.25 >= 0.2"
+   },
+   {
+    "parent_code": 448,
+    "child_code": 675,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.3882,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 1.1982,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.39 >= 0.2"
+   },
+   {
+    "parent_code": 438,
+    "child_code": 676,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.0207,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.1054,
+    "weight": 0.3443,
+    "grouped": false,
+    "why": "share 0.02 < 0.2"
+   },
+   {
+    "parent_code": 443,
+    "child_code": 676,
+    "kind": "split",
+    "year": 2014,
+    "share": 0.1793,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2014,
+     2015,
+     2016
+    ],
+    "area_share": 0.1862,
+    "weight": 0.6557,
+    "grouped": false,
+    "why": "share 0.18 < 0.2"
+   },
+   {
+    "parent_code": 233,
+    "child_code": 677,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.2074,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.2496,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.21 >= 0.2"
+   },
+   {
+    "parent_code": 234,
+    "child_code": 678,
+    "kind": "split",
+    "year": 2016,
+    "share": 0.4646,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2016,
+     2017,
+     2018
+    ],
+    "area_share": 0.1082,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.46 >= 0.2"
+   },
+   {
+    "parent_code": 232,
+    "child_code": 679,
+    "kind": "split",
+    "year": 2015,
+    "share": 0.0339,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2015,
+     2016,
+     2017
+    ],
+    "area_share": 0.3788,
+    "weight": 0.4712,
+    "grouped": false,
+    "why": "share 0.03 < 0.2"
+   },
+   {
+    "parent_code": 243,
+    "child_code": 679,
+    "kind": "split",
+    "year": 2015,
+    "share": 0.0656,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2015,
+     2016,
+     2017
+    ],
+    "area_share": 0.1968,
+    "weight": 0.5288,
+    "grouped": false,
+    "why": "share 0.07 < 0.2"
+   },
+   {
+    "parent_code": 501,
+    "child_code": 680,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.3144,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.2296,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.31 >= 0.2"
+   },
+   {
+    "parent_code": 508,
+    "child_code": 681,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.1502,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.2368,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.15 < 0.2"
+   },
+   {
+    "parent_code": 508,
+    "child_code": 682,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.3734,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.1843,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.37 >= 0.2"
+   },
+   {
+    "parent_code": 508,
+    "child_code": 683,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.085,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.151,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.08 < 0.2"
+   },
+   {
+    "parent_code": 516,
+    "child_code": 685,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.3312,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.4659,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.33 >= 0.2"
+   },
+   {
+    "parent_code": 508,
+    "child_code": 687,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0651,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.1435,
+    "weight": 0.6044,
+    "grouped": false,
+    "why": "share 0.07 < 0.2"
+   },
+   {
+    "parent_code": 522,
+    "child_code": 687,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0662,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.0876,
+    "weight": 0.3956,
+    "grouped": false,
+    "why": "share 0.07 < 0.2"
+   },
+   {
+    "parent_code": 509,
+    "child_code": 688,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0352,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.0312,
+    "weight": 0.1416,
+    "grouped": false,
+    "why": "share 0.04 < 0.2"
+   },
+   {
+    "parent_code": 522,
+    "child_code": 688,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.1938,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.2369,
+    "weight": 0.8584,
+    "grouped": false,
+    "why": "share 0.19 < 0.2"
+   },
+   {
+    "parent_code": 509,
+    "child_code": 690,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.4152,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.4252,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.42 >= 0.2"
+   },
+   {
+    "parent_code": 513,
+    "child_code": 691,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.3937,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.4495,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.39 >= 0.2"
+   },
+   {
+    "parent_code": 508,
+    "child_code": 692,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0473,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.0655,
+    "weight": 0.2102,
+    "grouped": false,
+    "why": "share 0.05 < 0.2"
+   },
+   {
+    "parent_code": 513,
+    "child_code": 692,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.329,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.256,
+    "weight": 0.6714,
+    "grouped": true,
+    "why": "share 0.33 >= 0.2"
+   },
+   {
+    "parent_code": 522,
+    "child_code": 692,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0414,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.0344,
+    "weight": 0.1184,
+    "grouped": false,
+    "why": "share 0.04 < 0.2"
+   },
+   {
+    "parent_code": 512,
+    "child_code": 693,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.1277,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.121,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.13 < 0.2"
+   },
+   {
+    "parent_code": 512,
+    "child_code": 694,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.2501,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.3289,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.25 >= 0.2"
+   },
+   {
+    "parent_code": 512,
+    "child_code": 695,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.137,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.1388,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.14 < 0.2"
+   },
+   {
+    "parent_code": 514,
+    "child_code": 696,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.1706,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.2446,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.17 < 0.2"
+   },
+   {
+    "parent_code": 514,
+    "child_code": 697,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.7993,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.2236,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.80 >= 0.2"
+   },
+   {
+    "parent_code": 518,
+    "child_code": 697,
+    "kind": "reported_together",
+    "year": 2017,
+    "share": 0.0,
+    "share_basis": "area",
+    "share_years": [],
+    "area_share": 0.0,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "late pooling: the member's years from then on are estimates"
+   },
+   {
+    "parent_code": 512,
+    "child_code": 698,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0536,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.0377,
+    "weight": 0.1876,
+    "grouped": false,
+    "why": "share 0.05 < 0.2"
+   },
+   {
+    "parent_code": 518,
+    "child_code": 698,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0653,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.3955,
+    "weight": 0.8124,
+    "grouped": false,
+    "why": "share 0.07 < 0.2"
+   },
+   {
+    "parent_code": 501,
+    "child_code": 699,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.2994,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.2797,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.30 >= 0.2"
+   },
+   {
+    "parent_code": 59,
+    "child_code": 701,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.2391,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.2855,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.24 >= 0.2"
+   },
+   {
+    "parent_code": 309,
+    "child_code": 702,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0589,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.3454,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.06 < 0.2"
+   },
+   {
+    "parent_code": 318,
+    "child_code": 703,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.1038,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2014
+    ],
+    "area_share": 0.3253,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.10 < 0.2"
+   },
+   {
+    "parent_code": 306,
+    "child_code": 704,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.4184,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.2521,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.42 >= 0.2"
+   },
+   {
+    "parent_code": 301,
+    "child_code": 705,
+    "kind": "split",
+    "year": 2015,
+    "share": 0.291,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2015,
+     2016,
+     2017
+    ],
+    "area_share": 0.4592,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.29 >= 0.2"
+   },
+   {
+    "parent_code": 290,
+    "child_code": 706,
+    "kind": "split",
+    "year": 2016,
+    "share": 0.0489,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2016,
+     2017,
+     2018
+    ],
+    "area_share": 0.276,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.05 < 0.2"
+   },
+   {
+    "parent_code": 285,
+    "child_code": 707,
+    "kind": "split",
+    "year": 2015,
+    "share": 0.142,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2015,
+     2016,
+     2017
+    ],
+    "area_share": 0.2334,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.14 < 0.2"
+   },
+   {
+    "parent_code": 300,
+    "child_code": 708,
+    "kind": "split",
+    "year": 2016,
+    "share": 0.1968,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2016,
+     2017,
+     2018
+    ],
+    "area_share": 0.4007,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.20 < 0.2"
+   },
+   {
+    "parent_code": 297,
+    "child_code": 709,
+    "kind": "split",
+    "year": 2015,
+    "share": 0.2945,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2015,
+     2016,
+     2017
+    ],
+    "area_share": 0.3582,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.29 >= 0.2"
+   },
+   {
+    "parent_code": 292,
+    "child_code": 710,
+    "kind": "split",
+    "year": 2012,
+    "share": 0.1977,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2012,
+     2013,
+     2015
+    ],
+    "area_share": 0.2891,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.20 < 0.2"
+   },
+   {
+    "parent_code": 259,
+    "child_code": 711,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.3023,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.3575,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.30 >= 0.2"
+   },
+   {
+    "parent_code": 257,
+    "child_code": 712,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.2778,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.4326,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.28 >= 0.2"
+   },
+   {
+    "parent_code": 255,
+    "child_code": 713,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.0541,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.2458,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.05 < 0.2"
+   },
+   {
+    "parent_code": 258,
+    "child_code": 714,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.5,
+    "share_basis": "crime:2y",
+    "share_years": [
+     2020,
+     2022
+    ],
+    "area_share": 0.2747,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.50 >= 0.2"
+   },
+   {
+    "parent_code": 254,
+    "child_code": 715,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.0556,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.475,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.06 < 0.2"
+   },
+   {
+    "parent_code": 253,
+    "child_code": 716,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.8333,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.3669,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.83 >= 0.2"
+   },
+   {
+    "parent_code": 260,
+    "child_code": 717,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.0,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2021,
+     2022
+    ],
+    "area_share": 0.4661,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.00 < 0.2"
+   },
+   {
+    "parent_code": 236,
+    "child_code": 718,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.4167,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.3671,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.42 >= 0.2"
+   },
+   {
+    "parent_code": 241,
+    "child_code": 718,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.0,
+    "weight": 0.0,
+    "grouped": false,
+    "why": "share 0.00 < 0.2"
+   },
+   {
+    "parent_code": 232,
+    "child_code": 719,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.0299,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.1441,
+    "weight": 0.2929,
+    "grouped": false,
+    "why": "share 0.03 < 0.2"
+   },
+   {
+    "parent_code": 243,
+    "child_code": 719,
+    "kind": "split",
+    "year": 2017,
+    "share": 0.1206,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2017,
+     2018,
+     2019
+    ],
+    "area_share": 0.161,
+    "weight": 0.7071,
+    "grouped": false,
+    "why": "share 0.12 < 0.2"
+   },
+   {
+    "parent_code": 509,
+    "child_code": 720,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.0571,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.081,
+    "weight": 0.3071,
+    "grouped": false,
+    "why": "share 0.06 < 0.2"
+   },
+   {
+    "parent_code": 522,
+    "child_code": 720,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.0874,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.2291,
+    "weight": 0.6929,
+    "grouped": false,
+    "why": "share 0.09 < 0.2"
+   },
+   {
+    "parent_code": 512,
+    "child_code": 721,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.2618,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.1274,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.26 >= 0.2"
+   },
+   {
+    "parent_code": 434,
+    "child_code": 722,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.358,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.2455,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.36 >= 0.2"
+   },
+   {
+    "parent_code": 231,
+    "child_code": 723,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.2476,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.4864,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.25 >= 0.2"
+   },
+   {
+    "parent_code": 243,
+    "child_code": 724,
+    "kind": "split",
+    "year": 2018,
+    "share": 0.1569,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2018,
+     2019,
+     2020
+    ],
+    "area_share": 0.0971,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.16 < 0.2"
+   },
+   {
+    "parent_code": 243,
+    "child_code": 725,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.0337,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.3304,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.03 < 0.2"
+   },
+   {
+    "parent_code": 265,
+    "child_code": 726,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.2,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.2039,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.20 < 0.2"
+   },
+   {
+    "parent_code": 261,
+    "child_code": 727,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.0,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.1681,
+    "weight": 0.4222,
+    "grouped": false,
+    "why": "share 0.00 < 0.2"
+   },
+   {
+    "parent_code": 262,
+    "child_code": 727,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.0,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.2318,
+    "weight": 0.5778,
+    "grouped": false,
+    "why": "share 0.00 < 0.2"
+   },
+   {
+    "parent_code": 262,
+    "child_code": 728,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.6722,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.3446,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.67 >= 0.2"
+   },
+   {
+    "parent_code": 596,
+    "child_code": 729,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.4392,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.4615,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.44 >= 0.2"
+   },
+   {
+    "parent_code": 574,
+    "child_code": 730,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.7606,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.5774,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.76 >= 0.2"
+   },
+   {
+    "parent_code": 595,
+    "child_code": 731,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.1549,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.2815,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.15 < 0.2"
+   },
+   {
+    "parent_code": 595,
+    "child_code": 732,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.4828,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.3401,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.48 >= 0.2"
+   },
+   {
+    "parent_code": 592,
+    "child_code": 733,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.3117,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.3928,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.31 >= 0.2"
+   },
+   {
+    "parent_code": 375,
+    "child_code": 734,
+    "kind": "split",
+    "year": 2020,
+    "share": 0.1066,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2020,
+     2021,
+     2022
+    ],
+    "area_share": 0.2354,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.11 < 0.2"
+   },
+   {
+    "parent_code": 43,
+    "child_code": 737,
+    "kind": "split",
+    "year": 2021,
+    "share": 0.349,
+    "share_basis": "crime:2y",
+    "share_years": [
+     2021,
+     2022
+    ],
+    "area_share": 0.1259,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.35 >= 0.2"
+   },
+   {
+    "parent_code": 528,
+    "child_code": 738,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.3983,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.494,
+    "weight": 0.7472,
+    "grouped": true,
+    "why": "share 0.40 >= 0.2"
+   },
+   {
+    "parent_code": 535,
+    "child_code": 738,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.1002,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2138,
+    "weight": 0.2528,
+    "grouped": false,
+    "why": "share 0.10 < 0.2"
+   },
+   {
+    "parent_code": 280,
+    "child_code": 739,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.1313,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.1099,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.13 < 0.2"
+   },
+   {
+    "parent_code": 279,
+    "child_code": 740,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.1818,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2607,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.18 < 0.2"
+   },
+   {
+    "parent_code": 225,
+    "child_code": 741,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.1957,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.3775,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.20 < 0.2"
+   },
+   {
+    "parent_code": 228,
+    "child_code": 742,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.2857,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2633,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.29 >= 0.2"
+   },
+   {
+    "parent_code": 519,
+    "child_code": 743,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.0956,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.1381,
+    "weight": 0.2527,
+    "grouped": false,
+    "why": "share 0.10 < 0.2"
+   },
+   {
+    "parent_code": 521,
+    "child_code": 743,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.2303,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.4479,
+    "weight": 0.7473,
+    "grouped": true,
+    "why": "share 0.23 >= 0.2"
+   },
+   {
+    "parent_code": 520,
+    "child_code": 744,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.3378,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.3484,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.34 >= 0.2"
+   },
+   {
+    "parent_code": 505,
+    "child_code": 745,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.0141,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.3663,
+    "weight": 0.3171,
+    "grouped": false,
+    "why": "share 0.01 < 0.2"
+   },
+   {
+    "parent_code": 509,
+    "child_code": 745,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.0283,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.1277,
+    "weight": 0.1659,
+    "grouped": false,
+    "why": "share 0.03 < 0.2"
+   },
+   {
+    "parent_code": 520,
+    "child_code": 745,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.0332,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.5625,
+    "weight": 0.5169,
+    "grouped": false,
+    "why": "share 0.03 < 0.2"
+   },
+   {
+    "parent_code": 505,
+    "child_code": 746,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.2864,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2787,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.29 >= 0.2"
+   },
+   {
+    "parent_code": 505,
+    "child_code": 747,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.2985,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2169,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.30 >= 0.2"
+   },
+   {
+    "parent_code": 509,
+    "child_code": 748,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.1787,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.0397,
+    "weight": 0.0978,
+    "grouped": false,
+    "why": "share 0.18 < 0.2"
+   },
+   {
+    "parent_code": 510,
+    "child_code": 748,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.1726,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.1807,
+    "weight": 0.2369,
+    "grouped": false,
+    "why": "share 0.17 < 0.2"
+   },
+   {
+    "parent_code": 523,
+    "child_code": 748,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.5081,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.5628,
+    "weight": 0.6653,
+    "grouped": true,
+    "why": "share 0.51 >= 0.2"
+   },
+   {
+    "parent_code": 506,
+    "child_code": 750,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.1129,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.1507,
+    "weight": 0.4495,
+    "grouped": false,
+    "why": "share 0.11 < 0.2"
+   },
+   {
+    "parent_code": 517,
+    "child_code": 750,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.2969,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.1187,
+    "weight": 0.5505,
+    "grouped": true,
+    "why": "share 0.30 >= 0.2"
+   },
+   {
+    "parent_code": 506,
+    "child_code": 751,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.2464,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.6277,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.25 >= 0.2"
+   },
+   {
+    "parent_code": 503,
+    "child_code": 752,
+    "kind": "split",
+    "year": 2010,
+    "share": 0.1056,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2010,
+     2011,
+     2012
+    ],
+    "area_share": 0.2923,
+    "weight": 0.5489,
+    "grouped": false,
+    "why": "share 0.11 < 0.2"
+   },
+   {
+    "parent_code": 515,
+    "child_code": 752,
+    "kind": "split",
+    "year": 2010,
+    "share": 0.0962,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2010,
+     2011,
+     2012
+    ],
+    "area_share": 0.2773,
+    "weight": 0.4511,
+    "grouped": false,
+    "why": "share 0.10 < 0.2"
+   },
+   {
+    "parent_code": 503,
+    "child_code": 753,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.262,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2437,
+    "weight": 0.4169,
+    "grouped": true,
+    "why": "share 0.26 >= 0.2"
+   },
+   {
+    "parent_code": 504,
+    "child_code": 753,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.3173,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.3398,
+    "weight": 0.5831,
+    "grouped": true,
+    "why": "share 0.32 >= 0.2"
+   },
+   {
+    "parent_code": 502,
+    "child_code": 754,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.4712,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.4537,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.47 >= 0.2"
+   },
+   {
+    "parent_code": 511,
+    "child_code": 755,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.4174,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.5416,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.42 >= 0.2"
+   },
+   {
+    "parent_code": 291,
+    "child_code": 756,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.0193,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.062,
+    "weight": 0.3155,
+    "grouped": false,
+    "why": "share 0.02 < 0.2"
+   },
+   {
+    "parent_code": 298,
+    "child_code": 756,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.128,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2577,
+    "weight": 0.6845,
+    "grouped": false,
+    "why": "share 0.13 < 0.2"
+   },
+   {
+    "parent_code": 616,
+    "child_code": 756,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.0,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.0,
+    "weight": 0.0,
+    "grouped": false,
+    "why": "share 0.00 < 0.2"
+   },
+   {
+    "parent_code": 388,
+    "child_code": 759,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.2611,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.283,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.26 >= 0.2"
+   },
+   {
+    "parent_code": 384,
+    "child_code": 760,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.6238,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.668,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.62 >= 0.2"
+   },
+   {
+    "parent_code": 388,
+    "child_code": 761,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.1624,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2955,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "share 0.16 < 0.2"
+   },
+   {
+    "parent_code": 379,
+    "child_code": 762,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.3827,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.4094,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.38 >= 0.2"
+   },
+   {
+    "parent_code": 386,
+    "child_code": 763,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.2261,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.2061,
+    "weight": 0.523,
+    "grouped": true,
+    "why": "share 0.23 >= 0.2"
+   },
+   {
+    "parent_code": 387,
+    "child_code": 763,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.0454,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.0538,
+    "weight": 0.2385,
+    "grouped": false,
+    "why": "share 0.05 < 0.2"
+   },
+   {
+    "parent_code": 644,
+    "child_code": 763,
+    "kind": "split",
+    "year": 2022,
+    "share": 0.139,
+    "share_basis": "crime:1y",
+    "share_years": [
+     2022
+    ],
+    "area_share": 0.0538,
+    "weight": 0.2385,
+    "grouped": false,
+    "why": "share 0.14 < 0.2"
+   },
+   {
+    "parent_code": 87,
+    "child_code": 770,
+    "kind": "split",
+    "year": 2019,
+    "share": 0.4103,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2019,
+     2020,
+     2021
+    ],
+    "area_share": 0.2366,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.41 >= 0.2"
+   },
+   {
+    "parent_code": 102,
+    "child_code": 783,
+    "kind": "split",
+    "year": 2006,
+    "share": 0.3438,
+    "share_basis": "crime:3y",
+    "share_years": [
+     2006,
+     2007,
+     2008
+    ],
+    "area_share": 0.4605,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "share 0.34 >= 0.2"
+   },
+   {
+    "parent_code": 684,
+    "child_code": 682,
+    "kind": "reported_together",
+    "year": 2001,
+    "share": null,
+    "share_basis": null,
+    "share_years": [],
+    "area_share": 0.233,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "map-only Mancherial moves between holders; area share of Adilabad 0.23 >= 0.2"
+   },
+   {
+    "parent_code": 501,
+    "child_code": 684,
+    "kind": "split",
+    "year": 2017,
+    "share": null,
+    "share_basis": null,
+    "share_years": [],
+    "area_share": 0.233,
+    "weight": 1.0,
+    "grouped": true,
+    "why": "map-only Mancherial moves between holders; area share of Adilabad 0.23 >= 0.2"
+   },
+   {
+    "parent_code": 686,
+    "child_code": 522,
+    "kind": "reported_together",
+    "year": 2001,
+    "share": null,
+    "share_basis": null,
+    "share_years": [],
+    "area_share": 0.0395,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "map-only Hanumakonda moves between holders; area share of Karimnagar 0.04 < 0.2"
+   },
+   {
+    "parent_code": 508,
+    "child_code": 686,
+    "kind": "split",
+    "year": 2017,
+    "share": null,
+    "share_basis": null,
+    "share_years": [],
+    "area_share": 0.0395,
+    "weight": 1.0,
+    "grouped": false,
+    "why": "map-only Hanumakonda moves between holders; area share of Karimnagar 0.04 < 0.2"
+   }
+  ],
+  "map_only": [
+   {
+    "code": 599,
+    "name": "Mahe",
+    "inside_before": [],
+    "inside_from": [
+     [
+      600,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 601,
+    "name": "Yanam",
+    "inside_before": [],
+    "inside_from": [
+     [
+      600,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 684,
+    "name": "Mancherial",
+    "inside_before": [
+     [
+      501,
+      2017
+     ]
+    ],
+    "inside_from": [
+     [
+      682,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 686,
+    "name": "Hanumakonda",
+    "inside_before": [
+     [
+      508,
+      2017
+     ]
+    ],
+    "inside_from": [
+     [
+      522,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 689,
+    "name": "Jangoan",
+    "inside_before": [
+     [
+      522,
+      2017
+     ]
+    ],
+    "inside_from": [
+     [
+      522,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 700,
+    "name": "Medchal Malkajgiri",
+    "inside_before": [],
+    "inside_from": [
+     [
+      518,
+      2001
+     ],
+     [
+      697,
+      2017
+     ]
+    ]
+   },
+   {
+    "code": 735,
+    "name": "Mayiladuthurai",
+    "inside_before": [],
+    "inside_from": [
+     [
+      579,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 736,
+    "name": "Noklak",
+    "inside_before": [],
+    "inside_from": [
+     [
+      249,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 757,
+    "name": "Tseminyu",
+    "inside_before": [],
+    "inside_from": [
+     [
+      245,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 758,
+    "name": "Chumoukedima",
+    "inside_before": [],
+    "inside_from": [
+     [
+      244,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 764,
+    "name": "Niuland",
+    "inside_before": [],
+    "inside_from": [
+     [
+      244,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 765,
+    "name": "Shamator",
+    "inside_before": [],
+    "inside_from": [
+     [
+      249,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 766,
+    "name": "Itanagar capital complex",
+    "inside_before": [],
+    "inside_from": [
+     [
+      237,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 767,
+    "name": "Deeg",
+    "inside_before": [],
+    "inside_from": [
+     [
+      91,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 768,
+    "name": "Didwana Kuchaman",
+    "inside_before": [],
+    "inside_from": [
+     [
+      110,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 769,
+    "name": "Dudu",
+    "inside_before": [],
+    "inside_from": [
+     [
+      102,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 771,
+    "name": "Gangapurcity",
+    "inside_before": [],
+    "inside_from": [
+     [
+      108,
+      2001
+     ],
+     [
+      113,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 772,
+    "name": "Phalodi",
+    "inside_before": [],
+    "inside_from": [
+     [
+      107,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 773,
+    "name": "Neem Ka Thana",
+    "inside_before": [],
+    "inside_from": [
+     [
+      106,
+      2001
+     ],
+     [
+      114,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 774,
+    "name": "Beawar",
+    "inside_before": [],
+    "inside_from": [
+     [
+      86,
+      2001
+     ],
+     [
+      92,
+      2001
+     ],
+     [
+      111,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 775,
+    "name": "Balotra",
+    "inside_before": [],
+    "inside_from": [
+     [
+      90,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 776,
+    "name": "Anoopgarh",
+    "inside_before": [],
+    "inside_from": [
+     [
+      93,
+      2001
+     ],
+     [
+      100,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 777,
+    "name": "Salumbar",
+    "inside_before": [],
+    "inside_from": [
+     [
+      117,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 778,
+    "name": "Jodhpur Gramin",
+    "inside_before": [],
+    "inside_from": [
+     [
+      107,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 779,
+    "name": "Sanchor",
+    "inside_before": [],
+    "inside_from": [
+     [
+      104,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 780,
+    "name": "Shahpura",
+    "inside_before": [],
+    "inside_from": [
+     [
+      92,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 781,
+    "name": "Kekri",
+    "inside_before": [],
+    "inside_from": [
+     [
+      86,
+      2001
+     ],
+     [
+      116,
+      2001
+     ]
+    ]
+   },
+   {
+    "code": 782,
+    "name": "Kotputli-Behror",
+    "inside_before": [],
+    "inside_from": [
+     [
+      87,
+      2001
+     ],
+     [
+      102,
+      2001
+     ]
+    ]
+   }
+  ]
  },
  "units": [
-  {
-   "unit_id": "su_0",
-   "name": "Muzaffarabad",
-   "largest_member_code": 0,
-   "members": [
-    0
-   ],
-   "edges": []
-  },
   {
    "unit_id": "su_1",
    "name": "Anantnag",
@@ -75,17 +3563,9 @@
    "name": "Jammu",
    "largest_member_code": 5,
    "members": [
-    5,
-    624
+    5
    ],
-   "edges": [
-    {
-     "parent_code": 5,
-     "child_code": 624,
-     "kind": "split",
-     "year": 2008
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_6",
@@ -428,20 +3908,22 @@
   },
   {
    "unit_id": "su_41",
+   "name": "Patiala",
+   "largest_member_code": 41,
+   "members": [
+    41
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_42",
    "name": "S.A.S Nagar",
    "largest_member_code": 608,
    "members": [
-    41,
     42,
     608
    ],
    "edges": [
-    {
-     "parent_code": 41,
-     "child_code": 608,
-     "kind": "split",
-     "year": 2006
-    },
     {
      "parent_code": 42,
      "child_code": 608,
@@ -888,141 +4370,35 @@
    "name": "Ajmer",
    "largest_member_code": 86,
    "members": [
-    86,
-    92,
-    111,
-    116,
-    774,
-    780,
-    781
+    86
    ],
-   "edges": [
-    {
-     "parent_code": 774,
-     "child_code": 86,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 781,
-     "child_code": 86,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 774,
-     "child_code": 92,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 780,
-     "child_code": 92,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 774,
-     "child_code": 111,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 781,
-     "child_code": 116,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_87",
-   "name": "Jaipur",
-   "largest_member_code": 102,
+   "name": "Alwar",
+   "largest_member_code": 87,
    "members": [
     87,
-    102,
-    769,
-    770,
-    782,
-    783
+    770
    ],
    "edges": [
-    {
-     "parent_code": 782,
-     "child_code": 87,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 769,
-     "child_code": 102,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 782,
-     "child_code": 102,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 783,
-     "child_code": 102,
-     "kind": "reported_together",
-     "year": 2017
-    },
     {
      "parent_code": 87,
      "child_code": 770,
      "kind": "split",
      "year": 2019
-    },
-    {
-     "parent_code": 102,
-     "child_code": 783,
-     "kind": "split",
-     "year": 2006
     }
    ]
   },
   {
    "unit_id": "su_88",
-   "name": "Udaipur",
-   "largest_member_code": 117,
+   "name": "Banswara",
+   "largest_member_code": 88,
    "members": [
-    88,
-    95,
-    117,
-    629,
-    777
+    88
    ],
-   "edges": [
-    {
-     "parent_code": 777,
-     "child_code": 117,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 88,
-     "child_code": 629,
-     "kind": "split",
-     "year": 2008
-    },
-    {
-     "parent_code": 95,
-     "child_code": 629,
-     "kind": "split",
-     "year": 2008
-    },
-    {
-     "parent_code": 117,
-     "child_code": 629,
-     "kind": "split",
-     "year": 2008
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_89",
@@ -1038,58 +4414,36 @@
    "name": "Barmer",
    "largest_member_code": 90,
    "members": [
-    90,
-    775
+    90
    ],
-   "edges": [
-    {
-     "parent_code": 775,
-     "child_code": 90,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_91",
    "name": "Bharatpur",
    "largest_member_code": 91,
    "members": [
-    91,
-    767
+    91
    ],
-   "edges": [
-    {
-     "parent_code": 767,
-     "child_code": 91,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
+  },
+  {
+   "unit_id": "su_92",
+   "name": "Bhilwara",
+   "largest_member_code": 92,
+   "members": [
+    92
+   ],
+   "edges": []
   },
   {
    "unit_id": "su_93",
-   "name": "Ganganagar",
-   "largest_member_code": 100,
+   "name": "Bikaner",
+   "largest_member_code": 93,
    "members": [
-    93,
-    100,
-    776
+    93
    ],
-   "edges": [
-    {
-     "parent_code": 776,
-     "child_code": 93,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 776,
-     "child_code": 100,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_94",
@@ -1099,6 +4453,23 @@
     94
    ],
    "edges": []
+  },
+  {
+   "unit_id": "su_95",
+   "name": "Chittorgarh",
+   "largest_member_code": 95,
+   "members": [
+    95,
+    629
+   ],
+   "edges": [
+    {
+     "parent_code": 95,
+     "child_code": 629,
+     "kind": "split",
+     "year": 2008
+    }
+   ]
   },
   {
    "unit_id": "su_96",
@@ -1137,6 +4508,15 @@
    "edges": []
   },
   {
+   "unit_id": "su_100",
+   "name": "Ganganagar",
+   "largest_member_code": 100,
+   "members": [
+    100
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_101",
    "name": "Hanumangarh",
    "largest_member_code": 101,
@@ -1144,6 +4524,23 @@
     101
    ],
    "edges": []
+  },
+  {
+   "unit_id": "su_102",
+   "name": "Jaipur",
+   "largest_member_code": 102,
+   "members": [
+    102,
+    783
+   ],
+   "edges": [
+    {
+     "parent_code": 102,
+     "child_code": 783,
+     "kind": "split",
+     "year": 2006
+    }
+   ]
   },
   {
    "unit_id": "su_103",
@@ -1159,17 +4556,9 @@
    "name": "Jalore",
    "largest_member_code": 104,
    "members": [
-    104,
-    779
+    104
    ],
-   "edges": [
-    {
-     "parent_code": 779,
-     "child_code": 104,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_105",
@@ -1182,75 +4571,30 @@
   },
   {
    "unit_id": "su_106",
-   "name": "Sikar",
-   "largest_member_code": 114,
+   "name": "Jhunjhunu",
+   "largest_member_code": 106,
    "members": [
-    106,
-    114,
-    773
+    106
    ],
-   "edges": [
-    {
-     "parent_code": 773,
-     "child_code": 106,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 773,
-     "child_code": 114,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_107",
    "name": "Jodhpur",
    "largest_member_code": 107,
    "members": [
-    107,
-    772,
-    778
+    107
    ],
-   "edges": [
-    {
-     "parent_code": 772,
-     "child_code": 107,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 778,
-     "child_code": 107,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_108",
    "name": "Karauli",
    "largest_member_code": 108,
    "members": [
-    108,
-    113,
-    771
+    108
    ],
-   "edges": [
-    {
-     "parent_code": 771,
-     "child_code": 108,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 771,
-     "child_code": 113,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_109",
@@ -1266,17 +4610,18 @@
    "name": "Nagaur",
    "largest_member_code": 110,
    "members": [
-    110,
-    768
+    110
    ],
-   "edges": [
-    {
-     "parent_code": 768,
-     "child_code": 110,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
+  },
+  {
+   "unit_id": "su_111",
+   "name": "Pali",
+   "largest_member_code": 111,
+   "members": [
+    111
+   ],
+   "edges": []
   },
   {
    "unit_id": "su_112",
@@ -1288,11 +4633,47 @@
    "edges": []
   },
   {
+   "unit_id": "su_113",
+   "name": "Sawai Madhopur",
+   "largest_member_code": 113,
+   "members": [
+    113
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_114",
+   "name": "Sikar",
+   "largest_member_code": 114,
+   "members": [
+    114
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_115",
    "name": "Sirohi",
    "largest_member_code": 115,
    "members": [
     115
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_116",
+   "name": "Tonk",
+   "largest_member_code": 116,
+   "members": [
+    116
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_117",
+   "name": "Udaipur",
+   "largest_member_code": 117,
+   "members": [
+    117
    ],
    "edges": []
   },
@@ -1397,7 +4778,7 @@
   },
   {
    "unit_id": "su_129",
-   "name": "Barabanki",
+   "name": "Bara Banki",
    "largest_member_code": 129,
    "members": [
     129
@@ -1707,7 +5088,7 @@
   },
   {
    "unit_id": "su_160",
-   "name": "Kushi Nagar",
+   "name": "Kushinagar",
    "largest_member_code": 160,
    "members": [
     160
@@ -1743,7 +5124,7 @@
   },
   {
    "unit_id": "su_164",
-   "name": "Maharajganj",
+   "name": "Mahrajganj",
    "largest_member_code": 164,
    "members": [
     164
@@ -1806,8 +5187,8 @@
   },
   {
    "unit_id": "su_172",
-   "name": "Shamli",
-   "largest_member_code": 660,
+   "name": "Muzaffarnagar",
+   "largest_member_code": 172,
    "members": [
     172,
     660
@@ -1883,7 +5264,7 @@
   },
   {
    "unit_id": "su_178",
-   "name": "Sant Kabeer Nagar",
+   "name": "Sant Kabir Nagar",
    "largest_member_code": 178,
    "members": [
     178
@@ -1910,7 +5291,7 @@
   },
   {
    "unit_id": "su_181",
-   "name": "Shravasti",
+   "name": "Shrawasti",
    "largest_member_code": 181,
    "members": [
     181
@@ -1919,7 +5300,7 @@
   },
   {
    "unit_id": "su_182",
-   "name": "Siddharth Nagar",
+   "name": "Siddharthnagar",
    "largest_member_code": 182,
    "members": [
     182
@@ -2300,17 +5681,9 @@
    "name": "Gangtok",
    "largest_member_code": 225,
    "members": [
-    225,
-    741
+    225
    ],
-   "edges": [
-    {
-     "parent_code": 225,
-     "child_code": 741,
-     "kind": "split",
-     "year": 2022
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_226",
@@ -2392,63 +5765,20 @@
   },
   {
    "unit_id": "su_232",
-   "name": "West Siang",
-   "largest_member_code": 243,
+   "name": "East Siang",
+   "largest_member_code": 232,
    "members": [
-    232,
-    243,
-    679,
-    719,
-    724,
-    725
+    232
    ],
-   "edges": [
-    {
-     "parent_code": 232,
-     "child_code": 679,
-     "kind": "split",
-     "year": 2016
-    },
-    {
-     "parent_code": 243,
-     "child_code": 679,
-     "kind": "split",
-     "year": 2016
-    },
-    {
-     "parent_code": 232,
-     "child_code": 719,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 243,
-     "child_code": 719,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 243,
-     "child_code": 724,
-     "kind": "split",
-     "year": 2018
-    },
-    {
-     "parent_code": 243,
-     "child_code": 725,
-     "kind": "split",
-     "year": 2019
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_233",
-   "name": "Upper Subansiri",
-   "largest_member_code": 241,
+   "name": "Lower Subansiri",
+   "largest_member_code": 236,
    "members": [
     233,
     236,
-    241,
     677,
     718
    ],
@@ -2470,12 +5800,6 @@
      "child_code": 718,
      "kind": "split",
      "year": 2017
-    },
-    {
-     "parent_code": 241,
-     "child_code": 718,
-     "kind": "split",
-     "year": 2017
     }
    ]
   },
@@ -2485,16 +5809,9 @@
    "largest_member_code": 234,
    "members": [
     234,
-    628,
     678
    ],
    "edges": [
-    {
-     "parent_code": 234,
-     "child_code": 628,
-     "kind": "split",
-     "year": 2009
-    },
     {
      "parent_code": 234,
      "child_code": 678,
@@ -2508,17 +5825,9 @@
    "name": "Papum Pare",
    "largest_member_code": 237,
    "members": [
-    237,
-    766
+    237
    ],
-   "edges": [
-    {
-     "parent_code": 766,
-     "child_code": 237,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_238",
@@ -2556,6 +5865,15 @@
    "edges": []
   },
   {
+   "unit_id": "su_241",
+   "name": "Upper Subansiri",
+   "largest_member_code": 241,
+   "members": [
+    241
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_242",
    "name": "West Kameng",
    "largest_member_code": 242,
@@ -2565,45 +5883,31 @@
    "edges": []
   },
   {
+   "unit_id": "su_243",
+   "name": "West Siang",
+   "largest_member_code": 243,
+   "members": [
+    243
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_244",
    "name": "Dimapur",
    "largest_member_code": 244,
    "members": [
-    244,
-    758,
-    764
+    244
    ],
-   "edges": [
-    {
-     "parent_code": 758,
-     "child_code": 244,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 764,
-     "child_code": 244,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_245",
    "name": "Kohima",
    "largest_member_code": 245,
    "members": [
-    245,
-    757
+    245
    ],
-   "edges": [
-    {
-     "parent_code": 757,
-     "child_code": 245,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_246",
@@ -2634,27 +5938,13 @@
   },
   {
    "unit_id": "su_249",
-   "name": "Tuensang",
-   "largest_member_code": 249,
+   "name": "Longleng",
+   "largest_member_code": 615,
    "members": [
     249,
-    615,
-    736,
-    765
+    615
    ],
    "edges": [
-    {
-     "parent_code": 736,
-     "child_code": 249,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 765,
-     "child_code": 249,
-     "kind": "reported_together",
-     "year": 2001
-    },
     {
      "parent_code": 249,
      "child_code": 615,
@@ -2712,34 +6002,18 @@
    "name": "Churachandpur",
    "largest_member_code": 254,
    "members": [
-    254,
-    715
+    254
    ],
-   "edges": [
-    {
-     "parent_code": 254,
-     "child_code": 715,
-     "kind": "split",
-     "year": 2019
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_255",
    "name": "Imphal East",
    "largest_member_code": 255,
    "members": [
-    255,
-    713
+    255
    ],
-   "edges": [
-    {
-     "parent_code": 255,
-     "child_code": 713,
-     "kind": "split",
-     "year": 2019
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_256",
@@ -2806,41 +6080,28 @@
    "name": "Ukhrul",
    "largest_member_code": 260,
    "members": [
-    260,
-    717
+    260
    ],
-   "edges": [
-    {
-     "parent_code": 260,
-     "child_code": 717,
-     "kind": "split",
-     "year": 2019
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_261",
    "name": "Aizawl",
    "largest_member_code": 261,
    "members": [
-    261,
+    261
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_262",
+   "name": "Khawzawl",
+   "largest_member_code": 728,
+   "members": [
     262,
-    727,
     728
    ],
    "edges": [
-    {
-     "parent_code": 261,
-     "child_code": 727,
-     "kind": "split",
-     "year": 2020
-    },
-    {
-     "parent_code": 262,
-     "child_code": 727,
-     "kind": "split",
-     "year": 2020
-    },
     {
      "parent_code": 262,
      "child_code": 728,
@@ -2872,17 +6133,9 @@
    "name": "Lunglei",
    "largest_member_code": 265,
    "members": [
-    265,
-    726
+    265
    ],
-   "edges": [
-    {
-     "parent_code": 265,
-     "child_code": 726,
-     "kind": "split",
-     "year": 2020
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_266",
@@ -2895,7 +6148,7 @@
   },
   {
    "unit_id": "su_267",
-   "name": "Saiha",
+   "name": "Siaha",
    "largest_member_code": 267,
    "members": [
     267
@@ -2922,8 +6175,8 @@
   },
   {
    "unit_id": "su_270",
-   "name": "Unakoti",
-   "largest_member_code": 655,
+   "name": "North Tripura",
+   "largest_member_code": 270,
    "members": [
     270,
     655
@@ -2960,16 +6213,9 @@
    "largest_member_code": 272,
    "members": [
     272,
-    652,
     653
    ],
    "edges": [
-    {
-     "parent_code": 272,
-     "child_code": 652,
-     "kind": "split",
-     "year": 2012
-    },
     {
      "parent_code": 272,
      "child_code": 653,
@@ -3006,8 +6252,8 @@
   },
   {
    "unit_id": "su_275",
-   "name": "West Jaintia Hills",
-   "largest_member_code": 275,
+   "name": "East Jaintia Hills",
+   "largest_member_code": 657,
    "members": [
     275,
     657
@@ -3062,8 +6308,7 @@
    "largest_member_code": 279,
    "members": [
     279,
-    658,
-    740
+    658
    ],
    "edges": [
     {
@@ -3071,84 +6316,29 @@
      "child_code": 658,
      "kind": "split",
      "year": 2013
-    },
-    {
-     "parent_code": 279,
-     "child_code": 740,
-     "kind": "split",
-     "year": 2022
     }
    ]
   },
   {
    "unit_id": "su_280",
-   "name": "Kamrup",
-   "largest_member_code": 291,
+   "name": "Barpeta",
+   "largest_member_code": 280,
    "members": [
-    280,
-    291,
-    298,
-    616,
-    739,
-    756
+    280
    ],
-   "edges": [
-    {
-     "parent_code": 280,
-     "child_code": 616,
-     "kind": "split",
-     "year": 2005
-    },
-    {
-     "parent_code": 298,
-     "child_code": 616,
-     "kind": "split",
-     "year": 2005
-    },
-    {
-     "parent_code": 280,
-     "child_code": 739,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 291,
-     "child_code": 756,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 298,
-     "child_code": 756,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 616,
-     "child_code": 756,
-     "kind": "split",
-     "year": 2022
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_281",
-   "name": "Kokrajhar",
-   "largest_member_code": 294,
+   "name": "Bongaigaon",
+   "largest_member_code": 281,
    "members": [
     281,
-    294,
     612
    ],
    "edges": [
     {
      "parent_code": 281,
-     "child_code": 612,
-     "kind": "split",
-     "year": 2005
-    },
-    {
-     "parent_code": 294,
      "child_code": 612,
      "kind": "split",
      "year": 2005
@@ -3195,17 +6385,9 @@
    "name": "Dhubri",
    "largest_member_code": 285,
    "members": [
-    285,
-    707
+    285
    ],
-   "edges": [
-    {
-     "parent_code": 285,
-     "child_code": 707,
-     "kind": "split",
-     "year": 2016
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_286",
@@ -3248,34 +6430,27 @@
    "name": "Jorhat",
    "largest_member_code": 290,
    "members": [
-    290,
-    706
+    290
    ],
-   "edges": [
-    {
-     "parent_code": 290,
-     "child_code": 706,
-     "kind": "split",
-     "year": 2016
-    }
-   ]
+   "edges": []
+  },
+  {
+   "unit_id": "su_291",
+   "name": "Kamrup",
+   "largest_member_code": 291,
+   "members": [
+    291
+   ],
+   "edges": []
   },
   {
    "unit_id": "su_292",
    "name": "Karbi Anglong",
    "largest_member_code": 292,
    "members": [
-    292,
-    710
+    292
    ],
-   "edges": [
-    {
-     "parent_code": 292,
-     "child_code": 710,
-     "kind": "split",
-     "year": 2012
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_293",
@@ -3283,6 +6458,15 @@
    "largest_member_code": 293,
    "members": [
     293
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_294",
+   "name": "Kokrajhar",
+   "largest_member_code": 294,
+   "members": [
+    294
    ],
    "edges": []
   },
@@ -3317,9 +6501,18 @@
      "parent_code": 297,
      "child_code": 709,
      "kind": "split",
-     "year": 2016
+     "year": 2015
     }
    ]
+  },
+  {
+   "unit_id": "su_298",
+   "name": "Nalbari",
+   "largest_member_code": 298,
+   "members": [
+    298
+   ],
+   "edges": []
   },
   {
    "unit_id": "su_299",
@@ -3335,17 +6528,9 @@
    "name": "Sivasagar",
    "largest_member_code": 300,
    "members": [
-    300,
-    708
+    300
    ],
-   "edges": [
-    {
-     "parent_code": 300,
-     "child_code": 708,
-     "kind": "split",
-     "year": 2016
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_301",
@@ -3360,7 +6545,7 @@
      "parent_code": 301,
      "child_code": 705,
      "kind": "split",
-     "year": 2016
+     "year": 2015
     }
    ]
   },
@@ -3375,7 +6560,7 @@
   },
   {
    "unit_id": "su_303",
-   "name": "24 Paraganas North",
+   "name": "North 24 Parganas",
    "largest_member_code": 303,
    "members": [
     303
@@ -3384,7 +6569,7 @@
   },
   {
    "unit_id": "su_304",
-   "name": "24 Paraganas South",
+   "name": "South 24 Parganas",
    "largest_member_code": 304,
    "members": [
     304
@@ -3428,7 +6613,7 @@
   },
   {
    "unit_id": "su_308",
-   "name": "Coochbehar",
+   "name": "Cooch Behar",
    "largest_member_code": 308,
    "members": [
     308
@@ -3440,21 +6625,13 @@
    "name": "Darjeeling",
    "largest_member_code": 309,
    "members": [
-    309,
-    702
+    309
    ],
-   "edges": [
-    {
-     "parent_code": 309,
-     "child_code": 702,
-     "kind": "split",
-     "year": 2017
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_310",
-   "name": "Dinajpur Dakshin",
+   "name": "Dakshin Dinajpur",
    "largest_member_code": 310,
    "members": [
     310
@@ -3463,7 +6640,7 @@
   },
   {
    "unit_id": "su_311",
-   "name": "Dinajpur Uttar",
+   "name": "Uttar Dinajpur",
    "largest_member_code": 311,
    "members": [
     311
@@ -3516,7 +6693,7 @@
   },
   {
    "unit_id": "su_316",
-   "name": "Maldah",
+   "name": "Malda",
    "largest_member_code": 316,
    "members": [
     316
@@ -3525,12 +6702,11 @@
   },
   {
    "unit_id": "su_317",
-   "name": "Medinipur East",
+   "name": "Purba Medinipur",
    "largest_member_code": 317,
    "members": [
     317,
-    318,
-    703
+    318
    ],
    "edges": [
     {
@@ -3538,12 +6714,6 @@
      "child_code": 317,
      "kind": "split",
      "year": 2002
-    },
-    {
-     "parent_code": 318,
-     "child_code": 703,
-     "kind": "split",
-     "year": 2012
     }
    ]
   },
@@ -3740,17 +6910,9 @@
    "name": "Ranchi",
    "largest_member_code": 339,
    "members": [
-    339,
-    606
+    339
    ],
-   "edges": [
-    {
-     "parent_code": 339,
-     "child_code": 606,
-     "kind": "split",
-     "year": 2007
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_340",
@@ -4064,16 +7226,9 @@
    "largest_member_code": 374,
    "members": [
     374,
-    637,
     643
    ],
    "edges": [
-    {
-     "parent_code": 374,
-     "child_code": 637,
-     "kind": "split",
-     "year": 2003
-    },
     {
      "parent_code": 374,
      "child_code": 643,
@@ -4087,28 +7242,13 @@
    "name": "Bilaspur",
    "largest_member_code": 375,
    "members": [
-    375,
-    647,
-    734
+    375
    ],
-   "edges": [
-    {
-     "parent_code": 375,
-     "child_code": 647,
-     "kind": "split",
-     "year": 2012
-    },
-    {
-     "parent_code": 375,
-     "child_code": 734,
-     "kind": "split",
-     "year": 2020
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_376",
-   "name": "Dantewada",
+   "name": "Dakshin Bastar Dantewada",
    "largest_member_code": 376,
    "members": [
     376,
@@ -4137,24 +7277,9 @@
    "name": "Durg",
    "largest_member_code": 378,
    "members": [
-    378,
-    646,
-    650
+    378
    ],
-   "edges": [
-    {
-     "parent_code": 378,
-     "child_code": 646,
-     "kind": "split",
-     "year": 2012
-    },
-    {
-     "parent_code": 378,
-     "child_code": 650,
-     "kind": "split",
-     "year": 2012
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_379",
@@ -4184,7 +7309,7 @@
   },
   {
    "unit_id": "su_381",
-   "name": "Kanker",
+   "name": "Uttar Bastar Kanker",
    "largest_member_code": 381,
    "members": [
     381
@@ -4193,7 +7318,7 @@
   },
   {
    "unit_id": "su_382",
-   "name": "Kabirdham",
+   "name": "Kabeerdham",
    "largest_member_code": 382,
    "members": [
     382
@@ -4237,14 +7362,28 @@
   },
   {
    "unit_id": "su_386",
+   "name": "Raigarh",
+   "largest_member_code": 386,
+   "members": [
+    386,
+    763
+   ],
+   "edges": [
+    {
+     "parent_code": 386,
+     "child_code": 763,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
+  },
+  {
+   "unit_id": "su_387",
    "name": "Raipur",
    "largest_member_code": 387,
    "members": [
-    386,
     387,
-    644,
-    645,
-    763
+    644
    ],
    "edges": [
     {
@@ -4252,30 +7391,6 @@
      "child_code": 644,
      "kind": "split",
      "year": 2012
-    },
-    {
-     "parent_code": 387,
-     "child_code": 645,
-     "kind": "split",
-     "year": 2011
-    },
-    {
-     "parent_code": 386,
-     "child_code": 763,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 387,
-     "child_code": 763,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 644,
-     "child_code": 763,
-     "kind": "split",
-     "year": 2022
     }
    ]
   },
@@ -4285,19 +7400,12 @@
    "largest_member_code": 388,
    "members": [
     388,
-    759,
-    761
+    759
    ],
    "edges": [
     {
      "parent_code": 388,
      "child_code": 759,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 388,
-     "child_code": 761,
      "kind": "split",
      "year": 2022
     }
@@ -4401,20 +7509,12 @@
   },
   {
    "unit_id": "su_397",
-   "name": "East Nimar",
-   "largest_member_code": 405,
+   "name": "Burhanpur",
+   "largest_member_code": 397,
    "members": [
-    397,
-    405
+    397
    ],
-   "edges": [
-    {
-     "parent_code": 405,
-     "child_code": 397,
-     "kind": "split",
-     "year": 2003
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_398",
@@ -4476,6 +7576,15 @@
    "largest_member_code": 404,
    "members": [
     404
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_405",
+   "name": "Khandwa (East Nimar)",
+   "largest_member_code": 405,
+   "members": [
+    405
    ],
    "edges": []
   },
@@ -4552,7 +7661,7 @@
   },
   {
    "unit_id": "su_414",
-   "name": "Khargone",
+   "name": "Khargone (West Nimar)",
    "largest_member_code": 414,
    "members": [
     414
@@ -4588,7 +7697,7 @@
   },
   {
    "unit_id": "su_418",
-   "name": "Narsinghpur",
+   "name": "Narsimhapur",
    "largest_member_code": 418,
    "members": [
     418
@@ -4786,24 +7895,9 @@
    "name": "Ahmadabad",
    "largest_member_code": 438,
    "members": [
-    438,
-    443,
-    676
+    438
    ],
-   "edges": [
-    {
-     "parent_code": 438,
-     "child_code": 676,
-     "kind": "split",
-     "year": 2014
-    },
-    {
-     "parent_code": 443,
-     "child_code": 676,
-     "kind": "split",
-     "year": 2014
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_439",
@@ -4838,6 +7932,15 @@
    "largest_member_code": 442,
    "members": [
     442
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_443",
+   "name": "Bhavnagar",
+   "largest_member_code": 443,
+   "members": [
+    443
    ],
    "edges": []
   },
@@ -4916,24 +8019,9 @@
    "name": "Kheda",
    "largest_member_code": 450,
    "members": [
-    450,
-    454,
-    669
+    450
    ],
-   "edges": [
-    {
-     "parent_code": 450,
-     "child_code": 669,
-     "kind": "split",
-     "year": 2014
-    },
-    {
-     "parent_code": 454,
-     "child_code": 669,
-     "kind": "split",
-     "year": 2014
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_451",
@@ -4963,6 +8051,23 @@
    "edges": []
   },
   {
+   "unit_id": "su_454",
+   "name": "Panch Mahals",
+   "largest_member_code": 454,
+   "members": [
+    454,
+    669
+   ],
+   "edges": [
+    {
+     "parent_code": 454,
+     "child_code": 669,
+     "kind": "split",
+     "year": 2014
+    }
+   ]
+  },
+  {
    "unit_id": "su_455",
    "name": "Patan",
    "largest_member_code": 455,
@@ -4985,24 +8090,9 @@
    "name": "Rajkot",
    "largest_member_code": 457,
    "members": [
-    457,
-    460,
-    673
+    457
    ],
-   "edges": [
-    {
-     "parent_code": 457,
-     "child_code": 673,
-     "kind": "split",
-     "year": 2014
-    },
-    {
-     "parent_code": 460,
-     "child_code": 673,
-     "kind": "split",
-     "year": 2014
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_458",
@@ -5026,34 +8116,27 @@
    "name": "Surat",
    "largest_member_code": 459,
    "members": [
-    459,
-    641
+    459
    ],
-   "edges": [
-    {
-     "parent_code": 459,
-     "child_code": 641,
-     "kind": "split",
-     "year": 2008
-    }
-   ]
+   "edges": []
+  },
+  {
+   "unit_id": "su_460",
+   "name": "Surendranagar",
+   "largest_member_code": 460,
+   "members": [
+    460
+   ],
+   "edges": []
   },
   {
    "unit_id": "su_461",
    "name": "Vadodara",
    "largest_member_code": 461,
    "members": [
-    461,
-    668
+    461
    ],
-   "edges": [
-    {
-     "parent_code": 461,
-     "child_code": 668,
-     "kind": "split",
-     "year": 2014
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_462",
@@ -5120,7 +8203,7 @@
   },
   {
    "unit_id": "su_469",
-   "name": "Aurangabad",
+   "name": "Chhatrapati Sambhajinagar",
    "largest_member_code": 469,
    "members": [
     469
@@ -5291,7 +8374,7 @@
   },
   {
    "unit_id": "su_488",
-   "name": "Osmanabad",
+   "name": "Dharashiv",
    "largest_member_code": 488,
    "members": [
     488
@@ -5416,51 +8499,17 @@
   },
   {
    "unit_id": "su_501",
-   "name": "Krishna",
-   "largest_member_code": 510,
+   "name": "Peddapalli",
+   "largest_member_code": 682,
    "members": [
     501,
-    505,
     508,
-    509,
-    510,
-    513,
-    520,
-    522,
-    523,
     680,
-    681,
     682,
-    683,
     684,
-    686,
-    687,
-    688,
-    689,
-    690,
-    691,
-    692,
-    699,
-    720,
-    744,
-    745,
-    746,
-    747,
-    748
+    699
    ],
    "edges": [
-    {
-     "parent_code": 686,
-     "child_code": 522,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 689,
-     "child_code": 522,
-     "kind": "reported_together",
-     "year": 2001
-    },
     {
      "parent_code": 501,
      "child_code": 680,
@@ -5469,97 +8518,7 @@
     },
     {
      "parent_code": 508,
-     "child_code": 681,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 508,
      "child_code": 682,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 684,
-     "child_code": 682,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 508,
-     "child_code": 683,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 501,
-     "child_code": 684,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 508,
-     "child_code": 686,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 508,
-     "child_code": 687,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 522,
-     "child_code": 687,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 509,
-     "child_code": 688,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 522,
-     "child_code": 688,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 522,
-     "child_code": 689,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 509,
-     "child_code": 690,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 513,
-     "child_code": 691,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 508,
-     "child_code": 692,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 513,
-     "child_code": 692,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 522,
-     "child_code": 692,
      "kind": "split",
      "year": 2017
     },
@@ -5570,70 +8529,16 @@
      "year": 2017
     },
     {
-     "parent_code": 509,
-     "child_code": 720,
-     "kind": "split",
-     "year": 2019
+     "parent_code": 684,
+     "child_code": 682,
+     "kind": "reported_together",
+     "year": 2001
     },
     {
-     "parent_code": 522,
-     "child_code": 720,
+     "parent_code": 501,
+     "child_code": 684,
      "kind": "split",
-     "year": 2019
-    },
-    {
-     "parent_code": 520,
-     "child_code": 744,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 505,
-     "child_code": 745,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 509,
-     "child_code": 745,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 520,
-     "child_code": 745,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 505,
-     "child_code": 746,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 505,
-     "child_code": 747,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 509,
-     "child_code": 748,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 510,
-     "child_code": 748,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 523,
-     "child_code": 748,
-     "kind": "split",
-     "year": 2022
+     "year": 2017
     }
    ]
   },
@@ -5656,28 +8561,14 @@
   },
   {
    "unit_id": "su_503",
-   "name": "Spsr Nellore",
-   "largest_member_code": 515,
+   "name": "Y.S.R.",
+   "largest_member_code": 504,
    "members": [
     503,
     504,
-    515,
-    752,
     753
    ],
    "edges": [
-    {
-     "parent_code": 503,
-     "child_code": 752,
-     "kind": "split",
-     "year": 2010
-    },
-    {
-     "parent_code": 515,
-     "child_code": 752,
-     "kind": "split",
-     "year": 2010
-    },
     {
      "parent_code": 503,
      "child_code": 753,
@@ -5693,28 +8584,38 @@
    ]
   },
   {
+   "unit_id": "su_505",
+   "name": "East Godavari",
+   "largest_member_code": 505,
+   "members": [
+    505,
+    746,
+    747
+   ],
+   "edges": [
+    {
+     "parent_code": 505,
+     "child_code": 746,
+     "kind": "split",
+     "year": 2022
+    },
+    {
+     "parent_code": 505,
+     "child_code": 747,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
+  },
+  {
    "unit_id": "su_506",
    "name": "Guntur",
    "largest_member_code": 506,
    "members": [
     506,
-    517,
-    750,
     751
    ],
    "edges": [
-    {
-     "parent_code": 506,
-     "child_code": 750,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 517,
-     "child_code": 750,
-     "kind": "split",
-     "year": 2022
-    },
     {
      "parent_code": 506,
      "child_code": 751,
@@ -5728,98 +8629,40 @@
    "name": "Hyderabad",
    "largest_member_code": 507,
    "members": [
-    507,
-    512,
-    514,
-    518,
-    693,
-    694,
-    695,
-    696,
-    697,
-    698,
-    700,
-    721
+    507
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_509",
+   "name": "Bhadradri Kothagudem",
+   "largest_member_code": 690,
+   "members": [
+    509,
+    690
    ],
    "edges": [
     {
-     "parent_code": 518,
-     "child_code": 507,
-     "kind": "reported_together",
-     "year": 2017
-    },
-    {
-     "parent_code": 700,
-     "child_code": 507,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 512,
-     "child_code": 693,
+     "parent_code": 509,
+     "child_code": 690,
      "kind": "split",
      "year": 2017
-    },
-    {
-     "parent_code": 512,
-     "child_code": 694,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 512,
-     "child_code": 695,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 514,
-     "child_code": 696,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 514,
-     "child_code": 697,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 518,
-     "child_code": 697,
-     "kind": "reported_together",
-     "year": 2017
-    },
-    {
-     "parent_code": 700,
-     "child_code": 697,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 512,
-     "child_code": 698,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 518,
-     "child_code": 698,
-     "kind": "split",
-     "year": 2017
-    },
-    {
-     "parent_code": 512,
-     "child_code": 721,
-     "kind": "split",
-     "year": 2019
     }
    ]
   },
   {
+   "unit_id": "su_510",
+   "name": "Krishna",
+   "largest_member_code": 510,
+   "members": [
+    510
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_511",
-   "name": "Nandyal",
-   "largest_member_code": 755,
+   "name": "Kurnool",
+   "largest_member_code": 511,
    "members": [
     511,
     755
@@ -5832,6 +8675,87 @@
      "year": 2022
     }
    ]
+  },
+  {
+   "unit_id": "su_512",
+   "name": "Mahabubnagar",
+   "largest_member_code": 512,
+   "members": [
+    512,
+    694,
+    721
+   ],
+   "edges": [
+    {
+     "parent_code": 512,
+     "child_code": 694,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 512,
+     "child_code": 721,
+     "kind": "split",
+     "year": 2019
+    }
+   ]
+  },
+  {
+   "unit_id": "su_513",
+   "name": "Siddipet",
+   "largest_member_code": 692,
+   "members": [
+    513,
+    691,
+    692
+   ],
+   "edges": [
+    {
+     "parent_code": 513,
+     "child_code": 691,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 513,
+     "child_code": 692,
+     "kind": "split",
+     "year": 2017
+    }
+   ]
+  },
+  {
+   "unit_id": "su_514",
+   "name": "Yadadri Bhuvanagiri",
+   "largest_member_code": 697,
+   "members": [
+    514,
+    518,
+    697
+   ],
+   "edges": [
+    {
+     "parent_code": 514,
+     "child_code": 697,
+     "kind": "split",
+     "year": 2017
+    },
+    {
+     "parent_code": 518,
+     "child_code": 697,
+     "kind": "reported_together",
+     "year": 2017
+    }
+   ]
+  },
+  {
+   "unit_id": "su_515",
+   "name": "Spsr Nellore",
+   "largest_member_code": 515,
+   "members": [
+    515
+   ],
+   "edges": []
   },
   {
    "unit_id": "su_516",
@@ -5851,24 +8775,86 @@
    ]
   },
   {
+   "unit_id": "su_517",
+   "name": "Prakasam",
+   "largest_member_code": 517,
+   "members": [
+    517,
+    750
+   ],
+   "edges": [
+    {
+     "parent_code": 517,
+     "child_code": 750,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
+  },
+  {
    "unit_id": "su_519",
+   "name": "Srikakulam",
+   "largest_member_code": 519,
+   "members": [
+    519
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_520",
+   "name": "Visakhapatnam",
+   "largest_member_code": 520,
+   "members": [
+    520,
+    744
+   ],
+   "edges": [
+    {
+     "parent_code": 520,
+     "child_code": 744,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
+  },
+  {
+   "unit_id": "su_521",
    "name": "Vizianagaram",
    "largest_member_code": 521,
    "members": [
-    519,
     521,
     743
    ],
    "edges": [
     {
-     "parent_code": 519,
+     "parent_code": 521,
      "child_code": 743,
      "kind": "split",
      "year": 2022
-    },
+    }
+   ]
+  },
+  {
+   "unit_id": "su_522",
+   "name": "Warangal",
+   "largest_member_code": 522,
+   "members": [
+    522
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_523",
+   "name": "Eluru",
+   "largest_member_code": 748,
+   "members": [
+    523,
+    748
+   ],
+   "edges": [
     {
-     "parent_code": 521,
-     "child_code": 743,
+     "parent_code": 523,
+     "child_code": 748,
      "kind": "split",
      "year": 2022
     }
@@ -5897,7 +8883,7 @@
      "parent_code": 526,
      "child_code": 525,
      "kind": "reported_together",
-     "year": 2016
+     "year": 2014
     },
     {
      "parent_code": 526,
@@ -5918,22 +8904,15 @@
   },
   {
    "unit_id": "su_528",
-   "name": "Davangere",
-   "largest_member_code": 535,
+   "name": "Ballari",
+   "largest_member_code": 528,
    "members": [
     528,
-    535,
     738
    ],
    "edges": [
     {
      "parent_code": 528,
-     "child_code": 738,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 535,
      "child_code": 738,
      "kind": "split",
      "year": 2022
@@ -5991,6 +8970,15 @@
    "largest_member_code": 534,
    "members": [
     534
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_535",
+   "name": "Davangere",
+   "largest_member_code": 535,
+   "members": [
+    535
    ],
    "edges": []
   },
@@ -6058,8 +9046,8 @@
   },
   {
    "unit_id": "su_542",
-   "name": "Chikkaballapura",
-   "largest_member_code": 630,
+   "name": "Kolar",
+   "largest_member_code": 542,
    "members": [
     542,
     630
@@ -6415,17 +9403,9 @@
    "name": "Nagapattinam",
    "largest_member_code": 579,
    "members": [
-    579,
-    735
+    579
    ],
-   "edges": [
-    {
-     "parent_code": 735,
-     "child_code": 579,
-     "kind": "reported_together",
-     "year": 2001
-    }
-   ]
+   "edges": []
   },
   {
    "unit_id": "su_580",
@@ -6441,9 +9421,17 @@
    "name": "Perambalur",
    "largest_member_code": 581,
    "members": [
-    581
+    581,
+    610
    ],
-   "edges": []
+   "edges": [
+    {
+     "parent_code": 581,
+     "child_code": 610,
+     "kind": "split",
+     "year": 2009
+    }
+   ]
   },
   {
    "unit_id": "su_582",
@@ -6572,20 +9560,13 @@
   },
   {
    "unit_id": "su_595",
-   "name": "Tirupathur",
-   "largest_member_code": 732,
+   "name": "Vellore",
+   "largest_member_code": 595,
    "members": [
     595,
-    731,
     732
    ],
    "edges": [
-    {
-     "parent_code": 595,
-     "child_code": 731,
-     "kind": "split",
-     "year": 2020
-    },
     {
      "parent_code": 595,
      "child_code": 732,
@@ -6626,9 +9607,7 @@
    "largest_member_code": 600,
    "members": [
     598,
-    599,
-    600,
-    601
+    600
    ],
    "edges": [
     {
@@ -6636,20 +9615,26 @@
      "child_code": 598,
      "kind": "split",
      "year": 2006
-    },
-    {
-     "parent_code": 599,
-     "child_code": 600,
-     "kind": "reported_together",
-     "year": 2001
-    },
-    {
-     "parent_code": 601,
-     "child_code": 600,
-     "kind": "reported_together",
-     "year": 2001
     }
    ]
+  },
+  {
+   "unit_id": "su_599",
+   "name": "Mahe",
+   "largest_member_code": 599,
+   "members": [
+    599
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_601",
+   "name": "Yanam",
+   "largest_member_code": 601,
+   "members": [
+    601
+   ],
+   "edges": []
   },
   {
    "unit_id": "su_602",
@@ -6687,20 +9672,20 @@
    "edges": []
   },
   {
+   "unit_id": "su_606",
+   "name": "Khunti",
+   "largest_member_code": 606,
+   "members": [
+    606
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_609",
    "name": "Tarn Taran",
    "largest_member_code": 609,
    "members": [
     609
-   ],
-   "edges": []
-  },
-  {
-   "unit_id": "su_610",
-   "name": "Ariyalur",
-   "largest_member_code": 610,
-   "members": [
-    610
    ],
    "edges": []
   },
@@ -6732,6 +9717,15 @@
    "edges": []
   },
   {
+   "unit_id": "su_616",
+   "name": "Baksa",
+   "largest_member_code": 616,
+   "members": [
+    616
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_618",
    "name": "Kamrup Metro",
    "largest_member_code": 618,
@@ -6759,6 +9753,15 @@
    "edges": []
   },
   {
+   "unit_id": "su_624",
+   "name": "Samba",
+   "largest_member_code": 624,
+   "members": [
+    624
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_626",
    "name": "Ganderbal",
    "largest_member_code": 626,
@@ -6777,6 +9780,15 @@
    "edges": []
   },
   {
+   "unit_id": "su_628",
+   "name": "Anjaw",
+   "largest_member_code": 628,
+   "members": [
+    628
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_636",
    "name": "Bijapur",
    "largest_member_code": 636,
@@ -6786,11 +9798,416 @@
    "edges": []
   },
   {
+   "unit_id": "su_637",
+   "name": "Narayanpur",
+   "largest_member_code": 637,
+   "members": [
+    637
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_641",
+   "name": "Tapi",
+   "largest_member_code": 641,
+   "members": [
+    641
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_645",
+   "name": "Gariyaband",
+   "largest_member_code": 645,
+   "members": [
+    645
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_646",
+   "name": "Balod",
+   "largest_member_code": 646,
+   "members": [
+    646
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_647",
+   "name": "Mungeli",
+   "largest_member_code": 647,
+   "members": [
+    647
+   ],
+   "edges": []
+  },
+  {
    "unit_id": "su_649",
-   "name": "Balrampur",
+   "name": "Balrampur Ramanujganj",
    "largest_member_code": 649,
    "members": [
     649
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_650",
+   "name": "Bemetara",
+   "largest_member_code": 650,
+   "members": [
+    650
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_652",
+   "name": "Khowai",
+   "largest_member_code": 652,
+   "members": [
+    652
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_668",
+   "name": "Chhotaudepur",
+   "largest_member_code": 668,
+   "members": [
+    668
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_673",
+   "name": "Morbi",
+   "largest_member_code": 673,
+   "members": [
+    673
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_676",
+   "name": "Botad",
+   "largest_member_code": 676,
+   "members": [
+    676
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_679",
+   "name": "Siang",
+   "largest_member_code": 679,
+   "members": [
+    679
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_681",
+   "name": "Jagitial",
+   "largest_member_code": 681,
+   "members": [
+    681
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_683",
+   "name": "Rajanna Sircilla",
+   "largest_member_code": 683,
+   "members": [
+    683
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_686",
+   "name": "Hanumakonda",
+   "largest_member_code": 686,
+   "members": [
+    686
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_687",
+   "name": "Jayashankar Bhupalapally",
+   "largest_member_code": 687,
+   "members": [
+    687
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_688",
+   "name": "Mahabubabad",
+   "largest_member_code": 688,
+   "members": [
+    688
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_689",
+   "name": "Jangoan",
+   "largest_member_code": 689,
+   "members": [
+    689
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_693",
+   "name": "Wanaparthy",
+   "largest_member_code": 693,
+   "members": [
+    693
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_695",
+   "name": "Jogulamba Gadwal",
+   "largest_member_code": 695,
+   "members": [
+    695
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_696",
+   "name": "Suryapet",
+   "largest_member_code": 696,
+   "members": [
+    696
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_698",
+   "name": "Vikarabad",
+   "largest_member_code": 698,
+   "members": [
+    698
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_700",
+   "name": "Medchal Malkajgiri",
+   "largest_member_code": 700,
+   "members": [
+    700
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_702",
+   "name": "Kalimpong",
+   "largest_member_code": 702,
+   "members": [
+    702
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_703",
+   "name": "Jhargram",
+   "largest_member_code": 703,
+   "members": [
+    703
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_706",
+   "name": "Majuli",
+   "largest_member_code": 706,
+   "members": [
+    706
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_707",
+   "name": "South Salmara Mancachar",
+   "largest_member_code": 707,
+   "members": [
+    707
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_708",
+   "name": "Charaideo",
+   "largest_member_code": 708,
+   "members": [
+    708
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_710",
+   "name": "West Karbi Anglong",
+   "largest_member_code": 710,
+   "members": [
+    710
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_713",
+   "name": "Jiribam",
+   "largest_member_code": 713,
+   "members": [
+    713
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_715",
+   "name": "Pherzawl",
+   "largest_member_code": 715,
+   "members": [
+    715
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_717",
+   "name": "Kamjong",
+   "largest_member_code": 717,
+   "members": [
+    717
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_719",
+   "name": "Lower Siang",
+   "largest_member_code": 719,
+   "members": [
+    719
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_720",
+   "name": "Mulugu",
+   "largest_member_code": 720,
+   "members": [
+    720
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_724",
+   "name": "Leparada",
+   "largest_member_code": 724,
+   "members": [
+    724
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_725",
+   "name": "Shi Yomi",
+   "largest_member_code": 725,
+   "members": [
+    725
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_726",
+   "name": "Hnahthial",
+   "largest_member_code": 726,
+   "members": [
+    726
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_727",
+   "name": "Saitual",
+   "largest_member_code": 727,
+   "members": [
+    727
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_731",
+   "name": "Ranipet",
+   "largest_member_code": 731,
+   "members": [
+    731
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_734",
+   "name": "Gaurela Pendra Marwahi",
+   "largest_member_code": 734,
+   "members": [
+    734
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_735",
+   "name": "Mayiladuthurai",
+   "largest_member_code": 735,
+   "members": [
+    735
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_736",
+   "name": "Noklak",
+   "largest_member_code": 736,
+   "members": [
+    736
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_739",
+   "name": "Bajali",
+   "largest_member_code": 739,
+   "members": [
+    739
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_740",
+   "name": "Eastern West Khasi Hills",
+   "largest_member_code": 740,
+   "members": [
+    740
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_741",
+   "name": "Pakyong",
+   "largest_member_code": 741,
+   "members": [
+    741
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_745",
+   "name": "Alluri Sitharama Raju",
+   "largest_member_code": 745,
+   "members": [
+    745
    ],
    "edges": []
   },
@@ -6800,6 +10217,213 @@
    "largest_member_code": 749,
    "members": [
     749
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_752",
+   "name": "Tirupati",
+   "largest_member_code": 752,
+   "members": [
+    752
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_756",
+   "name": "Tamulpur",
+   "largest_member_code": 756,
+   "members": [
+    756
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_757",
+   "name": "Tseminyu",
+   "largest_member_code": 757,
+   "members": [
+    757
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_758",
+   "name": "Chumoukedima",
+   "largest_member_code": 758,
+   "members": [
+    758
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_761",
+   "name": "Mohla Manpur Ambagarh Chouki",
+   "largest_member_code": 761,
+   "members": [
+    761
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_764",
+   "name": "Niuland",
+   "largest_member_code": 764,
+   "members": [
+    764
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_765",
+   "name": "Shamator",
+   "largest_member_code": 765,
+   "members": [
+    765
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_766",
+   "name": "Itanagar capital complex",
+   "largest_member_code": 766,
+   "members": [
+    766
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_767",
+   "name": "Deeg",
+   "largest_member_code": 767,
+   "members": [
+    767
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_768",
+   "name": "Didwana Kuchaman",
+   "largest_member_code": 768,
+   "members": [
+    768
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_769",
+   "name": "Dudu",
+   "largest_member_code": 769,
+   "members": [
+    769
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_771",
+   "name": "Gangapurcity",
+   "largest_member_code": 771,
+   "members": [
+    771
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_772",
+   "name": "Phalodi",
+   "largest_member_code": 772,
+   "members": [
+    772
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_773",
+   "name": "Neem Ka Thana",
+   "largest_member_code": 773,
+   "members": [
+    773
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_774",
+   "name": "Beawar",
+   "largest_member_code": 774,
+   "members": [
+    774
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_775",
+   "name": "Balotra",
+   "largest_member_code": 775,
+   "members": [
+    775
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_776",
+   "name": "Anoopgarh",
+   "largest_member_code": 776,
+   "members": [
+    776
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_777",
+   "name": "Salumbar",
+   "largest_member_code": 777,
+   "members": [
+    777
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_778",
+   "name": "Jodhpur Gramin",
+   "largest_member_code": 778,
+   "members": [
+    778
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_779",
+   "name": "Sanchor",
+   "largest_member_code": 779,
+   "members": [
+    779
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_780",
+   "name": "Shahpura",
+   "largest_member_code": 780,
+   "members": [
+    780
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_781",
+   "name": "Kekri",
+   "largest_member_code": 781,
+   "members": [
+    781
+   ],
+   "edges": []
+  },
+  {
+   "unit_id": "su_782",
+   "name": "Kotputli-Behror",
+   "largest_member_code": 782,
+   "members": [
+    782
    ],
    "edges": []
   }
