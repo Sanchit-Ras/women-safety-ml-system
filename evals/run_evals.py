@@ -51,8 +51,13 @@ def render(m: dict) -> str:
     for era, c in m["coverage"].items():
         L.append(f"| {era} | {c['records']:,} | {c['with_district']:,} | {c['unallocated']:,} | {_pct(c['share'])} |")
     nb = m["notebook_coverage"]
-    L += ["", f"The notebook's rule, name equality against today's district names, re-run on the same {nb['units']} 2001–2014 units: "
-              f"{_pct(nb['share'])} (the build spec quotes {_pct(nb['spec_figure'])} for the original notebook).",
+    L += ["", f"## Before and after on the same {nb['units']} names (2001–2014)", "",
+          "| | names placed on a district | rows placed on a district |", "|---|---|---|",
+          f"| name equality against today's district names (the old approach) | {_pct(nb['share'])} | {_pct(nb['rows_share'])} |",
+          f"| this pipeline | {_pct(nb['pipeline_share'])} | {_pct(nb['pipeline_rows_share'])} |",
+          "", f"Same names and the same code for both lines. The pipeline's remaining {nb['no_district_units']} names are railway police "
+              f"and crime cells, sent to no district on purpose. The build spec quotes {_pct(nb['spec_figure'])} for the original notebook, "
+              "which matched against the old map; that figure is quoted, not reproduced.",
           "", "## Resolution precision on the gold set", "", "| stage | answered | correct | precision | 95% interval |", "|---|---|---|---|---|"]
     r = m["resolution"]
     for stage, v in r.items():

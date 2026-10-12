@@ -30,14 +30,15 @@ def test_calibration_bins_carry_wilson_intervals():
 
 def test_the_notebook_rule_is_name_equality(tmp_path):
     from agents import resolver
-    rows = {("2001_2014", "s", "anantapur"): {"era": "2001_2014", "state": "s", "unit": "anantapur"},
-            ("2001_2014", "s", "kadapa"): {"era": "2001_2014", "state": "s", "unit": "kadapa"},
+    rows = {("2001_2014", "s", "anantapur"): {"era": "2001_2014", "state": "s", "unit": "anantapur", "district_code": "502", "n_years": "14"},
+            ("2001_2014", "s", "kadapa"): {"era": "2001_2014", "state": "s", "unit": "kadapa", "district_code": "", "n_years": "6"},
             ("2015", "s", "ysr"): {"era": "2015", "state": "s", "unit": "ysr"}}
     path = tmp_path / "um.csv"
     resolver.write_rows(path, {k: {c: v.get(c, "") for c in resolver.CSV_COLUMNS} for k, v in rows.items()})
     registry = {"districts": [{"name": "Anantapur", "aliases": ["anantapur"]}, {"name": "Y.S.R.", "aliases": ["ysr", "cuddapah"]}]}
     out = metrics.notebook_coverage(path, registry)
     assert (out["units"], out["matched"], out["share"]) == (2, 1, 0.5)
+    assert (out["pipeline_share"], out["no_district_units"], out["rows"], out["rows_share"], out["pipeline_rows_share"]) == (0.5, 1, 20, 0.7, 0.7)
 
 
 def test_threshold_sweep_regroups_from_the_recorded_shares(tmp_path):
@@ -61,7 +62,8 @@ def test_prompt_fingerprint_is_stable_and_names_every_prompt():
 def test_the_report_renders_and_the_history_row_has_every_column(tmp_path):
     m = {"date": "2026-10-10", "gold_districts": "evals/gold/districts.csv",
          "coverage": {"all": {"records": 10, "with_district": 9, "unallocated": 1, "share": 0.9}},
-         "notebook_coverage": {"units": 4, "matched": 3, "share": 0.75, "spec_figure": 0.727},
+         "notebook_coverage": {"units": 4, "matched": 3, "share": 0.75, "pipeline_units": 4, "pipeline_share": 1.0, "no_district_units": 0,
+                               "rows": 40, "rows_share": 0.8, "pipeline_rows_share": 1.0, "spec_figure": 0.727},
          "resolution": {"llm": {"answered": 2, "correct": 1, "precision": 0.5, "ci95": [0.1, 0.9]},
                         "all_automatic": {"answered": 2, "correct": 1, "precision": 0.5, "ci95": [0.1, 0.9]},
                         "unresolved": 0, "human_only": 1, "gold_rows": 3},

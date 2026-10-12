@@ -60,14 +60,25 @@ def coverage(conn) -> dict:
 
 
 def notebook_coverage(unit_map_csv: Path = resolver.CSV_PATH, registry: dict | None = None) -> dict:
-    """The rule the original notebook used, re-run on the same names: a 2001-2014 unit counts as matched when its
-    normalised name equals a current district's name or alias. Computed, not quoted."""
+    """Before and after on the same 2001-2014 names, counted two ways (names, and source rows = a name's years).
+    Before: the old approach, a unit is placed when its normalised name equals a current district's name or alias.
+    After: this pipeline's verified unit map places it on a district. Both computed here, neither quoted."""
     registry = registry or resolver.load_registry()
     names = {norm(d["name"]) for d in registry["districts"]} | {a for d in registry["districts"] for a in d.get("aliases", [])}
-    units = [u for (era, _s, u) in resolver.read_rows(unit_map_csv) if era == "2001_2014"]
-    matched = sum(norm(u) in names for u in units)
-    return {"units": len(units), "matched": matched, "share": matched / len(units) if units else 0.0,
-            "spec_figure": SPEC_NOTEBOOK_COVERAGE}
+    rows = [(u, r) for (era, _s, u), r in resolver.read_rows(unit_map_csv).items() if era == "2001_2014"]
+    weight = [int(r.get("n_years") or 1) for _u, r in rows]
+    same = [norm(u) in names for u, _r in rows]
+    placed = [bool(str(r.get("district_code", "")).strip()) for _u, r in rows]
+    n, w = len(rows), sum(weight)
+
+    def share(flags, weights=None):
+        if not n:
+            return 0.0
+        return sum(flags) / n if weights is None else sum(x for x, f in zip(weights, flags) if f) / w
+
+    return {"units": n, "matched": sum(same), "share": share(same), "pipeline_units": sum(placed), "pipeline_share": share(placed),
+            "no_district_units": n - sum(placed), "rows": w, "rows_share": share(same, weight),
+            "pipeline_rows_share": share(placed, weight), "spec_figure": SPEC_NOTEBOOK_COVERAGE}
 
 
 # ---- resolution precision ------------------------------------------------------------------------------------
