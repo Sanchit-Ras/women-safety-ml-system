@@ -391,15 +391,20 @@ def test_a_scored_answer_below_its_cut_waits_for_a_human_and_one_at_it_is_accept
 
 def test_only_a_human_decision_is_carried_to_another_era(reg_path, tmp_path):
     path = tmp_path / "unit_map.csv"
-    names = units(("andhra pradesh", "anantapur"), ("andhra pradesh", "kadapa"))
+    names = units(("andhra pradesh", "anantapur"), ("andhra pradesh", "kadapa"), ("tamil nadu", "crime branch chennai"))
     run(FakeClient([batch(0.95, kadapa=(504, "rename"))]), csv_path=path, registry_path=reg_path,
         overlap_path=tmp_path / "none.csv", units=names)
-    assert accepted_without_review(read_rows(path)[("2001_2014", "andhra pradesh", "kadapa")])
+    rows = read_rows(path)
+    assert accepted_without_review(rows[("2001_2014", "andhra pradesh", "kadapa")])
+    rows[("2001_2014", "tamil nadu", "crime branch chennai")].update(verified="1", reviewer_note="filed under Chennai in 2016-22")
+    write_rows(path, rows)                                                          # a human confirms the held lookup
     summary = run(None, era="2015", csv_path=path, registry_path=reg_path, overlap_path=tmp_path / "none.csv", units=names)
     rows = read_rows(path)
-    assert summary["carried"] == 0
+    assert summary["carried"] == 1
     assert rows[("2015", "andhra pradesh", "anantapur")]["stage"] == "exact"        # a lookup is looked up again, not called human
     assert rows[("2015", "andhra pradesh", "kadapa")]["stage"] == "unresolved"      # the cut's answer is not a human's call
+    held = rows[("2015", "tamil nadu", "crime branch chennai")]
+    assert (held["stage"], held["proposed_by"], held["district_code"]) == ("human", "carried:2001_2014", "568")   # the human's call is
 
 
 def test_csv_columns_are_exactly_the_contract_and_rows_are_ordered_by_state_then_unit(reg_path, tmp_path):

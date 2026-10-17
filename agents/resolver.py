@@ -104,6 +104,7 @@ LLM_ACCEPT_CONFIDENCE = 0.90
 FUZZY_ACCEPT_SCORE = 0.90          # WRatio / 100, the scale the decision record stores
 ACCEPT_WITHOUT_REVIEW = {"llm": LLM_ACCEPT_CONFIDENCE, "fuzzy": FUZZY_ACCEPT_SCORE}
 ACCEPTED_NOTE = "Accepted without review"
+HELD_FOR_REVIEW = "held for review"   # in the reason of an identity match the pipeline left to a human
 
 # Era A spellings the registry's aliases do not carry, plus the old boundary map's
 # pre-rename state names (the overlap file may spell states either way).
@@ -348,7 +349,7 @@ def _known_spelling(unit: str, pool: Pool) -> Resolution | None:
         res.reason += f" (now in state {pool.district_state[code]})"
     if NOT_A_DISTRICT_RE.search(unit):      # the spelling is known, but a cyber cell is not a district's crime
         res.needs_review = True
-        res.reason += "; held for review: the name looks like a police unit with no district geography"
+        res.reason += f"; {HELD_FOR_REVIEW}: the name looks like a police unit with no district geography"
     res.proposed_by = "rule"
     return res
 
@@ -581,6 +582,15 @@ def accepted_without_review(row: dict) -> bool:
     return row.get("verified") == "1" and row.get("reviewer_note", "").startswith(ACCEPTED_NOTE)
 
 
+def sent_to_a_human(row: dict) -> bool:
+    """Whether the pipeline left this row's decision to a person, decided yet or not: every stage but a plain
+    identity lookup (an identity match held for review because its name looks like a police unit is a person's
+    call too), less the answers the cut accepted."""
+    if accepted_without_review(row):
+        return False
+    return row.get("stage") not in AUTO_VERIFIED_STAGES or HELD_FOR_REVIEW in row.get("reason", "")
+
+
 def make_row(u, state_code: int, res: Resolution, names: dict[int, str], reviewer_note: str = "", era: str = ERA) -> dict:
     code = res.district_code
     accepted = not reviewer_note and accepts_without_review(res.stage, res.kind, res.confidence)   # a human's note keeps the row theirs
@@ -617,9 +627,8 @@ def run(client=None, *, era: str = ERA, csv_path: Path = CSV_PATH, registry_path
     rows = {k: r for k, r in existing.items() if r.get("verified") == "1" or k[0] != era}   # a human decision outlives its input row
     carried: dict[tuple[str, str], dict] = {}                 # (state, unit) -> a verified decision from another era
     for (e, s, u), r in existing.items():
-        if (e != era and r.get("verified") == "1" and r.get("stage") not in AUTO_VERIFIED_STAGES
-                and not accepted_without_review(r) and (s, u) not in carried):
-            carried[(s, u)] = r              # a human's decision only: a lookup or a cut-accepted answer goes through the stages
+        if e != era and r.get("verified") == "1" and sent_to_a_human(r) and (s, u) not in carried:
+            carried[(s, u)] = r              # a human's decision only: a plain lookup or a cut-accepted answer goes through the stages
     in_input = {(era, s, u) for s, u in zip(units["state"], units["unit"])}
     stale = sum(k[0] == era and k not in in_input for k in rows)
     kept = carried_n = 0

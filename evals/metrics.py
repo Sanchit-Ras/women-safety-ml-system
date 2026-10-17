@@ -26,7 +26,6 @@ import numpy as np
 import pandas as pd
 
 from agents import lineage, prompts, resolver
-from agents.resolver import AUTO_VERIFIED_STAGES
 from agents.schemas import CORE_CATEGORIES
 from data_ingestion import crosswalk
 from data_ingestion.normalize import norm
@@ -253,14 +252,15 @@ def hallucination(conn) -> dict:
 # ---- escalation ---------------------------------------------------------------------------------------------------
 
 def escalation(conn, unit_map_csv: Path = resolver.CSV_PATH, gold: pd.DataFrame | None = None) -> dict:
-    """Per era: the names that went to a human (every stage but the identity lookups, less answers the cut accepted).
-    With the gold set, which holds exactly the names a human reviewed: the same names under the cuts in
-    resolver.ACCEPT_WITHOUT_REVIEW, how many the cuts take from the human and how many of those were wrong."""
+    """Per era: the names that went to a human (resolver.sent_to_a_human: every stage but the plain identity lookups,
+    counting the lookups held for review, less answers the cut accepted). With the gold set, which holds the
+    reviewed names of the scored stages: the same names under the cuts in resolver.ACCEPT_WITHOUT_REVIEW, how many
+    the cuts take from the human and how many of those were wrong."""
     rows = resolver.read_rows(unit_map_csv)
     out = {}
     for era in sorted({k[0] for k in rows}):
         own = [r for (e, _s, _u), r in rows.items() if e == era and not r["proposed_by"].startswith("carried")]
-        review = [r for r in own if r["stage"] not in AUTO_VERIFIED_STAGES and not resolver.accepted_without_review(r)]
+        review = [r for r in own if resolver.sent_to_a_human(r)]
         v = out[era] = {"units": len(own), "needed_review": len(review), "rate": len(review) / len(own) if own else 0.0}
         if gold is not None:
             g = gold[gold["era"] == era]

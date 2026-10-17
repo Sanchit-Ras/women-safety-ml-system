@@ -146,10 +146,12 @@ def test_escalation_counts_what_went_to_a_human_and_what_the_cuts_would_take(tmp
     rows = {("2001_2014", "s", "a"): {**base, "unit": "a", "stage": "exact"},
             ("2001_2014", "s", "b"): {**base, "unit": "b", "stage": "llm", "proposed_by": "llm:m"},
             ("2001_2014", "s", "c"): {**base, "unit": "c", "stage": "human", "proposed_by": "fuzzy"},
-            ("2001_2014", "s", "d"): {**base, "unit": "d", "stage": "llm", "reviewer_note": "Accepted without review: llm score 0.95 >= cut 0.90"}}
+            ("2001_2014", "s", "d"): {**base, "unit": "d", "stage": "llm", "reviewer_note": "Accepted without review: llm score 0.95 >= cut 0.90"},
+            ("2001_2014", "s", "cyber cell"): {**base, "unit": "cyber cell", "stage": "circle", "proposed_by": "rule",
+                                               "reason": "a circle of X; held for review: the name looks like a police unit"}}
     path = tmp_path / "um.csv"
     resolver.write_rows(path, {k: {c: v.get(c, "") for c in resolver.CSV_COLUMNS} for k, v in rows.items()})
-    g = scored([("llm", 0.95, "rename", False, "b"), ("fuzzy", 0.92, "district", True, "c")])   # the two a human reviewed
+    g = scored([("llm", 0.95, "rename", False, "b"), ("fuzzy", 0.92, "district", True, "c")])   # the scored answers a human reviewed
     out = metrics.escalation(store.connect(tmp_path / "t.db"), path, gold=g)["2001_2014"]
-    assert (out["units"], out["needed_review"], out["rate"]) == (4, 2, 0.5)                # d never reached a human
-    assert (out["accepted_by_cut"], out["wrong_accepted"], out["with_cut"], out["rate_with_cut"]) == (2, 1, 0, 0.0)
+    assert (out["units"], out["needed_review"], out["rate"]) == (5, 3, 0.6)                # b, c and the held lookup; d never reached a human
+    assert (out["accepted_by_cut"], out["wrong_accepted"], out["with_cut"], out["rate_with_cut"]) == (2, 1, 1, 0.2)   # the held lookup has no cut

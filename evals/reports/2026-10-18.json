@@ -643,21 +643,21 @@
  "escalation": {
   "2001_2014": {
    "units": 989,
-   "needed_review": 110,
-   "rate": 0.11122345803842265,
+   "needed_review": 124,
+   "rate": 0.12537917087967643,
    "accepted_by_cut": 82,
    "wrong_accepted": 2,
-   "with_cut": 28,
-   "rate_with_cut": 0.028311425682507583
+   "with_cut": 42,
+   "rate_with_cut": 0.042467138523761376
   },
   "2015": {
    "units": 791,
-   "needed_review": 4,
-   "rate": 0.0050568900126422255,
+   "needed_review": 5,
+   "rate": 0.006321112515802781,
    "accepted_by_cut": 4,
    "wrong_accepted": 0,
-   "with_cut": 0,
-   "rate_with_cut": 0.0
+   "with_cut": 1,
+   "rate_with_cut": 0.0012642225031605564
   },
   "2016": {
    "units": 1,

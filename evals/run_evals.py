@@ -152,8 +152,10 @@ def render(m: dict) -> str:
             cut = (f" {v['with_cut']} | {_pct(v['rate_with_cut'])} | {v['wrong_accepted']} |" if "with_cut" in v else " - | - | - |")
             L.append(f"| {era} | {v['units']} | {v['needed_review']} | {_pct(v['rate'])} |" + cut)
     L += [f"| records flagged by the validator | {e['records']['records']:,} | {e['records']['flagged']} | {_pct(e['records']['rate'])} | - | - | - |",
-          "", "Needed review: the names that went to a human. With the cuts in code: the same names had the cuts in "
-              "`resolver.ACCEPT_WITHOUT_REVIEW` been in place, measured on the gold set, which holds exactly the names a human reviewed.",
+          "", "Needed review: the names that went to a human, including the police-unit names the lookup stages hold for one "
+              "(reports before 2026-10-18 left those out). With the cuts in code: the same names had the cuts in "
+              "`resolver.ACCEPT_WITHOUT_REVIEW` been in place; what the cuts take is measured on the gold set, which holds the "
+              "reviewed answers of the stages the cuts apply to.",
           "", f"Open escalations: {e['open_escalations']}.", "",
           "## Operations: model calls, latency, tokens, cost", "",
           "| step | calls | p50 ms | p95 ms | prompt tokens | completion tokens | answers | INR total | INR per 1,000 answers |", "|---|---|---|---|---|---|---|---|---|"]
