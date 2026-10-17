@@ -100,6 +100,8 @@ AUTO_VERIFIED_STAGES = ("exact", "circle", "rule", "successor")
 # at or above it, at least 95% of them right): the model was right 49 of 51 times at 0.90 and above, 9 of 13 in
 # [0.80, 0.90); fuzzy 35 of 35, the lowest at 0.90. Geometry has 7 reviewed answers, too few for a cut, so it stays
 # with a human. Every eval report recomputes the rule's cut and says whether these still make the same calls.
+# The model's cut was kept at 0.90 on 2026-10-18 after the leave-one-out checks in evals/reports/2026-10-18.md: in 3
+# of 66 runs the rule picks 0.85, and answers graded by a cut chosen without them are right 49 of 52 times (94.2%).
 LLM_ACCEPT_CONFIDENCE = 0.90
 FUZZY_ACCEPT_SCORE = 0.90          # WRatio / 100, the scale the decision record stores
 ACCEPT_WITHOUT_REVIEW = {"llm": LLM_ACCEPT_CONFIDENCE, "fuzzy": FUZZY_ACCEPT_SCORE}
