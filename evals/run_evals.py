@@ -138,21 +138,15 @@ def write(m: dict, out_dir: Path = REPORTS_DIR, history: Path = HISTORY_PATH) ->
     md, js = out_dir / f"{m['date']}.md", out_dir / f"{m['date']}.json"
     md.write_text(render(m), encoding="utf-8")
     js.write_text(json.dumps(m, indent=1, default=str), encoding="utf-8")
-    if history.exists():                                              # a new metric column: rewrite the old lines under it
+    rows = []
+    if history.exists():                                              # one line per report date; old columns kept, new ones blank
         with open(history, newline="", encoding="utf-8") as fh:
-            have = next(csv.reader(fh), [])
-        if have != HISTORY_COLUMNS:
-            old = pd.read_csv(history, dtype=str, keep_default_na=False)
-            for c in HISTORY_COLUMNS:
-                if c not in old.columns:
-                    old[c] = ""
-            old[HISTORY_COLUMNS].to_csv(history, index=False, lineterminator="\n")
-    new = not history.exists()
-    with open(history, "a", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=HISTORY_COLUMNS)
-        if new:
-            w.writeheader()
-        w.writerow(history_row(m))
+            rows = [r for r in csv.DictReader(fh) if r.get("date") != m["date"]]
+    rows.append(history_row(m))
+    with open(history, "w", newline="", encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=HISTORY_COLUMNS, extrasaction="ignore", lineterminator="\n")
+        w.writeheader()
+        w.writerows(rows)
     return md, js
 
 

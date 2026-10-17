@@ -47,7 +47,8 @@
  },
  "extraction": {
   "checked_by": {
-   "script": 100
+   "script": 90,
+   "script, hand": 10
   },
   "by_era": {
    "2001_2014": {

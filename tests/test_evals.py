@@ -83,6 +83,8 @@ def test_the_report_renders_and_the_history_row_has_every_column(tmp_path):
     assert md.exists() and json.loads(js.read_text(encoding="utf-8"))["date"] == "2026-10-10"
     hist = pd.read_csv(tmp_path / "history.csv")
     assert list(hist.columns) == run_evals.HISTORY_COLUMNS and float(hist.loc[0, "coverage_all"]) == pytest.approx(0.9)
+    run_evals.write(m, tmp_path / "reports", tmp_path / "history.csv")                 # same date again: replaced, not appended
+    assert len(pd.read_csv(tmp_path / "history.csv")) == 1
 
 
 def test_extraction_compares_the_stored_records_with_the_verified_gold(tmp_path):

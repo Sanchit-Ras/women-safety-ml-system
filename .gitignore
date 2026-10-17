@@ -9,3 +9,6 @@ data/pipeline.db*
 data/raw/LGD_Districts.geojson
 data/traces/*.jsonl
 !data/traces/latest.jsonl
+
+# Office lock files (Excel creates one while a file is open)
+~$*
