@@ -19,15 +19,17 @@ from evals import gold, metrics
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS_DIR = ROOT / "evals" / "reports"
 HISTORY_PATH = ROOT / "evals" / "history.csv"
-HISTORY_COLUMNS = ["date", "coverage_all", "resolution_precision_automatic", "resolution_precision_llm", "hallucination_records",
+HISTORY_COLUMNS = ["date", "coverage_all", "extraction_field_exact_match", "resolution_precision_automatic",
+                   "resolution_precision_llm", "hallucination_records",
                    "hallucination_resolver_rate", "escalation_units_2001_2014", "escalation_records", "resolver_p95_ms",
                    "inr_per_1000_resolver_answers", "prompt_fingerprint"]
 
 
-def compute(conn, districts_path: Path = gold.DISTRICTS_PATH) -> dict:
+def compute(conn, districts_path: Path = gold.DISTRICTS_PATH, records_path: Path = gold.RECORDS_PATH) -> dict:
     g = pd.read_csv(districts_path, dtype={"proposed_confidence": str}).fillna({"proposed_confidence": ""})
     return {"date": date.today().isoformat(), "gold_districts": str(districts_path.relative_to(ROOT)),
             "coverage": metrics.coverage(conn), "notebook_coverage": metrics.notebook_coverage(),
+            "extraction": metrics.extraction(conn, records_path) if records_path.exists() else None,
             "resolution": metrics.resolution(g), "calibration_llm": metrics.calibration(g, "llm"),
             "calibration_fuzzy": metrics.calibration(g, "fuzzy", bins=(0.0, 0.9, 0.95, 1.0001)),
             "hallucination": metrics.hallucination(conn), "escalation": metrics.escalation(conn),
@@ -41,6 +43,19 @@ def _pct(x) -> str:
 
 def _ci(ci) -> str:
     return "-" if not ci else f"{100 * ci[0]:.0f}–{100 * ci[1]:.0f}%"
+
+
+def _extraction_lines(x) -> list[str]:
+    if not x:
+        return []
+    who = ", ".join(f"{k} {v}" for k, v in x["checked_by"].items()) or "not recorded"
+    lines = ["", "## Extraction: stored records against the verified gold records", "",
+             "| era | gold records | counts compared | counts equal | records fully equal | missing |", "|---|---|---|---|---|---|"]
+    for era, v in {**x["by_era"], "all": x["all"]}.items():
+        lines.append(f"| {era} | {v['gold_rows']} | {v['counts_compared']} | {v['counts_equal']} | {_pct(v['record_exact_match'])} | {v['missing']} |")
+    lines += ["", f"Field exact-match: {_pct(x['all']['field_exact_match'])}. Gold rows confirmed by: {who}. 'script' is an "
+                  "independent re-read of the source files that shares no code with the pipeline; 'hand' is a person."]
+    return lines
 
 
 def render(m: dict) -> str:
@@ -58,6 +73,7 @@ def render(m: dict) -> str:
           "", f"Same names and the same code for both lines. The pipeline's remaining {nb['no_district_units']} names are railway police "
               f"and crime cells, sent to no district on purpose. The build spec quotes {_pct(nb['spec_figure'])} for the original notebook, "
               "which matched against the old map; that figure is quoted, not reproduced.",
+          *_extraction_lines(m.get("extraction")),
           "", "## Resolution precision on the gold set", "", "| stage | answered | correct | precision | 95% interval |", "|---|---|---|---|---|"]
     r = m["resolution"]
     for stage, v in r.items():
@@ -104,7 +120,9 @@ def render(m: dict) -> str:
 
 def history_row(m: dict) -> dict:
     r, h, e, o = m["resolution"], m["hallucination"], m["escalation"], m["operations"]
+    x = m.get("extraction")
     return {"date": m["date"], "coverage_all": round(m["coverage"]["all"]["share"], 4),
+            "extraction_field_exact_match": round(x["all"]["field_exact_match"], 4) if x else "",
             "resolution_precision_automatic": round(r["all_automatic"]["precision"], 4),
             "resolution_precision_llm": round(r.get("llm", {}).get("precision", float("nan")), 4),
             "hallucination_records": h["records_without_source_row"], "hallucination_resolver_rate": round(h["resolver_rate"], 4),
@@ -120,6 +138,15 @@ def write(m: dict, out_dir: Path = REPORTS_DIR, history: Path = HISTORY_PATH) ->
     md, js = out_dir / f"{m['date']}.md", out_dir / f"{m['date']}.json"
     md.write_text(render(m), encoding="utf-8")
     js.write_text(json.dumps(m, indent=1, default=str), encoding="utf-8")
+    if history.exists():                                              # a new metric column: rewrite the old lines under it
+        with open(history, newline="", encoding="utf-8") as fh:
+            have = next(csv.reader(fh), [])
+        if have != HISTORY_COLUMNS:
+            old = pd.read_csv(history, dtype=str, keep_default_na=False)
+            for c in HISTORY_COLUMNS:
+                if c not in old.columns:
+                    old[c] = ""
+            old[HISTORY_COLUMNS].to_csv(history, index=False, lineterminator="\n")
     new = not history.exists()
     with open(history, "a", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=HISTORY_COLUMNS)

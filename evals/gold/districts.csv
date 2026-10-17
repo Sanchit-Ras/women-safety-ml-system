@@ -42,7 +42,7 @@ era,state,state_code,unit,gold_code,gold_name,gold_kind,proposed_stage,proposed_
 2001_2014,jammu kashmir,1,railways,5,Jammu,railway,llm,5,railway,0.7,0,Filed under Jammu in the 2016-22 files; same here.
 2001_2014,jammu kashmir,1,railways kmr,5,Jammu,railway,llm,5,railway,0.7,0,Filed under Jammu in the 2016-22 files; same here.
 2001_2014,karnataka,29,bangalore commr,525,Bengaluru Urban,commissionerate,llm,525,commissionerate,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
-2001_2014,karnataka,29,bangalore rural,526,,district,geometry,,district,1,1,"Bengaluru Rural (526), not Ramanagara: 'ramanagar' has its own row from 2008. The 2016-22 files carry no code 526 (the 'Bengaluru District' circle sits under 525 Bengaluru Urban); both facts are lineage edges."
+2001_2014,karnataka,29,bangalore rural,526,Bengaluru Rural,district,geometry,,district,1,1,"Bengaluru Rural (526), not Ramanagara: 'ramanagar' has its own row from 2008. The 2016-22 files carry no code 526 (the 'Bengaluru District' circle sits under 525 Bengaluru Urban); both facts are lineage edges."
 2001_2014,karnataka,29,belgaum,527,Belagavi,district,geometry,527,district,0.987,0,Accepted as proposed; the old polygon lies mostly inside this district.
 2001_2014,karnataka,29,bellary,528,Ballari,rename,llm,528,rename,1.0,0,Accepted as proposed; reasoning checked against the 2016-22 filing and the old map.
 2001_2014,karnataka,29,bijapur,530,Vijayapura,district,geometry,530,district,0.991,0,Accepted as proposed; the old polygon lies mostly inside this district.

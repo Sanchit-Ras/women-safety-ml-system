@@ -83,3 +83,30 @@ def test_the_report_renders_and_the_history_row_has_every_column(tmp_path):
     assert md.exists() and json.loads(js.read_text(encoding="utf-8"))["date"] == "2026-10-10"
     hist = pd.read_csv(tmp_path / "history.csv")
     assert list(hist.columns) == run_evals.HISTORY_COLUMNS and float(hist.loc[0, "coverage_all"]) == pytest.approx(0.9)
+
+
+def test_extraction_compares_the_stored_records_with_the_verified_gold(tmp_path):
+    from agents import store
+    from agents.schemas import CORE_CATEGORIES
+    conn = store.connect(tmp_path / "t.db")
+    conn.execute("INSERT INTO states (state_code, name) VALUES (28, 'ap')")
+    conn.execute("INSERT INTO districts (district_code, state_code, name, first_seen_year, last_seen_year, in_files) "
+                 "VALUES (502, 28, 'a', 2016, 2022, 1)")
+    counts = ", ".join(CORE_CATEGORIES)
+    for raw_id, (row_no, first) in enumerate(((0, 5), (1, 7)), start=1):
+        conn.execute("INSERT INTO raw_rows (id, era, source_file, source_row, payload_json) VALUES (?, '2016', 'f.csv', ?, '{}')",
+                     (raw_id, row_no))
+        conn.execute(f"INSERT INTO records (raw_row_id, era, state, district, year, district_code, {counts}) "
+                     f"VALUES (?, '2016', 'ap', 'a', 2016, 502, {first}, {', '.join('1' for _ in CORE_CATEGORIES[1:])})", (raw_id,))
+    conn.commit()
+    header = ["era", "source_file", "source_row", *CORE_CATEGORIES, "verified", "checked_by"]
+    rows = [["2016", "f.csv", 0, 5, *[1] * 6, 1, "script"],                # all seven equal
+            ["2016", "f.csv", 1, 6, *[1] * 6, 1, "script"],                # gold 6, record 7
+            ["2016", "f.csv", 2, 1, *[1] * 6, 1, "script, hand"],          # its record no longer exists
+            ["2016", "f.csv", 3, 1, *[1] * 6, 0, "script"]]                # not verified: ignored
+    path = tmp_path / "records.csv"
+    pd.DataFrame(rows, columns=header).to_csv(path, index=False)
+    out = metrics.extraction(conn, path)
+    assert out["all"]["gold_rows"] == 3 and out["all"]["missing"] == 1 and out["all"]["counts_compared"] == 21
+    assert out["all"]["field_exact_match"] == pytest.approx(13 / 21) and out["all"]["record_exact_match"] == pytest.approx(1 / 3)
+    assert out["checked_by"] == {"script": 3, "script, hand": 1} and list(out["by_era"]) == ["2016"]

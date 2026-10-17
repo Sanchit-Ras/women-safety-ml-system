@@ -7,8 +7,9 @@ quoting a number outside this repo.
 RATES_USD_PER_M = {
     "gemini-3.5-flash-lite": (0.30, 2.50),
 }
-RATES_AS_OF = "2026-10-10"
-USD_INR = 88.0                 # set by hand on RATES_AS_OF; update with the rate on the day a report is quoted
+RATES_AS_OF = "2026-10-17"     # confirmed on ai.google.dev/gemini-api/docs/pricing: $0.30 in, $2.50 out, no context tiers
+USD_INR = 96.5                 # mid-market, pluang.com/en/tools/currency-converter/usd-inr read 2026-10-17 (the page shows no
+                               # timestamp); confirm on the day a report is quoted
 
 
 def cost_usd(model: str, prompt_tokens: float, completion_tokens: float) -> float | None:

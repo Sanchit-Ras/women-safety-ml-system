@@ -1,6 +1,7 @@
 """Metrics, each a function of the store and the gold sets. Nothing here calls a model or changes the store.
 
 coverage            share of source rows that land on a district, per era, next to the notebook's name-equality rule
+extraction          the stored records against the verified gold records: field and record exact-match
 resolution          precision of the automatic stages on the district gold set, by stage
 calibration         the model's self-reported confidence against its precision, in bins, with Wilson intervals
 hallucination       records with no source row (structural, expected 0) and model answers naming a code outside
@@ -23,6 +24,7 @@ import pandas as pd
 
 from agents import lineage, prompts, resolver
 from agents.resolver import AUTO_VERIFIED_STAGES
+from agents.schemas import CORE_CATEGORIES
 from data_ingestion import crosswalk
 from data_ingestion.normalize import norm
 from evals import pricing
@@ -79,6 +81,38 @@ def notebook_coverage(unit_map_csv: Path = resolver.CSV_PATH, registry: dict | N
     return {"units": n, "matched": sum(same), "share": share(same), "pipeline_units": sum(placed), "pipeline_share": share(placed),
             "no_district_units": n - sum(placed), "rows": w, "rows_share": share(same, weight),
             "pipeline_rows_share": share(placed, weight), "spec_figure": SPEC_NOTEBOOK_COVERAGE}
+
+
+def extraction(conn, records_gold: Path) -> dict:
+    """The stored records against the verified gold records. Each gold row is matched to the record built from the
+    same source row (era, file, row number) and its seven counts are compared with the gold counts. Field exact-match =
+    equal counts / counts compared; record exact-match = records with all seven equal / gold rows. A gold row whose
+    record no longer exists counts as missing, its seven counts as unequal."""
+    g = pd.read_csv(records_gold, dtype=str, keep_default_na=False)
+    checked_by = g["checked_by"].value_counts().to_dict() if "checked_by" in g.columns else {}
+    g = g[g["verified"] == "1"]
+    cols = ", ".join(f"r.{c}" for c in CORE_CATEGORIES)
+    current = {(era, f, int(sr)): vals for era, f, sr, *vals in conn.execute(
+        f"SELECT w.era, w.source_file, w.source_row, {cols} FROM records r JOIN raw_rows w ON w.id = r.raw_row_id")}
+    tally: dict[str, list[int]] = {}
+    for row in g.to_dict("records"):
+        t = tally.setdefault(row["era"], [0, 0, 0, 0])              # gold rows, equal counts, fully equal records, missing
+        t[0] += 1
+        rec = current.get((row["era"], row["source_file"], int(row["source_row"])))
+        if rec is None:
+            t[3] += 1
+            continue
+        equal = sum(int(row[c]) == int(v) for c, v in zip(CORE_CATEGORIES, rec))
+        t[1] += equal
+        t[2] += int(equal == len(CORE_CATEGORIES))
+    n = len(CORE_CATEGORIES)
+
+    def summary(rows, equal, full, missing):
+        return {"gold_rows": rows, "counts_compared": rows * n, "counts_equal": equal, "missing": missing,
+                "field_exact_match": equal / (rows * n) if rows else 0.0, "record_exact_match": full / rows if rows else 0.0}
+
+    total = [sum(t[i] for t in tally.values()) for i in range(4)]
+    return {"checked_by": checked_by, "by_era": {era: summary(*t) for era, t in sorted(tally.items())}, "all": summary(*total)}
 
 
 # ---- resolution precision ------------------------------------------------------------------------------------

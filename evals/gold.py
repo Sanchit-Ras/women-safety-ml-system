@@ -5,7 +5,9 @@
     original automatic proposal where it differed, recovered from the LLM cache or the row's own reason.
     ``corrected = 1`` marks the rows where the automatic stage was wrong: those are the hard ones.
 ``evals/gold/records.csv``    100 source rows sampled across the four files with the record the pipeline built from
-    each and the source cells that fed every count, for a human to tick (``verified``) or correct.
+    each and the source cells that fed every count, for a checker to confirm (``verified``) or correct;
+    ``checked_by`` says who confirmed it: ``script`` (an independent re-read of the source files that shares no code
+    with the pipeline) and ``hand`` where a person confirmed the row.
 
 Both files are generated once and then frozen: ``build`` refuses to overwrite unless ``--force`` is given.
 
@@ -34,7 +36,7 @@ RECORDS_PATH = GOLD_DIR / "records.csv"
 DISTRICT_COLUMNS = ["era", "state", "state_code", "unit", "gold_code", "gold_name", "gold_kind", "proposed_stage",
                     "proposed_code", "proposed_kind", "proposed_confidence", "corrected", "reviewer_note"]
 RECORD_COLUMNS = ["era", "source_file", "source_row", "year", "state", "unit", "circle", "district_code", *CORE_CATEGORIES,
-                  "breakdown", "verified", "reviewer_note"]
+                  "breakdown", "verified", "checked_by", "reviewer_note"]
 SAMPLE = {"2001_2014": 40, "2015": 15, "2016": 10, "2017_plus": 35}
 SEED = 7
 _FUZZY_RE = re.compile(r"'(.+?)' ~ (.+?)(?:;|$)")
@@ -63,6 +65,8 @@ def build_districts(conn, unit_map_csv: Path = resolver.CSV_PATH) -> pd.DataFram
     rows = resolver.read_rows(unit_map_csv)
     registry = resolver.load_registry()
     names = {d["district_code"]: d["name"] for d in registry["districts"]}
+    for code, name in conn.execute("SELECT district_code, name FROM districts"):     # map-only codes such as 526
+        names.setdefault(int(code), name)
     by_name = {norm(d["name"]): d["district_code"] for d in registry["districts"]}
     cache = cached_llm_answers(conn)
     out = []
@@ -125,7 +129,7 @@ def build_records(conn, sample: dict[str, int] = SAMPLE, seed: int = SEED) -> pd
             out.append({"era": era, "source_file": rec.source_file if hasattr(rec, "source_file") else "", "source_row": "",
                         "year": rec.year, "state": rec.state, "unit": rec.district, "circle": rec.registration_circle or "",
                         "district_code": rec.district_code, **{c: getattr(rec, c) for c in CORE_CATEGORIES},
-                        "breakdown": _breakdown(raw, mapping), "verified": "", "reviewer_note": ""})
+                        "breakdown": _breakdown(raw, mapping), "verified": "", "checked_by": "", "reviewer_note": ""})
             out[-1]["source_file"], out[-1]["source_row"] = raw["source_file"], int(raw["source_row"])
     df = pd.DataFrame(out, columns=RECORD_COLUMNS)
     df["district_code"] = df["district_code"].astype("Int64")
