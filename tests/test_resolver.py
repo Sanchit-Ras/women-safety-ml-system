@@ -9,9 +9,9 @@ import pytest
 from agents import store
 from agents.llm_client import LLMResult
 from agents.prompts import PROJECT_CONTEXT
-from agents.resolver import (CSV_COLUMNS, NOT_A_DISTRICT_REASON, ResolveBatch, ResolveItem, UnmappedState, apply,
-                             build_pools, geo_match, load_units, read_rows, report, resolve_free, resolve_state_name,
-                             run, spellings, write_rows)
+from agents.resolver import (CSV_COLUMNS, NOT_A_DISTRICT_REASON, ResolveBatch, ResolveItem, UnmappedState,
+                             accepted_without_review, accepts_without_review, apply, build_pools, geo_match, load_units,
+                             read_rows, report, resolve_free, resolve_state_name, run, spellings, write_rows)
 
 
 def district(code, state, name, aliases, circles=(), seen_in=None):
@@ -64,9 +64,9 @@ def units(*rows):
     return pd.DataFrame([(s, u, 2001, 2014, 14) for s, u in rows], columns=UNIT_COLUMNS)
 
 
-def batch(**answers):
+def batch(confidence=0.9, **answers):
     """kadapa=(504, 'rename') -> a ResolveBatch answering those units."""
-    return ResolveBatch(items=[ResolveItem(unit=u, district_code=code, kind=kind, confidence=0.9, reason="because")
+    return ResolveBatch(items=[ResolveItem(unit=u, district_code=code, kind=kind, confidence=confidence, reason="because")
                                for u, (code, kind) in answers.items()])
 
 
@@ -238,7 +238,7 @@ def test_a_spelling_two_districts_claim_is_never_an_identity_match(reg_path, tmp
     assert "- grp (seen 2001-2014) hints: 49:Dehradun:100 | 162:Lucknow:100" in prompt
     assert "162 | Lucknow | spellings: lucknow | circles: lucknow, grp" in prompt and "49 | Dehradun" in prompt
     r = rows[("2001_2014", "uttar pradesh", "grp")]
-    assert (r["stage"], r["district_code"], r["district_name"], r["kind"], r["verified"]) == ("llm", "162", "Lucknow", "railway", "0")
+    assert (r["stage"], r["district_code"], r["district_name"], r["kind"], r["verified"]) == ("llm", "162", "Lucknow", "railway", "1")
 
 
 def overlap_frame(*rows):
@@ -293,7 +293,7 @@ def test_model_stage_gets_one_call_per_state_with_candidates_and_hints(reg_path,
     assert "hints: 204:Purbi Champaran:90 | 205:Pashchim Champaran:90 | 203:Patna:54" in client.calls[1][1]
     r = rows[("2001_2014", "andhra pradesh", "kadapa")]
     assert (r["stage"], r["district_code"], r["district_name"], r["kind"], r["confidence"], r["reason"], r["proposed_by"],
-            r["verified"]) == ("llm", "504", "Y.S.R.", "rename", "0.9", "because", "llm:fake-model", "0")
+            r["verified"]) == ("llm", "504", "Y.S.R.", "rename", "0.9", "because", "llm:fake-model", "1")   # 0.9 reaches the cut
     assert summary["by_stage"] == {"llm": 2, "exact": 1} and summary["pending_states"] == 2
 
 
@@ -359,6 +359,7 @@ def test_reviewer_note_is_kept_on_unverified_rows_but_the_rest_is_refreshed(reg_
     _, rows, _ = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa")], FakeClient([batch(kadapa=(504, "rename"))]))
     r = rows[("2001_2014", "andhra pradesh", "kadapa")]
     assert (r["reviewer_note"], r["district_code"], r["stage"]) == ("ask the AP archive", "504", "llm")
+    assert r["verified"] == "0"                                       # 0.9 reaches the cut, but a human's note keeps the row theirs
 
 
 def test_auto_verify_policy(reg_path, tmp_path):
@@ -368,8 +369,37 @@ def test_auto_verify_policy(reg_path, tmp_path):
                                                 ("andhra pradesh", "kadapa"), ("andhra pradesh", "caw"),
                                                 ("bihar", "patna rly")], client)
     verified = {r["stage"]: r["verified"] for r in rows.values()}
-    assert verified == {"exact": "1", "circle": "1", "successor": "1", "rule": "1", "fuzzy": "0", "llm": "0", "unresolved": "0"}
-    assert {r["proposed_by"] for r in rows.values() if r["verified"] == "1"} == {"rule"}
+    assert verified == {"exact": "1", "circle": "1", "successor": "1", "rule": "1", "fuzzy": "1", "llm": "1", "unresolved": "0"}
+    assert {r["proposed_by"] for r in rows.values() if r["verified"] == "1" and not accepted_without_review(r)} == {"rule"}
+    assert {r["stage"] for r in rows.values() if accepted_without_review(r)} == {"fuzzy", "llm"}   # the cut's, never a lookup's
+
+
+def test_a_scored_answer_below_its_cut_waits_for_a_human_and_one_at_it_is_accepted_with_a_note(reg_path, tmp_path):
+    client = FakeClient([batch(0.85, kadapa=(504, "rename"))])
+    _, rows, _ = run_units(reg_path, tmp_path, [("andhra pradesh", "kadapa"), ("andhra pradesh", "cudapah")], client)
+    low, fz = rows[("2001_2014", "andhra pradesh", "kadapa")], rows[("2001_2014", "andhra pradesh", "cudapah")]
+    assert (low["stage"], low["confidence"], low["verified"], low["reviewer_note"]) == ("llm", "0.85", "0", "")
+    assert (fz["stage"], fz["verified"]) == ("fuzzy", "1")
+    assert fz["reviewer_note"] == f"Accepted without review: fuzzy score {fz['confidence']} >= cut 0.90"
+    assert accepted_without_review(fz) and not accepted_without_review(low)
+    assert not accepted_without_review({**fz, "verified": "0"})                      # a human took it back: theirs again
+    assert accepts_without_review("llm", "rename", 0.9) and not accepts_without_review("llm", "rename", 0.89)
+    assert not accepts_without_review("llm", "unknown", 1.0)                         # 'I cannot tell' is never an answer
+    assert not accepts_without_review("geometry", "district", 1.0)                   # no cut: always a human
+    assert not accepts_without_review("llm", "rename", None)
+
+
+def test_only_a_human_decision_is_carried_to_another_era(reg_path, tmp_path):
+    path = tmp_path / "unit_map.csv"
+    names = units(("andhra pradesh", "anantapur"), ("andhra pradesh", "kadapa"))
+    run(FakeClient([batch(0.95, kadapa=(504, "rename"))]), csv_path=path, registry_path=reg_path,
+        overlap_path=tmp_path / "none.csv", units=names)
+    assert accepted_without_review(read_rows(path)[("2001_2014", "andhra pradesh", "kadapa")])
+    summary = run(None, era="2015", csv_path=path, registry_path=reg_path, overlap_path=tmp_path / "none.csv", units=names)
+    rows = read_rows(path)
+    assert summary["carried"] == 0
+    assert rows[("2015", "andhra pradesh", "anantapur")]["stage"] == "exact"        # a lookup is looked up again, not called human
+    assert rows[("2015", "andhra pradesh", "kadapa")]["stage"] == "unresolved"      # the cut's answer is not a human's call
 
 
 def test_csv_columns_are_exactly_the_contract_and_rows_are_ordered_by_state_then_unit(reg_path, tmp_path):
@@ -399,7 +429,7 @@ def test_apply_loads_only_verified_rows_into_the_store(reg_path, tmp_path):
     store.replace_registry(conn, states=[(28, "Andhra Pradesh", "[]"), (10, "Bihar", "[]")],
                            districts=[(502, 28, "Anantapur", "[]", 2016, 2022), (504, 28, "Y.S.R.", "[]", 2016, 2022)], circles=[])
     _, rows, path = run_units(reg_path, tmp_path, [("andhra pradesh", "anantapur"), ("andhra pradesh", "kadapa"), ("bihar", "caw")],
-                              FakeClient([batch(kadapa=(504, "rename"))]))
+                              FakeClient([batch(0.85, kadapa=(504, "rename"))]))          # below the cut: waits for a human
     rows[("2001_2014", "bihar", "caw")]["verified"] = "1"                                  # a human confirms the police-unit call
     write_rows(path, rows)
     assert apply(conn, csv_path=path) == {"loaded": 2, "still_unverified": 1}

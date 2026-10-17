@@ -13,15 +13,18 @@ from pathlib import Path
 
 import pandas as pd
 
-from agents import store
+from agents import resolver, store
 from evals import gold, metrics
 
 ROOT = Path(__file__).resolve().parents[1]
 REPORTS_DIR = ROOT / "evals" / "reports"
 HISTORY_PATH = ROOT / "evals" / "history.csv"
+# escalation_units_2001_2014: the share of the 2001-2014 names the pipeline of that date sends to a human, so a
+# line written after the cuts went in counts them (and wrong_accepted_without_review says what they let through).
 HISTORY_COLUMNS = ["date", "coverage_all", "extraction_field_exact_match", "resolution_precision_automatic",
                    "resolution_precision_llm", "hallucination_records",
-                   "hallucination_resolver_rate", "escalation_units_2001_2014", "escalation_records", "resolver_p95_ms",
+                   "hallucination_resolver_rate", "escalation_units_2001_2014", "llm_accept_confidence",
+                   "wrong_accepted_without_review", "escalation_records", "resolver_p95_ms",
                    "inr_per_1000_resolver_answers", "prompt_fingerprint"]
 
 
@@ -32,7 +35,8 @@ def compute(conn, districts_path: Path = gold.DISTRICTS_PATH, records_path: Path
             "extraction": metrics.extraction(conn, records_path) if records_path.exists() else None,
             "resolution": metrics.resolution(g), "calibration_llm": metrics.calibration(g, "llm"),
             "calibration_fuzzy": metrics.calibration(g, "fuzzy", bins=(0.0, 0.9, 0.95, 1.0001)),
-            "hallucination": metrics.hallucination(conn), "escalation": metrics.escalation(conn),
+            "acceptance": {s: metrics.acceptance(g, s, resolver.ACCEPT_WITHOUT_REVIEW.get(s)) for s in metrics.SCORED_STAGES},
+            "hallucination": metrics.hallucination(conn), "escalation": metrics.escalation(conn, gold=g),
             "operations": metrics.operations(conn), "rebasing_sensitivity": metrics.rebasing_sensitivity(),
             "prompts": metrics.prompt_fingerprint()}
 
@@ -56,6 +60,50 @@ def _extraction_lines(x) -> list[str]:
     lines += ["", f"Field exact-match: {_pct(x['all']['field_exact_match'])}. Gold rows confirmed by: {who}. 'script' is an "
                   "independent re-read of the source files that shares no code with the pipeline; 'hand' is a person."]
     return lines
+
+
+def _cut(x) -> str:
+    return "none" if x is None else f"{x:.2f}"
+
+
+def _acceptance_lines(acc) -> list[str]:
+    if not acc:
+        return []
+    L = ["", "## Accepting answers without review: the cut", "",
+         f"Rule (`evals.metrics.pick_cut`): the lowest score with at least {metrics.ACCEPT_MIN_ANSWERS} reviewed answers at or "
+         f"above it, at least {_pct(metrics.ACCEPT_MIN_PRECISION)} of them right. An answer at or above its stage's cut in "
+         "`resolver.ACCEPT_WITHOUT_REVIEW` is accepted without a human; below it, it waits for review.", "",
+         "| stage | reviewed answers | right | rule's cut | cut in code | same calls | accepted by the cut in code | wrong among them |",
+         "|---|---|---|---|---|---|---|---|"]
+    for stage, a in acc.items():
+        L.append(f"| {stage} | {a['answers']} | {a['right']} | {_cut(a['pick'])} | {_cut(a['in_code'])} | "
+                 f"{'yes' if a['same_calls'] else '**no**'} | {a['accepted']} | {len(a['wrong_accepted'])} |")
+    llm = acc.get("llm")
+    if llm and llm["points"]:
+        L += ["", "Model answers, cut by cut:", "",
+              "| accept if confidence >= | accepted without review | wrong but accepted | still sent to a human | precision of accepted | 95% interval |",
+              "|---|---|---|---|---|---|"]
+        for p in llm["points"]:
+            mark = " (in code)" if llm["in_code"] is not None and abs(p["cut"] - llm["in_code"]) < 1e-9 else ""
+            L.append(f"| {p['cut']:.2f}{mark} | {p['accepted']} | {p['wrong']} | {p['to_human']} | {_pct(p['precision'])} | {_ci(p['ci95'])} |")
+    wrong = [(stage, w) for stage, a in acc.items() for w in a["wrong_accepted"]]
+    if wrong:
+        L += ["", "Wrong answers the cuts in code let through:", ""]
+        for stage, w in wrong:
+            said = "no district" if w["proposed_code"] is None else f"code {w['proposed_code']}"
+            L.append(f"- {stage}, {w['unit']} ({w['state']}), score {w['score']:.2f}: said {said} ({w['proposed_kind']}); "
+                     f"the right answer is {w['gold_code'] if w['gold_code'] is not None else 'no district'} {w['gold_name']}".rstrip() + ".")
+    L += ["", "Choosing a cut and grading it on the same answers flatters it, so two checks:", ""]
+    for stage, a in acc.items():
+        if a["pick"] is None and a["in_code"] is None:
+            continue
+        moved = "; ".join(f"without {mv['unit']} ({mv['score']:.2f}, {'right' if mv['right'] else 'wrong'}) the cut is {_cut(mv['cut'])}"
+                          for mv in a["drop_one_moves"])
+        L.append(f"- {stage}: the rule re-run without each answer in turn makes the same calls in {a['drop_one_same_calls']} of "
+                 f"{a['drop_one_runs']} runs" + (f" ({moved})" if moved else "") + ". Each answer graded by the cut chosen without it: "
+                 f"{a['held_out_right']} of {a['held_out_accepted']} accepted answers right ({_pct(a['held_out_precision'])}, "
+                 f"{_ci(a['held_out_ci95'])}), the estimate for names the cut has not seen.")
+    return L
 
 
 def render(m: dict) -> str:
@@ -87,6 +135,7 @@ def render(m: dict) -> str:
     L += ["", "Fuzzy stage (WRatio / 100):", "", "| score bin | answered | correct | precision | 95% interval |", "|---|---|---|---|---|"]
     for b in m["calibration_fuzzy"]:
         L.append(f"| {b['bin']} | {b['answered']} | {b['correct']} | {_pct(b['precision'])} | {_ci(b['ci95'])} |")
+    L += _acceptance_lines(m.get("acceptance"))
     h = m["hallucination"]
     L += ["", "## Hallucination", "",
           f"- Records with no source row: **{h['records_without_source_row']}** of {h['records']:,} (every record keys on its raw row).",
@@ -94,12 +143,17 @@ def render(m: dict) -> str:
           f"{h['resolver_answers']} ({_pct(h['resolver_rate'])}); such an answer is escalated, never stored.",
           f"- Lineage proposals naming a code outside the state's list: **{h['lineage_codes_outside_state']}** of {h['lineage_proposals']} "
           f"({_pct(h['lineage_rate'])}); dropped and escalated.",
-          "", "## Escalation: the human work that remained", "", "| era | units | needed review | rate |", "|---|---|---|---|"]
+          "", "## Escalation: the human work that remained", "",
+          "| era | units | needed review | rate | with the cuts in code | rate | wrong answers the cuts let through |",
+          "|---|---|---|---|---|---|---|"]
     e = m["escalation"]
     for era, v in e.items():
         if era not in ("records", "open_escalations"):
-            L.append(f"| {era} | {v['units']} | {v['needed_review']} | {_pct(v['rate'])} |")
-    L += [f"| records flagged by the validator | {e['records']['records']:,} | {e['records']['flagged']} | {_pct(e['records']['rate'])} |",
+            cut = (f" {v['with_cut']} | {_pct(v['rate_with_cut'])} | {v['wrong_accepted']} |" if "with_cut" in v else " - | - | - |")
+            L.append(f"| {era} | {v['units']} | {v['needed_review']} | {_pct(v['rate'])} |" + cut)
+    L += [f"| records flagged by the validator | {e['records']['records']:,} | {e['records']['flagged']} | {_pct(e['records']['rate'])} | - | - | - |",
+          "", "Needed review: the names that went to a human. With the cuts in code: the same names had the cuts in "
+              "`resolver.ACCEPT_WITHOUT_REVIEW` been in place, measured on the gold set, which holds exactly the names a human reviewed.",
           "", f"Open escalations: {e['open_escalations']}.", "",
           "## Operations: model calls, latency, tokens, cost", "",
           "| step | calls | p50 ms | p95 ms | prompt tokens | completion tokens | answers | INR total | INR per 1,000 answers |", "|---|---|---|---|---|---|---|---|---|"]
@@ -120,13 +174,16 @@ def render(m: dict) -> str:
 
 def history_row(m: dict) -> dict:
     r, h, e, o = m["resolution"], m["hallucination"], m["escalation"], m["operations"]
-    x = m.get("extraction")
+    x, acc = m.get("extraction"), m.get("acceptance")
+    era_a = e.get("2001_2014", {})
     return {"date": m["date"], "coverage_all": round(m["coverage"]["all"]["share"], 4),
             "extraction_field_exact_match": round(x["all"]["field_exact_match"], 4) if x else "",
             "resolution_precision_automatic": round(r["all_automatic"]["precision"], 4),
             "resolution_precision_llm": round(r.get("llm", {}).get("precision", float("nan")), 4),
             "hallucination_records": h["records_without_source_row"], "hallucination_resolver_rate": round(h["resolver_rate"], 4),
-            "escalation_units_2001_2014": round(e.get("2001_2014", {}).get("rate", float("nan")), 4),
+            "escalation_units_2001_2014": round(era_a.get("rate_with_cut", era_a.get("rate", float("nan"))), 4),
+            "llm_accept_confidence": "" if not acc or acc["llm"]["in_code"] is None else acc["llm"]["in_code"],
+            "wrong_accepted_without_review": sum(len(a["wrong_accepted"]) for a in acc.values()) if acc else "",
             "escalation_records": round(e["records"]["rate"], 4),
             "resolver_p95_ms": round(o.get("resolve", {}).get("latency_ms_p95", float("nan"))),
             "inr_per_1000_resolver_answers": round(o.get("resolve", {}).get("inr_per_1000_answers") or float("nan"), 1),

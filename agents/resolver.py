@@ -40,10 +40,13 @@ Auto-verify policy: exact, circle, rule and successor are identity matches on
 spellings the registry already knows, so they are written with verified = 1. The one
 exception is an identity match whose name also looks like a geography-less police
 unit ('cyber cell' listed as a circle under one district): it keeps that district as
-the proposal but is held for a human (verified = 0). Everything else is written with
-verified = 0 for a human. A row a human has verified is never overwritten and stays
-in the file even when the input no longer produces its (state, unit) key; the
-reviewer_note column is never written by the pipeline.
+the proposal but is held for a human (verified = 0). A fuzzy or model answer whose
+score reaches its stage's cut in ACCEPT_WITHOUT_REVIEW is accepted too (verified = 1),
+with a reviewer_note that says so, so it is never mistaken for a human's check; the
+cuts come from the calibration in the eval reports. Everything else is written with
+verified = 0 for a human. A verified row is never overwritten and stays in the file
+even when the input no longer produces its (state, unit) key; the pipeline writes
+reviewer_note only on a row it accepts without review, and only when it is empty.
 
     python -m agents.resolver run [--llm]   # build/refresh data/unit_map.csv (model stage only with --llm)
     python -m agents.resolver report        # stage/kind tables + unresolved list -> data/reports/<date>_resolver.md
@@ -90,6 +93,17 @@ Kind = Literal["district", "circle", "railway", "commissionerate", "headquarters
 KINDS: tuple[str, ...] = get_args(Kind)
 STAGES = ("exact", "circle", "rule", "successor", "fuzzy", "geometry", "llm", "human", "unresolved")
 AUTO_VERIFIED_STAGES = ("exact", "circle", "rule", "successor")
+
+# Scored answers accepted without a human: at or above its stage's cut, a fuzzy or model answer is written verified
+# with ACCEPTED_NOTE in reviewer_note; below it, it waits for review. Set from the calibration table of
+# evals/reports/2026-10-17.md by the rule in evals.metrics.pick_cut (the lowest cut with at least 20 reviewed answers
+# at or above it, at least 95% of them right): the model was right 49 of 51 times at 0.90 and above, 9 of 13 in
+# [0.80, 0.90); fuzzy 35 of 35, the lowest at 0.90. Geometry has 7 reviewed answers, too few for a cut, so it stays
+# with a human. Every eval report recomputes the rule's cut and says whether these still make the same calls.
+LLM_ACCEPT_CONFIDENCE = 0.90
+FUZZY_ACCEPT_SCORE = 0.90          # WRatio / 100, the scale the decision record stores
+ACCEPT_WITHOUT_REVIEW = {"llm": LLM_ACCEPT_CONFIDENCE, "fuzzy": FUZZY_ACCEPT_SCORE}
+ACCEPTED_NOTE = "Accepted without review"
 
 # Era A spellings the registry's aliases do not carry, plus the old boundary map's
 # pre-rename state names (the overlap file may spell states either way).
@@ -554,8 +568,25 @@ def _fmt(x: float | None) -> str:
     return "" if x is None else f"{x:.3g}"
 
 
+def accepts_without_review(stage: str, kind: str, score: float | None,
+                           cuts: dict[str, float] = ACCEPT_WITHOUT_REVIEW) -> bool:
+    """A scored answer the pipeline takes without a human: its stage has a cut, it names an answer (kind 'unknown'
+    is the model saying it cannot tell) and its score reaches the cut."""
+    cut = cuts.get(stage)
+    return cut is not None and score is not None and kind != "unknown" and score >= cut
+
+
+def accepted_without_review(row: dict) -> bool:
+    """A decision-record row the cut accepted and no human has written on since."""
+    return row.get("verified") == "1" and row.get("reviewer_note", "").startswith(ACCEPTED_NOTE)
+
+
 def make_row(u, state_code: int, res: Resolution, names: dict[int, str], reviewer_note: str = "", era: str = ERA) -> dict:
     code = res.district_code
+    accepted = not reviewer_note and accepts_without_review(res.stage, res.kind, res.confidence)   # a human's note keeps the row theirs
+    if accepted:
+        reviewer_note = (f"{ACCEPTED_NOTE}: {res.stage} score {_fmt(res.confidence)} >= cut "
+                         f"{ACCEPT_WITHOUT_REVIEW[res.stage]:.2f}")
     return {"era": era, "state": u.state, "state_code": state_code, "unit": u.unit,
             "first_year": int(u.first_year), "last_year": int(u.last_year), "n_years": int(u.n_years),
             "district_code": "" if code is None else code, "district_name": "" if code is None else names.get(code, ""),
@@ -563,7 +594,7 @@ def make_row(u, state_code: int, res: Resolution, names: dict[int, str], reviewe
             "candidates": hint_text(res.candidates),
             "geo_code": "" if res.geo_code is None else res.geo_code, "geo_share": _fmt(res.geo_share),
             "proposed_by": res.proposed_by,
-            "verified": "1" if res.stage in AUTO_VERIFIED_STAGES and not res.needs_review else "0",
+            "verified": "1" if (res.stage in AUTO_VERIFIED_STAGES and not res.needs_review) or accepted else "0",
             "reviewer_note": reviewer_note}
 
 
@@ -586,8 +617,9 @@ def run(client=None, *, era: str = ERA, csv_path: Path = CSV_PATH, registry_path
     rows = {k: r for k, r in existing.items() if r.get("verified") == "1" or k[0] != era}   # a human decision outlives its input row
     carried: dict[tuple[str, str], dict] = {}                 # (state, unit) -> a verified decision from another era
     for (e, s, u), r in existing.items():
-        if e != era and r.get("verified") == "1" and (s, u) not in carried:
-            carried[(s, u)] = r
+        if (e != era and r.get("verified") == "1" and r.get("stage") not in AUTO_VERIFIED_STAGES
+                and not accepted_without_review(r) and (s, u) not in carried):
+            carried[(s, u)] = r              # a human's decision only: a lookup or a cut-accepted answer goes through the stages
     in_input = {(era, s, u) for s, u in zip(units["state"], units["unit"])}
     stale = sum(k[0] == era and k not in in_input for k in rows)
     kept = carried_n = 0

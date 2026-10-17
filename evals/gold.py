@@ -1,7 +1,8 @@
 """Gold sets: frozen files of answers a human certified, kept apart from the pipeline so they cannot drift.
 
 ``evals/gold/districts.csv``  every unit-map row that went through human review (the automatic identity stages
-    exact/circle/rule/successor are not in it): the verified code and kind, the stage that proposed, and the
+    exact/circle/rule/successor and answers accepted without review by the cut are not in it): the verified code
+    and kind, the stage that proposed, and the
     original automatic proposal where it differed, recovered from the LLM cache or the row's own reason.
     ``corrected = 1`` marks the rows where the automatic stage was wrong: those are the hard ones.
 ``evals/gold/records.csv``    100 source rows sampled across the four files with the record the pipeline built from
@@ -71,7 +72,8 @@ def build_districts(conn, unit_map_csv: Path = resolver.CSV_PATH) -> pd.DataFram
     cache = cached_llm_answers(conn)
     out = []
     for (era, state, unit), r in rows.items():
-        if r["verified"] != "1" or r["stage"] in AUTO_VERIFIED_STAGES or r["proposed_by"].startswith("carried"):
+        if (r["verified"] != "1" or r["stage"] in AUTO_VERIFIED_STAGES or r["proposed_by"].startswith("carried")
+                or resolver.accepted_without_review(r)):            # the answer key holds human decisions only
             continue
         stage = _stage_of(r["proposed_by"])
         gold = int(r["district_code"]) if r["district_code"].strip() else None

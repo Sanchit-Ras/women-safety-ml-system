@@ -4,9 +4,12 @@ coverage            share of source rows that land on a district, per era, next 
 extraction          the stored records against the verified gold records: field and record exact-match
 resolution          precision of the automatic stages on the district gold set, by stage
 calibration         the model's self-reported confidence against its precision, in bins, with Wilson intervals
+acceptance          per scored stage: what accepting answers at or above a cut takes from the human and lets through
+                    wrong, at every observed score; the rule's cut against the cut in the resolver; a drop-one check
 hallucination       records with no source row (structural, expected 0) and model answers naming a code outside
                     the allowed list (resolver: not a candidate for the state; lineage: outside the state's codes)
-escalation          how much human work remained: units needing review, records flagged by the validator
+escalation          how much human work remained: units needing review (and the same names under the resolver's
+                    cuts, with the wrong answers those cuts let through), records flagged by the validator
 operations          per model step: calls, p50/p95 latency, tokens, cost at published rates
 rebasing_sensitivity  stable-unit groups at thresholds 0.1 / 0.2 / 0.3
 prompt_fingerprint  sha256 over the prompt text and builders, so a report says which prompts it measured
@@ -32,6 +35,9 @@ from evals import pricing
 ROOT = Path(__file__).resolve().parents[1]
 CONFIDENCE_BINS = (0.0, 0.8, 0.9, 0.95, 0.99, 1.0001)       # [0, .8) [.8, .9) [.9, .95) [.95, .99) [.99, 1]
 THRESHOLDS = (0.1, 0.2, 0.3)
+SCORED_STAGES = ("llm", "fuzzy", "geometry")                 # the stages whose answers carry a score a cut can use
+ACCEPT_MIN_ANSWERS = 20          # the rule behind resolver.ACCEPT_WITHOUT_REVIEW: at least this many reviewed answers
+ACCEPT_MIN_PRECISION = 0.95      # at or above the cut, and at least this share of them right
 SPEC_NOTEBOOK_COVERAGE = 0.727                              # the figure quoted in the build spec for the original notebook
 
 
@@ -151,6 +157,74 @@ def calibration(gold: pd.DataFrame, stage: str = "llm", bins: tuple = CONFIDENCE
     return rows
 
 
+# ---- accepting answers without review ---------------------------------------------------------------------------
+
+def _scored(gold: pd.DataFrame, stage: str) -> pd.DataFrame:
+    a = gold[gold["proposed_stage"] == stage].copy()
+    a["score"] = pd.to_numeric(a["proposed_confidence"], errors="coerce")
+    a["right"] = a["corrected"] == 0
+    return a.dropna(subset=["score"])
+
+
+def _takes(a: pd.DataFrame, stage: str, cut: float | None) -> pd.Series:
+    """Which answers the resolver's own acceptance test takes at this cut (None: no cut, nothing taken)."""
+    cuts = {} if cut is None else {stage: cut}
+    return pd.Series([resolver.accepts_without_review(stage, k, s, cuts) for k, s in zip(a["proposed_kind"], a["score"])],
+                     index=a.index, dtype=bool)
+
+
+def pick_cut(a: pd.DataFrame, stage: str, min_answers: int = ACCEPT_MIN_ANSWERS,
+             min_precision: float = ACCEPT_MIN_PRECISION) -> float | None:
+    """The rule: the lowest observed score with at least min_answers answers at or above it, at least min_precision
+    of them right. None when no score qualifies: too few answers, or too many of them wrong."""
+    for cut in sorted(a["score"].unique()):
+        took = a[_takes(a, stage, cut)]
+        if len(took) >= min_answers and took["right"].mean() >= min_precision:
+            return float(cut)
+    return None
+
+
+def _blank(x):
+    return "" if pd.isna(x) else x
+
+
+def acceptance(gold: pd.DataFrame, stage: str, in_code: float | None) -> dict:
+    """What accepting a stage's answers without review would take and cost, on its reviewed answers. At every
+    observed score: answers taken, the wrong ones among them, the rest still sent to a human. Then the rule's cut,
+    whether the cut in code makes the same calls, and two checks on choosing a cut from the answers it is graded on:
+    the rule re-run without each answer in turn (does a single answer move it?), and each answer graded by the cut
+    chosen without it (an estimate for names the cut has not seen)."""
+    a = _scored(gold, stage)
+    points = []
+    for cut in sorted(a["score"].unique(), reverse=True):
+        took = a[_takes(a, stage, cut)]
+        n, ok = len(took), int(took["right"].sum())
+        points.append({"cut": float(cut), "accepted": n, "wrong": n - ok, "to_human": len(a) - n,
+                       "precision": ok / n if n else None, "ci95": list(wilson(ok, n)) if n else None})
+    pick = pick_cut(a, stage)
+    moves, held_out = [], []
+    for i in a.index:
+        rest = a.drop(index=i)
+        cut = pick_cut(rest, stage)
+        if not (_takes(rest, stage, cut) == _takes(rest, stage, pick)).all():
+            moves.append({"unit": a.at[i, "unit"], "score": float(a.at[i, "score"]), "right": bool(a.at[i, "right"]), "cut": cut})
+        if _takes(a.loc[[i]], stage, cut).iloc[0]:
+            held_out.append(bool(a.at[i, "right"]))
+    took = a[_takes(a, stage, in_code)]
+    wrong = [{"state": r["state"], "unit": r["unit"], "score": float(r["score"]), "proposed_kind": _blank(r["proposed_kind"]),
+              "proposed_code": None if pd.isna(r["proposed_code"]) else int(r["proposed_code"]),
+              "gold_code": None if pd.isna(r["gold_code"]) else int(r["gold_code"]), "gold_name": _blank(r["gold_name"])}
+             for r in took[~took["right"]].to_dict("records")]
+    k = sum(held_out)
+    return {"answers": len(a), "right": int(a["right"].sum()), "points": points, "pick": pick, "in_code": in_code,
+            "same_calls": bool((_takes(a, stage, pick) == _takes(a, stage, in_code)).all()),
+            "accepted": len(took), "wrong_accepted": wrong,
+            "drop_one_runs": len(a), "drop_one_same_calls": len(a) - len(moves), "drop_one_moves": moves,
+            "held_out_accepted": len(held_out), "held_out_right": k,
+            "held_out_precision": k / len(held_out) if held_out else None,
+            "held_out_ci95": list(wilson(k, len(held_out))) if held_out else None}
+
+
 # ---- hallucination -------------------------------------------------------------------------------------------
 
 def hallucination(conn) -> dict:
@@ -178,13 +252,24 @@ def hallucination(conn) -> dict:
 
 # ---- escalation ---------------------------------------------------------------------------------------------------
 
-def escalation(conn, unit_map_csv: Path = resolver.CSV_PATH) -> dict:
+def escalation(conn, unit_map_csv: Path = resolver.CSV_PATH, gold: pd.DataFrame | None = None) -> dict:
+    """Per era: the names that went to a human (every stage but the identity lookups, less answers the cut accepted).
+    With the gold set, which holds exactly the names a human reviewed: the same names under the cuts in
+    resolver.ACCEPT_WITHOUT_REVIEW, how many the cuts take from the human and how many of those were wrong."""
     rows = resolver.read_rows(unit_map_csv)
     out = {}
     for era in sorted({k[0] for k in rows}):
         own = [r for (e, _s, _u), r in rows.items() if e == era and not r["proposed_by"].startswith("carried")]
-        review = [r for r in own if r["stage"] not in AUTO_VERIFIED_STAGES]
-        out[era] = {"units": len(own), "needed_review": len(review), "rate": len(review) / len(own) if own else 0.0}
+        review = [r for r in own if r["stage"] not in AUTO_VERIFIED_STAGES and not resolver.accepted_without_review(r)]
+        v = out[era] = {"units": len(own), "needed_review": len(review), "rate": len(review) / len(own) if own else 0.0}
+        if gold is not None:
+            g = gold[gold["era"] == era]
+            took = [resolver.accepts_without_review(s, k, c) for s, k, c in
+                    zip(g["proposed_stage"], g["proposed_kind"], pd.to_numeric(g["proposed_confidence"], errors="coerce"))]
+            wrong = sum(t and c != 0 for t, c in zip(took, g["corrected"]))
+            to_human = len(review) - sum(took)
+            v.update({"accepted_by_cut": int(sum(took)), "wrong_accepted": int(wrong), "with_cut": to_human,
+                      "rate_with_cut": to_human / len(own) if own else 0.0})
     flagged = conn.execute("SELECT COUNT(*) FROM records WHERE validation_status = 'escalated'").fetchone()[0]
     records = conn.execute("SELECT COUNT(*) FROM records").fetchone()[0]
     out["records"] = {"records": records, "flagged": flagged, "rate": flagged / records if records else 0.0}

@@ -112,3 +112,44 @@ def test_extraction_compares_the_stored_records_with_the_verified_gold(tmp_path)
     assert out["all"]["gold_rows"] == 3 and out["all"]["missing"] == 1 and out["all"]["counts_compared"] == 21
     assert out["all"]["field_exact_match"] == pytest.approx(13 / 21) and out["all"]["record_exact_match"] == pytest.approx(1 / 3)
     assert out["checked_by"] == {"script": 3, "script, hand": 1} and list(out["by_era"]) == ["2016"]
+
+
+def scored(rows):
+    """(stage, score, kind, right, unit) -> a gold frame with the columns the acceptance metric reads."""
+    return pd.DataFrame([{"era": "2001_2014", "state": "s", "unit": unit, "proposed_stage": stage, "proposed_confidence": str(score),
+                          "proposed_kind": kind, "proposed_code": 1, "gold_code": 1 if right else 2, "gold_name": "G",
+                          "corrected": 0 if right else 1} for stage, score, kind, right, unit in rows])
+
+
+def test_acceptance_picks_the_lowest_cut_that_passes_the_rule_and_checks_itself_by_dropping_one_answer():
+    rows = ([("llm", 0.95, "district", True, f"r{i}") for i in range(25)]
+            + [("llm", 0.9, "district", True, "ok"), ("llm", 0.9, "district", False, "w1"), ("llm", 0.9, "rename", False, "w2"),
+               ("llm", 0.99, "unknown", False, "dunno")])                     # 'I cannot tell' is never taken, whatever its score
+    out = metrics.acceptance(scored(rows), "llm", 0.95)
+    assert [(p["cut"], p["accepted"], p["wrong"], p["to_human"]) for p in out["points"]] == [(0.99, 0, 0, 29), (0.95, 25, 0, 4), (0.9, 28, 2, 1)]
+    assert out["pick"] == 0.95 and out["same_calls"] and out["accepted"] == 25 and out["wrong_accepted"] == []   # 0.90: 26 of 28
+    assert out["drop_one_runs"] == 29 and out["drop_one_same_calls"] == 27                 # without w1 or w2, 0.90 passes (26 of 27)
+    assert [(mv["unit"], mv["cut"]) for mv in out["drop_one_moves"]] == [("w1", 0.9), ("w2", 0.9)]
+    assert (out["held_out_accepted"], out["held_out_right"]) == (27, 25)                  # w1 and w2 each accepted by a cut chosen without them
+    looser = metrics.acceptance(scored(rows), "llm", 0.9)
+    assert not looser["same_calls"] and [w["unit"] for w in looser["wrong_accepted"]] == ["w1", "w2"]
+    few = metrics.acceptance(scored([("geometry", 1.0, "district", True, f"g{i}") for i in range(7)]), "geometry", None)
+    assert few["pick"] is None and few["same_calls"] and few["accepted"] == 0             # 7 answers: too few for any cut
+    text = "\n".join(run_evals._acceptance_lines({"llm": out, "geometry": few}))
+    assert "| 0.95 (in code) | 25 | 0 | 4 | 100.0% |" in text and "| geometry | 7 | 7 | none | none | yes | 0 | 0 |" in text
+    assert "without w1 (0.90, wrong) the cut is 0.90" in text and "25 of 27 accepted answers right" in text
+
+
+def test_escalation_counts_what_went_to_a_human_and_what_the_cuts_would_take(tmp_path):
+    from agents import resolver, store
+    base = {"era": "2001_2014", "state": "s", "proposed_by": "x", "verified": "1", "reviewer_note": ""}
+    rows = {("2001_2014", "s", "a"): {**base, "unit": "a", "stage": "exact"},
+            ("2001_2014", "s", "b"): {**base, "unit": "b", "stage": "llm", "proposed_by": "llm:m"},
+            ("2001_2014", "s", "c"): {**base, "unit": "c", "stage": "human", "proposed_by": "fuzzy"},
+            ("2001_2014", "s", "d"): {**base, "unit": "d", "stage": "llm", "reviewer_note": "Accepted without review: llm score 0.95 >= cut 0.90"}}
+    path = tmp_path / "um.csv"
+    resolver.write_rows(path, {k: {c: v.get(c, "") for c in resolver.CSV_COLUMNS} for k, v in rows.items()})
+    g = scored([("llm", 0.95, "rename", False, "b"), ("fuzzy", 0.92, "district", True, "c")])   # the two a human reviewed
+    out = metrics.escalation(store.connect(tmp_path / "t.db"), path, gold=g)["2001_2014"]
+    assert (out["units"], out["needed_review"], out["rate"]) == (4, 2, 0.5)                # d never reached a human
+    assert (out["accepted_by_cut"], out["wrong_accepted"], out["with_cut"], out["rate_with_cut"]) == (2, 1, 0, 0.0)
