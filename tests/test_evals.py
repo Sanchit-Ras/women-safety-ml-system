@@ -54,9 +54,11 @@ def test_threshold_sweep_regroups_from_the_recorded_shares(tmp_path):
     assert out["0.3"] == {"grouping_edges": 1, "groups": 3, "largest": 2}
 
 
-def test_prompt_fingerprint_is_stable_and_names_every_prompt():
+def test_prompt_fingerprint_and_versions_name_every_prompt_file():
+    from agents import prompts
     a, b = metrics.prompt_fingerprint(), metrics.prompt_fingerprint()
-    assert a == b and set(a) == {"project_context", "resolver", "lineage", "crosswalk"} and all(len(v) == 12 for v in a.values())
+    assert a == b and set(a) == set(prompts.VERSIONS) and all(len(v) == 12 for v in a.values())
+    assert metrics.prompt_versions() == prompts.VERSIONS and metrics.prompt_versions() is not prompts.VERSIONS
 
 
 def test_the_report_renders_and_the_history_row_has_every_column(tmp_path):

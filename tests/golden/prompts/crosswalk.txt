@@ -1,0 +1,46 @@
+Task: assign every category column of one era of NCRB district-level 'crimes against women' data to exactly one harmonised category.
+
+CORE categories (exist in every year 2001-2022; defined by the 2001-2014 table columns):
+  rape                   = "Rape" (IPC 376)
+  kidnapping_abduction   = "Kidnapping and Abduction" (IPC 363-373, of women and girls)
+  dowry_deaths           = "Dowry Deaths" (IPC 304B)
+  assault_on_women       = "Assault on women with intent to outrage her modesty" (IPC 354)
+  insult_to_modesty      = "Insult to modesty of Women" (IPC 509)
+  cruelty_by_husband     = "Cruelty by Husband or his Relatives" (IPC 498A)
+  importation_of_girls   = "Importation of Girls" (IPC 366B, from a foreign country)
+
+EXTENDED categories (exist only from 2015, 2016 or 2017; kept for those years, never stretched back):
+  attempt_to_rape              IPC 376 read with 511; a separate NCRB head since 2014
+  murder_with_rape             IPC 376A; 2017+ only
+  acid_attack                  IPC 326A
+  attempt_to_acid_attack       IPC 326B
+  abetment_of_suicide          IPC 306
+  miscarriage_offences         IPC 312-318
+  human_trafficking            IPC 370 / 370A
+  unnatural_offences           IPC 377; 2016 file only
+  dowry_prohibition_act        Dowry Prohibition Act, 1961 (not IPC 304B)
+  domestic_violence_act        Protection of Women from Domestic Violence Act, 2005
+  immoral_traffic_act          Immoral Traffic (Prevention) Act, 1956, all sections
+  indecent_representation_act  Indecent Representation of Women (Prohibition) Act, 1986
+  pocso_act                    Protection of Children from Sexual Offences Act, 2012, all heads; 2017+ only
+  cyber_crimes                 IT Act and other women-centric cyber crimes; 2017+ only
+  excluded                     not counted: a part of a total listed beside it, a grand total, or not a crimes-against-women head
+
+Below are the 3 category columns of the 2016 file.
+
+Rules:
+1. Every column appears exactly once, spelled exactly as given, with exactly one category from the lists above.
+2. A column may take a CORE category ONLY if NCRB's published head for the 2001-2014 table would have counted the same cases under it. Attempts, POCSO Act offences, special-act offences and cyber offences are separate NCRB heads: give them their own EXTENDED category, never a core one.
+3. Age-split IPC columns ('above_18' / 'below_18') belong to their IPC head regardless of the victim's age. Only columns that name the POCSO Act itself or a POCSO-only offence (child rape, sexual assault of children, child sexual harassment, use of a child for pornography) are pocso_act.
+4. Any IPC section from 363 to 373 belongs to kidnapping_abduction, except 366B (importation_of_girls) and 370/370A (human_trafficking), which NCRB reports as separate heads.
+5. Several columns may share a category (their counts are added together). Never split one column across categories.
+6. Map by legal meaning (the section or act), not by similar words.
+7. Set ambiguous = true when reasonable statisticians could disagree, and say why in the reason.
+8. reason: one line, cite the section or act.
+9. A TOTAL column (named '..._Total', or a head listed immediately before its own sub-heads, such as 'Rape' before 'Custodial Rape' and 'Rape other than Custodial') takes the category; every one of its sub-heads takes 'excluded' with the reason 'part of <total>'. Counting a total and its parts would double count.
+10. 'excluded' is also the answer for a grand total ('Total Crimes against Women', 'Total Crimes in which Women was Victim') and for an IPC head that is not a crimes-against-women head even when the victim was a woman (murder, attempt to murder, culpable homicide, hurt, dacoity, robbery, arson, 'other IPC crimes', 'other SLL crimes'); say which case applies in the reason.
+
+Columns:
+- Rape
+- Dowry Deaths
+- Total Crimes against Women

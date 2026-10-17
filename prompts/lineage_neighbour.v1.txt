@@ -1,0 +1,2 @@
+Districts of {state} (same territory before/after a state reorganisation; these codes are also allowed):
+{lines}

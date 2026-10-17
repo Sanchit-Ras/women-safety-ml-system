@@ -758,10 +758,20 @@
    "largest": 5
   }
  },
+ "prompt_versions": {
+  "project_context": 1,
+  "resolver": 1,
+  "lineage": 1,
+  "lineage_neighbour": 1,
+  "crosswalk": 1,
+  "repair": 1
+ },
  "prompts": {
   "project_context": "972c120696f9",
-  "resolver": "059d3043b7ac",
-  "lineage": "040a0cdebe86",
-  "crosswalk": "9694d303506f"
+  "resolver": "15a34e917db4",
+  "lineage": "29ad5a7e3834",
+  "lineage_neighbour": "4855f003db82",
+  "crosswalk": "7919755fce43",
+  "repair": "78ce32ba73ad"
  }
 }

@@ -1,0 +1,49 @@
+# On every push and pull request: the tests, then the deterministic eval gate (evals/gate.py), which rebuilds the
+# store from the committed files without any model call and checks the metrics against their floors.
+# By hand (Actions > evals > Run workflow, tick "live"): also ask the live model about 20 gold names. That job
+# needs the repository secret GEMINI_API_KEY and the repository variables GEMINI_MODEL, GEMINI_RPM, GEMINI_TPM,
+# GEMINI_RPD; it costs a few paise and never touches the pipeline's own cache.
+name: evals
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      live:
+        description: "Also ask the live model about 20 gold names (needs the GEMINI_* secret and variables)"
+        type: boolean
+        default: false
+
+jobs:
+  gate:
+    name: tests and the deterministic eval gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - run: python -m evals.gate
+
+  live:
+    name: live model check (manual)
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.live == 'true'
+    runs-on: ubuntu-latest
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+      GEMINI_RPM: ${{ vars.GEMINI_RPM }}
+      GEMINI_TPM: ${{ vars.GEMINI_TPM }}
+      GEMINI_RPD: ${{ vars.GEMINI_RPD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m evals.live_check --n 20

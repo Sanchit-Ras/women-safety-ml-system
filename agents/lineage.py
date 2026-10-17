@@ -54,6 +54,7 @@ import pandas as pd
 from pydantic import BaseModel, Field
 
 from agents import store
+from agents import prompts
 from agents.prompts import PROJECT_CONTEXT
 from data_ingestion.normalize import norm
 
@@ -283,49 +284,17 @@ def _district_line(n: dict, registry_by_code: dict[int, dict]) -> str:
 
 def build_prompt(state_name: str, state_code: int, districts: list[dict], candidates: list[dict],
                  registry_by_code: dict[int, dict], neighbour: tuple[str, list[dict]] | None = None) -> str:
-    lines = [
-        "Task: for each candidate district below, name the boundary or reporting change that links it to another "
-        "district: which district it was carved out of, absorbed, replaced under a new code, or reports police data for.",
-        "",
-        f"State: {state_name} (code {state_code})",
-        "",
-        f"Districts of {state_name} (LGD code | name | years seen in the 2016-2022 files | in data files):",
-        *[_district_line(n, registry_by_code) for n in districts],
-    ]
+    """prompts/lineage.v<N>.txt with the state's district lines and the numbered candidates; the neighbour block
+    (prompts/lineage_neighbour.v<N>.txt) when a state reorganisation makes another state's codes allowed too."""
+    extra = ""
     if neighbour:
-        lines += ["", f"Districts of {neighbour[0]} (same territory before/after a state reorganisation; these codes are "
-                      "also allowed):", *[_district_line(n, registry_by_code) for n in neighbour[1]]]
-    lines += ["", "Candidates (code | name | hint | year hint | evidence from the data):"]
-    for i, c in enumerate(candidates, 1):
-        lines.append(f"{i}. {c['child_code']} | {c['child_name']} | hint: {c['kind_hint']} | "
-                     f"year: {c['year_hint'] if c['year_hint'] is not None else 'unknown'} | "
-                     f"evidence: {c['evidence'] or 'none'}")
-    lines += [
-        "",
-        "Hints: 'born_after_2014' = the code first appears in the 2016+ files and no 2001-2014 unit maps to it, so it "
-        "needs the parent(s) it was carved out of; "
-        "'vanished' = the code stops appearing before 2022, so it was re-coded, merged or renamed; "
-        "'born_in_era_a' = the unit first appears in the 2001-2014 file in the year given, so it needs a parent for the "
-        "years before; 'reported_together' = the district files a police commissionerate named after somewhere else, "
-        "which may pool other districts' data under it.",
-        "",
-        "Rules:",
-        "1. For each candidate return one or more relationships: parent_code, child_code, kind, year, confidence (0-1), "
-        "reason. The candidate may be the parent or the child, whichever the kind requires.",
-        "2. kind is one of: 'split' = child was carved out of parent (several parents allowed, one row each); "
-        "'merge' = child absorbed parent; 'recode' = the same district under a new code (parent = old code, child = new "
-        "code); 'rename' = same code, new name (parent_code = child_code); 'reported_together' = the police data of "
-        "parent is filed under child in the 2017+ files.",
-        "3. parent_code and child_code must both come from the lists above. Never invent a code.",
-        "4. For a 'reported_together' candidate say which districts of the list (including those not in the data "
-        "files) are reported under it, one row per district.",
-        "5. year = the year the change took effect (the first year the child appears, or the first year the parent is "
-        "missing); null when unknown.",
-        "6. If unsure, still answer with confidence below 0.5 and say why in the reason, rather than inventing. If "
-        "there is truly no relationship, return no row for that candidate: it is then flagged for human review.",
-        "7. reason: one line naming the evidence (a known reorganisation, a notification year, the evidence lines above).",
-    ]
-    return "\n".join(lines)
+        extra = "\n\n" + prompts.render("lineage_neighbour", state=neighbour[0],
+                                        lines="\n".join(_district_line(n, registry_by_code) for n in neighbour[1]))
+    return prompts.render("lineage", state_name=state_name, state_code=state_code,
+                          districts="\n".join(_district_line(n, registry_by_code) for n in districts), neighbour=extra,
+                          candidates="\n".join(f"{i}. {c['child_code']} | {c['child_name']} | hint: {c['kind_hint']} | "
+                                               f"year: {c['year_hint'] if c['year_hint'] is not None else 'unknown'} | "
+                                               f"evidence: {c['evidence'] or 'none'}" for i, c in enumerate(candidates, 1)))
 
 
 def _allowed_codes(state_code: int, lgd_list: list[dict]) -> set[int]:

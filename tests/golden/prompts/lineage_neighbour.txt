@@ -1,0 +1,27 @@
+Task: for each candidate district below, name the boundary or reporting change that links it to another district: which district it was carved out of, absorbed, replaced under a new code, or reports police data for.
+
+State: Andhra Pradesh (code 28)
+
+Districts of Andhra Pradesh (LGD code | name | years seen in the 2016-2022 files | in data files):
+  502 | Anantapur | seen 2016-2022 | in data files: yes
+  504 | Y.S.R. | seen 2016-2019 | in data files: yes
+  685 | Kamareddy | seen never | in data files: no
+
+Districts of Telangana (same territory before/after a state reorganisation; these codes are also allowed):
+  522 | Warangal | seen never | in data files: yes
+  686 | Hanumakonda | seen never | in data files: no
+
+Candidates (code | name | hint | year hint | evidence from the data):
+1. 685 | Kamareddy | hint: born_after_2014 | year: 2017 | evidence: Nizamabad (Andhra Pradesh): 0.60
+2. 504 | Y.S.R. | hint: vanished | year: unknown | evidence: none
+
+Hints: 'born_after_2014' = the code first appears in the 2016+ files and no 2001-2014 unit maps to it, so it needs the parent(s) it was carved out of; 'vanished' = the code stops appearing before 2022, so it was re-coded, merged or renamed; 'born_in_era_a' = the unit first appears in the 2001-2014 file in the year given, so it needs a parent for the years before; 'reported_together' = the district files a police commissionerate named after somewhere else, which may pool other districts' data under it.
+
+Rules:
+1. For each candidate return one or more relationships: parent_code, child_code, kind, year, confidence (0-1), reason. The candidate may be the parent or the child, whichever the kind requires.
+2. kind is one of: 'split' = child was carved out of parent (several parents allowed, one row each); 'merge' = child absorbed parent; 'recode' = the same district under a new code (parent = old code, child = new code); 'rename' = same code, new name (parent_code = child_code); 'reported_together' = the police data of parent is filed under child in the 2017+ files.
+3. parent_code and child_code must both come from the lists above. Never invent a code.
+4. For a 'reported_together' candidate say which districts of the list (including those not in the data files) are reported under it, one row per district.
+5. year = the year the change took effect (the first year the child appears, or the first year the parent is missing); null when unknown.
+6. If unsure, still answer with confidence below 0.5 and say why in the reason, rather than inventing. If there is truly no relationship, return no row for that candidate: it is then flagged for human review.
+7. reason: one line naming the evidence (a known reorganisation, a notification year, the evidence lines above).

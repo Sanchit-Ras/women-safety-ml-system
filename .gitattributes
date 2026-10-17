@@ -1,0 +1,3 @@
+# Prompt files and their golden copies are compared byte for byte: keep them LF on every machine.
+prompts/*.txt text eol=lf
+tests/golden/** text eol=lf

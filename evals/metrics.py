@@ -12,12 +12,12 @@ escalation          how much human work remained: units needing review (and the 
                     cuts, with the wrong answers those cuts let through), records flagged by the validator
 operations          per model step: calls, p50/p95 latency, tokens, cost at published rates
 rebasing_sensitivity  stable-unit groups at thresholds 0.1 / 0.2 / 0.3
-prompt_fingerprint  sha256 over the prompt text and builders, so a report says which prompts it measured
+prompt_versions, prompt_fingerprint  the version and the sha256 of each prompt file in use, so a report says
+                    exactly which prompts it measured
 """
 from __future__ import annotations
 
 import hashlib
-import inspect
 import json
 import math
 from pathlib import Path
@@ -317,7 +317,9 @@ def rebasing_sensitivity(units_path: Path = lineage.UNITS_PATH, thresholds: tupl
 
 # ---- prompt fingerprint -------------------------------------------------------------------------------------------
 
+def prompt_versions() -> dict:
+    return dict(prompts.VERSIONS)
+
+
 def prompt_fingerprint() -> dict:
-    parts = {"project_context": prompts.PROJECT_CONTEXT, "resolver": inspect.getsource(resolver.build_prompt),
-             "lineage": inspect.getsource(lineage.build_prompt), "crosswalk": inspect.getsource(crosswalk.build_prompt)}
-    return {k: hashlib.sha256(v.encode("utf-8")).hexdigest()[:12] for k, v in parts.items()}
+    return prompts.fingerprint()

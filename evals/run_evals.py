@@ -25,7 +25,7 @@ HISTORY_COLUMNS = ["date", "coverage_all", "extraction_field_exact_match", "reso
                    "resolution_precision_llm", "hallucination_records",
                    "hallucination_resolver_rate", "escalation_units_2001_2014", "llm_accept_confidence",
                    "wrong_accepted_without_review", "escalation_records", "resolver_p95_ms",
-                   "inr_per_1000_resolver_answers", "prompt_fingerprint"]
+                   "inr_per_1000_resolver_answers", "prompt_versions", "prompt_fingerprint"]
 
 
 def compute(conn, districts_path: Path = gold.DISTRICTS_PATH, records_path: Path = gold.RECORDS_PATH) -> dict:
@@ -38,7 +38,7 @@ def compute(conn, districts_path: Path = gold.DISTRICTS_PATH, records_path: Path
             "acceptance": {s: metrics.acceptance(g, s, resolver.ACCEPT_WITHOUT_REVIEW.get(s)) for s in metrics.SCORED_STAGES},
             "hallucination": metrics.hallucination(conn), "escalation": metrics.escalation(conn, gold=g),
             "operations": metrics.operations(conn), "rebasing_sensitivity": metrics.rebasing_sensitivity(),
-            "prompts": metrics.prompt_fingerprint()}
+            "prompt_versions": metrics.prompt_versions(), "prompts": metrics.prompt_fingerprint()}
 
 
 def _pct(x) -> str:
@@ -108,8 +108,9 @@ def _acceptance_lines(acc) -> list[str]:
 
 def render(m: dict) -> str:
     L = [f"# Evaluation report ({m['date']})", "",
-         f"Gold set: `{m['gold_districts']}`, {m['resolution']['gold_rows']} rows. Prompts measured: "
-         + ", ".join(f"{k} `{v}`" for k, v in m["prompts"].items()) + ".", "",
+         f"Gold set: `{m['gold_districts']}`, {m['resolution']['gold_rows']} rows. Prompts measured (version, sha256 of the "
+         "file in `prompts/`): " + ", ".join(f"{k} v{m.get('prompt_versions', {}).get(k, '?')} `{v}`" for k, v in m["prompts"].items())
+         + ".", "",
          "## Coverage: source rows that land on a district", "", "| era | records | with district | unallocated bucket | coverage |", "|---|---|---|---|---|"]
     for era, c in m["coverage"].items():
         L.append(f"| {era} | {c['records']:,} | {c['with_district']:,} | {c['unallocated']:,} | {_pct(c['share'])} |")
@@ -189,6 +190,7 @@ def history_row(m: dict) -> dict:
             "escalation_records": round(e["records"]["rate"], 4),
             "resolver_p95_ms": round(o.get("resolve", {}).get("latency_ms_p95", float("nan"))),
             "inr_per_1000_resolver_answers": round(o.get("resolve", {}).get("inr_per_1000_answers") or float("nan"), 1),
+            "prompt_versions": ",".join(f"{k}={v}" for k, v in m.get("prompt_versions", {}).items()),
             "prompt_fingerprint": "/".join(m["prompts"].values())}
 
 

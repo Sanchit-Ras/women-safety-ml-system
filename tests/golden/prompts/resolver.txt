@@ -1,0 +1,19 @@
+Task: for each police reporting unit name from the 2001-2014 NCRB 'crimes against women' table for Andhra Pradesh (state code 28), say which current district it belongs to, or that it has none.
+
+Candidate districts of Andhra Pradesh (LGD code | current name | spellings seen 2016-2022 | police circles | years seen):
+502 | Anantapur | spellings: anantapur, ananthapuramu | circles: anantapur, guntakal railway | seen 2016-2022
+504 | Y.S.R. | spellings: ysr | circles: cuddapah, ysr | seen 2016-2022
+522 | Warangal | spellings: warangal | circles: warangal city | seen 2016-2022
+
+Names to resolve (years seen in the 2001-2014 file; hints = closest candidates by spelling, as code:name:score):
+- cudapah (seen 2001-2013) hints: 504:Y.S.R.:93.3 | 502:Anantapur:41.5 | 522:Warangal:32.7
+- guntakal rly (seen 2001-2013) hints: 502:Anantapur:85.7 | 504:Y.S.R.:45 | 522:Warangal:40
+
+Common cases: renames (Cuddapah -> Y.S.R.); a district named after its headquarters town (Himatnagar is the HQ of Sabarkantha); abbreviations (kkumey = Kurung Kumey, nchills = North Cachar Hills = Dima Hasao); police units without geography (CAW cell, STF, CB-CID, crime branch); railway police units (GRP, Rly.) that sit inside a district.
+
+Rules:
+1. Every name appears exactly once, spelled exactly as given.
+2. district_code must be a code from the candidate list above, or null when the unit has no district (a police unit without geography) or you cannot tell.
+3. kind is one of: district, circle, railway, commissionerate, headquarters_town, rename, not_a_district, unknown. 'district' = the district itself under any spelling; 'rename' = the district was renamed; 'headquarters_town' = named after the district's HQ town; 'circle' = a police area inside the district; 'railway' = a railway police unit inside the district; 'commissionerate' = a city police unit inside the district; 'not_a_district' = no geography; 'unknown' = cannot tell.
+4. confidence between 0 and 1.
+5. reason: one line saying how you know.

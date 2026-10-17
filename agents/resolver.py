@@ -70,6 +70,7 @@ from rapidfuzz import fuzz, process
 
 from agents import store
 from agents.llm_client import build_client
+from agents import prompts
 from agents.prompts import PROJECT_CONTEXT
 from data_ingestion import ncrb_xlsx
 from data_ingestion.normalize import norm, norm_state
@@ -475,52 +476,24 @@ def candidate_lines(pool: Pool, registry: dict) -> list[str]:
 
 def build_prompt(state_name: str, state_code: int, candidates: list[str], pending: list[PendingUnit],
                  missing=(), unknown=()) -> str:
-    lines = [
-        f"Task: for each police reporting unit name from the 2001-2014 NCRB 'crimes against women' table for "
-        f"{state_name} (state code {state_code}), say which current district it belongs to, or that it has none.",
-        "",
-        f"Candidate districts of {state_name} (LGD code | current name | spellings seen 2016-2022 | police circles "
-        "| years seen):",
-        *candidates,
-        "",
-        "Names to resolve (years seen in the 2001-2014 file; hints = closest candidates by spelling, as "
-        "code:name:score):",
-        *[f"- {p.unit} (seen {p.first_year}-{p.last_year}) hints: {hint_text(p.hints) or 'none'}" for p in pending],
-        "",
-        "Common cases: renames (Cuddapah -> Y.S.R.); a district named after its headquarters town (Himatnagar is "
-        "the HQ of Sabarkantha); abbreviations (kkumey = Kurung Kumey, nchills = North Cachar Hills = Dima Hasao); "
-        "police units without geography (CAW cell, STF, CB-CID, crime branch); railway police units (GRP, Rly.) "
-        "that sit inside a district.",
-        "",
-        "Rules:",
-        "1. Every name appears exactly once, spelled exactly as given.",
-        "2. district_code must be a code from the candidate list above, or null when the unit has no district "
-        "(a police unit without geography) or you cannot tell.",
-        f"3. kind is one of: {', '.join(KINDS)}. 'district' = the district itself under any spelling; 'rename' = "
-        "the district was renamed; 'headquarters_town' = named after the district's HQ town; 'circle' = a police "
-        "area inside the district; 'railway' = a railway police unit inside the district; 'commissionerate' = a "
-        "city police unit inside the district; 'not_a_district' = no geography; 'unknown' = cannot tell.",
-        "4. confidence between 0 and 1.",
-        "5. reason: one line saying how you know.",
-    ]
-    if missing or unknown:
-        lines += ["", "Your previous answer was incomplete."]
-        if missing:
-            lines.append(f"Missing names that MUST be included: {sorted(missing)}")
-        if unknown:
-            lines.append(f"Unknown names that must NOT appear: {sorted(unknown)}")
-        lines.append(f"Return all {len(pending)} names exactly once.")
-    return "\n".join(lines)
+    """prompts/resolver.v<N>.txt with this state's candidate lines and the names to resolve, then the repair lines
+    when a previous answer missed or invented names."""
+    text = prompts.render("resolver", state_name=state_name, state_code=state_code, candidates="\n".join(candidates),
+                          pending="\n".join(f"- {p.unit} (seen {p.first_year}-{p.last_year}) hints: {hint_text(p.hints) or 'none'}"
+                                             for p in pending),
+                          kinds=", ".join(KINDS))
+    return "\n".join([text, *prompts.repair_lines("names", len(pending), missing, unknown)])
 
 
 def resolve_llm(client, state_code: int, state_name: str, pending: list[PendingUnit], pool: Pool,
-                registry: dict) -> dict[str, Resolution]:
+                registry: dict, tag: str = "resolve") -> dict[str, Resolution]:
     """One model call for one state, plus one repair call if the set of names does not
     match. Two guards the schema cannot express live here: every asked name must come
-    back, and a proposed code must be one of this state's candidates."""
+    back, and a proposed code must be one of this state's candidates. ``tag`` prefixes the
+    call tag; evals.live_check passes 'livecheck' so its calls never mix with the pipeline's."""
     want = {p.unit for p in pending}
     candidates = candidate_lines(pool, registry)
-    tag = f"resolve:{state_code}"
+    tag = f"{tag}:{state_code}"
     result = client.complete(build_prompt(state_name, state_code, candidates, pending), ResolveBatch, tag=tag,
                              system=PROJECT_CONTEXT)
     by_unit = {norm(i.unit): i for i in result.parsed.items}

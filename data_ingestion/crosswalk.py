@@ -42,6 +42,7 @@ from pydantic import BaseModel, Field
 
 from agents import store
 from agents.llm_client import build_client
+from agents import prompts
 from agents.prompts import PROJECT_CONTEXT
 from agents.schemas import CORE_CATEGORIES, EXTENDED_CATEGORIES
 from data_ingestion import ncrb_xlsx
@@ -121,55 +122,13 @@ def era_columns(era: str) -> list[str]:
 
 
 def build_prompt(era: str, columns: list[str], missing=(), unknown=()) -> str:
+    """prompts/crosswalk.v<N>.txt with the category definitions and this era's columns, then the repair lines when a
+    previous answer missed or invented columns."""
     core = "\n".join(f'  {cat:<22} = "{col}" ({law})' for col, (cat, law) in ERA_A_DEFINITIONS.items())
     extended = "\n".join(f"  {name:<28} {note}" for name, note in EXTENDED_NOTES.items())
-    lines = [
-        "Task: assign every category column of one era of NCRB district-level 'crimes against women' data to "
-        "exactly one harmonised category.",
-        "",
-        "CORE categories (exist in every year 2001-2022; defined by the 2001-2014 table columns):",
-        core,
-        "",
-        "EXTENDED categories (exist only from 2015, 2016 or 2017; kept for those years, never stretched back):",
-        extended,
-        f"  {EXCLUDED:<28} not counted: a part of a total listed beside it, a grand total, or not a crimes-against-women head",
-        "",
-        f"Below are the {len(columns)} category columns of the {ERA_LABEL[era]} file.",
-        "",
-        "Rules:",
-        "1. Every column appears exactly once, spelled exactly as given, with exactly one category from the lists above.",
-        "2. A column may take a CORE category ONLY if NCRB's published head for the 2001-2014 table would have counted "
-        "the same cases under it. Attempts, POCSO Act offences, special-act offences and cyber offences are separate "
-        "NCRB heads: give them their own EXTENDED category, never a core one.",
-        "3. Age-split IPC columns ('above_18' / 'below_18') belong to their IPC head regardless of the victim's age. "
-        "Only columns that name the POCSO Act itself or a POCSO-only offence (child rape, sexual assault of children, "
-        "child sexual harassment, use of a child for pornography) are pocso_act.",
-        "4. Any IPC section from 363 to 373 belongs to kidnapping_abduction, except 366B (importation_of_girls) and "
-        "370/370A (human_trafficking), which NCRB reports as separate heads.",
-        "5. Several columns may share a category (their counts are added together). Never split one column across "
-        "categories.",
-        "6. Map by legal meaning (the section or act), not by similar words.",
-        "7. Set ambiguous = true when reasonable statisticians could disagree, and say why in the reason.",
-        "8. reason: one line, cite the section or act.",
-        "9. A TOTAL column (named '..._Total', or a head listed immediately before its own sub-heads, such as 'Rape' "
-        "before 'Custodial Rape' and 'Rape other than Custodial') takes the category; every one of its sub-heads takes "
-        "'excluded' with the reason 'part of <total>'. Counting a total and its parts would double count.",
-        "10. 'excluded' is also the answer for a grand total ('Total Crimes against Women', 'Total Crimes in which "
-        "Women was Victim') and for an IPC head that is not a crimes-against-women head even when the victim was a "
-        "woman (murder, attempt to murder, culpable homicide, hurt, dacoity, robbery, arson, 'other IPC crimes', "
-        "'other SLL crimes'); say which case applies in the reason.",
-        "",
-        "Columns:",
-        *[f"- {c}" for c in columns],
-    ]
-    if missing or unknown:
-        lines += ["", "Your previous answer was incomplete."]
-        if missing:
-            lines.append(f"Missing columns that MUST be included: {sorted(missing)}")
-        if unknown:
-            lines.append(f"Unknown columns that must NOT appear: {sorted(unknown)}")
-        lines.append(f"Return all {len(columns)} columns exactly once.")
-    return "\n".join(lines)
+    text = prompts.render("crosswalk", core=core, extended=extended, excluded=EXCLUDED, n_columns=len(columns),
+                          era_label=ERA_LABEL[era], columns="\n".join(f"- {c}" for c in columns))
+    return "\n".join([text, *prompts.repair_lines("columns", len(columns), missing, unknown)])
 
 
 def propose_era(client, era: str, columns: list[str]) -> tuple[list[ColumnMapping], dict]:

@@ -1,0 +1,16 @@
+Task: for each police reporting unit name from the 2001-2014 NCRB 'crimes against women' table for {state_name} (state code {state_code}), say which current district it belongs to, or that it has none.
+
+Candidate districts of {state_name} (LGD code | current name | spellings seen 2016-2022 | police circles | years seen):
+{candidates}
+
+Names to resolve (years seen in the 2001-2014 file; hints = closest candidates by spelling, as code:name:score):
+{pending}
+
+Common cases: renames (Cuddapah -> Y.S.R.); a district named after its headquarters town (Himatnagar is the HQ of Sabarkantha); abbreviations (kkumey = Kurung Kumey, nchills = North Cachar Hills = Dima Hasao); police units without geography (CAW cell, STF, CB-CID, crime branch); railway police units (GRP, Rly.) that sit inside a district.
+
+Rules:
+1. Every name appears exactly once, spelled exactly as given.
+2. district_code must be a code from the candidate list above, or null when the unit has no district (a police unit without geography) or you cannot tell.
+3. kind is one of: {kinds}. 'district' = the district itself under any spelling; 'rename' = the district was renamed; 'headquarters_town' = named after the district's HQ town; 'circle' = a police area inside the district; 'railway' = a railway police unit inside the district; 'commissionerate' = a city police unit inside the district; 'not_a_district' = no geography; 'unknown' = cannot tell.
+4. confidence between 0 and 1.
+5. reason: one line saying how you know.
