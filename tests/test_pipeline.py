@@ -108,7 +108,7 @@ def run_build(world):
     tmp = world["tmp"]
     return orchestrator.build(world["conn"], registry=False, raw_files=world["raw"], csv_paths=world["csvs"],
                               trace_dir=tmp / "traces", parquet_path=tmp / "panel.parquet", registry_dict=REGISTRY,
-                              rebase_paths={"parquet_path": tmp / "rebased.parquet", "units_path": tmp / "stable_units.json",
+                              rebase_paths={"parquet_path": tmp / "rebased.parquet", "units_path": tmp / "stable_units.json", "pieces_path": tmp / "pieces.csv",
                                             "reports_dir": tmp / "reports", "area_path": tmp / "no_area.csv"})
 
 

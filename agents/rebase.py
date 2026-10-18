@@ -73,6 +73,7 @@ WEIGHTS_PATH = ROOT / "data" / "split_weights.csv"      # the human's record of 
 WEIGHT_COLUMNS = ["child_code", "child_name", "parent_code", "parent_name", "kind", "weight", "basis", "proposed_by",
                   "verified", "reviewer_note"]
 WEIGHT_TOLERANCE = 0.01
+PIECES_PATH = ROOT / "data" / "rebased_pieces.csv"       # every estimated part moved between districts: where each estimate came from
 
 
 @dataclass(frozen=True)
@@ -212,6 +213,7 @@ class Rebaser:
         self.weights = self._weights()
         self.shares: dict[Pooling, Share] = {}
         self.coverage: list[dict] = []
+        self.pieces: list[dict] = []          # every estimated part moved from a holder to a member: member, holder, kind, year, amount
 
     # -- the old map ------------------------------------------------------------------------------------------
 
@@ -425,6 +427,7 @@ class Rebaser:
         def give(p: Pooling, part: np.ndarray, base: np.ndarray) -> None:
             amount[p.member] += part
             received[p.member].append((p, part, float(base.sum())))
+            self.pieces.append({"member_code": p.member, "holder_code": p.holder, "kind": p.kind, "year": y, "amount": float(part.sum())})
             indeg[p.member] -= 1
             if indeg[p.member] == 0:
                 ready.append(p.member)
@@ -482,7 +485,7 @@ class Rebaser:
     def run(self) -> pd.DataFrame:
         if not self.shares:
             self.measure()
-        self.coverage = []
+        self.coverage, self.pieces = [], []
         for key in ("no_estimate", "conflicting_edges", "holder_unresolved", "over_assigned", "cycles"):
             self.diag.pop(key, None)
         rows = [r for y in self.years for r in self.apply_year(y)]
@@ -702,9 +705,11 @@ def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path, c
 
 
 def build_rebased(conn, *, parquet_path: Path = PARQUET_PATH, units_path: Path = UNITS_PATH, reports_dir: Path = REPORTS_DIR,
-                  area_path: Path = AREA_PATH, weights_path: Path = WEIGHTS_PATH, threshold: float = GROUP_THRESHOLD) -> dict:
+                  area_path: Path = AREA_PATH, weights_path: Path = WEIGHTS_PATH, pieces_path: Path = PIECES_PATH,
+                  threshold: float = GROUP_THRESHOLD) -> dict:
     """The orchestrator's step: panel_observed + district_lineage (+ the split weights record) -> panel_rebased, the
-    parquet file, stable units (share-gated) and two reports. Returns the numbers the trace records."""
+    parquet file, the pieces file (which holder each estimated part came from, read by ml/panel.py), stable units
+    (share-gated) and two reports. Returns the numbers the trace records."""
     poolings, skipped = poolings_from_store(conn)
     area = pd.read_csv(area_path) if Path(area_path).exists() else None
     rb = Rebaser(observed_from_store(conn), poolings, districts_from_store(conn), area, threshold=threshold,
@@ -714,6 +719,10 @@ def build_rebased(conn, *, parquet_path: Path = PARQUET_PATH, units_path: Path =
     parquet_path = Path(parquet_path)
     parquet_path.parent.mkdir(parents=True, exist_ok=True)
     df.to_parquet(parquet_path, index=False)
+    pieces = pd.DataFrame(rb.pieces, columns=["member_code", "holder_code", "kind", "year", "amount"]).sort_values(["member_code", "year", "holder_code"])
+    pieces["amount"] = pieces["amount"].round(4)
+    Path(pieces_path).parent.mkdir(parents=True, exist_ok=True)
+    pieces.to_csv(pieces_path, index=False, lineterminator="\n")
     edges = rb.group_edges()
     units = rb.build_units(edges)
     old_units = json.loads(Path(units_path).read_text(encoding="utf-8"))["units"] if Path(units_path).exists() else None
@@ -739,6 +748,7 @@ def build_rebased(conn, *, parquet_path: Path = PARQUET_PATH, units_path: Path =
             "splits_without_year": len(skipped), "map_only": len(rb.map_only),
             "groups": meta["n_groups"], "largest_group": meta["largest_group_size"], "grouping_edges": meta["n_edges_used"],
             "weight_overrides": len(rb.diag.get("weight_overrides", [])), "orphan_weights": len(rb.diag.get("orphan_weights", [])),
+            "pieces": int(len(pieces)),
             "units_appeared": len(changes["appeared"]), "units_disappeared": len(changes["disappeared"]),
             "parquet": str(parquet_path.relative_to(ROOT)) if parquet_path.is_relative_to(ROOT) else str(parquet_path)}
 

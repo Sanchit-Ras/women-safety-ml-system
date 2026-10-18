@@ -18,6 +18,10 @@ def test_verified_weights_replace_the_old_maps_division(tmp_path):
     assert rb.diag["weight_overrides"] == [{"member": 3, "holders": {1: 0.5, 2: 0.5}}] and rb.diag.get("equal_weights", []) == []
     assert rb.shares[EDGES[0]].share == pytest.approx(50 / 150) and rb.shares[EDGES[1]].share == pytest.approx(50 / 150)
     assert row(df, 1, 2001)["total"] + row(df, 2, 2001)["total"] + row(df, 3, 2001)["total"] == pytest.approx(200)
+    pieces = [p for p in rb.pieces if p["year"] == 2001]                   # the log of every estimated part, by holder
+    assert sorted((p["holder_code"], p["member_code"], p["kind"]) for p in pieces) == [(1, 3, SPLIT), (2, 3, SPLIT)]
+    assert sum(p["amount"] for p in pieces) == pytest.approx(row(df, 3, 2001)["total"])
+    assert rb.run() is not None and len([p for p in rb.pieces if p["year"] == 2001]) == 2    # a second run does not double the log
     units = rb.build_units(rb.group_edges())
     text = rebase.write_report(rb, df, units, tmp_path / "r.md", rebase.units_changes(None, units))
     assert "divided by the decision record, data/split_weights.csv (1)" in text and "- C <- A 0.50, B 0.50" in text

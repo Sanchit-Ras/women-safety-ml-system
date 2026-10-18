@@ -64,7 +64,7 @@ def rebuild(workdir: Path):
     conn = store.connect(workdir / "gate.db")
     orchestrator.build(conn, trace_dir=workdir / "traces", parquet_path=workdir / "panel_observed.parquet",
                        rebase_paths={"parquet_path": workdir / "panel_rebased.parquet", "units_path": workdir / "stable_units.json",
-                                     "reports_dir": workdir / "reports"})
+                                     "pieces_path": workdir / "rebased_pieces.csv", "reports_dir": workdir / "reports"})
     return conn
 
 

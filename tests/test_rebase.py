@@ -195,7 +195,7 @@ def test_the_store_round_trip_writes_the_table_the_parquet_the_units_and_the_rep
                          (f"d{code}" if code else f"s{STATE}u", STATE, code, year))
         conn.execute("INSERT INTO district_lineage (parent_code, child_code, kind, year, confidence, reason, source, verified) "
                      "VALUES (1, 2, 'split', 2004, 1.0, 'r', 'human', 1)")
-    out = rebase.build_rebased(conn, parquet_path=tmp_path / "p.parquet", units_path=tmp_path / "su.json",
+    out = rebase.build_rebased(conn, parquet_path=tmp_path / "p.parquet", units_path=tmp_path / "su.json", pieces_path=tmp_path / "pieces.csv",
                                reports_dir=tmp_path / "reports", area_path=tmp_path / "none.csv")
     assert out["rows"] == 5 and out["observed"] == 2 and out["adjusted"] == 1 and out["estimated"] == 1
     assert out["basis"] == {"crime:1y": 1} and out["groups"] == 1 and out["grouping_edges"] == 1 and out["largest_group"] == 2
@@ -207,6 +207,6 @@ def test_the_store_round_trip_writes_the_table_the_parquet_the_units_and_the_rep
     assert units["meta"]["threshold"] == 0.2 and units["meta"]["edges"][0]["share"] == pytest.approx(1 / 3, abs=1e-4)
     assert [u["members"] for u in units["units"]] == [[1, 2]]
     assert sorted(p.name.split("_", 1)[1] for p in (tmp_path / "reports").iterdir()) == ["rebasing.md", "stable_units.md"]
-    rebase.build_rebased(conn, parquet_path=tmp_path / "p.parquet", units_path=tmp_path / "su.json",
+    rebase.build_rebased(conn, parquet_path=tmp_path / "p.parquet", units_path=tmp_path / "su.json", pieces_path=tmp_path / "pieces.csv",
                          reports_dir=tmp_path / "reports", area_path=tmp_path / "none.csv")                 # rerun: same rows
     assert conn.execute("SELECT COUNT(*) FROM panel_rebased").fetchone()[0] == 5
