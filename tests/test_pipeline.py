@@ -223,7 +223,7 @@ def test_build_produces_the_panel_the_parquet_file_and_a_trace_and_is_a_no_op_wh
                      "validate", "panel", "rebase"]
     first = json.loads(open(out["trace"], encoding="utf-8").readline())
     assert set(first["result"]["files"]) == {"raw:2001_2014", "raw:2015", "raw:2016", "raw:2017_plus", "csv:crosswalk", "csv:column_fixes",
-                                             "csv:unit_map", "csv:lineage"}
+                                             "csv:unit_map", "csv:lineage", "csv:split_weights"}   # the repo's split weights: its rows name no fixture edge
     assert (world["tmp"] / "traces" / "latest.jsonl").read_text(encoding="utf-8") == open(out["trace"], encoding="utf-8").read()
     escalations = conn.execute("SELECT COUNT(*) FROM escalations").fetchone()[0]
 

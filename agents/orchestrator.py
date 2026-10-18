@@ -75,7 +75,7 @@ def build(conn, *, fixes: str = "verified", registry: bool = True, raw_files: di
     exist so tests can run the whole chain on fixture files; the CLI uses the repo's data."""
     raw_files = {**ERA_FILES, **(raw_files or {})}
     paths = {"crosswalk": crosswalk.CSV_PATH, "column_fixes": crosswalk.FIXES_PATH, "unit_map": resolver.CSV_PATH,
-             "lineage": lineage.CSV_PATH, **(csv_paths or {})}
+             "lineage": lineage.CSV_PATH, "split_weights": rebase.WEIGHTS_PATH, **(csv_paths or {})}
     run_id = dt.datetime.now().strftime("%Y%m%d-%H%M%S-%f")   # microseconds: two builds in one second get two traces
     trace = Trace(run_id, Path(trace_dir) / f"{run_id}.jsonl")
     inputs = {name: file_hash(Path(p)) for name, p in {**{f"raw:{e}": p for e, p in raw_files.items()},
@@ -96,7 +96,7 @@ def build(conn, *, fixes: str = "verified", registry: bool = True, raw_files: di
                                                                            registry=registry_dict))
     trace.run("validate", lambda: validator.validate(conn))
     result = trace.run("panel", lambda: panel.build_panel(conn, parquet_path))
-    rebased = trace.run("rebase", lambda: rebase.build_rebased(conn, **(rebase_paths or {})))
+    rebased = trace.run("rebase", lambda: rebase.build_rebased(conn, **{"weights_path": paths["split_weights"], **(rebase_paths or {})}))
     shutil.copyfile(trace.path, Path(trace_dir) / "latest.jsonl")
     return {"run_id": run_id, "trace": str(trace.path), "steps": len(trace.lines), "panel": result, "rebased": rebased}
 

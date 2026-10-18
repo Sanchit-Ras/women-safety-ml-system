@@ -41,6 +41,7 @@ district that moves between holders links them when its area share of the old ho
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from collections import defaultdict
 from dataclasses import dataclass
@@ -68,6 +69,10 @@ BASES = ("observed", "remainder", "crime:3y", "crime:2y", "crime:1y", "area")   
 COLUMNS = ["unit_id", "state_code", "district_code", "year", *CORE_CATEGORIES, "total",
            "is_estimated", "share", "share_basis", "holder_code"]
 N = len(CORE_CATEGORIES)
+WEIGHTS_PATH = ROOT / "data" / "split_weights.csv"      # the human's record of how a multi-parent child divides
+WEIGHT_COLUMNS = ["child_code", "child_name", "parent_code", "parent_name", "kind", "weight", "basis", "proposed_by",
+                  "verified", "reviewer_note"]
+WEIGHT_TOLERANCE = 0.01
 
 
 @dataclass(frozen=True)
@@ -125,6 +130,42 @@ def observed_from_store(conn) -> pd.DataFrame:
                                                            *CORE_CATEGORIES, "total", "n_records"])
 
 
+def read_weights(path: Path = WEIGHTS_PATH) -> dict[tuple[int, int, str], float]:
+    """Verified rows of data/split_weights.csv as (child, parent, kind) -> weight: the human's division of a child
+    among its parents where the old map cannot be trusted. The weights of one child and kind must sum to 1 within
+    WEIGHT_TOLERANCE; a row that does not is a typo and stops the build with the child's name."""
+    path = Path(path)
+    if not path.exists():
+        return {}
+    out: dict[tuple[int, int, str], float] = {}
+    with open(path, newline="", encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            if r.get("verified", "").strip() != "1":
+                continue
+            key = (int(r["child_code"]), int(r["parent_code"]), r["kind"].strip())
+            if key in out:
+                raise ValueError(f"split_weights: {r['child_name']} <- {r['parent_name']} ({r['kind']}) appears twice")
+            out[key] = float(r["weight"])
+    sums: dict[tuple[int, str], float] = defaultdict(float)
+    for (child, _parent, kind), w in out.items():
+        if w < 0:
+            raise ValueError(f"split_weights: a negative weight for child {child}")
+        sums[(child, kind)] += w
+    for (child, kind), s in sums.items():
+        if abs(s - 1.0) > WEIGHT_TOLERANCE:
+            raise ValueError(f"split_weights: the {kind} weights of child {child} sum to {s:.3f}, not 1")
+    return out
+
+
+def units_changes(old: list[dict] | None, new: list[dict]) -> dict:
+    """Stable units that appeared or disappeared since the last build, by member set, so a changed weight or edge
+    is seen in the report before anyone has to notice it in the panel."""
+    before = {frozenset(u["members"]) for u in (old or [])}
+    after = {frozenset(u["members"]) for u in new}
+    return {"appeared": sorted(sorted(g) for g in after - before), "disappeared": sorted(sorted(g) for g in before - after),
+            "compared": old is not None}
+
+
 # ---- the computation -----------------------------------------------------------------------------------------
 
 class Rebaser:
@@ -133,8 +174,10 @@ class Rebaser:
     districts (code -> state_code, name, aliases); ``area`` the old-map overlap table or None."""
 
     def __init__(self, panel: pd.DataFrame, poolings: list[Pooling], districts: dict[int, dict],
-                 area: pd.DataFrame | None = None, *, threshold: float = GROUP_THRESHOLD, basis_years: int = BASIS_YEARS):
+                 area: pd.DataFrame | None = None, *, threshold: float = GROUP_THRESHOLD, basis_years: int = BASIS_YEARS,
+                 weights: dict[tuple[int, int, str], float] | None = None):
         self.panel, self.districts = panel, districts
+        self.overrides = dict(weights or {})                    # (member, holder, kind) -> weight from the decision record
         self.area = None
         if area is not None and len(area):
             self.area = area.copy()
@@ -212,12 +255,26 @@ class Rebaser:
 
     def _weights(self) -> dict[Pooling, float]:
         """A member with several holders of one kind is split among them by area cover; equal parts, flagged,
-        when the old map lacks a holder. A member with one holder has weight 1."""
+        when the old map lacks a holder. A member with one holder has weight 1. A verified row of the decision
+        record (data/split_weights.csv) replaces the map's division for its member: every holder of that member
+        must then have a row, and the rows are used as given. A row naming no edge is reported, not used."""
         by_member: dict[tuple[int, str], list[Pooling]] = defaultdict(list)
         for p in self.poolings:
             by_member[(p.member, p.kind)].append(p)
+        known = {(p.member, p.holder, p.kind) for p in self.poolings + self.map_only_poolings}
+        self.diag["orphan_weights"] = [k for k in self.overrides if k not in known]
         w: dict[Pooling, float] = {}
-        for (m, _kind), ps in by_member.items():
+        for (m, kind), ps in by_member.items():
+            given = {p: self.overrides[(m, p.holder, kind)] for p in ps if (m, p.holder, kind) in self.overrides}
+            if given:
+                if len(given) != len(ps):
+                    raise ValueError(f"split_weights: {self.names.get(m, m)} has a weight for {len(given)} of its {len(ps)} "
+                                     f"{kind} holders; give one for each")
+                total = sum(given.values())
+                for p in ps:
+                    w[p] = given[p] / total
+                self.diag["weight_overrides"].append({"member": m, "holders": {p.holder: round(w[p], 4) for p in ps}})
+                continue
             if len(ps) == 1:
                 w[ps[0]] = 1.0
                 continue
@@ -542,7 +599,7 @@ def _pct(n: float, d: float) -> str:
     return f"{100 * n / d:.1f}%" if d else "-"
 
 
-def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path) -> str:
+def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path, changes: dict | None = None) -> str:
     names = rb.names
     dist = df[df["district_code"].notna()]
     n = len(dist)
@@ -604,6 +661,14 @@ def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path) -
     lines += ["", f"## Multi-parent districts divided equally (old map cannot tell) ({len(eq)})", ""]
     lines += [f"- {names.get(e['member'])} <- {', '.join(names.get(h, str(h)) for h in e['holders'])}" for e in eq] or ["None."]
 
+    ov = rb.diag.get("weight_overrides", [])
+    lines += ["", f"## Multi-parent districts divided by the decision record, data/split_weights.csv ({len(ov)})", ""]
+    lines += [f"- {names.get(o['member'])} <- " + ", ".join(f"{names.get(h, str(h))} {w:.2f}" for h, w in o["holders"].items())
+              for o in ov] or ["None."]
+    orphans = rb.diag.get("orphan_weights", [])
+    lines += ["", f"## Weight rows naming no verified edge ({len(orphans)}; ignored)", ""]
+    lines += [f"- {names.get(c, str(c))} <- {names.get(p, str(p))} ({kind})" for c, p, kind in orphans] or ["None."]
+
     over = rb.diag.get("over_assigned", [])
     lines += ["", f"## Holders whose parts exceeded the filed row (clamped to zero) ({len(over)})", ""]
     lines += [f"- {names.get(o['holder'])} {o['year']}: short by {o['short']:.1f}" for o in over] or ["None."]
@@ -614,6 +679,16 @@ def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path) -
         before = ", ".join(f"{names.get(h)} to {y - 1}" for h, y in nt["inside_before"])
         after = ", ".join(f"{names.get(h)}" + (f" from {y}" if y > (rb.years[0] if rb.years else 0) else "") for h, y in nt["inside_from"])
         lines.append(f"- {nt['code']} {nt['name']}: " + "; ".join(s for s in (before, after) if s) + (" (moves: holders grouped if the area share allows)" if nt["moves"] else ""))
+
+    if changes is not None:
+        lines += ["", f"## Stable units changed since the last build ({len(changes['appeared'])} appeared, "
+                      f"{len(changes['disappeared'])} disappeared)", ""]
+        if not changes["compared"]:
+            lines.append("No earlier stable-units file to compare with.")
+        else:
+            lines += [f"- now: {', '.join(names.get(c, str(c)) for c in g)}" for g in changes["appeared"]]
+            lines += [f"- gone: {', '.join(names.get(c, str(c)) for c in g)}" for g in changes["disappeared"]]
+            lines += [] if changes["appeared"] or changes["disappeared"] else ["None."]
 
     sizes = lineage.size_distribution(units)
     grouped = [e for e in rb.group_edges() if e["grouped"]]
@@ -627,12 +702,13 @@ def write_report(rb: Rebaser, df: pd.DataFrame, units: list[dict], path: Path) -
 
 
 def build_rebased(conn, *, parquet_path: Path = PARQUET_PATH, units_path: Path = UNITS_PATH, reports_dir: Path = REPORTS_DIR,
-                  area_path: Path = AREA_PATH, threshold: float = GROUP_THRESHOLD) -> dict:
-    """The orchestrator's step: panel_observed + district_lineage -> panel_rebased, the parquet file, stable
-    units (share-gated) and two reports. Returns the numbers the trace records."""
+                  area_path: Path = AREA_PATH, weights_path: Path = WEIGHTS_PATH, threshold: float = GROUP_THRESHOLD) -> dict:
+    """The orchestrator's step: panel_observed + district_lineage (+ the split weights record) -> panel_rebased, the
+    parquet file, stable units (share-gated) and two reports. Returns the numbers the trace records."""
     poolings, skipped = poolings_from_store(conn)
     area = pd.read_csv(area_path) if Path(area_path).exists() else None
-    rb = Rebaser(observed_from_store(conn), poolings, districts_from_store(conn), area, threshold=threshold)
+    rb = Rebaser(observed_from_store(conn), poolings, districts_from_store(conn), area, threshold=threshold,
+                 weights=read_weights(weights_path))
     df = rb.run()
     write_table(conn, df)
     parquet_path = Path(parquet_path)
@@ -640,6 +716,8 @@ def build_rebased(conn, *, parquet_path: Path = PARQUET_PATH, units_path: Path =
     df.to_parquet(parquet_path, index=False)
     edges = rb.group_edges()
     units = rb.build_units(edges)
+    old_units = json.loads(Path(units_path).read_text(encoding="utf-8"))["units"] if Path(units_path).exists() else None
+    changes = units_changes(old_units, units)
     meta = lineage.write_stable_units(units, Path(units_path), extra={
         "threshold": threshold, "basis_years": rb.basis_years,
         "edges": [{k: (v if not isinstance(v, float) else round(v, 4)) for k, v in e.items()} for e in edges],
@@ -649,7 +727,7 @@ def build_rebased(conn, *, parquet_path: Path = PARQUET_PATH, units_path: Path =
     today = date.today().isoformat()
     nodes = [{"district_code": c, "name": d["name"], "in_files": d.get("in_files", 1)} for c, d in rb.districts.items()]
     lineage.write_report(units, reports_dir / f"{today}_stable_units.md", nodes)
-    write_report(rb, df, units, reports_dir / f"{today}_rebasing.md")
+    write_report(rb, df, units, reports_dir / f"{today}_rebasing.md", changes)
     dist = df[df["district_code"].notna()]
     counts = dist["share_basis"].value_counts()
     return {"rows": int(len(df)), "district_rows": int(len(dist)), "observed": int(counts.get("observed", 0)),
@@ -660,6 +738,8 @@ def build_rebased(conn, *, parquet_path: Path = PARQUET_PATH, units_path: Path =
             "edges": len(rb.poolings), "edges_no_evidence": len({r["edge"] for r in rb.diag.get("no_estimate", [])}),
             "splits_without_year": len(skipped), "map_only": len(rb.map_only),
             "groups": meta["n_groups"], "largest_group": meta["largest_group_size"], "grouping_edges": meta["n_edges_used"],
+            "weight_overrides": len(rb.diag.get("weight_overrides", [])), "orphan_weights": len(rb.diag.get("orphan_weights", [])),
+            "units_appeared": len(changes["appeared"]), "units_disappeared": len(changes["disappeared"]),
             "parquet": str(parquet_path.relative_to(ROOT)) if parquet_path.is_relative_to(ROOT) else str(parquet_path)}
 
 

@@ -1,9 +1,9 @@
 {
  "meta": {
-  "generated": "2026-10-10",
+  "generated": "2026-10-18",
   "n_nodes": 783,
-  "n_groups": 671,
-  "n_edges_used": 112,
+  "n_groups": 672,
+  "n_edges_used": 111,
   "largest_group_size": 6,
   "n_edges_skipped": 0,
   "skipped_edges": [],
@@ -1205,7 +1205,7 @@
     "child_code": 669,
     "kind": "split",
     "year": 2014,
-    "share": 0.1749,
+    "share": 0.1163,
     "share_basis": "crime:3y",
     "share_years": [
      2014,
@@ -1213,16 +1213,16 @@
      2016
     ],
     "area_share": 0.1415,
-    "weight": 0.3712,
+    "weight": 0.23,
     "grouped": false,
-    "why": "share 0.17 < 0.2"
+    "why": "share 0.12 < 0.2"
    },
    {
     "parent_code": 454,
     "child_code": 669,
     "kind": "split",
     "year": 2014,
-    "share": 0.2675,
+    "share": 0.3086,
     "share_basis": "crime:3y",
     "share_years": [
      2014,
@@ -1230,9 +1230,9 @@
      2016
     ],
     "area_share": 0.2619,
-    "weight": 0.6288,
+    "weight": 0.77,
     "grouped": true,
-    "why": "share 0.27 >= 0.2"
+    "why": "share 0.31 >= 0.2"
    },
    {
     "parent_code": 83,
@@ -2990,30 +2990,30 @@
     "child_code": 763,
     "kind": "split",
     "year": 2022,
-    "share": 0.2184,
+    "share": 0.2782,
     "share_basis": "crime:1y",
     "share_years": [
      2022
     ],
     "area_share": 0.2061,
-    "weight": 0.5,
+    "weight": 0.69,
     "grouped": true,
-    "why": "share 0.22 >= 0.2"
+    "why": "share 0.28 >= 0.2"
    },
    {
     "parent_code": 644,
     "child_code": 763,
     "kind": "split",
     "year": 2022,
-    "share": 0.2528,
+    "share": 0.1734,
     "share_basis": "crime:1y",
     "share_years": [
      2022
     ],
     "area_share": null,
-    "weight": 0.5,
-    "grouped": true,
-    "why": "share 0.25 >= 0.2"
+    "weight": 0.31,
+    "grouped": false,
+    "why": "share 0.17 < 0.2"
    },
    {
     "parent_code": 87,
@@ -7317,13 +7317,28 @@
   },
   {
    "unit_id": "su_386",
+   "name": "Raigarh",
+   "largest_member_code": 386,
+   "members": [
+    386,
+    763
+   ],
+   "edges": [
+    {
+     "parent_code": 386,
+     "child_code": 763,
+     "kind": "split",
+     "year": 2022
+    }
+   ]
+  },
+  {
+   "unit_id": "su_387",
    "name": "Raipur",
    "largest_member_code": 387,
    "members": [
-    386,
     387,
-    644,
-    763
+    644
    ],
    "edges": [
     {
@@ -7331,18 +7346,6 @@
      "child_code": 644,
      "kind": "split",
      "year": 2012
-    },
-    {
-     "parent_code": 386,
-     "child_code": 763,
-     "kind": "split",
-     "year": 2022
-    },
-    {
-     "parent_code": 644,
-     "child_code": 763,
-     "kind": "split",
-     "year": 2022
     }
    ]
   },
