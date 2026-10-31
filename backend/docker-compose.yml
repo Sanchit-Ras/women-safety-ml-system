@@ -1,20 +1,9 @@
 version: "3.9"
 
+# Local run of the API exactly as Render builds it: docker compose up --build, then open http://localhost:8000/docs
 services:
   api:
     build: .
     container_name: crime-risk-api
     ports:
       - "8000:8000"
-    depends_on:
-      - redis
-    environment:
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - ENABLE_CACHE=true
-
-  redis:
-    image: redis:7-alpine
-    container_name: crime-risk-redis
-    ports:
-      - "6379:6379"

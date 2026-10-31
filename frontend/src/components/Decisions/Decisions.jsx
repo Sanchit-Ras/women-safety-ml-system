@@ -9,8 +9,8 @@ export default function Decisions() {
             Key Technical Decisions
           </h2>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Strategic architectural choices made to ensure robustness, accuracy,
-            and real-world applicability.
+            The choices that make the numbers trustworthy and the app cheap to
+            run.
           </p>
         </div>
 

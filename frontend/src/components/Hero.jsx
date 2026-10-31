@@ -17,18 +17,18 @@ export default function Hero() {
           <span className="text-blue-500">Machine Intelligence</span>
         </h1>
 
-      <p className="mt-6 text-lg text-slate-600 max-w-3xl mx-auto">
-        A research-driven machine learning project forecasting district-level
-        crime risk across India using time-series modeling and spatial analysis.
+      <p className="mt-6 text-lg text-slate-300 max-w-3xl mx-auto">
+        An end-to-end data and ML system on 22 years of official NCRB crime
+        data: an LLM-assisted pipeline puts every year onto today's map of
+        India, evals check every change, and a watch list flags the districts
+        most likely to see crimes against women grow fastest.
       </p>
 
-      <p className="mt-2 text-sm text-slate-500">
-        Built using 14+ years of crime data • District-level forecasting •
-        Research-grade validation
+      <p className="mt-4 text-sm text-slate-400">
+        2001–2022 • 755 districts on today's map • Evals in CI on every push
       </p>
-      <p className="mt-3 text-red-600 font-semibold">
-        Built using Random Forest, XGBoost, District Holdout Validation, and
-        Temporal Forecasting.
+      <p className="mt-3 text-blue-300 font-semibold">
+        Built with Python, Gemini, XGBoost, FastAPI and React.
       </p>
     </div>
   </div>

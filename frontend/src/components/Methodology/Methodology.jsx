@@ -9,9 +9,8 @@ export default function Methodology() {
             Research Methodology
           </h2>
           <p className="text-lg text-slate-600 leading-relaxed">
-            This project was engineered using research-grade machine learning
-            practices to ensure predictive reliability rather than superficial
-            accuracy.
+            Six stages, each with its own checks, from raw government tables to
+            a watch list.
           </p>
         </div>
 

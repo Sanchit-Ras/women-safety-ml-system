@@ -1,22 +1,23 @@
+// Every number here comes from a committed report: evals/reports/2026-10-18.md and ml/reports/2026-10-18_bakeoff.md.
 export const STATS = [
   {
-    value: "600+",
-    label: "Districts Modeled Across India",
+    value: "22 Years",
+    label: "Of NCRB district data, 2001–2022",
     color: "text-blue-600",
   },
   {
-    value: "14 Years",
-    label: "Historical Crime Data Used",
+    value: "755",
+    label: "Districts, every year re-based onto today's map",
     color: "text-purple-600",
   },
   {
-    value: "0.88 R²",
-    label: "Future Crime Prediction Score",
+    value: "98.5%",
+    label: "Old place names matched to a district (name matching alone: 56.6%)",
     color: "text-green-600",
   },
   {
-    value: "District Holdout",
-    label: "Validation Strategy (Prevents Memorization)",
+    value: "3.7×",
+    label: "Better than chance at flagging next year's fastest-growing districts",
     color: "text-red-600",
   },
 ];

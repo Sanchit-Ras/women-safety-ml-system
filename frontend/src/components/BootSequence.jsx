@@ -1,20 +1,17 @@
 import { useState, useEffect } from "react";
 
+const bootLogs = [
+  "CONNECTING_TO_API...",
+  "THE_FREE_SERVER_SLEEPS_WHEN_IDLE...",
+  "WAKING_IT_UP (CAN_TAKE_A_MINUTE)...",
+  "LOADING_DISTRICT_DATA...",
+  "LOADING_THE_WATCH_LIST...",
+  "ALMOST_THERE...",
+];
+
 const BootSequence = () => {
   const [lines, setLines] = useState([]);
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
-
-  const bootLogs = [
-    "INITIALIZING_KERNEL...",
-    "LOADING_NEURAL_WEIGHTS...",
-    "VERIFYING_INTEGRITY...",
-    "CONNECTING_TO_SECURE_SERVER...",
-    "ESTABLISHING_HANDSHAKE...",
-    "DECRYPTING_Protocol_v4...",
-    "NOTE: It can take upto 5 mins...",
-    "ACCESS_GRANTED.",
-    "SYSTEM_READY.",
-  ];
 
   useEffect(() => {
     if (currentLineIndex < bootLogs.length) {

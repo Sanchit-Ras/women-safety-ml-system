@@ -9,17 +9,17 @@ export default function ResearchImpact() {
         </h2>
 
         <p className="text-xl text-slate-300 leading-relaxed mb-8">
-          This project demonstrates how machine learning can be used for{" "}
+          This project shows how messy public data can become a{" "}
           <span className="text-blue-400 font-semibold">
-            proactive public safety planning
+            trustworthy, measured system
           </span>{" "}
-          by identifying high-risk districts before crime surges occur.
+          that flags districts to watch, and says plainly what it cannot predict.
         </p>
 
         <p className="text-slate-500 max-w-2xl mx-auto">
-          Future work includes integrating real-time crime data, socioeconomic
-          indicators, and deep learning models for even stronger forecasting
-          capabilities.
+          Next steps: population figures to turn counts into rates per 100,000
+          women, NCRB's 2023 tables when they are published, and socioeconomic
+          indicators as model inputs.
         </p>
 
         <div className="mt-12 flex justify-center gap-6 opacity-50 hover:opacity-100 transition-opacity">

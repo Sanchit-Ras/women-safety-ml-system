@@ -1,0 +1,83 @@
+"""The API against the committed data file: every endpoint, unknown codes, CORS for the deployed frontend, and the
+promise the app makes: no forecast percentage anywhere."""
+import json
+import re
+
+from app.services import data
+
+
+def test_health_and_deploy_check(client):
+    assert client.get("/health").json() == {"status": "ok"}
+    d = client.get("/deploy-check").json()
+    assert d["api_version"] == "2.0" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", d["data_generated"]) and d["watch_year"] > 2022
+
+
+def test_districts_lists_every_district_once_under_its_state(client):
+    body = client.get("/districts").json()
+    codes = [d["code"] for s in body["states"] for d in s["districts"]]
+    assert len(codes) == len(set(codes)) == len(data.get()["districts"])
+    assert [s["name"] for s in body["states"]] == sorted(s["name"] for s in body["states"])
+    delhi = next(s for s in body["states"] if s["name"] == "Delhi")
+    assert {"East", "North East", "Shahdara"} <= {d["name"] for d in delhi["districts"]}
+
+
+def test_a_district_carries_its_numbers_status_and_notes(client):
+    d = client.get("/district/671").json()                         # Shahdara: estimated before 2017, pooled with its parents
+    assert d["name"] == "Shahdara" and d["state"] == "Delhi" and d["status"] in ("watch", "no_signal")
+    assert {m["name"] for m in d["unit_members"]} == {"East", "North East"}
+    years = [p[0] for p in d["series"]]
+    assert years == sorted(years) and years[0] == 2001 and years[-1] == d["latest_year"] == 2022
+    assert all(p[2] == 2 for p in d["series"] if p[0] < 2017) and all(p[2] == 0 for p in d["series"] if p[0] >= 2017)
+    assert d["latest_total"] == sum(d["latest"].values()) and any("estimated" in n for n in d["notes"])
+    j = client.get("/district/689").json()                         # Jangaon: on the map, no row of its own
+    assert (j["status"], j["in_files"], j["series"], j["latest"]) == ("not_scored", False, [], None)
+    assert "Warangal" in j["notes"][0]
+
+
+def test_unknown_or_malformed_codes(client):
+    assert client.get("/district/999999").status_code == 404
+    assert client.get("/district/abc").status_code == 422
+
+
+def test_watchlist_is_ranked_and_agrees_with_the_districts(client):
+    w = client.get("/watchlist").json()
+    ranks = [d["rank"] for d in w["districts"]]
+    assert w["districts"] and ranks == sorted(ranks)
+    watched = {c for c, d in data.get()["districts"].items() if d["status"] == "watch"}
+    assert {str(d["code"]) for d in w["districts"]} == watched
+    for item in w["districts"]:
+        assert client.get(f"/district/{item['code']}").json()["status"] == "watch"
+
+
+def test_districts_of_one_unit_share_one_status():
+    by_unit = {}
+    for d in data.get()["districts"].values():
+        by_unit.setdefault(d["unit_id"], set()).add((d["status"], d["rank"]))
+    assert all(len(v) == 1 for v in by_unit.values())
+
+
+def test_model_info_states_the_evidence_and_the_limits(client):
+    m = client.get("/model-info").json()
+    e = m["evidence"]
+    assert e["chance"] == 0.1 and e["ci95"][0] > e["chance"] and e["ci95"][0] <= e["precision_at_10"] <= e["ci95"][1]
+    assert m["model"]["units_watched"] <= m["model"]["units_scored"] and m["limitations"]
+    assert m["size_of_change"]["model_mae"] >= m["size_of_change"]["baseline_mae"]   # why no percentage is shown
+
+
+def test_no_response_carries_a_forecast_percentage(client):
+    bodies = [client.get(p).text for p in ("/districts", "/watchlist", "/district/671", "/district/502")]
+    for b in bodies:
+        assert "predicted_change" not in b and "risk_level" not in b
+    assert "predicted_change" not in json.dumps(data.get())
+
+
+def test_cors_allows_the_vercel_frontend_and_only_reads(client):
+    r = client.get("/health", headers={"Origin": "https://women-safety-ml-system-jwlh.vercel.app"})
+    assert r.headers.get("access-control-allow-origin") == "https://women-safety-ml-system-jwlh.vercel.app"
+    r = client.get("/health", headers={"Origin": "https://evil.example.com"})
+    assert "access-control-allow-origin" not in r.headers
+
+
+def test_the_old_prediction_endpoints_are_gone(client):
+    assert client.get("/predict_district", params={"state": "x", "district": "y"}).status_code == 404
+    assert client.post("/predict", json={}).status_code in (404, 405)

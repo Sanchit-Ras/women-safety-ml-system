@@ -9,8 +9,8 @@ export default function Findings() {
             Key Research Insights
           </h2>
           <p className="text-slate-500 max-w-2xl mx-auto text-lg">
-            This project focuses on forecasting crime risk rather than reacting
-            to past data — enabling proactive safety planning.
+            What the data supports, measured on held-out years, and what it does
+            not.
           </p>
         </div>
 

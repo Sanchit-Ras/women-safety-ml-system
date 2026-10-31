@@ -66,10 +66,12 @@ def log_changes(wide: pd.DataFrame) -> pd.DataFrame:
     return c.where((wide > 0) & (prev > 0))
 
 
-def windows(panel: pd.DataFrame, neighbours: dict[str, list[str]], window: int = WINDOW) -> pd.DataFrame:
+def windows(panel: pd.DataFrame, neighbours: dict[str, list[str]], window: int = WINDOW, include_next: bool = False) -> pd.DataFrame:
     """One row per unit and label year L: features from the years before L, and the target, the log change into L.
     lag_1 is the change into L-1 (the most recent) and lag_k the change into L-k; diff_k and the window stats are on
-    the window oldest first. A row needs all ``window`` lags and the target defined (no zero or missing total)."""
+    the window oldest first. A row needs all ``window`` lags and the target defined (no zero or missing total).
+    ``include_next`` adds, per unit, the row for the year after the last one, with the target and next count NaN:
+    what the live app scores."""
     wide = panel.pivot(index="unit_id", columns="year", values="total").sort_index(axis=1)
     years = [int(y) for y in wide.columns]
     c = log_changes(wide)
@@ -87,13 +89,15 @@ def windows(panel: pd.DataFrame, neighbours: dict[str, list[str]], window: int =
         nb = [carr[v] for v in neighbours.get(u, []) if v in carr]
         out_u = oarr[u].to_numpy(dtype=float)
         mix_u = {cat: marr[cat].loc[u].to_numpy(dtype=float) for cat in CORE_CATEGORIES}
-        for i in range(window + 1, len(years)):                  # i: position of the label year; lags at i-window..i-1
+        for i in range(window + 1, len(years) + int(include_next)):   # i: position of the label year; lags at i-window..i-1
+            nxt = i == len(years)                                      # the year after the data: no target yet
             x = cu[i - window:i]                                 # oldest first
-            if np.isnan(x).any() or np.isnan(cu[i]):
+            if np.isnan(x).any() or (not nxt and np.isnan(cu[i])):
                 continue
             prev = tu[i - 1]
             nbr = [v[i - 1] for v in nb if not np.isnan(v[i - 1])]
-            row = {"unit_id": u, "state_code": state_of[u], "label_year": years[i], "count_prev": prev, "count_next": tu[i], "y": cu[i]}
+            row = {"unit_id": u, "state_code": state_of[u], "label_year": years[-1] + 1 if nxt else years[i], "count_prev": prev,
+                   "count_next": np.nan if nxt else tu[i], "y": np.nan if nxt else cu[i]}
             row.update({f"lag_{k}": x[-k] for k in range(1, window + 1)})
             row.update({f"diff_{k}": x[k] - x[k - 1] for k in range(1, window)})
             touched = out_u[i - window - 1:i + 1]                   # the totals behind the lags, and the target's two

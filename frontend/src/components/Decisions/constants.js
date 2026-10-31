@@ -1,26 +1,26 @@
 export const DECISIONS = [
   {
-    title: "District Holdout Validation",
-    desc: "Instead of random splitting, the model was tested on completely unseen districts to simulate real-world deployment.",
-    icon: "🏙️",
+    title: "An LLM Only Where It Earns Its Place",
+    desc: "The model resolves the names lookups cannot, and every answer is checked: 0 of 76 answers named a district outside the allowed list, and only answers above a measured confidence skip human review.",
+    icon: "🤖",
     bg: "bg-blue-50 border-blue-100",
   },
   {
-    title: "Sliding Window Forecasting",
-    desc: "Converted time-series crime data into supervised learning format using lag features.",
-    icon: "📅",
+    title: "Human Decisions Recorded as Data",
+    desc: "Every name mapping, district lineage fact and split weight lives in a reviewable file that says who decided and why. The pipeline never overwrites a person's decision.",
+    icon: "📝",
     bg: "bg-purple-50 border-purple-100",
   },
   {
-    title: "Leakage Prevention",
-    desc: "Applied strict time-based splits to ensure the model never trained on future data.",
+    title: "Honest Test Design",
+    desc: "Models see only the past, settings are chosen on years kept apart from the headline, and a result counts only if it beats the best simple baseline beyond the noise.",
     icon: "🔒",
     bg: "bg-green-50 border-green-100",
   },
   {
-    title: "Dual Model Strategy",
-    desc: "Used Random Forest for robustness and XGBoost for high predictive power.",
-    icon: "🤖",
+    title: "Batch Scoring, Not Per-Request Inference",
+    desc: "The data changes once a year, so the watch list is computed once and served from a file. The API needs no ML libraries, which keeps the server small and its cold start short.",
+    icon: "⚡",
     bg: "bg-orange-50 border-orange-100",
   },
 ];

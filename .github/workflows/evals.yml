@@ -1,5 +1,9 @@
-# On every push and pull request: the tests, then the deterministic eval gate (evals/gate.py), which rebuilds the
-# store from the committed files without any model call and checks the metrics against their floors.
+# On every push and pull request, four jobs, so nothing reaches main (and so Render and Vercel) unchecked:
+#   gate  the pipeline's tests, then the deterministic eval gate (evals/gate.py), which rebuilds the store from the
+#         committed files without any model call and checks the metrics against their floors
+#   api   the API's tests, with only the API's requirements, on the Python version of its Docker image
+#   image the API's Docker image built exactly as Render builds it, started, and asked for /health and /deploy-check
+#   web   the frontend installed from its lock file, linted, and built exactly as Vercel builds it
 # By hand (Actions > evals > Run workflow, tick "live"): also ask the live model about 20 gold names. That job
 # needs the repository secret GEMINI_API_KEY and the repository variables GEMINI_MODEL, GEMINI_RPM, GEMINI_TPM,
 # GEMINI_RPD; it costs a few paise and never touches the pipeline's own cache.
@@ -28,6 +32,57 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m pytest -q
       - run: python -m evals.gate
+
+  api:
+    name: API tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - run: pip install -r requirements.txt pytest==9.1.1 httpx==0.28.1
+      - run: python -m pytest -q tests
+
+  image:
+    name: API Docker image, as Render builds it
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t wsml-api backend
+      - run: docker run -d --name api -p 8000:8000 wsml-api
+      - name: the container answers
+        run: |
+          for i in $(seq 1 30); do curl -sf http://localhost:8000/health && break; sleep 2; done
+          curl -sf http://localhost:8000/health
+          curl -sf http://localhost:8000/deploy-check
+          curl -sf http://localhost:8000/watchlist > /dev/null
+      - if: failure()
+        run: docker logs api
+
+  web:
+    name: frontend lint and build, as Vercel builds it
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+      - run: npm run lint -- --max-warnings=0
+      - run: npm run build
+        env:
+          VITE_API_URL: https://example.invalid
 
   live:
     name: live model check (manual)

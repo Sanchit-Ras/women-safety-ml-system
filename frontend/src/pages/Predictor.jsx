@@ -1,365 +1,161 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import BootSequence from "../components/BootSequence";
-import RiskExplanation from "../components/RiskExplanation";
-import PredictionMeaning from "../components/PredictionsMeaning";
+import DistrictCard from "../components/DistrictCard";
+import WatchExplanation from "../components/WatchExplanation";
+import WatchMap from "../components/WatchMap";
+import { REPO, getJson, getMap } from "../lib/api";
 
-const MAX_RETRIES = 12; // 1 minute approx (12 * 5s)
+const MAX_RETRIES = 12; // about a minute (12 x 5 s): the free server may be waking up
 
 export default function Predictor() {
-  const [data, setData] = useState({});
-  const [state, setState] = useState("");
-  const [district, setDistrict] = useState("");
-  const [result, setResult] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [base, setBase] = useState(null); // { districts, meta, watch } from the API
+  const [geo, setGeo] = useState(null);
+  const [detail, setDetail] = useState(null);
   const [error, setError] = useState("");
-  const [showInfo, setShowInfo] = useState(false);
-  const [isBooting, setIsBooting] = useState(true);
   const [retryCount, setRetryCount] = useState(0);
+  const [params, setParams] = useSearchParams();
+  const code = params.get("district") ? Number(params.get("district")) : null;
 
-  // Fetch districts with retry logic for cold start
+  // The API: districts, the model card and the watch list, retried while the server wakes up
   useEffect(() => {
-    const fetchDistricts = async () => {
-      try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/districts`);
-        if (!res.ok) throw new Error("Failed to fetch");
-        const data = await res.json();
-        setData(data);
-        setIsBooting(false);
-      } catch (err) {
-        if (retryCount < MAX_RETRIES) {
-          setTimeout(() => {
-            setRetryCount((prev) => prev + 1);
-          }, 5000);
-        } else {
-          setIsBooting(false);
-          setError("Failed to connect to the server. Please try again later.");
-        }
-      }
-    };
-
-    fetchDistricts();
+    let cancelled = false;
+    Promise.all([getJson("/districts"), getJson("/model-info"), getJson("/watchlist")])
+      .then(([districts, meta, watch]) => !cancelled && setBase({ districts, meta, watch }))
+      .catch(() => {
+        if (cancelled) return;
+        if (retryCount < MAX_RETRIES) setTimeout(() => setRetryCount((n) => n + 1), 5000);
+        else setError("Could not reach the server. Please try again in a minute.");
+      });
+    return () => { cancelled = true; };
   }, [retryCount]);
 
-  const predict = async () => {
-    if (!state || !district) return;
+  // The map: a static file served with the page
+  useEffect(() => {
+    getMap().then(setGeo).catch(() => setGeo(null));
+  }, []);
 
-    setLoading(true);
-    setError("");
-    setResult(null);
+  // The selected district's numbers
+  useEffect(() => {
+    if (!code || !base) return;
+    let cancelled = false;
+    getJson(`/district/${code}`)
+      .then((d) => !cancelled && setDetail(d))
+      .catch(() => !cancelled && setDetail({ error: true, code }));
+    return () => { cancelled = true; };
+  }, [code, base]);
 
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/predict_district?state=${state}&district=${district}`,
-      );
+  const statusByCode = useMemo(() => {
+    const out = {};
+    base?.districts.states.forEach((s) => s.districts.forEach((d) => { out[d.code] = d.status; }));
+    return out;
+  }, [base]);
 
-      const json = await res.json();
+  const stateOf = useMemo(() => {
+    const out = {};
+    base?.districts.states.forEach((s) => s.districts.forEach((d) => { out[d.code] = s.code; }));
+    return out;
+  }, [base]);
 
-      if (json.error) {
-        setError(json.error);
-      } else {
-        setResult(json);
-      }
-    } catch {
-      setError("Prediction failed. Please try again.");
-    }
-
-    setLoading(false);
-  };
-
-  const riskColor = (level) => {
-    switch (level) {
-      case "Low Risk":
-        return "bg-green-100 text-green-800 border-green-200";
-      case "Moderate Risk":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
-      case "High Risk":
-        return "bg-orange-100 text-orange-800 border-orange-200";
-      case "Very High Risk":
-        return "bg-red-100 text-red-800 border-red-200";
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
-    }
-  };
+  const [pickedState, setPickedState] = useState(null);
+  const stateCode = pickedState ?? (code ? stateOf[code] : null);
+  const state = base?.districts.states.find((s) => s.code === stateCode);
+  const select = (c) => setParams(c ? { district: String(c) } : {});
+  const shown = detail && detail.code === code && !detail.error ? detail : null;
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8 font-sans">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-blue-50 pt-28 pb-12 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-6xl mx-auto">
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-100">
-          {/* Header Section */}
           <div className="bg-slate-900 text-white p-8 sm:p-10 text-center">
             <h1 className="text-3xl sm:text-4xl font-display font-bold mb-3 tracking-tight">
-              Women's Safety Predictor
+              District Watch List {base?.meta.watch_year ?? ""}
             </h1>
-            <p className="text-slate-300 text-lg max-w-2xl mx-auto font-light">
-              Forecasting district-level crime risks using advanced Time-Series
-              Machine Learning
+            <p className="text-slate-300 text-lg max-w-3xl mx-auto font-light">
+              Reported crimes against women for every district on today's map of India, and the districts most likely to be
+              among the fastest-growing next year.
             </p>
           </div>
 
-          <div className="p-8 sm:p-10 space-y-8">
-            {isBooting ? (
+          <div className="p-6 sm:p-10 space-y-8">
+            {error ? (
+              <div className="p-4 bg-red-50 text-red-700 rounded-xl border border-red-100">{error}</div>
+            ) : !base ? (
               <BootSequence />
             ) : (
               <>
-                {/* Context Panel */}
-                <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 text-slate-700 leading-relaxed shadow-sm">
-                  <div className="flex gap-3 mb-3">
-                    <span className="text-2xl">📊</span>
-                    <p className="font-medium text-blue-900 text-lg">
-                      Model Scope
-                    </p>
+                <WatchExplanation meta={base.meta} />
+
+                <div className="grid lg:grid-cols-5 gap-8 items-start">
+                  <div className="lg:col-span-3 bg-slate-50 rounded-2xl p-4 border border-slate-200">
+                    <WatchMap geo={geo} statusByCode={statusByCode} selected={code} onSelect={select} />
                   </div>
-                  <p className="mb-2">
-                    Predicts the{" "}
-                    <span className="font-semibold text-blue-900">
-                      percentage change/trend in crimes against women
-                    </span>{" "}
-                    for the year{" "}
-                    <span className="font-semibold text-blue-900">
-                      2014-2015
-                    </span>
-                    .
-                  </p>
-                  <div className="grid md:grid-cols-2 gap-4 mt-4 text-sm">
-                    <div className="bg-white/60 p-3 rounded-lg">
-                      <span className="font-semibold text-slate-900 block mb-1">
-                        Architecture
-                      </span>
-                      XGBoost regression pipeline trained on official NCRB data
-                      (2001–2014).
-                    </div>
-                    <div className="bg-white/60 p-3 rounded-lg">
-                      <span className="font-semibold text-slate-900 block mb-1">
-                        Risk Scoring
-                      </span>
-                      Relative ranking using national quartile thresholds for
-                      geospatial consistency.
-                    </div>
-                  </div>
-                </div>
 
-                <RiskExplanation />
-
-                {/* How it Works Accordion */}
-                <div className="border border-slate-200 rounded-2xl overflow-hidden">
-                  <button
-                    onClick={() => setShowInfo(!showInfo)}
-                    className="w-full flex items-center justify-between p-4 bg-slate-50 hover:bg-slate-100 transition-colors font-semibold text-slate-700"
-                  >
-                    <span>How This Prediction Works</span>
-                    <span
-                      className={`transform transition-transform duration-200 ${showInfo ? "rotate-180" : ""}`}
-                    >
-                      ▼
-                    </span>
-                  </button>
-
-                  {showInfo && (
-                    <div className="p-6 bg-white space-y-4 text-sm text-slate-600 border-t border-slate-200">
-                      <div className="grid gap-4 sm:grid-cols-2">
-                        <div>
-                          <strong className="block text-slate-900 mb-1">
-                            Data Source
-                          </strong>
-                          Official NCRB crime records (2001-2014).
-                        </div>
-                        <div>
-                          <strong className="block text-slate-900 mb-1">
-                            Feature Engineering
-                          </strong>
-                          Sliding-window time-series to capture momentum &
-                          volatility.
-                        </div>
-                        <div>
-                          <strong className="block text-slate-900 mb-1">
-                            Model
-                          </strong>
-                          XGBoost regression for percentage change forecasting.
-                        </div>
-                        <div>
-                          <strong className="block text-slate-900 mb-1">
-                            Validation Strategy
-                          </strong>
-                          District holdout testing to ensure generalization.
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                <PredictionMeaning />
-
-            {/* Selection Form */}
-            <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 shadow-inner">
-              <h3 className="text-lg font-semibold text-slate-800 mb-4">
-                Select Location
-              </h3>
-              <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                <div>
-                  <label className="block text-sm font-medium text-slate-500 mb-1.5 ml-1">
-                    State
-                  </label>
-                  <div className="relative">
-                    <select
-                      className="w-full appearance-none bg-white border border-slate-300 text-slate-700 py-3 px-4 pr-8 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm"
-                      onChange={(e) => {
-                        setState(e.target.value);
-                        setDistrict("");
-                      }}
-                      value={state || "Select State"}
-                    >
-                      <option disabled>Select State</option>
-                      {Object.keys(data).map((s) => (
-                        <option key={s} value={s}>
-                          {s.toUpperCase()}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
-                      <svg
-                        className="fill-current h-4 w-4"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
+                  <div className="lg:col-span-2 space-y-4">
+                    <div className="bg-slate-50 p-5 rounded-2xl border border-slate-200 space-y-3">
+                      <p className="font-semibold text-slate-800">Pick a district, or click one on the map</p>
+                      <select
+                        className="w-full bg-white border border-slate-300 text-slate-700 py-2.5 px-3 rounded-xl"
+                        value={stateCode ?? ""}
+                        onChange={(e) => { setPickedState(Number(e.target.value)); select(null); }}
                       >
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-slate-500 mb-1.5 ml-1">
-                        District
-                      </label>
-                      <div className="relative">
-                        <select
-                          className="w-full appearance-none bg-white border border-slate-300 text-slate-700 py-3 px-4 pr-8 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm disabled:bg-slate-100 disabled:text-slate-400"
-                          onChange={(e) => setDistrict(e.target.value)}
-                          disabled={!state}
-                          value={district || "Select District"}
-                        >
-                          <option disabled>Select District</option>
-                          {data[state]?.map((d) => (
-                            <option key={d} value={d}>
-                              {d.toUpperCase()}
-                            </option>
-                          ))}
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-slate-500">
-                          <svg
-                            className="fill-current h-4 w-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                          >
-                            <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={predict}
-                    disabled={!state || !district || loading}
-                    className={`w-full py-4 rounded-xl font-bold text-lg shadow-lg transform transition-all duration-200 
-                  ${
-                    !state || !district || loading
-                      ? "bg-slate-300 text-slate-500 cursor-not-allowed"
-                      : "bg-linear-to-r from-blue-600 to-indigo-600 text-white hover:from-blue-700 hover:to-indigo-700 hover:shadow-xl hover:-translate-y-0.5"
-                  }`}
-                  >
-                    {loading ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg
-                          className="animate-spin h-5 w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                        >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Analyzing Data...
-                      </span>
-                    ) : (
-                      "Predict Crime Risk"
-                    )}
-                  </button>
-
-                  {error && (
-                    <div className="mt-4 p-4 bg-red-50 border border-red-200 text-red-600 rounded-xl flex items-center gap-3">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                        <option value="" disabled>Select a state</option>
+                        {base.districts.states.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
+                      </select>
+                      <select
+                        className="w-full bg-white border border-slate-300 text-slate-700 py-2.5 px-3 rounded-xl disabled:bg-slate-100"
+                        value={code && stateOf[code] === stateCode ? code : ""}
+                        disabled={!state}
+                        onChange={(e) => select(Number(e.target.value))}
                       >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                      {error}
+                        <option value="" disabled>Select a district</option>
+                        {state?.districts.map((d) => <option key={d.code} value={d.code}>{d.name}</option>)}
+                      </select>
                     </div>
-                  )}
-                </div>
 
-                {/* Results Section */}
-                {result && !loading && (
-                  <div className="mt-10 animate-fade-in-up">
-                    <div className="text-center p-8 bg-slate-50 border border-slate-200 rounded-3xl">
-                      <p className="text-slate-500 font-medium uppercase tracking-wider text-sm mb-4">
-                        Predicted Crime Trend (2014 → 2015)
+                    <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden">
+                      <p className="px-5 py-3 font-semibold text-slate-800 border-b border-slate-100">
+                        On the watch list ({base.watch.districts.length} districts)
                       </p>
-
-                      <div className="flex flex-col items-center justify-center">
-                        <span
-                          className={`text-6xl sm:text-7xl font-display font-bold mb-4 ${result.predicted_change > 0 ? "text-red-500" : "text-green-500"}`}
-                        >
-                          {result.predicted_change > 0 ? "+" : ""}
-                          {result.predicted_change.toFixed(2)}%
-                        </span>
-
-                        <div
-                          className={`px-6 py-2 rounded-full font-bold text-sm tracking-wide border uppercase flex items-center gap-2 ${riskColor(result.risk_level)}`}
-                        >
-                          <span className="w-2 h-2 rounded-full bg-current"></span>
-                          {result.risk_level}
-                        </div>
-                      </div>
-
-                      <p className="mt-6 text-slate-500 text-sm max-w-lg mx-auto">
-                        This projection is based on historical patterns. Use
-                        this as an early warning signal rather than a definitive
-                        outcome.
+                      <ol className="max-h-80 overflow-y-auto divide-y divide-slate-100 text-sm">
+                        {base.watch.districts.map((d) => (
+                          <li key={d.code}>
+                            <button
+                              onClick={() => { setPickedState(null); select(d.code); }}
+                              className={`w-full text-left px-5 py-2 hover:bg-red-50 flex justify-between gap-3 ${d.code === code ? "bg-red-50" : ""}`}
+                            >
+                              <span><span className="text-slate-400 mr-2">{d.rank}.</span>{d.name}<span className="text-slate-400">, {d.state}</span></span>
+                              <span className="text-slate-500 font-mono">{d.latest_total == null ? "-" : Math.round(d.latest_total)}</span>
+                            </button>
+                          </li>
+                        ))}
+                      </ol>
+                      <p className="px-5 py-2 text-xs text-slate-400 border-t border-slate-100">
+                        Number: crimes reported in {base.meta.data_years[1]}. Districts assessed together share a rank.
                       </p>
                     </div>
                   </div>
+                </div>
+
+                {code && !shown && !(detail?.error && detail.code === code) && (
+                  <div className="text-center text-slate-500">Loading the district...</div>
                 )}
+                {detail?.error && detail.code === code && (
+                  <div className="p-4 bg-red-50 text-red-700 rounded-xl border border-red-100">That district could not be loaded.</div>
+                )}
+                {shown && <DistrictCard district={shown} meta={base.meta} />}
               </>
             )}
           </div>
 
-          {/* Footer */}
-          <div className="bg-slate-50 border-t border-slate-100 p-4 text-center">
-            <p className="text-xs text-slate-400 font-medium">
-              Model: XGBoost • Features: Sliding Window Time-Series •
-              Evaluation: District Holdout Validation
-            </p>
+          <div className="bg-slate-50 border-t border-slate-100 p-4 text-center text-xs text-slate-500">
+            Data: NCRB district tables 2001-2022, re-based onto today's districts. Model: {base?.meta.model.name ?? "hotspot classifier"},
+            batch-scored.{" "}
+            {base && (
+              <a className="text-blue-600 hover:underline" href={`${REPO}/blob/main/${base.meta.evidence.report}`} target="_blank" rel="noopener noreferrer">
+                The evidence report
+              </a>
+            )}
           </div>
         </div>
       </div>
