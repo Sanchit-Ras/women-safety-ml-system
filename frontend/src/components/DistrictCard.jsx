@@ -6,8 +6,8 @@ const BADGE = {
   not_scored: "bg-slate-50 text-slate-500 border-slate-200",
 };
 
-function statusText(d, year, units) {
-  if (d.status === "watch") return `On the ${year} watch list (rank ${d.rank} of ${units})`;
+function statusText(d, year) {
+  if (d.status === "watch") return `On the ${year} watch list`;
   if (d.status === "no_signal") return `Not on the ${year} watch list`;
   return "Not scored";
 }
@@ -15,6 +15,8 @@ function statusText(d, year, units) {
 export default function DistrictCard({ district: d, meta }) {
   const cats = meta.categories;
   const max = d.latest ? Math.max(1, ...Object.values(d.latest)) : 1;
+  const p = d.peer;
+  const groupHit = p && meta.evidence.by_group.find((b) => b.group === p.group)?.precision;
 
   return (
     <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
@@ -24,15 +26,23 @@ export default function DistrictCard({ district: d, meta }) {
           <p className="text-slate-500">{d.state}</p>
         </div>
         <span className={`px-4 py-1.5 rounded-full border text-sm font-semibold ${BADGE[d.status]}`}>
-          {statusText(d, meta.watch_year, meta.model.units_scored)}
+          {statusText(d, meta.watch_year)}
         </span>
       </div>
 
-      {d.status === "watch" && (
-        <p className="text-sm text-red-900 bg-red-50 border border-red-100 rounded-xl p-4">
-          Likely to be among the fastest-growing tenth of districts in {meta.watch_year}. In past test years, about{" "}
-          {Math.round(meta.evidence.precision_at_10 * 100)} in 100 flagged districts really were. This says nothing about how
-          many crimes it has compared with other districts.
+      {p && (
+        <p className={`text-sm rounded-xl p-4 border ${d.status === "watch" ? "text-red-900 bg-red-50 border-red-100" : "text-slate-700 bg-slate-50 border-slate-200"}`}>
+          Compared with the {p.size} districts of similar size (those with {p.min_cases.toLocaleString("en-IN")} to{" "}
+          {p.max_cases.toLocaleString("en-IN")} cases in {meta.data_years[1]}
+          {d.unit_members.length > 0 && (
+            <>; it is assessed with {d.unit_members.map((m) => m.name).join(", ")}, {p.cases.toLocaleString("en-IN")} cases together</>
+          )}), it ranks <strong>{p.rank}</strong> for how likely it is
+          to grow fastest in {meta.watch_year}; the top {Math.max(1, Math.ceil(p.size * meta.watch_share))} are on the watch list.
+          {groupHit != null && (
+            <> In past tests, for districts this size, about {Math.round(groupHit * 100)} in 100 flagged districts really were among
+            the fastest-growing tenth (by guessing: 10).</>
+          )}{" "}
+          This compares growth, not how many crimes a district has.
         </p>
       )}
 

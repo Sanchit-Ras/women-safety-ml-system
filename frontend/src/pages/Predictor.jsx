@@ -57,6 +57,18 @@ export default function Predictor() {
     return out;
   }, [base]);
 
+  // The watch list by size group, largest first, each with how often the list was right for that size in past tests
+  const watchGroups = useMemo(() => {
+    if (!base) return [];
+    const byGroup = {};
+    base.watch.districts.forEach((d) => {
+      const g = (byGroup[d.peer.group] ??= { group: d.peer.group, min: d.peer.min_cases, max: d.peer.max_cases, items: [] });
+      g.items.push(d);
+    });
+    const hit = Object.fromEntries(base.meta.evidence.by_group.map((b) => [b.group, b.precision]));
+    return Object.values(byGroup).sort((a, b) => b.group - a.group).map((g) => ({ ...g, hit: hit[g.group] }));
+  }, [base]);
+
   const [pickedState, setPickedState] = useState(null);
   const stateCode = pickedState ?? (code ? stateOf[code] : null);
   const state = base?.districts.states.find((s) => s.code === stateCode);
@@ -117,21 +129,33 @@ export default function Predictor() {
                       <p className="px-5 py-3 font-semibold text-slate-800 border-b border-slate-100">
                         On the watch list ({base.watch.districts.length} districts)
                       </p>
-                      <ol className="max-h-80 overflow-y-auto divide-y divide-slate-100 text-sm">
-                        {base.watch.districts.map((d) => (
-                          <li key={d.code}>
-                            <button
-                              onClick={() => { setPickedState(null); select(d.code); }}
-                              className={`w-full text-left px-5 py-2 hover:bg-red-50 flex justify-between gap-3 ${d.code === code ? "bg-red-50" : ""}`}
-                            >
-                              <span><span className="text-slate-400 mr-2">{d.rank}.</span>{d.name}<span className="text-slate-400">, {d.state}</span></span>
-                              <span className="text-slate-500 font-mono">{d.latest_total == null ? "-" : Math.round(d.latest_total)}</span>
-                            </button>
-                          </li>
+                      <div className="max-h-96 overflow-y-auto text-sm">
+                        {watchGroups.map((g) => (
+                          <div key={g.group}>
+                            <p className="px-5 py-2 bg-slate-50 text-xs text-slate-500 border-y border-slate-100">
+                              Size group {g.group}: {g.min.toLocaleString("en-IN")}-{g.max.toLocaleString("en-IN")} cases
+                              {g.hit != null && <> · right {Math.round(g.hit * 100)} in 100 in past tests</>}
+                            </p>
+                            <ul className="divide-y divide-slate-100">
+                              {g.items.map((d) => (
+                                <li key={d.code}>
+                                  <button
+                                    onClick={() => { setPickedState(null); select(d.code); }}
+                                    className={`w-full text-left px-5 py-2 hover:bg-red-50 flex justify-between gap-3 ${d.code === code ? "bg-red-50" : ""}`}
+                                  >
+                                    <span>{d.name}<span className="text-slate-400">, {d.state}</span></span>
+                                    <span className="text-slate-500 font-mono">{d.latest_total == null ? "-" : Math.round(d.latest_total)}</span>
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         ))}
-                      </ol>
+                      </div>
                       <p className="px-5 py-2 text-xs text-slate-400 border-t border-slate-100">
-                        Number: crimes reported in {base.meta.data_years[1]}. Districts assessed together share a rank.
+                        Grouped by size, largest first; most likely first within a group. Number: the district's own crimes reported
+                        in {base.meta.data_years[1]}; districts assessed together (such as a district and one carved out of it) are
+                        sized by their combined cases. By guessing, 10 in 100 would be right.
                       </p>
                     </div>
                   </div>

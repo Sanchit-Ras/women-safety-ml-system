@@ -1,4 +1,5 @@
-// Every number here comes from a committed report: evals/reports/2026-10-18.md and ml/reports/2026-10-18_bakeoff.md.
+// Every number here comes from a committed report: evals/reports/2026-10-18.md and ml/reports/2026-10-31_bakeoff.md
+// (tests/test_export_app.py checks the watch-list numbers against the app's data).
 export const STATS = [
   {
     value: "22 Years",
@@ -16,8 +17,8 @@ export const STATS = [
     color: "text-green-600",
   },
   {
-    value: "3.7×",
-    label: "Better than chance at flagging next year's fastest-growing districts",
+    value: "2.5×",
+    label: "Better than guessing at flagging next year's fastest-growing districts, each compared with districts its size",
     color: "text-red-600",
   },
 ];

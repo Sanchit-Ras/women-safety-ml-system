@@ -54,6 +54,7 @@ CREDIBILITY_GRID = (10, 30, 100, 300, 1000)
 RIDGE_GRID = (1.0, 10.0, 100.0)
 BASELINES = ("zero", "persistence", "window_mean", "state_trend")
 MAX_OUTSIDE = 0.5     # a window is used only if no year it touches had more than half its total estimated across the unit's boundary
+GROUP_GRID = (1, 2, 3, 4, 5, 6, 8, 10, 15, 20)   # size groups tried for "fastest-growing among districts of similar size"; 1 = no groups
 
 
 # ---- windows ---------------------------------------------------------------------------------------------------
@@ -157,19 +158,32 @@ def poisson(train: pd.DataFrame, test: pd.DataFrame, params: dict):
     return model, np.log(pred / test["count_prev"].to_numpy(dtype=float))
 
 
-def top_decile(df: pd.DataFrame, values: np.ndarray) -> np.ndarray:
-    """True for the rows in the top 10% of ``values`` within their label year."""
+def size_groups(df: pd.DataFrame, k: int) -> np.ndarray:
+    """0..k-1 per row: within each label year, the rows split into k groups of (nearly) equal count by last year's
+    cases, smallest first. k = 1 puts every row in one group."""
+    out = np.zeros(len(df), dtype=int)
+    for idx in df.groupby("label_year").indices.values():
+        r = pd.Series(df["count_prev"].to_numpy(dtype=float)[idx]).rank(method="first").to_numpy()
+        out[idx] = np.minimum(((r - 1) * k // len(idx)).astype(int), k - 1)
+    return out
+
+
+def top_decile(df: pd.DataFrame, values: np.ndarray, groups: np.ndarray | None = None) -> np.ndarray:
+    """True for the rows in the top 10% of ``values`` within their label year, or within their label year and size
+    group when ``groups`` is given (at least one row per group)."""
     flag = np.zeros(len(df), dtype=bool)
     values = np.asarray(values, dtype=float)
-    for idx in df.groupby("label_year").indices.values():
+    keys = df[["label_year"]].assign(_g=0 if groups is None else np.asarray(groups))
+    for idx in keys.groupby(["label_year", "_g"]).indices.values():
         k = max(1, int(np.ceil(0.1 * len(idx))))
         flag[idx[np.argsort(-values[idx], kind="stable")[:k]]] = True
     return flag
 
 
-def hotspot(train: pd.DataFrame, test: pd.DataFrame, params: dict) -> np.ndarray:
-    """A classifier for 'in the top 10% of growth next year'; its score is the probability, ranked for precision at 10%."""
-    label = top_decile(train, train["y"].to_numpy()).astype(int)
+def hotspot(train: pd.DataFrame, test: pd.DataFrame, params: dict, k: int = 1) -> np.ndarray:
+    """A classifier for 'in the top 10% of growth next year' (among districts of similar size when k > 1: the label is
+    the top tenth within each of k size groups); its score is the probability, ranked for precision at 10%."""
+    label = top_decile(train, train["y"].to_numpy(), size_groups(train, k) if k > 1 else None).astype(int)
     model = XGBClassifier(**XGB_FIXED, **params, eval_metric="logloss").fit(train[FEATURES], label)
     return model.predict_proba(test[FEATURES])[:, 1]
 
@@ -198,8 +212,10 @@ def pct(c) -> np.ndarray:
     return (np.exp(np.asarray(c, dtype=float)) - 1.0) * 100.0
 
 
-def precision_at_10(df: pd.DataFrame, scores: np.ndarray) -> float:
-    flagged, actual = top_decile(df, scores), top_decile(df, df["y"].to_numpy())
+def precision_at_10(df: pd.DataFrame, scores: np.ndarray, groups: np.ndarray | None = None) -> float:
+    """Of the rows ``scores`` puts in the top tenth (of their year, or of their year and size group), the share that
+    were in the top tenth of actual growth on the same footing."""
+    flagged, actual = top_decile(df, scores, groups), top_decile(df, df["y"].to_numpy(), groups)
     return float((flagged & actual).sum() / flagged.sum()) if flagged.sum() else float("nan")
 
 
@@ -230,8 +246,10 @@ def bootstrap_mae_diff(df: pd.DataFrame, pred: np.ndarray, base: np.ndarray, n_b
     return [float(np.percentile(diff, 2.5)), float(np.percentile(diff, 97.5))]
 
 
-def bootstrap_precision(df: pd.DataFrame, scores: np.ndarray, n_boot: int = BOOTSTRAPS, seed: int = SEED) -> list[float]:
-    """95% interval of precision at 10% when units are resampled with replacement (a unit's years travel together)."""
+def bootstrap_precision(df: pd.DataFrame, scores: np.ndarray, n_boot: int = BOOTSTRAPS, seed: int = SEED,
+                        groups: np.ndarray | None = None) -> list[float]:
+    """95% interval of precision at 10% when units are resampled with replacement (a unit's years travel together);
+    each row keeps its size group."""
     scores = np.asarray(scores, dtype=float)
     codes, inv = np.unique(df["unit_id"].to_numpy(), return_inverse=True)
     rows_of = [np.flatnonzero(inv == k) for k in range(len(codes))]
@@ -239,8 +257,41 @@ def bootstrap_precision(df: pd.DataFrame, scores: np.ndarray, n_boot: int = BOOT
     out = []
     for _ in range(n_boot):
         idx = np.concatenate([rows_of[k] for k in rng.integers(0, len(codes), size=len(codes))])
-        out.append(precision_at_10(df.iloc[idx].reset_index(drop=True), scores[idx]))
+        out.append(precision_at_10(df.iloc[idx].reset_index(drop=True), scores[idx], None if groups is None else np.asarray(groups)[idx]))
     return [float(np.nanpercentile(out, 2.5)), float(np.nanpercentile(out, 97.5))]
+
+
+def size_group_search(R: dict, params: dict, grid: tuple[int, ...] = None) -> dict:
+    """How many size groups to compare districts within, chosen on the validation years only, then measured once on
+    the test years. For each k: the classifier trained on the top tenth within k groups; precision within groups, and
+    the same for ranking by size alone (smallest first, largest first). The rule picks the k with the largest margin
+    of the model over the better size-only ranking (skill that size does not explain); a tie goes to fewer groups."""
+    grid = grid or GROUP_GRID
+    vdf = pd.concat([R[L][1] for L in VALIDATION_YEARS], ignore_index=True)
+    validation = {}
+    for k in grid:
+        score = np.concatenate([hotspot(R[L][0], R[L][1], params, k) for L in VALIDATION_YEARS])
+        gv = size_groups(vdf, k)
+        m, s, b = (precision_at_10(vdf, x, gv) for x in (score, -vdf["count_prev"].to_numpy(), vdf["count_prev"].to_numpy()))
+        validation[k] = {"model": m, "smallest_first": s, "largest_first": b, "beyond_size": m - max(s, b)}
+    chosen = max(grid, key=lambda k: (round(validation[k]["beyond_size"], 3), -k))
+    tdf = pd.concat([R[L][1] for L in TEST_YEARS], ignore_index=True)
+    score = np.concatenate([hotspot(R[L][0], R[L][1], params, chosen) for L in TEST_YEARS])
+    gt = size_groups(tdf, chosen)
+    flagged, actual = top_decile(tdf, score, gt), top_decile(tdf, tdf["y"].to_numpy(), gt)
+    by_group = []
+    for j in range(chosen):
+        m = gt == j
+        by_group.append({"group": j + 1, "min_cases": float(tdf["count_prev"][m].min()), "max_cases": float(tdf["count_prev"][m].max()),
+                         "median_cases": float(tdf["count_prev"][m].median()), "n": int(m.sum()),
+                         "precision": float((flagged[m] & actual[m]).sum() / flagged[m].sum()) if flagged[m].sum() else None})
+    test = {"model": precision_at_10(tdf, score, gt), "ci95": bootstrap_precision(tdf, score, groups=gt),
+            "smallest_first": precision_at_10(tdf, -tdf["count_prev"].to_numpy(), gt),
+            "largest_first": precision_at_10(tdf, tdf["count_prev"].to_numpy(), gt),
+            "flagged_median_cases": float(tdf["count_prev"][flagged].median()), "all_median_cases": float(tdf["count_prev"].median()),
+            "flagged_under_10_cases": float((tdf["count_prev"][flagged] < 10).mean())}
+    return {"grid": list(grid), "validation": validation, "chosen": chosen, "test": test, "by_group": by_group,
+            "rule": "the k with the largest validation margin of the model over the better size-only ranking; ties to fewer groups"}
 
 
 # ---- the bake-off -------------------------------------------------------------------------------------------------
@@ -347,14 +398,21 @@ def run(panel: pd.DataFrame, neighbours: dict[str, list[str]]) -> dict:
     no_shock = tuple(y for y in TEST_YEARS if y not in SHOCK_YEARS)
     ndf, nbase = _pooled(R, preds[best_baseline], no_shock)
     intervals_no_shock = {name: bootstrap_mae_diff(ndf, _pooled(R, preds[name], no_shock)[1], nbase) for name in order if name not in BASELINES}
-    rank_names = ("hotspot", "xgb", "poisson", "ridge", "reconciled", "ensemble", "stacked", "credibility", "window_mean", "persistence")
+    for L in years:                                         # size-only rankings: how much of a ranking's skill is just size
+        preds["smallest_first"][L] = -R[L][1]["count_prev"].to_numpy(dtype=float)
+        preds["largest_first"][L] = R[L][1]["count_prev"].to_numpy(dtype=float)
+    rank_names = ("hotspot", "xgb", "poisson", "ridge", "reconciled", "ensemble", "stacked", "credibility", "window_mean", "persistence",
+                  "smallest_first", "largest_first")
     vdf_all, _ = _pooled(R, preds["zero"], VALIDATION_YEARS)
     ranking = {name: {"validation": precision_at_10(vdf_all, _pooled(R, preds[name], VALIDATION_YEARS)[1]),
                       "test": precision_at_10(tdf, _pooled(R, preds[name], TEST_YEARS)[1]),
                       "test_ci95": bootstrap_precision(tdf, _pooled(R, preds[name], TEST_YEARS)[1])} for name in rank_names}
     candidates = [n for n in ("credibility", "ridge", "xgb", "poisson", "reconciled", "ensemble")] + (["stacked"] if stacked_wins else [])
     recommended = min(candidates, key=lambda n: _mae(R, preds[n], VALIDATION_YEARS))
-    ranking_recommended = max((n for n in rank_names if n not in BASELINES), key=lambda n: ranking[n]["validation"])
+    ranking_recommended = max((n for n in rank_names if n not in BASELINES + ("smallest_first", "largest_first")),
+                              key=lambda n: ranking[n]["validation"])
+    hot_params = XGB_GRID[[f"depth {x['max_depth']}, {x['n_estimators']} trees" in chosen["hotspot"] for x in XGB_GRID].index(True)]
+    groups = size_group_search(R, hot_params)
     return {"date": date.today().isoformat(), "units": int(win["unit_id"].nunique()), "windows": int(len(win)),
             "windows_left_out_estimated": int(len(every) - len(win)), "max_outside": MAX_OUTSIDE,
             "label_years": [int(win["label_year"].min()), int(win["label_year"].max())],
@@ -367,7 +425,7 @@ def run(panel: pd.DataFrame, neighbours: dict[str, list[str]]) -> dict:
             "reconciliation_variances": var, "stacked_weights": {n: float(w) for n, w in zip(parts, stack.coef_)},
             "stacked_beats_average_on_validation": bool(stacked_wins), "mae_zero": mae_zero, "scores": tables, "mae_by_year": by_year,
             "mae_diff_vs_best_baseline_ci95": intervals, "mae_diff_vs_best_baseline_ci95_no_shock": intervals_no_shock,
-            "ranking": ranking, "recommended": recommended, "ranking_recommended": ranking_recommended,
+            "ranking": ranking, "recommended": recommended, "ranking_recommended": ranking_recommended, "size_groups": groups,
             "xgb_fixed": XGB_FIXED, "bootstraps": BOOTSTRAPS, "_models": models, "_windows": win}
 
 
@@ -436,10 +494,35 @@ def render(m: dict) -> str:
           f"**Which units will be in the top tenth of growth.** By the rule (highest validation precision at 10%) the ranking contender "
           f"is **{rr}**: on the test years {_f(rk['test'], 3)} of the units it flags were in the top tenth, interval "
           f"{_f(rk['test_ci95'][0], 3)} to {_f(rk['test_ci95'][1], 3)}, against 0.100 by chance: "
-          + ("a real signal." if rk["test_ci95"][0] > 0.1 else "not beyond chance."),
-          "", "## Fixed settings", "", "```json", json.dumps({"xgb_fixed": m["xgb_fixed"], "xgb_grid": XGB_GRID, "credibility_K_grid": list(CREDIBILITY_GRID),
-                                                            "ridge_alpha_grid": list(RIDGE_GRID), "bootstraps": m["bootstraps"]}, indent=1), "```", ""]
+          + ("a real signal." if rk["test_ci95"][0] > 0.1 else "not beyond chance.")
+          + f" But ranking by size alone, smallest first, scores {_f(m['ranking']['smallest_first']['test'], 3)}: percentage growth "
+          "favours tiny units (1 case to 3 is +200%), so much of that ranking is size. The next section removes size."]
+    L += _size_group_lines(m["size_groups"])
+    L += ["", "## Fixed settings", "", "```json", json.dumps({"xgb_fixed": m["xgb_fixed"], "xgb_grid": XGB_GRID, "credibility_K_grid": list(CREDIBILITY_GRID),
+                                                            "ridge_alpha_grid": list(RIDGE_GRID), "group_grid": list(GROUP_GRID),
+                                                            "bootstraps": m["bootstraps"]}, indent=1), "```", ""]
     return "\n".join(L)
+
+
+def _size_group_lines(g: dict) -> list[str]:
+    t, k = g["test"], g["chosen"]
+    L = ["", "## Fastest-growing among districts of similar size", "",
+         "Units are split each year into k groups of equal count by last year's cases, and 'fast growth' is the top tenth "
+         "within each group, so a unit is compared only with units of its size. The number of groups was chosen on the "
+         f"validation years alone ({g['rule']}); the test years were scored once, for that number.", "",
+         "| groups | model | smallest first | largest first | model minus the better size-only ranking |", "|---|---|---|---|---|"]
+    for kk, v in g["validation"].items():
+        L.append(f"| {kk}{' (chosen)' if int(kk) == k else ''} | {_f(v['model'], 3)} | {_f(v['smallest_first'], 3)} | "
+                 f"{_f(v['largest_first'], 3)} | {v['beyond_size']:+.3f} |")
+    L += ["", f"Validation years. **Test years, {k} groups:** of the units the model flags, {_f(t['model'], 3)} were in the top tenth "
+              f"of their size group (95% interval {_f(t['ci95'][0], 3)} to {_f(t['ci95'][1], 3)}); smallest first scores "
+              f"{_f(t['smallest_first'], 3)}, largest first {_f(t['largest_first'], 3)}, chance 0.100. The flagged units' median "
+              f"size is {t['flagged_median_cases']:.0f} cases (all units: {t['all_median_cases']:.0f}); "
+              f"{t['flagged_under_10_cases']:.0%} have fewer than 10.", "",
+          "| size group | cases last year | test forecasts | model |", "|---|---|---|---|"]
+    L += [f"| {b['group']} | {b['min_cases']:.0f}-{b['max_cases']:.0f} (median {b['median_cases']:.0f}) | {b['n']} | {_f(b['precision'], 2)} |"
+          for b in g["by_group"]]
+    return L
 
 
 def write(m: dict, out_dir: Path = REPORTS) -> tuple[Path, Path]:
@@ -454,7 +537,8 @@ def save_recommended(m: dict, path: Path = ARTIFACTS / "bakeoff_recommended.jobl
     """The recommended contender refit on every window (label years up to the last), for Part 3 to serve from.
     Credibility and the ensembles have no single fitted object; they are recorded by name and settings."""
     rec, win = m["recommended"], m["_windows"]
-    meta = {"contender": rec, "ranking_contender": m["ranking_recommended"], "chosen": m["chosen"], "features": FEATURES,
+    meta = {"contender": rec, "ranking_contender": m["ranking_recommended"], "size_groups": m["size_groups"]["chosen"],
+            "chosen": m["chosen"], "features": FEATURES,
             "report": m["date"], "stacked_weights": m["stacked_weights"]}
     fit = {"xgb": lambda g: xgb(win, win.head(1), g)[0], "poisson": lambda g: poisson(win, win.head(1), g)[0]}
     objects = {}

@@ -42,11 +42,11 @@ def district(code: int) -> dict | None:
 
 
 def watchlist() -> list[dict]:
-    """Districts on the watch list, best-ranked first; districts of one unit share its rank."""
+    """Districts on the watch list, most likely first; districts assessed together share one score and size group."""
     rows = [d for d in get()["districts"].values() if d["status"] == "watch"]
-    return [{"code": d["code"], "name": d["name"], "state": d["state"], "rank": d["rank"], "score": d["score"],
+    return [{"code": d["code"], "name": d["name"], "state": d["state"], "score": d["score"], "peer": d["peer"],
              "latest_year": d["latest_year"], "latest_total": d["latest_total"]}
-            for d in sorted(rows, key=lambda d: (d["rank"], d["name"]))]
+            for d in sorted(rows, key=lambda d: (-d["score"], d["name"]))]
 
 
 def meta() -> dict:

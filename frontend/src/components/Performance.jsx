@@ -1,4 +1,4 @@
-// Every number here comes from a committed report: evals/reports/2026-10-18.md and ml/reports/2026-10-18_bakeoff.md.
+// Every number here comes from a committed report: evals/reports/2026-10-18.md and ml/reports/2026-10-31_bakeoff.md.
 function Row({ label, value }) {
   return (
     <li className="flex justify-between gap-4">
@@ -59,10 +59,12 @@ export default function Performance() {
               Forecasting
             </h3>
             <div className="space-y-6">
-              <Bar label="Flagged districts truly in the fastest-growing tenth" value={0.367} color="bg-blue-600" />
-              <Bar label="The same, picking at random" value={0.1} color="bg-slate-400" />
+              <Bar label="Flagged districts truly fastest-growing for their size" value={0.254} color="bg-blue-600" />
+              <Bar label="The same, picking by size alone" value={0.142} color="bg-slate-400" />
+              <Bar label="The same, guessing" value={0.1} color="bg-slate-300" />
               <ul className="space-y-3 pt-4 border-t border-slate-100 text-slate-600 text-sm">
-                <Row label="95% interval" value="31–42%" />
+                <Row label="95% interval" value="22–31%" />
+                <Row label="Size groups" value="6, chosen on 2016–2018" />
                 <Row label="Test" value="2019–2022, past only" />
                 <Row label="Size of next year's change" value="not forecastable" />
               </ul>

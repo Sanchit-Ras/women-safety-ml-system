@@ -39,21 +39,32 @@ def test_unknown_or_malformed_codes(client):
     assert client.get("/district/abc").status_code == 422
 
 
-def test_watchlist_is_ranked_and_agrees_with_the_districts(client):
+def test_watchlist_is_ordered_and_agrees_with_the_districts(client):
     w = client.get("/watchlist").json()
-    ranks = [d["rank"] for d in w["districts"]]
-    assert w["districts"] and ranks == sorted(ranks)
+    scores = [d["score"] for d in w["districts"]]
+    assert w["districts"] and scores == sorted(scores, reverse=True)
     watched = {c for c, d in data.get()["districts"].items() if d["status"] == "watch"}
     assert {str(d["code"]) for d in w["districts"]} == watched
     for item in w["districts"]:
-        assert client.get(f"/district/{item['code']}").json()["status"] == "watch"
+        d = client.get(f"/district/{item['code']}").json()
+        assert d["status"] == "watch" and d["peer"] == item["peer"]
+        assert d["peer"]["rank"] <= -(-d["peer"]["size"] // 10)                # inside the top tenth of its size group
 
 
-def test_districts_of_one_unit_share_one_status():
+def test_districts_of_one_unit_share_one_status_and_size_group():
     by_unit = {}
     for d in data.get()["districts"].values():
-        by_unit.setdefault(d["unit_id"], set()).add((d["status"], d["rank"]))
+        by_unit.setdefault(d["unit_id"], set()).add((d["status"], json.dumps(d["peer"], sort_keys=True)))
     assert all(len(v) == 1 for v in by_unit.values())
+
+
+def test_size_groups_cover_every_scored_district_without_overlap():
+    peers = [d["peer"] for d in data.get()["districts"].values() if d["peer"]]
+    groups = {p["group"]: (p["min_cases"], p["max_cases"]) for p in peers}
+    assert sorted(groups) == list(range(1, peers[0]["groups"] + 1))
+    bounds = [groups[g] for g in sorted(groups)]
+    assert all(lo <= hi for lo, hi in bounds) and all(a[1] <= b[0] for a, b in zip(bounds, bounds[1:]))
+    assert all(p["min_cases"] <= p["cases"] <= p["max_cases"] for p in peers)
 
 
 def test_model_info_states_the_evidence_and_the_limits(client):

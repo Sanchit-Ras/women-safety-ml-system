@@ -58,19 +58,25 @@ def params_of(tag: str) -> dict:
     raise ValueError(f"no grid entry matches {tag!r}")
 
 
-def score_next(panel: pd.DataFrame, neighbours: dict[str, list[str]], params: dict, share: float = WATCH_SHARE) -> tuple[pd.DataFrame, dict]:
-    """Train the hotspot classifier on every usable labelled window and score each unit's window for the year after
-    the data; the top ``share`` of scored units (at least one) are watched. Returns the scored rows and training facts."""
+def score_next(panel: pd.DataFrame, neighbours: dict[str, list[str]], params: dict, groups: int = 1,
+               share: float = WATCH_SHARE) -> tuple[pd.DataFrame, dict]:
+    """Train the hotspot classifier (top tenth within ``groups`` size groups) on every usable labelled window and score
+    each unit's window for the year after the data. Units are split into the same number of size groups by their latest
+    year's cases; the top ``share`` of each group (at least one) are watched. Returns the scored rows, each with its
+    group, its rank in the group and the group's size range, and the training facts."""
     rows = bakeoff.usable(bakeoff.windows(panel, neighbours, include_next=True))
     train, nxt = rows[rows["y"].notna()].reset_index(drop=True), rows[rows["y"].isna()].reset_index(drop=True)
-    nxt = nxt.assign(score=bakeoff.hotspot(train, nxt, params))
+    nxt = nxt.assign(score=bakeoff.hotspot(train, nxt, params, groups), group=bakeoff.size_groups(nxt, groups) + 1)
     nxt = nxt.sort_values(["score", "unit_id"], ascending=[False, True], kind="stable").reset_index(drop=True)
-    k = max(1, math.ceil(share * len(nxt)))
-    nxt["rank"] = np.arange(1, len(nxt) + 1)
-    nxt["watch"] = nxt["rank"] <= k
+    nxt["rank"] = nxt.groupby("group").cumcount() + 1
+    size = nxt.groupby("group")["unit_id"].transform("size")
+    nxt["group_size"] = size
+    nxt["watch"] = nxt["rank"] <= np.maximum(1, np.ceil(share * size))
+    nxt["group_min"] = nxt.groupby("group")["count_prev"].transform("min")
+    nxt["group_max"] = nxt.groupby("group")["count_prev"].transform("max")
     facts = {"trained_windows": int(len(train)), "trained_label_years": [int(train["label_year"].min()), int(train["label_year"].max())],
-             "units_scored": int(len(nxt)), "units_watched": int(k)}
-    return nxt[["unit_id", "label_year", "score", "rank", "watch"]], facts
+             "units_scored": int(len(nxt)), "units_watched": int(nxt["watch"].sum()), "size_groups": int(groups)}
+    return nxt[["unit_id", "label_year", "score", "group", "rank", "group_size", "group_min", "group_max", "watch", "count_prev"]], facts
 
 
 def names() -> tuple[dict[int, dict], dict[int, str]]:
@@ -138,15 +144,17 @@ def build(rebased: pd.DataFrame, units_data: dict, scored: pd.DataFrame, dist_na
                          f"today's {kids}; they are drawn lighter on the chart.")
         s = by_unit.get(unit)
         if s is not None:
-            status, score, rank = ("watch" if s.watch else "no_signal"), round(float(s.score), 4), int(s.rank)
+            status, score = ("watch" if s.watch else "no_signal"), round(float(s.score), 4)
+            peer = {"group": int(s.group), "groups": int(scored["group"].max()), "rank": int(s.rank), "size": int(s.group_size),
+                    "min_cases": round(float(s.group_min)), "max_cases": round(float(s.group_max)), "cases": round(float(s.count_prev))}
         else:
-            status, score, rank = "not_scored", None, None
+            status, score, peer = "not_scored", None, None
             if code not in map_only:
                 notes.append("Not scored: its unit lacks six recent years of comparable, mostly filed numbers.")
         latest = rows.iloc[-1] if len(rows) else None
         out[str(code)] = {
             "code": code, "name": nm(code), "state_code": state_code, "state": state_names.get(state_code, str(state_code)),
-            "unit_id": unit, "unit_members": sorted(units.get(unit, [code])), "status": status, "score": score, "rank": rank,
+            "unit_id": unit, "unit_members": sorted(units.get(unit, [code])), "status": status, "score": score, "peer": peer,
             "in_files": code not in map_only,
             "latest_year": int(latest["year"]) if latest is not None else None,
             "latest_total": round(float(latest["total"]), 1) if latest is not None else None,
@@ -158,21 +166,25 @@ def build(rebased: pd.DataFrame, units_data: dict, scored: pd.DataFrame, dist_na
 
 def model_card(report_path: Path, report: dict, facts: dict, watch_year: int, data_years: list[int]) -> dict:
     rec = report["ranking_recommended"]
-    rk = report["ranking"][rec]
+    g = report["size_groups"]
+    gt = g["test"]
     t = report["scores"]["test"]
     best = report["best_baseline"]
     point = report["recommended"]
     return {
         "generated": date.today().isoformat(), "data_years": data_years, "watch_year": watch_year, "watch_share": WATCH_SHARE,
         "model": {"name": f"{rec} classifier (XGBoost)", "setting": report["chosen"][rec], "features": len(report["features"]), **facts},
-        "evidence": {"report": f"ml/reports/{report_path.stem}.md", "test_years": report["test_years"],
-                     "precision_at_10": round(rk["test"], 3), "ci95": [round(x, 3) for x in rk["test_ci95"]], "chance": 0.1},
+        "evidence": {"report": f"ml/reports/{report_path.stem}.md", "test_years": report["test_years"], "size_groups": g["chosen"],
+                     "precision_at_10": round(gt["model"], 3), "ci95": [round(x, 3) for x in gt["ci95"]], "chance": 0.1,
+                     "size_only": round(max(gt["smallest_first"], gt["largest_first"]), 3),
+                     "by_group": [{"group": b["group"], "min_cases": round(b["min_cases"]), "max_cases": round(b["max_cases"]),
+                                   "precision": None if b["precision"] is None else round(b["precision"], 3)} for b in g["by_group"]]},
         "size_of_change": {"best_baseline": best, "baseline_mae": round(t[best]["mae"], 1), "model": point,
                            "model_mae": round(t[point]["mae"], 1),
                            "statement": "No method forecast the size of next year's change better than assuming no change, so the app "
                                         "shows no forecast percentage."},
-        "limitations": ["The watch list measures growth, not how unsafe a place is: a district going from 5 cases to 10 can be on "
-                        "it while a district with thousands of cases is not, so small districts appear on it often.",
+        "limitations": ["The watch list measures growth compared with districts of similar size, not how unsafe a place is: a "
+                        "district with few cases can be on it while a district with thousands of cases is not.",
                         "A nationwide shock such as the 2020 lockdown cannot be foreseen from any district's history.",
                         "Counts are crimes reported to the police; a rise can mean more reporting as well as more crime."],
         "categories": CATEGORY_LABELS}
@@ -214,7 +226,7 @@ def main() -> None:
     report_path, report = latest_bakeoff()
     params = params_of(report["chosen"][report["ranking_recommended"]])
     panel, neighbours = unit_panel.build()
-    scored, facts = score_next(panel, neighbours, params)
+    scored, facts = score_next(panel, neighbours, params, groups=report["size_groups"]["chosen"])
     rebased = pd.read_parquet(unit_panel.REBASED_PATH)
     units_data = json.loads(unit_panel.UNITS_PATH.read_text(encoding="utf-8"))
     dist_names, state_names = names()
@@ -231,7 +243,7 @@ def main() -> None:
     APP_DATA.write_text(json.dumps(app, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     MAP_OUT.parent.mkdir(parents=True, exist_ok=True)
     MAP_OUT.write_text(json.dumps(geo, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    watched = sorted((d for d in districts.values() if d["status"] == "watch"), key=lambda d: (d["rank"], d["name"]))
+    watched = sorted((d for d in districts.values() if d["status"] == "watch"), key=lambda d: (-d["score"], d["name"]))
     print(f"{len(districts)} districts; {facts['units_scored']} units scored, {facts['units_watched']} watched "
           f"({len(watched)} districts) for {watch_year}; trained on {facts['trained_windows']:,} windows")
     print(f"app data -> {APP_DATA} ({APP_DATA.stat().st_size / 1e6:.2f} MB)\nmap      -> {MAP_OUT} ({MAP_OUT.stat().st_size / 1e6:.2f} MB, "

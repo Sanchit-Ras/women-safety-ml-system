@@ -105,6 +105,18 @@ def test_precision_at_10_flags_the_top_tenth_within_each_year():
     assert 0.0 <= lo <= hi < 1.0
 
 
+def test_size_groups_split_each_year_by_last_years_cases_and_rank_within_them():
+    df = frame(np.zeros(10))
+    df["count_prev"] = [5, 1, 9, 3, 7, 2, 10, 4, 8, 6]
+    assert bakeoff.size_groups(df, 2).tolist() == [0, 0, 1, 0, 1, 0, 1, 0, 1, 1]                 # 1-5 small, 6-10 large
+    assert bakeoff.size_groups(df, 1).tolist() == [0] * 10 and sorted(set(bakeoff.size_groups(df, 5))) == [0, 1, 2, 3, 4]
+    y = np.array([0.9, 0.1, 0.2, 0.3, 0.8, 0.4, 0.5, 0.6, 0.7, 0.0])
+    df["y"] = y
+    g = bakeoff.size_groups(df, 2)
+    assert bakeoff.top_decile(df, y, g).sum() == 2 and bakeoff.top_decile(df, y, g)[[0, 4]].all()     # the best of each group
+    assert bakeoff.precision_at_10(df, y, g) == 1.0 and bakeoff.precision_at_10(df, -df["count_prev"].to_numpy(), g) == 0.0
+
+
 def test_scores_and_the_paired_bootstrap():
     y = np.array([0.1, -0.2, 0.3, 0.0, 0.05, -0.1, 0.2, -0.05])
     df = frame(y, unit_ids=["a", "a", "b", "b", "c", "c", "d", "d"])

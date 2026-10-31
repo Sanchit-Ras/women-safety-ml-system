@@ -28,6 +28,18 @@ class Districts(BaseModel):
     states: list[State]
 
 
+class Peer(BaseModel):
+    """The size group a district is compared within: group g of n, by last year's cases (a district assessed together
+    with others counts their combined cases), and its rank in that group."""
+    group: int
+    groups: int
+    rank: int
+    size: int
+    min_cases: int
+    max_cases: int
+    cases: int
+
+
 class District(BaseModel):
     code: int
     name: str
@@ -35,7 +47,7 @@ class District(BaseModel):
     state: str
     status: Status
     score: Optional[float]
-    rank: Optional[int]
+    peer: Optional[Peer]
     in_files: bool
     latest_year: Optional[int]
     latest_total: Optional[float]
@@ -49,8 +61,8 @@ class WatchItem(BaseModel):
     code: int
     name: str
     state: str
-    rank: int
     score: float
+    peer: Peer
     latest_year: Optional[int]
     latest_total: Optional[float]
 

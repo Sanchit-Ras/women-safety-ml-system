@@ -1,4 +1,4 @@
-// Every number here comes from a committed report: evals/reports/2026-10-18.md and ml/reports/2026-10-18_bakeoff.md.
+// Every number here comes from a committed report: evals/reports/2026-10-18.md and ml/reports/2026-10-31_bakeoff.md.
 export const FINDINGS = [
   {
     title: "Old Place Names, Matched",
@@ -19,8 +19,8 @@ export const FINDINGS = [
     color: "bg-purple-100 text-purple-700",
   },
   {
-    title: "Hotspots Can Be Flagged",
-    desc: "Of the districts the model flagged as likely to be in the fastest-growing tenth, 37% really were (95% interval 31–42%), against 10% by chance, tested on 2019–2022 with each year forecast from earlier years only.",
+    title: "Hotspots Can Be Flagged, Fairly",
+    desc: "Percentage growth favours tiny districts (1 case to 3 is +200%), so each district is compared only with districts its size. Of the districts flagged, 25% really were among the fastest-growing tenth of their size group (95% interval 22–31%), against 10% by guessing and 14% by size alone. It works best for smaller districts.",
     icon: "📍",
     color: "bg-red-100 text-red-700",
   },

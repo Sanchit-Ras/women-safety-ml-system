@@ -36,8 +36,8 @@ export default function MapSection() {
               <p className="text-slate-400">districts, each with 22 years of numbers</p>
             </div>
             <div>
-              <p className="text-5xl font-display font-bold text-blue-400">37%</p>
-              <p className="text-slate-400">of flagged districts were truly among the fastest-growing tenth (chance: 10%)</p>
+              <p className="text-5xl font-display font-bold text-blue-400">25%</p>
+              <p className="text-slate-400">of flagged districts were truly among the fastest-growing tenth for their size (guessing: 10%)</p>
             </div>
           </div>
         </div>
