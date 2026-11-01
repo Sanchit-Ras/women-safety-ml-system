@@ -502,14 +502,18 @@ def resolve_llm(client, state_code: int, state_name: str, pending: list[PendingU
                                               missing=want - set(by_unit), unknown=set(by_unit) - want),
                                  ResolveBatch, tag=f"{tag}:repair", system=PROJECT_CONTEXT)
         by_unit.update({norm(i.unit): i for i in result.parsed.items})
-    model = f"llm:{result.model}"
+    return answers_to_resolutions(pending, by_unit, pool.codes, f"llm:{result.model}")
 
+
+def answers_to_resolutions(pending: list[PendingUnit], by_unit: dict, allowed, model: str) -> dict[str, Resolution]:
+    """The model's answers as resolutions, one per asked name: a name it never returned, or a code outside the state's
+    candidates (``allowed``), is unresolved and says why. Shared with agents/resolver_graph.py."""
     out = {}
     for p in pending:
         item = by_unit.get(p.unit)
         if item is None:
             res = Resolution(None, "unknown", "unresolved", 0.0, "not answered by the model")
-        elif item.district_code is not None and item.district_code not in pool.codes:
+        elif item.district_code is not None and item.district_code not in allowed:
             res = Resolution(None, "unknown", "unresolved", 0.0,
                              f"model proposed code {item.district_code} which is not a candidate for this state")
         else:

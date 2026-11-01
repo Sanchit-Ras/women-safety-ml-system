@@ -53,6 +53,8 @@ def test_a_prompt_version_must_have_been_measured_by_the_latest_report():
 def test_latest_report_is_the_newest_json_by_date(tmp_path):
     for d in ("2026-10-10", "2026-10-18", "2026-10-12"):
         (tmp_path / f"{d}.json").write_text(json.dumps({"date": d}), encoding="utf-8")
+    for other in ("2026-11-01_frameworks", "2026-11-01_frameworks_answers"):    # other reports in the folder are not eval reports
+        (tmp_path / f"{other}.json").write_text(json.dumps({"date": "2026-11-01"}), encoding="utf-8")
     assert gate.latest_report(tmp_path) == ("2026-10-18", {"date": "2026-10-18"})
     assert gate.latest_report(tmp_path / "none") is None
 

@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 import tempfile
 from pathlib import Path
@@ -35,7 +36,9 @@ FLOORS = {"coverage_all": 0.99, "resolution_precision_automatic": 0.90}
 
 
 def latest_report(reports_dir: Path = run_evals.REPORTS_DIR) -> tuple[str, dict] | None:
-    files = sorted(reports_dir.glob("*.json"))
+    """The newest eval report: a file named by its date alone (YYYY-MM-DD.json), as run_evals writes it. Other reports
+    in the folder (the framework comparison, for instance) carry a suffix and are not eval reports."""
+    files = sorted(p for p in reports_dir.glob("*.json") if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem))
     if not files:
         return None
     return files[-1].stem, json.loads(files[-1].read_text(encoding="utf-8"))

@@ -1,0 +1,3326 @@
+{
+ "A": {
+  "1": {
+   "answers": {
+    "2001_2014|1|border": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|border district": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|railways": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|1|railways kmr": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|10|jamalpur rly": [
+     "llm",
+     207,
+     "railway"
+    ],
+    "2001_2014|12|kkumey": [
+     "llm",
+     233,
+     "rename"
+    ],
+    "2001_2014|15|spl traffic": [
+     "llm",
+     261,
+     "not_a_district"
+    ],
+    "2001_2014|15|traffic ps": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|16|sipahijala": [
+     "llm",
+     653,
+     "district"
+    ],
+    "2001_2014|17|garo hills south w": [
+     "llm",
+     663,
+     "circle"
+    ],
+    "2001_2014|18|baska": [
+     "llm",
+     616,
+     "rename"
+    ],
+    "2001_2014|18|nchills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2001_2014|19|bdn cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|bkp cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|jhargram police district": [
+     "llm",
+     703,
+     "district"
+    ],
+    "2001_2014|19|midnapur": [
+     "llm",
+     318,
+     "district"
+    ],
+    "2001_2014|19|paschim midnapur": [
+     "llm",
+     318,
+     "rename"
+    ],
+    "2001_2014|19|purab midnapur": [
+     "llm",
+     317,
+     "rename"
+    ],
+    "2001_2014|2|lahaulspiti": [
+     "llm",
+     21,
+     "rename"
+    ],
+    "2001_2014|21|nowrangpur": [
+     "llm",
+     366,
+     "rename"
+    ],
+    "2001_2014|23|khandwa": [
+     "llm",
+     405,
+     "rename"
+    ],
+    "2001_2014|23|sihore": [
+     "llm",
+     427,
+     "rename"
+    ],
+    "2001_2014|24|ahmedabad commr": [
+     "llm",
+     438,
+     "commissionerate"
+    ],
+    "2001_2014|24|himatnagar": [
+     "llm",
+     458,
+     "headquarters_town"
+    ],
+    "2001_2014|24|kutch": [
+     "llm",
+     449,
+     "rename"
+    ],
+    "2001_2014|24|kutch eastg": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|kutch westbhuj": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|palanpur": [
+     "llm",
+     441,
+     "headquarters_town"
+    ],
+    "2001_2014|24|wrly": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|26|dn haveli": [
+     "llm",
+     465,
+     "district"
+    ],
+    "2001_2014|28|guntakal rly": [
+     "llm",
+     502,
+     "railway"
+    ],
+    "2001_2014|28|secunderabad rly": [
+     "llm",
+     507,
+     "railway"
+    ],
+    "2001_2014|28|vijayawada rly": [
+     "llm",
+     749,
+     "railway"
+    ],
+    "2001_2014|29|bangalore commr": [
+     "llm",
+     525,
+     "commissionerate"
+    ],
+    "2001_2014|29|bellary": [
+     "llm",
+     528,
+     "district"
+    ],
+    "2001_2014|29|cbpura": [
+     "llm",
+     630,
+     "headquarters_town"
+    ],
+    "2001_2014|29|chickmagalur": [
+     "llm",
+     532,
+     "district"
+    ],
+    "2001_2014|29|mangalore city": [
+     "llm",
+     534,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore commr": [
+     "llm",
+     545,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore rural": [
+     "llm",
+     545,
+     "district"
+    ],
+    "2001_2014|3|bhatinda": [
+     "llm",
+     28,
+     "rename"
+    ],
+    "2001_2014|3|jagraon": [
+     "llm",
+     36,
+     "circle"
+    ],
+    "2001_2014|3|majitha": [
+     "llm",
+     27,
+     "circle"
+    ],
+    "2001_2014|3|nawan shahr": [
+     "llm",
+     40,
+     "rename"
+    ],
+    "2001_2014|3|sas ngr": [
+     "llm",
+     608,
+     "rename"
+    ],
+    "2001_2014|33|chengai": [
+     "llm",
+     730,
+     "rename"
+    ],
+    "2001_2014|35|a and n islands": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|andaman": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|car": [
+     "llm",
+     603,
+     "circle"
+    ],
+    "2001_2014|6|ip haryana": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|7|grprly": [
+     "llm",
+     79,
+     "railway"
+    ],
+    "2001_2014|8|discom": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|8|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|8|jaipur rural": [
+     "llm",
+     102,
+     "circle"
+    ],
+    "2001_2014|9|bhim nagar": [
+     "llm",
+     659,
+     "rename"
+    ],
+    "2001_2014|9|csm nagar": [
+     "llm",
+     640,
+     "rename"
+    ],
+    "2001_2014|9|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|9|jpnagar": [
+     "llm",
+     154,
+     "rename"
+    ],
+    "2001_2014|9|kanshiram nagar": [
+     "llm",
+     633,
+     "rename"
+    ],
+    "2001_2014|9|panchshil nagar": [
+     "llm",
+     661,
+     "rename"
+    ],
+    "2001_2014|9|prabuddh nagar": [
+     "llm",
+     660,
+     "rename"
+    ],
+    "2001_2014|9|ramabai nagar": [
+     "llm",
+     156,
+     "rename"
+    ],
+    "2001_2014|9|stravidasnagar": [
+     "llm",
+     null,
+     "unknown"
+    ],
+    "2015|18|n c hills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2015|18|s t f": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2015|21|hrpc": [
+     "llm",
+     null,
+     "not_a_district"
+    ]
+   },
+   "calls": [
+    {
+     "tag": "fwAr1:1",
+     "prompt_tokens": 1500,
+     "completion_tokens": 167,
+     "latency_ms": 2719,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:10",
+     "prompt_tokens": 1868,
+     "completion_tokens": 81,
+     "latency_ms": 13920,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:12",
+     "prompt_tokens": 1426,
+     "completion_tokens": 84,
+     "latency_ms": 1282,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:15",
+     "prompt_tokens": 1034,
+     "completion_tokens": 163,
+     "latency_ms": 1875,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:16",
+     "prompt_tokens": 863,
+     "completion_tokens": 89,
+     "latency_ms": 1625,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:17",
+     "prompt_tokens": 1101,
+     "completion_tokens": 80,
+     "latency_ms": 1438,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:18",
+     "prompt_tokens": 1844,
+     "completion_tokens": 156,
+     "latency_ms": 1813,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:19",
+     "prompt_tokens": 1911,
+     "completion_tokens": 439,
+     "latency_ms": 2375,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:2",
+     "prompt_tokens": 990,
+     "completion_tokens": 58,
+     "latency_ms": 1688,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:21",
+     "prompt_tokens": 1647,
+     "completion_tokens": 79,
+     "latency_ms": 1530,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:23",
+     "prompt_tokens": 2366,
+     "completion_tokens": 146,
+     "latency_ms": 2155,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:24",
+     "prompt_tokens": 2090,
+     "completion_tokens": 488,
+     "latency_ms": 2750,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:26",
+     "prompt_tokens": 643,
+     "completion_tokens": 78,
+     "latency_ms": 1688,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:28",
+     "prompt_tokens": 2768,
+     "completion_tokens": 217,
+     "latency_ms": 2063,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:29",
+     "prompt_tokens": 1987,
+     "completion_tokens": 488,
+     "latency_ms": 2563,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:3",
+     "prompt_tokens": 1629,
+     "completion_tokens": 341,
+     "latency_ms": 2500,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:33",
+     "prompt_tokens": 1901,
+     "completion_tokens": 86,
+     "latency_ms": 1733,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:35",
+     "prompt_tokens": 847,
+     "completion_tokens": 138,
+     "latency_ms": 1467,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:6",
+     "prompt_tokens": 1304,
+     "completion_tokens": 86,
+     "latency_ms": 1936,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:7",
+     "prompt_tokens": 943,
+     "completion_tokens": 83,
+     "latency_ms": 1375,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:8",
+     "prompt_tokens": 1871,
+     "completion_tokens": 211,
+     "latency_ms": 2202,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:9",
+     "prompt_tokens": 4007,
+     "completion_tokens": 621,
+     "latency_ms": 2594,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:18",
+     "prompt_tokens": 1848,
+     "completion_tokens": 148,
+     "latency_ms": 1500,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr1:21",
+     "prompt_tokens": 1646,
+     "completion_tokens": 85,
+     "latency_ms": 1922,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    }
+   ],
+   "errors": []
+  },
+  "2": {
+   "answers": {
+    "2001_2014|1|border": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|border district": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|railways": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|1|railways kmr": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|10|jamalpur rly": [
+     "llm",
+     207,
+     "railway"
+    ],
+    "2001_2014|12|kkumey": [
+     "llm",
+     233,
+     "rename"
+    ],
+    "2001_2014|15|spl traffic": [
+     "llm",
+     261,
+     "not_a_district"
+    ],
+    "2001_2014|15|traffic ps": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|16|sipahijala": [
+     "llm",
+     653,
+     "district"
+    ],
+    "2001_2014|17|garo hills south w": [
+     "llm",
+     663,
+     "circle"
+    ],
+    "2001_2014|18|baska": [
+     "llm",
+     616,
+     "rename"
+    ],
+    "2001_2014|18|nchills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2001_2014|19|bdn cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|bkp cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|jhargram police district": [
+     "llm",
+     703,
+     "district"
+    ],
+    "2001_2014|19|midnapur": [
+     "llm",
+     318,
+     "district"
+    ],
+    "2001_2014|19|paschim midnapur": [
+     "llm",
+     318,
+     "rename"
+    ],
+    "2001_2014|19|purab midnapur": [
+     "llm",
+     317,
+     "rename"
+    ],
+    "2001_2014|2|lahaulspiti": [
+     "llm",
+     21,
+     "rename"
+    ],
+    "2001_2014|21|nowrangpur": [
+     "llm",
+     366,
+     "rename"
+    ],
+    "2001_2014|23|khandwa": [
+     "llm",
+     405,
+     "rename"
+    ],
+    "2001_2014|23|sihore": [
+     "llm",
+     427,
+     "rename"
+    ],
+    "2001_2014|24|ahmedabad commr": [
+     "llm",
+     438,
+     "commissionerate"
+    ],
+    "2001_2014|24|himatnagar": [
+     "llm",
+     458,
+     "headquarters_town"
+    ],
+    "2001_2014|24|kutch": [
+     "llm",
+     449,
+     "rename"
+    ],
+    "2001_2014|24|kutch eastg": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|kutch westbhuj": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|palanpur": [
+     "llm",
+     441,
+     "headquarters_town"
+    ],
+    "2001_2014|24|wrly": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|26|dn haveli": [
+     "llm",
+     465,
+     "district"
+    ],
+    "2001_2014|28|guntakal rly": [
+     "llm",
+     502,
+     "railway"
+    ],
+    "2001_2014|28|secunderabad rly": [
+     "llm",
+     507,
+     "railway"
+    ],
+    "2001_2014|28|vijayawada rly": [
+     "llm",
+     749,
+     "railway"
+    ],
+    "2001_2014|29|bangalore commr": [
+     "llm",
+     525,
+     "commissionerate"
+    ],
+    "2001_2014|29|bellary": [
+     "llm",
+     528,
+     "district"
+    ],
+    "2001_2014|29|cbpura": [
+     "llm",
+     630,
+     "headquarters_town"
+    ],
+    "2001_2014|29|chickmagalur": [
+     "llm",
+     532,
+     "district"
+    ],
+    "2001_2014|29|mangalore city": [
+     "llm",
+     534,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore commr": [
+     "llm",
+     545,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore rural": [
+     "llm",
+     545,
+     "district"
+    ],
+    "2001_2014|3|bhatinda": [
+     "llm",
+     28,
+     "rename"
+    ],
+    "2001_2014|3|jagraon": [
+     "llm",
+     36,
+     "circle"
+    ],
+    "2001_2014|3|majitha": [
+     "llm",
+     27,
+     "circle"
+    ],
+    "2001_2014|3|nawan shahr": [
+     "llm",
+     40,
+     "rename"
+    ],
+    "2001_2014|3|sas ngr": [
+     "llm",
+     608,
+     "rename"
+    ],
+    "2001_2014|33|chengai": [
+     "llm",
+     730,
+     "rename"
+    ],
+    "2001_2014|35|a and n islands": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|andaman": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|car": [
+     "llm",
+     603,
+     "circle"
+    ],
+    "2001_2014|6|ip haryana": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|7|grprly": [
+     "llm",
+     79,
+     "railway"
+    ],
+    "2001_2014|8|discom": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|8|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|8|jaipur rural": [
+     "llm",
+     102,
+     "circle"
+    ],
+    "2001_2014|9|bhim nagar": [
+     "llm",
+     659,
+     "rename"
+    ],
+    "2001_2014|9|csm nagar": [
+     "llm",
+     640,
+     "rename"
+    ],
+    "2001_2014|9|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|9|jpnagar": [
+     "llm",
+     154,
+     "rename"
+    ],
+    "2001_2014|9|kanshiram nagar": [
+     "llm",
+     633,
+     "rename"
+    ],
+    "2001_2014|9|panchshil nagar": [
+     "llm",
+     661,
+     "rename"
+    ],
+    "2001_2014|9|prabuddh nagar": [
+     "llm",
+     660,
+     "rename"
+    ],
+    "2001_2014|9|ramabai nagar": [
+     "llm",
+     156,
+     "rename"
+    ],
+    "2001_2014|9|stravidasnagar": [
+     "llm",
+     null,
+     "unknown"
+    ],
+    "2015|18|n c hills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2015|18|s t f": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2015|21|hrpc": [
+     "llm",
+     null,
+     "not_a_district"
+    ]
+   },
+   "calls": [
+    {
+     "tag": "fwAr2:1",
+     "prompt_tokens": 1500,
+     "completion_tokens": 167,
+     "latency_ms": 1969,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:10",
+     "prompt_tokens": 1868,
+     "completion_tokens": 81,
+     "latency_ms": 1342,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:12",
+     "prompt_tokens": 1426,
+     "completion_tokens": 84,
+     "latency_ms": 1608,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:15",
+     "prompt_tokens": 1034,
+     "completion_tokens": 163,
+     "latency_ms": 1952,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:16",
+     "prompt_tokens": 863,
+     "completion_tokens": 89,
+     "latency_ms": 1250,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:17",
+     "prompt_tokens": 1101,
+     "completion_tokens": 80,
+     "latency_ms": 1280,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:18",
+     "prompt_tokens": 1844,
+     "completion_tokens": 156,
+     "latency_ms": 2047,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:19",
+     "prompt_tokens": 1911,
+     "completion_tokens": 439,
+     "latency_ms": 2375,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:2",
+     "prompt_tokens": 990,
+     "completion_tokens": 58,
+     "latency_ms": 1625,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:21",
+     "prompt_tokens": 1647,
+     "completion_tokens": 79,
+     "latency_ms": 1344,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:23",
+     "prompt_tokens": 2366,
+     "completion_tokens": 146,
+     "latency_ms": 2217,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:24",
+     "prompt_tokens": 2090,
+     "completion_tokens": 488,
+     "latency_ms": 2639,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:26",
+     "prompt_tokens": 643,
+     "completion_tokens": 78,
+     "latency_ms": 1875,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:28",
+     "prompt_tokens": 2768,
+     "completion_tokens": 217,
+     "latency_ms": 1670,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:29",
+     "prompt_tokens": 1987,
+     "completion_tokens": 488,
+     "latency_ms": 2077,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:3",
+     "prompt_tokens": 1629,
+     "completion_tokens": 341,
+     "latency_ms": 1827,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:33",
+     "prompt_tokens": 1901,
+     "completion_tokens": 86,
+     "latency_ms": 1813,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:35",
+     "prompt_tokens": 847,
+     "completion_tokens": 138,
+     "latency_ms": 1860,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:6",
+     "prompt_tokens": 1304,
+     "completion_tokens": 86,
+     "latency_ms": 1360,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:7",
+     "prompt_tokens": 943,
+     "completion_tokens": 83,
+     "latency_ms": 1422,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:8",
+     "prompt_tokens": 1871,
+     "completion_tokens": 211,
+     "latency_ms": 2047,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:9",
+     "prompt_tokens": 4007,
+     "completion_tokens": 621,
+     "latency_ms": 2561,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:18",
+     "prompt_tokens": 1848,
+     "completion_tokens": 148,
+     "latency_ms": 2016,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwAr2:21",
+     "prompt_tokens": 1646,
+     "completion_tokens": 85,
+     "latency_ms": 1438,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    }
+   ],
+   "errors": []
+  }
+ },
+ "B": {
+  "1": {
+   "answers": {
+    "2001_2014|1|border": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|border district": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|railways": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|1|railways kmr": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|10|jamalpur rly": [
+     "llm",
+     207,
+     "railway"
+    ],
+    "2001_2014|12|kkumey": [
+     "llm",
+     233,
+     "rename"
+    ],
+    "2001_2014|15|spl traffic": [
+     "llm",
+     261,
+     "not_a_district"
+    ],
+    "2001_2014|15|traffic ps": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|16|sipahijala": [
+     "llm",
+     653,
+     "district"
+    ],
+    "2001_2014|17|garo hills south w": [
+     "llm",
+     663,
+     "circle"
+    ],
+    "2001_2014|18|baska": [
+     "llm",
+     616,
+     "rename"
+    ],
+    "2001_2014|18|nchills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2001_2014|19|bdn cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|bkp cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|jhargram police district": [
+     "llm",
+     703,
+     "district"
+    ],
+    "2001_2014|19|midnapur": [
+     "llm",
+     318,
+     "district"
+    ],
+    "2001_2014|19|paschim midnapur": [
+     "llm",
+     318,
+     "rename"
+    ],
+    "2001_2014|19|purab midnapur": [
+     "llm",
+     317,
+     "rename"
+    ],
+    "2001_2014|2|lahaulspiti": [
+     "llm",
+     21,
+     "rename"
+    ],
+    "2001_2014|21|nowrangpur": [
+     "llm",
+     366,
+     "rename"
+    ],
+    "2001_2014|23|khandwa": [
+     "llm",
+     405,
+     "rename"
+    ],
+    "2001_2014|23|sihore": [
+     "llm",
+     427,
+     "rename"
+    ],
+    "2001_2014|24|ahmedabad commr": [
+     "llm",
+     438,
+     "commissionerate"
+    ],
+    "2001_2014|24|himatnagar": [
+     "llm",
+     458,
+     "headquarters_town"
+    ],
+    "2001_2014|24|kutch": [
+     "llm",
+     449,
+     "rename"
+    ],
+    "2001_2014|24|kutch eastg": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|kutch westbhuj": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|palanpur": [
+     "llm",
+     441,
+     "headquarters_town"
+    ],
+    "2001_2014|24|wrly": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|26|dn haveli": [
+     "llm",
+     465,
+     "district"
+    ],
+    "2001_2014|28|guntakal rly": [
+     "llm",
+     502,
+     "railway"
+    ],
+    "2001_2014|28|secunderabad rly": [
+     "llm",
+     507,
+     "railway"
+    ],
+    "2001_2014|28|vijayawada rly": [
+     "llm",
+     749,
+     "railway"
+    ],
+    "2001_2014|29|bangalore commr": [
+     "llm",
+     525,
+     "commissionerate"
+    ],
+    "2001_2014|29|bellary": [
+     "llm",
+     528,
+     "district"
+    ],
+    "2001_2014|29|cbpura": [
+     "llm",
+     630,
+     "headquarters_town"
+    ],
+    "2001_2014|29|chickmagalur": [
+     "llm",
+     532,
+     "district"
+    ],
+    "2001_2014|29|mangalore city": [
+     "llm",
+     534,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore commr": [
+     "llm",
+     545,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore rural": [
+     "llm",
+     545,
+     "district"
+    ],
+    "2001_2014|3|bhatinda": [
+     "llm",
+     28,
+     "rename"
+    ],
+    "2001_2014|3|jagraon": [
+     "llm",
+     36,
+     "circle"
+    ],
+    "2001_2014|3|majitha": [
+     "llm",
+     27,
+     "circle"
+    ],
+    "2001_2014|3|nawan shahr": [
+     "llm",
+     40,
+     "rename"
+    ],
+    "2001_2014|3|sas ngr": [
+     "llm",
+     608,
+     "rename"
+    ],
+    "2001_2014|33|chengai": [
+     "llm",
+     730,
+     "rename"
+    ],
+    "2001_2014|35|a and n islands": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|andaman": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|car": [
+     "llm",
+     603,
+     "circle"
+    ],
+    "2001_2014|6|ip haryana": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|7|grprly": [
+     "llm",
+     79,
+     "railway"
+    ],
+    "2001_2014|8|discom": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|8|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|8|jaipur rural": [
+     "llm",
+     102,
+     "circle"
+    ],
+    "2001_2014|9|bhim nagar": [
+     "llm",
+     659,
+     "rename"
+    ],
+    "2001_2014|9|csm nagar": [
+     "llm",
+     640,
+     "rename"
+    ],
+    "2001_2014|9|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|9|jpnagar": [
+     "llm",
+     154,
+     "rename"
+    ],
+    "2001_2014|9|kanshiram nagar": [
+     "llm",
+     633,
+     "rename"
+    ],
+    "2001_2014|9|panchshil nagar": [
+     "llm",
+     661,
+     "rename"
+    ],
+    "2001_2014|9|prabuddh nagar": [
+     "llm",
+     660,
+     "rename"
+    ],
+    "2001_2014|9|ramabai nagar": [
+     "llm",
+     156,
+     "rename"
+    ],
+    "2001_2014|9|stravidasnagar": [
+     "llm",
+     null,
+     "unknown"
+    ],
+    "2015|18|n c hills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2015|18|s t f": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2015|21|hrpc": [
+     "llm",
+     null,
+     "not_a_district"
+    ]
+   },
+   "calls": [
+    {
+     "tag": "fwBr1:1",
+     "prompt_tokens": 1500,
+     "completion_tokens": 167,
+     "latency_ms": 1922,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:10",
+     "prompt_tokens": 1868,
+     "completion_tokens": 81,
+     "latency_ms": 7250,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:12",
+     "prompt_tokens": 1426,
+     "completion_tokens": 84,
+     "latency_ms": 1672,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:15",
+     "prompt_tokens": 1034,
+     "completion_tokens": 163,
+     "latency_ms": 2141,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:16",
+     "prompt_tokens": 863,
+     "completion_tokens": 89,
+     "latency_ms": 1688,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:17",
+     "prompt_tokens": 1101,
+     "completion_tokens": 80,
+     "latency_ms": 2110,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:18",
+     "prompt_tokens": 1844,
+     "completion_tokens": 156,
+     "latency_ms": 1907,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:19",
+     "prompt_tokens": 1911,
+     "completion_tokens": 439,
+     "latency_ms": 2360,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:2",
+     "prompt_tokens": 990,
+     "completion_tokens": 58,
+     "latency_ms": 1594,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:21",
+     "prompt_tokens": 1647,
+     "completion_tokens": 79,
+     "latency_ms": 1733,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:23",
+     "prompt_tokens": 2366,
+     "completion_tokens": 146,
+     "latency_ms": 1938,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:24",
+     "prompt_tokens": 2090,
+     "completion_tokens": 488,
+     "latency_ms": 2733,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:26",
+     "prompt_tokens": 643,
+     "completion_tokens": 78,
+     "latency_ms": 1625,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:28",
+     "prompt_tokens": 2768,
+     "completion_tokens": 217,
+     "latency_ms": 1813,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:29",
+     "prompt_tokens": 1987,
+     "completion_tokens": 488,
+     "latency_ms": 2577,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:3",
+     "prompt_tokens": 1629,
+     "completion_tokens": 341,
+     "latency_ms": 1983,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:33",
+     "prompt_tokens": 1901,
+     "completion_tokens": 86,
+     "latency_ms": 1969,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:35",
+     "prompt_tokens": 847,
+     "completion_tokens": 138,
+     "latency_ms": 2108,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:6",
+     "prompt_tokens": 1304,
+     "completion_tokens": 54,
+     "latency_ms": 1577,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:7",
+     "prompt_tokens": 943,
+     "completion_tokens": 83,
+     "latency_ms": 2672,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:8",
+     "prompt_tokens": 1871,
+     "completion_tokens": 211,
+     "latency_ms": 2063,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:9",
+     "prompt_tokens": 4007,
+     "completion_tokens": 621,
+     "latency_ms": 2844,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:18",
+     "prompt_tokens": 1848,
+     "completion_tokens": 148,
+     "latency_ms": 2000,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr1:21",
+     "prompt_tokens": 1646,
+     "completion_tokens": 85,
+     "latency_ms": 1672,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    }
+   ],
+   "errors": []
+  },
+  "2": {
+   "answers": {
+    "2001_2014|1|border": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|border district": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|railways": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|1|railways kmr": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|10|jamalpur rly": [
+     "llm",
+     207,
+     "railway"
+    ],
+    "2001_2014|12|kkumey": [
+     "llm",
+     233,
+     "rename"
+    ],
+    "2001_2014|15|spl traffic": [
+     "llm",
+     261,
+     "not_a_district"
+    ],
+    "2001_2014|15|traffic ps": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|16|sipahijala": [
+     "llm",
+     653,
+     "district"
+    ],
+    "2001_2014|17|garo hills south w": [
+     "llm",
+     663,
+     "circle"
+    ],
+    "2001_2014|18|baska": [
+     "llm",
+     616,
+     "rename"
+    ],
+    "2001_2014|18|nchills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2001_2014|19|bdn cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|bkp cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|jhargram police district": [
+     "llm",
+     703,
+     "district"
+    ],
+    "2001_2014|19|midnapur": [
+     "llm",
+     318,
+     "district"
+    ],
+    "2001_2014|19|paschim midnapur": [
+     "llm",
+     318,
+     "rename"
+    ],
+    "2001_2014|19|purab midnapur": [
+     "llm",
+     317,
+     "rename"
+    ],
+    "2001_2014|2|lahaulspiti": [
+     "llm",
+     21,
+     "rename"
+    ],
+    "2001_2014|21|nowrangpur": [
+     "llm",
+     366,
+     "rename"
+    ],
+    "2001_2014|23|khandwa": [
+     "llm",
+     405,
+     "rename"
+    ],
+    "2001_2014|23|sihore": [
+     "llm",
+     427,
+     "rename"
+    ],
+    "2001_2014|24|ahmedabad commr": [
+     "llm",
+     438,
+     "commissionerate"
+    ],
+    "2001_2014|24|himatnagar": [
+     "llm",
+     458,
+     "headquarters_town"
+    ],
+    "2001_2014|24|kutch": [
+     "llm",
+     449,
+     "rename"
+    ],
+    "2001_2014|24|kutch eastg": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|kutch westbhuj": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|palanpur": [
+     "llm",
+     441,
+     "headquarters_town"
+    ],
+    "2001_2014|24|wrly": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|26|dn haveli": [
+     "llm",
+     465,
+     "district"
+    ],
+    "2001_2014|28|guntakal rly": [
+     "llm",
+     502,
+     "railway"
+    ],
+    "2001_2014|28|secunderabad rly": [
+     "llm",
+     507,
+     "railway"
+    ],
+    "2001_2014|28|vijayawada rly": [
+     "llm",
+     749,
+     "railway"
+    ],
+    "2001_2014|29|bangalore commr": [
+     "llm",
+     525,
+     "commissionerate"
+    ],
+    "2001_2014|29|bellary": [
+     "llm",
+     528,
+     "district"
+    ],
+    "2001_2014|29|cbpura": [
+     "llm",
+     630,
+     "headquarters_town"
+    ],
+    "2001_2014|29|chickmagalur": [
+     "llm",
+     532,
+     "district"
+    ],
+    "2001_2014|29|mangalore city": [
+     "llm",
+     534,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore commr": [
+     "llm",
+     545,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore rural": [
+     "llm",
+     545,
+     "district"
+    ],
+    "2001_2014|3|bhatinda": [
+     "llm",
+     28,
+     "rename"
+    ],
+    "2001_2014|3|jagraon": [
+     "llm",
+     36,
+     "circle"
+    ],
+    "2001_2014|3|majitha": [
+     "llm",
+     27,
+     "circle"
+    ],
+    "2001_2014|3|nawan shahr": [
+     "llm",
+     40,
+     "rename"
+    ],
+    "2001_2014|3|sas ngr": [
+     "llm",
+     608,
+     "rename"
+    ],
+    "2001_2014|33|chengai": [
+     "llm",
+     730,
+     "rename"
+    ],
+    "2001_2014|35|a and n islands": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|andaman": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|car": [
+     "llm",
+     603,
+     "circle"
+    ],
+    "2001_2014|6|ip haryana": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|7|grprly": [
+     "llm",
+     79,
+     "railway"
+    ],
+    "2001_2014|8|discom": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|8|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|8|jaipur rural": [
+     "llm",
+     102,
+     "circle"
+    ],
+    "2001_2014|9|bhim nagar": [
+     "llm",
+     659,
+     "rename"
+    ],
+    "2001_2014|9|csm nagar": [
+     "llm",
+     640,
+     "rename"
+    ],
+    "2001_2014|9|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|9|jpnagar": [
+     "llm",
+     154,
+     "rename"
+    ],
+    "2001_2014|9|kanshiram nagar": [
+     "llm",
+     633,
+     "rename"
+    ],
+    "2001_2014|9|panchshil nagar": [
+     "llm",
+     661,
+     "rename"
+    ],
+    "2001_2014|9|prabuddh nagar": [
+     "llm",
+     660,
+     "rename"
+    ],
+    "2001_2014|9|ramabai nagar": [
+     "llm",
+     156,
+     "rename"
+    ],
+    "2001_2014|9|stravidasnagar": [
+     "llm",
+     null,
+     "unknown"
+    ],
+    "2015|18|n c hills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2015|18|s t f": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2015|21|hrpc": [
+     "llm",
+     null,
+     "not_a_district"
+    ]
+   },
+   "calls": [
+    {
+     "tag": "fwBr2:1",
+     "prompt_tokens": 1500,
+     "completion_tokens": 167,
+     "latency_ms": 1858,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:10",
+     "prompt_tokens": 1868,
+     "completion_tokens": 81,
+     "latency_ms": 1483,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:12",
+     "prompt_tokens": 1426,
+     "completion_tokens": 84,
+     "latency_ms": 1719,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:15",
+     "prompt_tokens": 1034,
+     "completion_tokens": 163,
+     "latency_ms": 2469,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:16",
+     "prompt_tokens": 863,
+     "completion_tokens": 89,
+     "latency_ms": 1594,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:17",
+     "prompt_tokens": 1101,
+     "completion_tokens": 80,
+     "latency_ms": 1672,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:18",
+     "prompt_tokens": 1844,
+     "completion_tokens": 156,
+     "latency_ms": 1827,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:19",
+     "prompt_tokens": 1911,
+     "completion_tokens": 439,
+     "latency_ms": 2655,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:2",
+     "prompt_tokens": 990,
+     "completion_tokens": 58,
+     "latency_ms": 1594,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:21",
+     "prompt_tokens": 1647,
+     "completion_tokens": 79,
+     "latency_ms": 1936,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:23",
+     "prompt_tokens": 2366,
+     "completion_tokens": 146,
+     "latency_ms": 1875,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:24",
+     "prompt_tokens": 2090,
+     "completion_tokens": 488,
+     "latency_ms": 2795,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:26",
+     "prompt_tokens": 643,
+     "completion_tokens": 78,
+     "latency_ms": 1780,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:28",
+     "prompt_tokens": 2768,
+     "completion_tokens": 217,
+     "latency_ms": 2139,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:29",
+     "prompt_tokens": 1987,
+     "completion_tokens": 488,
+     "latency_ms": 2436,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:3",
+     "prompt_tokens": 1629,
+     "completion_tokens": 341,
+     "latency_ms": 1858,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:33",
+     "prompt_tokens": 1901,
+     "completion_tokens": 86,
+     "latency_ms": 1905,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:35",
+     "prompt_tokens": 847,
+     "completion_tokens": 138,
+     "latency_ms": 1969,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:6",
+     "prompt_tokens": 1304,
+     "completion_tokens": 86,
+     "latency_ms": 1735,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:7",
+     "prompt_tokens": 943,
+     "completion_tokens": 83,
+     "latency_ms": 1766,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:8",
+     "prompt_tokens": 1871,
+     "completion_tokens": 211,
+     "latency_ms": 1688,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:9",
+     "prompt_tokens": 4007,
+     "completion_tokens": 621,
+     "latency_ms": 2500,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:18",
+     "prompt_tokens": 1848,
+     "completion_tokens": 148,
+     "latency_ms": 1797,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    },
+    {
+     "tag": "fwBr2:21",
+     "prompt_tokens": 1646,
+     "completion_tokens": 85,
+     "latency_ms": 1391,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null
+    }
+   ],
+   "errors": []
+  }
+ },
+ "C": {
+  "1": {
+   "answers": {
+    "2001_2014|1|border": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|border district": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|railways": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|1|railways kmr": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|10|jamalpur rly": [
+     "llm",
+     207,
+     "railway"
+    ],
+    "2001_2014|12|kkumey": [
+     "llm",
+     233,
+     "rename"
+    ],
+    "2001_2014|15|spl traffic": [
+     "llm",
+     261,
+     "not_a_district"
+    ],
+    "2001_2014|15|traffic ps": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|16|sipahijala": [
+     "llm",
+     653,
+     "district"
+    ],
+    "2001_2014|17|garo hills south w": [
+     "llm",
+     663,
+     "circle"
+    ],
+    "2001_2014|18|baska": [
+     "llm",
+     616,
+     "rename"
+    ],
+    "2001_2014|18|nchills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2001_2014|19|bdn cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|bkp cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|jhargram police district": [
+     "llm",
+     703,
+     "district"
+    ],
+    "2001_2014|19|midnapur": [
+     "llm",
+     318,
+     "district"
+    ],
+    "2001_2014|19|paschim midnapur": [
+     "llm",
+     318,
+     "rename"
+    ],
+    "2001_2014|19|purab midnapur": [
+     "llm",
+     317,
+     "rename"
+    ],
+    "2001_2014|2|lahaulspiti": [
+     "llm",
+     21,
+     "rename"
+    ],
+    "2001_2014|21|nowrangpur": [
+     "llm",
+     366,
+     "rename"
+    ],
+    "2001_2014|23|khandwa": [
+     "llm",
+     405,
+     "rename"
+    ],
+    "2001_2014|23|sihore": [
+     "llm",
+     427,
+     "rename"
+    ],
+    "2001_2014|24|ahmedabad commr": [
+     "llm",
+     438,
+     "commissionerate"
+    ],
+    "2001_2014|24|himatnagar": [
+     "llm",
+     458,
+     "headquarters_town"
+    ],
+    "2001_2014|24|kutch": [
+     "llm",
+     449,
+     "rename"
+    ],
+    "2001_2014|24|kutch eastg": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|kutch westbhuj": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|palanpur": [
+     "llm",
+     441,
+     "headquarters_town"
+    ],
+    "2001_2014|24|wrly": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|26|dn haveli": [
+     "llm",
+     465,
+     "district"
+    ],
+    "2001_2014|28|guntakal rly": [
+     "llm",
+     502,
+     "railway"
+    ],
+    "2001_2014|28|secunderabad rly": [
+     "llm",
+     507,
+     "railway"
+    ],
+    "2001_2014|28|vijayawada rly": [
+     "llm",
+     749,
+     "railway"
+    ],
+    "2001_2014|29|bangalore commr": [
+     "llm",
+     525,
+     "commissionerate"
+    ],
+    "2001_2014|29|bellary": [
+     "llm",
+     528,
+     "district"
+    ],
+    "2001_2014|29|cbpura": [
+     "llm",
+     630,
+     "headquarters_town"
+    ],
+    "2001_2014|29|chickmagalur": [
+     "llm",
+     532,
+     "district"
+    ],
+    "2001_2014|29|mangalore city": [
+     "llm",
+     534,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore commr": [
+     "llm",
+     545,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore rural": [
+     "llm",
+     545,
+     "district"
+    ],
+    "2001_2014|3|bhatinda": [
+     "llm",
+     28,
+     "rename"
+    ],
+    "2001_2014|3|jagraon": [
+     "llm",
+     36,
+     "circle"
+    ],
+    "2001_2014|3|majitha": [
+     "llm",
+     27,
+     "circle"
+    ],
+    "2001_2014|3|nawan shahr": [
+     "llm",
+     40,
+     "rename"
+    ],
+    "2001_2014|3|sas ngr": [
+     "llm",
+     608,
+     "rename"
+    ],
+    "2001_2014|33|chengai": [
+     "llm",
+     730,
+     "rename"
+    ],
+    "2001_2014|35|a and n islands": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|andaman": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|car": [
+     "llm",
+     603,
+     "circle"
+    ],
+    "2001_2014|6|ip haryana": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|7|grprly": [
+     "llm",
+     79,
+     "railway"
+    ],
+    "2001_2014|8|discom": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|8|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|8|jaipur rural": [
+     "llm",
+     102,
+     "circle"
+    ],
+    "2001_2014|9|bhim nagar": [
+     "llm",
+     659,
+     "rename"
+    ],
+    "2001_2014|9|csm nagar": [
+     "llm",
+     640,
+     "rename"
+    ],
+    "2001_2014|9|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|9|jpnagar": [
+     "llm",
+     154,
+     "rename"
+    ],
+    "2001_2014|9|kanshiram nagar": [
+     "llm",
+     633,
+     "rename"
+    ],
+    "2001_2014|9|panchshil nagar": [
+     "llm",
+     661,
+     "rename"
+    ],
+    "2001_2014|9|prabuddh nagar": [
+     "llm",
+     660,
+     "rename"
+    ],
+    "2001_2014|9|ramabai nagar": [
+     "llm",
+     156,
+     "rename"
+    ],
+    "2001_2014|9|stravidasnagar": [
+     "llm",
+     null,
+     "unknown"
+    ],
+    "2015|18|n c hills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2015|18|s t f": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2015|21|hrpc": [
+     "llm",
+     null,
+     "not_a_district"
+    ]
+   },
+   "calls": [
+    {
+     "prompt_tokens": 1499,
+     "completion_tokens": 167,
+     "latency_ms": 1991,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:1"
+    },
+    {
+     "prompt_tokens": 1867,
+     "completion_tokens": 81,
+     "latency_ms": 1718,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:10"
+    },
+    {
+     "prompt_tokens": 1425,
+     "completion_tokens": 84,
+     "latency_ms": 1742,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:12"
+    },
+    {
+     "prompt_tokens": 1033,
+     "completion_tokens": 163,
+     "latency_ms": 1626,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:15"
+    },
+    {
+     "prompt_tokens": 862,
+     "completion_tokens": 89,
+     "latency_ms": 1175,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:16"
+    },
+    {
+     "prompt_tokens": 1100,
+     "completion_tokens": 80,
+     "latency_ms": 1817,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:17"
+    },
+    {
+     "prompt_tokens": 1843,
+     "completion_tokens": 156,
+     "latency_ms": 1400,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:18"
+    },
+    {
+     "prompt_tokens": 1910,
+     "completion_tokens": 439,
+     "latency_ms": 1985,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:19"
+    },
+    {
+     "prompt_tokens": 989,
+     "completion_tokens": 58,
+     "latency_ms": 1810,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:2"
+    },
+    {
+     "prompt_tokens": 1646,
+     "completion_tokens": 79,
+     "latency_ms": 1454,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:21"
+    },
+    {
+     "prompt_tokens": 2365,
+     "completion_tokens": 146,
+     "latency_ms": 2098,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:23"
+    },
+    {
+     "prompt_tokens": 2089,
+     "completion_tokens": 488,
+     "latency_ms": 2696,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:24"
+    },
+    {
+     "prompt_tokens": 642,
+     "completion_tokens": 78,
+     "latency_ms": 1646,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:26"
+    },
+    {
+     "prompt_tokens": 2767,
+     "completion_tokens": 217,
+     "latency_ms": 2147,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:28"
+    },
+    {
+     "prompt_tokens": 1986,
+     "completion_tokens": 488,
+     "latency_ms": 2208,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:29"
+    },
+    {
+     "prompt_tokens": 1628,
+     "completion_tokens": 341,
+     "latency_ms": 2158,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:3"
+    },
+    {
+     "prompt_tokens": 1900,
+     "completion_tokens": 86,
+     "latency_ms": 1661,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:33"
+    },
+    {
+     "prompt_tokens": 846,
+     "completion_tokens": 135,
+     "latency_ms": 2082,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:35"
+    },
+    {
+     "prompt_tokens": 1303,
+     "completion_tokens": 86,
+     "latency_ms": 2612,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:6"
+    },
+    {
+     "prompt_tokens": 942,
+     "completion_tokens": 83,
+     "latency_ms": 1979,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:7"
+    },
+    {
+     "prompt_tokens": 1870,
+     "completion_tokens": 211,
+     "latency_ms": 2554,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:8"
+    },
+    {
+     "prompt_tokens": 4006,
+     "completion_tokens": 621,
+     "latency_ms": 2271,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:9"
+    },
+    {
+     "prompt_tokens": 1847,
+     "completion_tokens": 148,
+     "latency_ms": 1614,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:18"
+    },
+    {
+     "prompt_tokens": 1645,
+     "completion_tokens": 85,
+     "latency_ms": 1923,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr1:21"
+    }
+   ],
+   "errors": []
+  },
+  "2": {
+   "answers": {
+    "2001_2014|1|border": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|border district": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|1|railways": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|1|railways kmr": [
+     "llm",
+     5,
+     "railway"
+    ],
+    "2001_2014|10|jamalpur rly": [
+     "llm",
+     207,
+     "railway"
+    ],
+    "2001_2014|12|kkumey": [
+     "llm",
+     233,
+     "rename"
+    ],
+    "2001_2014|15|spl traffic": [
+     "llm",
+     261,
+     "not_a_district"
+    ],
+    "2001_2014|15|traffic ps": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|16|sipahijala": [
+     "llm",
+     653,
+     "district"
+    ],
+    "2001_2014|17|garo hills south w": [
+     "llm",
+     663,
+     "circle"
+    ],
+    "2001_2014|18|baska": [
+     "llm",
+     616,
+     "rename"
+    ],
+    "2001_2014|18|nchills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2001_2014|19|bdn cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|bkp cp": [
+     "llm",
+     303,
+     "commissionerate"
+    ],
+    "2001_2014|19|jhargram police district": [
+     "llm",
+     703,
+     "district"
+    ],
+    "2001_2014|19|midnapur": [
+     "llm",
+     318,
+     "district"
+    ],
+    "2001_2014|19|paschim midnapur": [
+     "llm",
+     318,
+     "rename"
+    ],
+    "2001_2014|19|purab midnapur": [
+     "llm",
+     317,
+     "rename"
+    ],
+    "2001_2014|2|lahaulspiti": [
+     "llm",
+     21,
+     "rename"
+    ],
+    "2001_2014|21|nowrangpur": [
+     "llm",
+     366,
+     "rename"
+    ],
+    "2001_2014|23|khandwa": [
+     "llm",
+     405,
+     "rename"
+    ],
+    "2001_2014|23|sihore": [
+     "llm",
+     427,
+     "rename"
+    ],
+    "2001_2014|24|ahmedabad commr": [
+     "llm",
+     438,
+     "commissionerate"
+    ],
+    "2001_2014|24|himatnagar": [
+     "llm",
+     458,
+     "headquarters_town"
+    ],
+    "2001_2014|24|kutch": [
+     "llm",
+     449,
+     "rename"
+    ],
+    "2001_2014|24|kutch eastg": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|kutch westbhuj": [
+     "llm",
+     449,
+     "circle"
+    ],
+    "2001_2014|24|palanpur": [
+     "llm",
+     441,
+     "headquarters_town"
+    ],
+    "2001_2014|24|wrly": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|26|dn haveli": [
+     "llm",
+     465,
+     "district"
+    ],
+    "2001_2014|28|guntakal rly": [
+     "llm",
+     502,
+     "railway"
+    ],
+    "2001_2014|28|secunderabad rly": [
+     "llm",
+     507,
+     "railway"
+    ],
+    "2001_2014|28|vijayawada rly": [
+     "llm",
+     749,
+     "railway"
+    ],
+    "2001_2014|29|bangalore commr": [
+     "llm",
+     525,
+     "commissionerate"
+    ],
+    "2001_2014|29|bellary": [
+     "llm",
+     528,
+     "district"
+    ],
+    "2001_2014|29|cbpura": [
+     "llm",
+     630,
+     "headquarters_town"
+    ],
+    "2001_2014|29|chickmagalur": [
+     "llm",
+     532,
+     "district"
+    ],
+    "2001_2014|29|mangalore city": [
+     "llm",
+     534,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore commr": [
+     "llm",
+     545,
+     "commissionerate"
+    ],
+    "2001_2014|29|mysore rural": [
+     "llm",
+     545,
+     "district"
+    ],
+    "2001_2014|3|bhatinda": [
+     "llm",
+     28,
+     "rename"
+    ],
+    "2001_2014|3|jagraon": [
+     "llm",
+     36,
+     "circle"
+    ],
+    "2001_2014|3|majitha": [
+     "llm",
+     27,
+     "circle"
+    ],
+    "2001_2014|3|nawan shahr": [
+     "llm",
+     40,
+     "rename"
+    ],
+    "2001_2014|3|sas ngr": [
+     "llm",
+     608,
+     "rename"
+    ],
+    "2001_2014|33|chengai": [
+     "llm",
+     730,
+     "rename"
+    ],
+    "2001_2014|35|a and n islands": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|andaman": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|35|car": [
+     "llm",
+     603,
+     "circle"
+    ],
+    "2001_2014|6|ip haryana": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|7|grprly": [
+     "llm",
+     79,
+     "railway"
+    ],
+    "2001_2014|8|discom": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2001_2014|8|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|8|jaipur rural": [
+     "llm",
+     102,
+     "circle"
+    ],
+    "2001_2014|9|bhim nagar": [
+     "llm",
+     659,
+     "rename"
+    ],
+    "2001_2014|9|csm nagar": [
+     "llm",
+     640,
+     "rename"
+    ],
+    "2001_2014|9|grp": [
+     "llm",
+     null,
+     "railway"
+    ],
+    "2001_2014|9|jpnagar": [
+     "llm",
+     154,
+     "rename"
+    ],
+    "2001_2014|9|kanshiram nagar": [
+     "llm",
+     633,
+     "rename"
+    ],
+    "2001_2014|9|panchshil nagar": [
+     "llm",
+     661,
+     "rename"
+    ],
+    "2001_2014|9|prabuddh nagar": [
+     "llm",
+     660,
+     "rename"
+    ],
+    "2001_2014|9|ramabai nagar": [
+     "llm",
+     156,
+     "rename"
+    ],
+    "2001_2014|9|stravidasnagar": [
+     "llm",
+     null,
+     "unknown"
+    ],
+    "2015|18|n c hills": [
+     "llm",
+     299,
+     "rename"
+    ],
+    "2015|18|s t f": [
+     "llm",
+     null,
+     "not_a_district"
+    ],
+    "2015|21|hrpc": [
+     "llm",
+     null,
+     "not_a_district"
+    ]
+   },
+   "calls": [
+    {
+     "prompt_tokens": 1499,
+     "completion_tokens": 167,
+     "latency_ms": 1919,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:1"
+    },
+    {
+     "prompt_tokens": 1867,
+     "completion_tokens": 81,
+     "latency_ms": 1559,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:10"
+    },
+    {
+     "prompt_tokens": 1425,
+     "completion_tokens": 84,
+     "latency_ms": 1494,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:12"
+    },
+    {
+     "prompt_tokens": 1033,
+     "completion_tokens": 163,
+     "latency_ms": 1919,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:15"
+    },
+    {
+     "prompt_tokens": 862,
+     "completion_tokens": 89,
+     "latency_ms": 1761,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:16"
+    },
+    {
+     "prompt_tokens": 1100,
+     "completion_tokens": 80,
+     "latency_ms": 1624,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:17"
+    },
+    {
+     "prompt_tokens": 1843,
+     "completion_tokens": 156,
+     "latency_ms": 2631,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:18"
+    },
+    {
+     "prompt_tokens": 1910,
+     "completion_tokens": 439,
+     "latency_ms": 2045,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:19"
+    },
+    {
+     "prompt_tokens": 989,
+     "completion_tokens": 58,
+     "latency_ms": 1581,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:2"
+    },
+    {
+     "prompt_tokens": 1646,
+     "completion_tokens": 79,
+     "latency_ms": 1690,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:21"
+    },
+    {
+     "prompt_tokens": 2365,
+     "completion_tokens": 146,
+     "latency_ms": 1776,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:23"
+    },
+    {
+     "prompt_tokens": 2089,
+     "completion_tokens": 488,
+     "latency_ms": 2346,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:24"
+    },
+    {
+     "prompt_tokens": 642,
+     "completion_tokens": 78,
+     "latency_ms": 1909,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:26"
+    },
+    {
+     "prompt_tokens": 2767,
+     "completion_tokens": 217,
+     "latency_ms": 2552,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:28"
+    },
+    {
+     "prompt_tokens": 1986,
+     "completion_tokens": 488,
+     "latency_ms": 2377,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:29"
+    },
+    {
+     "prompt_tokens": 1628,
+     "completion_tokens": 341,
+     "latency_ms": 2207,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:3"
+    },
+    {
+     "prompt_tokens": 1900,
+     "completion_tokens": 86,
+     "latency_ms": 1314,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:33"
+    },
+    {
+     "prompt_tokens": 846,
+     "completion_tokens": 138,
+     "latency_ms": 1850,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:35"
+    },
+    {
+     "prompt_tokens": 1303,
+     "completion_tokens": 86,
+     "latency_ms": 1744,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:6"
+    },
+    {
+     "prompt_tokens": 942,
+     "completion_tokens": 83,
+     "latency_ms": 1389,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:7"
+    },
+    {
+     "prompt_tokens": 1870,
+     "completion_tokens": 211,
+     "latency_ms": 2378,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:8"
+    },
+    {
+     "prompt_tokens": 4006,
+     "completion_tokens": 621,
+     "latency_ms": 2818,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:9"
+    },
+    {
+     "prompt_tokens": 1847,
+     "completion_tokens": 148,
+     "latency_ms": 1761,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:18"
+    },
+    {
+     "prompt_tokens": 1645,
+     "completion_tokens": 85,
+     "latency_ms": 1920,
+     "model": "gemini-3.5-flash-lite",
+     "ok": true,
+     "error": null,
+     "tag": "fwCr2:21"
+    }
+   ],
+   "errors": []
+  }
+ }
+}

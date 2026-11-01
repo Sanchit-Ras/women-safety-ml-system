@@ -1,0 +1,8 @@
+# Only for the framework comparison (evals/compare_frameworks.py) and its tests. The pipeline and the live API never
+# import these: pip install -r requirements.txt -r requirements-frameworks.txt
+langgraph==1.2.16
+langgraph-checkpoint==4.3.0
+langgraph-prebuilt==1.1.1
+langgraph-sdk==0.4.8
+langchain-core==1.6.12
+langchain-google-genai==4.4.2

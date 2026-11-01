@@ -1,0 +1,315 @@
+{
+ "date": "2026-11-01",
+ "model": "gemini-3.5-flash-lite",
+ "rounds": 2,
+ "groups": 24,
+ "names": 66,
+ "spacing_s": 5.0,
+ "pooled": {
+  "A": {
+   "names": 132,
+   "correct": 122,
+   "precision": 0.9242424242424242,
+   "ci95": [
+    0.8661573143115245,
+    0.9583323854564404
+   ],
+   "cannot_tell": 2,
+   "invented_rejected": 0,
+   "not_returned": 0,
+   "failed_names": 0,
+   "failed_states": 0,
+   "errors": [],
+   "calls": 48,
+   "repairs": 0,
+   "unparsable": 0,
+   "prompt_tokens_mean": 1668.0833333333333,
+   "completion_tokens_mean": 192.16666666666666,
+   "usd": 0.0470804,
+   "inr": 4.5432586,
+   "latency_ms_p50": 1867.5,
+   "latency_ms_p95": 2691.0,
+   "overhead_ms_mean": 14.010614583312949
+  },
+  "B": {
+   "names": 132,
+   "correct": 122,
+   "precision": 0.9242424242424242,
+   "ci95": [
+    0.8661573143115245,
+    0.9583323854564404
+   ],
+   "cannot_tell": 2,
+   "invented_rejected": 0,
+   "not_returned": 0,
+   "failed_names": 0,
+   "failed_states": 0,
+   "errors": [],
+   "calls": 48,
+   "repairs": 0,
+   "unparsable": 0,
+   "prompt_tokens_mean": 1668.0833333333333,
+   "completion_tokens_mean": 191.5,
+   "usd": 0.0470004,
+   "inr": 4.5355386,
+   "latency_ms_p50": 1906.0,
+   "latency_ms_p95": 2773.2999999999997,
+   "overhead_ms_mean": 15.148191666645667
+  },
+  "C": {
+   "names": 132,
+   "correct": 122,
+   "precision": 0.9242424242424242,
+   "ci95": [
+    0.8661573143115245,
+    0.9583323854564404
+   ],
+   "cannot_tell": 2,
+   "invented_rejected": 0,
+   "not_returned": 0,
+   "failed_names": 0,
+   "failed_states": 0,
+   "errors": [],
+   "calls": 48,
+   "repairs": 0,
+   "unparsable": 0,
+   "prompt_tokens_mean": 1667.0833333333333,
+   "completion_tokens_mean": 192.10416666666666,
+   "usd": 0.0470585,
+   "inr": 4.5411452500000005,
+   "latency_ms_p50": 1914.0,
+   "latency_ms_p95": 2624.35,
+   "overhead_ms_mean": 2.7582166666878343
+  }
+ },
+ "per_round": {
+  "A": {
+   "1": {
+    "names": 66,
+    "correct": 61,
+    "precision": 0.9242424242424242,
+    "ci95": [
+     0.834605945487485,
+     0.9672084459353918
+    ],
+    "cannot_tell": 1,
+    "invented_rejected": 0,
+    "not_returned": 0,
+    "failed_names": 0,
+    "failed_states": 0,
+    "errors": [],
+    "calls": 24,
+    "repairs": 0,
+    "unparsable": 0,
+    "prompt_tokens_mean": 1668.0833333333333,
+    "completion_tokens_mean": 192.16666666666666,
+    "usd": 0.0235402,
+    "inr": 2.2716293,
+    "latency_ms_p50": 1898.5,
+    "latency_ms_p95": 2745.35,
+    "overhead_ms_mean": 14.944291666673811
+   },
+   "2": {
+    "names": 66,
+    "correct": 61,
+    "precision": 0.9242424242424242,
+    "ci95": [
+     0.834605945487485,
+     0.9672084459353918
+    ],
+    "cannot_tell": 1,
+    "invented_rejected": 0,
+    "not_returned": 0,
+    "failed_names": 0,
+    "failed_states": 0,
+    "errors": [],
+    "calls": 24,
+    "repairs": 0,
+    "unparsable": 0,
+    "prompt_tokens_mean": 1668.0833333333333,
+    "completion_tokens_mean": 192.16666666666666,
+    "usd": 0.0235402,
+    "inr": 2.2716293,
+    "latency_ms_p50": 1843.5,
+    "latency_ms_p95": 2533.0999999999995,
+    "overhead_ms_mean": 13.076937499952086
+   }
+  },
+  "B": {
+   "1": {
+    "names": 66,
+    "correct": 61,
+    "precision": 0.9242424242424242,
+    "ci95": [
+     0.834605945487485,
+     0.9672084459353918
+    ],
+    "cannot_tell": 1,
+    "invented_rejected": 0,
+    "not_returned": 0,
+    "failed_names": 0,
+    "failed_states": 0,
+    "errors": [],
+    "calls": 24,
+    "repairs": 0,
+    "unparsable": 0,
+    "prompt_tokens_mean": 1668.0833333333333,
+    "completion_tokens_mean": 190.83333333333334,
+    "usd": 0.0234602,
+    "inr": 2.2639093,
+    "latency_ms_p50": 1976.0,
+    "latency_ms_p95": 2827.35,
+    "overhead_ms_mean": 15.980195833303847
+   },
+   "2": {
+    "names": 66,
+    "correct": 61,
+    "precision": 0.9242424242424242,
+    "ci95": [
+     0.834605945487485,
+     0.9672084459353918
+    ],
+    "cannot_tell": 1,
+    "invented_rejected": 0,
+    "not_returned": 0,
+    "failed_names": 0,
+    "failed_states": 0,
+    "errors": [],
+    "calls": 24,
+    "repairs": 0,
+    "unparsable": 0,
+    "prompt_tokens_mean": 1668.0833333333333,
+    "completion_tokens_mean": 192.16666666666666,
+    "usd": 0.0235402,
+    "inr": 2.2716293,
+    "latency_ms_p50": 1842.5,
+    "latency_ms_p95": 2631.7499999999995,
+    "overhead_ms_mean": 14.316187499987487
+   }
+  },
+  "C": {
+   "1": {
+    "names": 66,
+    "correct": 61,
+    "precision": 0.9242424242424242,
+    "ci95": [
+     0.834605945487485,
+     0.9672084459353918
+    ],
+    "cannot_tell": 1,
+    "invented_rejected": 0,
+    "not_returned": 0,
+    "failed_names": 0,
+    "failed_states": 0,
+    "errors": [],
+    "calls": 24,
+    "repairs": 0,
+    "unparsable": 0,
+    "prompt_tokens_mean": 1667.0833333333333,
+    "completion_tokens_mean": 192.04166666666666,
+    "usd": 0.0235255,
+    "inr": 2.27021075,
+    "latency_ms_p50": 1951.0,
+    "latency_ms_p95": 2603.2999999999997,
+    "overhead_ms_mean": 2.621579166703062
+   },
+   "2": {
+    "names": 66,
+    "correct": 61,
+    "precision": 0.9242424242424242,
+    "ci95": [
+     0.834605945487485,
+     0.9672084459353918
+    ],
+    "cannot_tell": 1,
+    "invented_rejected": 0,
+    "not_returned": 0,
+    "failed_names": 0,
+    "failed_states": 0,
+    "errors": [],
+    "calls": 24,
+    "repairs": 0,
+    "unparsable": 0,
+    "prompt_tokens_mean": 1667.0833333333333,
+    "completion_tokens_mean": 192.16666666666666,
+    "usd": 0.023533,
+    "inr": 2.2709344999999996,
+    "latency_ms_p50": 1879.5,
+    "latency_ms_p95": 2619.1499999999996,
+    "overhead_ms_mean": 2.8948541666726064
+   }
+  }
+ },
+ "repeat": {
+  "A": {
+   "same": 66,
+   "names": 66,
+   "share": 1.0
+  },
+  "B": {
+   "same": 66,
+   "names": 66,
+   "share": 1.0
+  },
+  "C": {
+   "same": 66,
+   "names": 66,
+   "share": 1.0
+  }
+ },
+ "between": {
+  "A vs B": {
+   "same": 66,
+   "names": 66,
+   "share": 1.0
+  },
+  "A vs C": {
+   "same": 66,
+   "names": 66,
+   "share": 1.0
+  },
+  "B vs C": {
+   "same": 66,
+   "names": 66,
+   "share": 1.0
+  }
+ },
+ "c_warnings": [
+  "Model 'gemini-3.5-flash-lite' uses fixed sampling defaults; the sampling parameter(s) temperature will be ignored."
+ ],
+ "static": {
+  "control_code_lines": {
+   "A": 14,
+   "B": 35,
+   "C": 51
+  },
+  "footprint": {
+   "packages_added": [
+    "filetype",
+    "httpcore2",
+    "httpx2",
+    "jsonpatch",
+    "jsonpointer",
+    "langchain-core",
+    "langchain-google-genai",
+    "langchain-protocol",
+    "langgraph",
+    "langgraph-checkpoint",
+    "langgraph-prebuilt",
+    "langgraph-sdk",
+    "langsmith",
+    "orjson",
+    "ormsgpack",
+    "pyyaml",
+    "requests-toolbelt",
+    "truststore",
+    "uuid-utils",
+    "xxhash",
+    "zstandard"
+   ],
+   "count": 21,
+   "mb": 24.0
+  },
+  "diagram": "---\nconfig:\n  flowchart:\n    curve: linear\n---\ngraph TD;\n\t__start__([<p>__start__</p>]):::first\n\tprompt(prompt)\n\tcall(call)\n\tcheck(check)\n\trepair(repair)\n\tfinish(finish)\n\t__end__([<p>__end__</p>]):::last\n\t__start__ --> prompt;\n\tcall --> check;\n\tcheck -.-> finish;\n\tcheck -.-> repair;\n\tprompt --> call;\n\trepair --> call;\n\tfinish --> __end__;\n\tclassDef default fill:#f2f0ff,line-height:1.2\n\tclassDef first fill-opacity:0\n\tclassDef last fill:#bfb6fc\n"
+ }
+}
