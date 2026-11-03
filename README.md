@@ -12,13 +12,14 @@ today's district map, and a live site where anyone can see how their district ch
 
 Government crime data is messy: district names changed, districts split, and the files come in four formats, so a
 district cannot be compared across years as published. This project uses an LLM to fix the messy parts, **measures
-how often it is right and trusts it only where it earned trust**, puts 22 years onto today's map of India, and ships a
-live site that answers one question for any district: *how has it changed, beside its state and India?*
+how often it is right and trusts it only where it earned trust**, puts **22 years** onto today's map of India, and
+ships a live site that answers one question for any district: *how has it changed in 22 years, beside its state and
+India?*
 
-- **A dataset people can use**: all 783 districts on today's map, each year's reported crimes against women since
-  2001, a plain summary per district (its change since 2017 beside its state's and India's over the same years, its
-  rank in its state, its most common offence), and the whole table as a **16,606-row CSV download and an API** for
-  journalists, researchers and NGOs who need comparable numbers.
+- **22 years, every district, one map**: all 783 districts on today's map, each year's reported crimes against women
+  from 2001 to 2022, a plain summary per district (its change over the 22 years and since 2017, each beside its state's
+  and India's over the same years; its rank in its state; its most common offence), and the whole table as a
+  **16,606-row CSV download and an API** for journalists, researchers and NGOs who need comparable numbers.
 - **LLM data pipeline** (Python, Gemini, structured outputs, prompt engineering): matched **98.5%** of 989 messy
   historical place names to today's districts, against **56.6%** for rule-based name matching, with **0 hallucinated**
   district codes in 76 model answers.
@@ -65,8 +66,8 @@ flowchart LR
    map); Gemini answers only what is left, inside guards.
 3. **Re-base**: every district split is recorded, and each new district's past is estimated from its share of its
    parent, so all 22 years sit on today's map and national totals never change.
-4. **Summarise, predict and serve**: each district's change since 2017 is computed beside its state's and India's
-   over the same years; 11 forecasting methods are compared fairly and the winner is batch-scored into an experimental
+4. **Summarise, predict and serve**: each district's change over the 22 years and since 2017 is computed beside its
+   state's and India's over the same years; 11 forecasting methods are compared fairly and the winner is batch-scored into an experimental
    2023 watch list; the API serves it all, and the site and the CSV download carry the same numbers.
 
 ## Results

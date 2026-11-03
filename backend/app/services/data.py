@@ -26,10 +26,16 @@ def states() -> list[dict]:
     """States with their districts, both sorted by name."""
     data = get()
     by_state: dict[int, list[dict]] = {}
+    windows = data["meta"]["trends"]
+
+    def band(d: dict, name: str) -> str | None:
+        """The map's colour: only a comparison over the window's own years, so the legend's years hold for every district."""
+        t = d["summary"][name]
+        return t["band"] if t and t["from_year"] == windows[name]["from_year"] else None
+
     for d in data["districts"].values():
-        trend = d["summary"]["trend"]
         by_state.setdefault(d["state_code"], []).append({"code": d["code"], "name": d["name"], "status": d["status"],
-                                                          "trend": trend["band"] if trend else None})
+                                                          "long_band": band(d, "long"), "recent_band": band(d, "recent")})
     out = [{"code": int(c), "name": name, "districts": sorted(by_state.get(int(c), []), key=lambda x: x["name"])}
            for c, name in data["states"].items() if by_state.get(int(c))]
     return sorted(out, key=lambda s: s["name"])

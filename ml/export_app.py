@@ -10,9 +10,9 @@ Writes four files, all committed:
   frontend/public/snapshot.json        the API's own answers, saved once, so the site draws at once instead of waiting
                                        for the free server to wake up (backend/tests check it still equals the API)
 
-The summary: a district's reported cases in TREND_FROM and in the latest year, beside its state's and India's change
-over the same years, its rank in its state, and its most common offence. Worked out here, once, so the API and the
-site only display it.
+The summary: how a district's reported cases changed over all the years and since 2017 (WINDOWS), each beside its
+state's and India's change over the same years, its rank in its state, and its most common offence. Worked out here,
+once, so the API and the site only display it.
 
 The watch list: the ranking method the bake-off chose (its rule: highest precision at 10% on the validation years)
 is trained on every usable window, then scores each stable unit's window for the next year. The top WATCH_SHARE of
@@ -24,7 +24,6 @@ real. Why batch and not per request: the data changes once a year, and the API t
 from __future__ import annotations
 
 import json
-import math
 import sys
 from datetime import date
 from pathlib import Path
@@ -47,10 +46,13 @@ DATASET = ROOT / "frontend" / "public" / "data" / "district_crimes_against_women
 REGISTRY = ROOT / "data" / "registry.json"
 LGD = ROOT / "data" / "lgd_districts.csv"
 WATCH_SHARE = 0.10
-TREND_FROM = 2017         # from 2017 NCRB's district file carries today's district codes, so almost every district has
-                          # numbers as filed in every year since; the window also starts after the 2013 change in the law
+# The comparisons each district gets: name -> (first year, None for the data's first; the bounds between the map's
+# colour bands). "long" spans all 22 years, in which India's total rose 171%, so its bands are wider. "recent" starts in
+# 2017, when NCRB's district file began to carry today's district codes: almost every district has numbers as filed in
+# every year since, and the window starts after the 2013 change in the law.
+WINDOWS = {"long": (None, (-0.10, 0.50, 1.50, 3.00)), "recent": (2017, (-0.10, 0.10, 0.50))}
 MIN_CASES = 30            # below this many cases in the first year, a percentage turns on a handful of cases
-BANDS = (("fell", -0.10), ("steady", 0.10), ("rose", 0.50), ("rose_sharply", math.inf))   # the map's colours: change below each bound
+FEW_CASES = "too few cases"
 MAP_TOLERANCE = 0.01      # degrees (about 1 km): enough detail for a country-wide map
 MAP_GRID = 0.001          # coordinates snapped to 3 decimals
 CATEGORY_LABELS = {"rape": "Rape", "kidnapping_abduction": "Kidnapping and abduction", "dowry_deaths": "Dowry deaths",
@@ -120,49 +122,61 @@ def change_of(before: float, after: float) -> float | None:
     return None if not before else round((after - before) / before, 4)
 
 
-def band_of(change: float | None, from_total: float, min_cases: int = MIN_CASES) -> str:
-    """The map's colour for a change; 'few_cases' when the first year had too few cases for a fair percentage."""
+def band_labels(bounds: tuple[float, ...]) -> list[str]:
+    """(-0.1, 0.1, 0.5) -> ['down more than 10%', '-10% to +10%', '+10% to +50%', 'up 50% or more']: each band's name
+    says its range, so an answer from the API reads on its own."""
+    sign = lambda x: f"{x:+.0%}"                                                              # noqa: E731
+    return [f"down more than {abs(bounds[0]):.0%}", *(f"{sign(a)} to {sign(b)}" for a, b in zip(bounds, bounds[1:])),
+            f"up {bounds[-1]:.0%} or more"]
+
+
+def band_of(change: float | None, from_total: float, bounds: tuple[float, ...], min_cases: int = MIN_CASES) -> str:
+    """The band a change falls in, by its range; FEW_CASES when the first year had too few cases for a fair percentage."""
     if change is None or from_total < min_cases:
-        return "few_cases"
-    return next(name for name, below in BANDS if change < below)
+        return FEW_CASES
+    labels = band_labels(bounds)
+    return next((label for label, below in zip(labels, bounds) if change < below), labels[-1])
 
 
-def summaries(rebased: pd.DataFrame, units: dict[str, list[int]], start: int = TREND_FROM,
+def summaries(rebased: pd.DataFrame, units: dict[str, list[int]], windows: dict = WINDOWS,
               min_cases: int = MIN_CASES) -> tuple[dict[int, dict], dict]:
     """The plain-language facts the site shows for each district with numbers:
-      trend  reported cases in ``start`` and in the latest year, and the change, beside its state's and India's change
-             over the same years. Its own numbers when both years are as filed; otherwise those of its unit (the
-             districts whose past cannot be separated: their combined numbers are real in every year), scope 'area';
-             otherwise its own numbers from the first later year it was counted as it is today, beside its state's and
-             India's change over those same, shorter years. None when its borders changed in the latest year itself.
+      one per window (WINDOWS: all the years, and since 2017)
+             reported cases in the window's first and in the latest year, and the change, beside its state's and
+             India's change over the same years. Its own numbers when both years are as filed; otherwise those of its
+             unit (the districts whose past cannot be separated: their combined numbers are real in every year), scope
+             'area'; otherwise its own numbers from the first later year it was counted as it is today, beside its
+             state's and India's change over those same, shorter years. None when there is no such pair of years.
       rank   its place in its state by reported cases in the latest year: counts, not rates
       top    its most common offence in the latest year as a share of its cases, beside the same share for its state
-    Also returns the comparison's settings, India's total in every year (the site's first chart, so a visitor sees all
-    the years before the recent change) and the trend of India and of each state, for the site's overview."""
-    end = int(rebased["year"].max())
+    Also returns each window's settings with India's and each state's change, and India's total in every year (the
+    site's first chart)."""
+    first_year, end = int(rebased["year"].min()), int(rebased["year"].max())
+    starts = {name: start or first_year for name, (start, _bounds) in windows.items()}
     state_rows = {int(s): rows for s, rows in rebased.groupby("state_code")}
 
     def totals(rows: pd.DataFrame, since: int) -> tuple[float, float]:
         return tuple(float(rows.loc[rows["year"] == y, "total"].sum()) for y in (since, end))
 
-    def trend(rows: pd.DataFrame, since: int = start) -> dict:
+    def trend(rows: pd.DataFrame, since: int) -> dict:
         before, after = totals(rows, since)
         return {"from_total": round(before, 1), "to_total": round(after, 1), "change": change_of(before, after)}
 
-    india = trend(rebased)
-    states = {s: trend(rows) for s, rows in state_rows.items()}
+    india = {name: trend(rebased, s) for name, s in starts.items()}
+    states = {name: {st: trend(rows, s) for st, rows in state_rows.items()} for name, s in starts.items()}
     dist = rebased[rebased["district_code"].notna()].assign(district_code=lambda d: d["district_code"].astype(int),
                                                            kind=lambda d: d["share_basis"].map(kind_of))
-    first, last = (dist[dist["year"] == y].set_index("district_code") for y in (start, end))
+    at = {int(y): rows.set_index("district_code") for y, rows in dist.groupby("year")}
+    last = at[end]
     state_last = rebased[rebased["year"] == end].groupby("state_code")[[*CORE_CATEGORIES, "total"]].sum()
     unit_of = {m: u for u, ms in units.items() for m in ms}
-    out = {}
-    for code, rows in dist.groupby("district_code"):
-        state = int(rows["state_code"].iloc[-1])
-        members = units.get(unit_of.get(code), [code])
+
+    def compare(name: str, code: int, rows: pd.DataFrame, state: int, members: list[int]) -> dict | None:
+        start, bounds = starts[name], windows[name][1]
+        first = at[start]
         filed = set(rows.loc[rows["kind"] == FILED, "year"])
         later = sorted(y for y in filed if start < y < end)
-        scope, since = None, start
+        since = start
         if {start, end} <= filed:
             scope = "district"
             before, after = float(first.at[code, "total"]), float(last.at[code, "total"])
@@ -172,13 +186,19 @@ def summaries(rebased: pd.DataFrame, units: dict[str, list[int]], start: int = T
         elif end in filed and later:
             scope, since = "district", later[0]
             before, after = totals(rows, since)
-        t = None
-        if scope:
-            change = change_of(before, after)
-            t = {"scope": scope, "from_year": since, "to_year": end, "from_total": round(before, 1), "to_total": round(after, 1),
-                 "change": change, "band": band_of(change, before, min_cases),
-                 "state_change": states[state]["change"] if since == start else change_of(*totals(state_rows[state], since)),
-                 "india_change": india["change"] if since == start else change_of(*totals(rebased, since))}
+        else:
+            return None
+        change = change_of(before, after)
+        return {"scope": scope, "from_year": since, "to_year": end, "from_total": round(before, 1), "to_total": round(after, 1),
+                "change": change, "band": band_of(change, before, bounds, min_cases),
+                "state_change": states[name][state]["change"] if since == start else change_of(*totals(state_rows[state], since)),
+                "india_change": india[name]["change"] if since == start else change_of(*totals(rebased, since))}
+
+    out = {}
+    for code, rows in dist.groupby("district_code"):
+        state = int(rows["state_code"].iloc[-1])
+        members = units.get(unit_of.get(code), [code])
+        facts = {name: compare(name, code, rows, state, members) for name in windows}
         rank = top = None
         if code in last.index:
             peers = last[last["state_code"] == state]
@@ -189,12 +209,14 @@ def summaries(rebased: pd.DataFrame, units: dict[str, list[int]], start: int = T
                 s = state_last.loc[state]
                 top = {"category": cat, "share": round(float(row[cat] / row["total"]), 4),
                        "state_share": round(float(s[cat] / s["total"]), 4) if s["total"] else None}
-        out[int(code)] = {"trend": t, "rank": rank, "top": top}
+        out[int(code)] = {**facts, "rank": rank, "top": top}
     per_year = rebased.groupby("year")["total"].sum()
-    meta = {"from_year": start, "to_year": end, "min_cases": min_cases,
-            "bands": [{"band": name, "below": None if math.isinf(below) else below} for name, below in BANDS],
-            "india": india, "india_series": [[int(y), round(float(t), 1), FILED] for y, t in per_year.items()],
-            "states": {str(s): v for s, v in sorted(states.items())}}
+    meta = {"trends": {name: {"from_year": starts[name], "to_year": end, "min_cases": min_cases, "few_cases": FEW_CASES,
+                              "bands": [{"label": label, "below": below} for label, below in
+                                        zip(band_labels(bounds), [*bounds, None])],
+                              "india": india[name], "states": {str(s): v for s, v in sorted(states[name].items())}}
+                       for name, (_start, bounds) in windows.items()},
+            "india_series": [[int(y), round(float(t), 1), FILED] for y, t in per_year.items()]}
     return out, meta
 
 
@@ -275,7 +297,7 @@ def build(rebased: pd.DataFrame, units_data: dict, scored: pd.DataFrame, dist_na
         out[str(code)] = {
             "code": code, "name": nm(code), "state_code": state_code, "state": state_names.get(state_code, str(state_code)),
             "unit_id": unit, "unit_members": sorted(units.get(unit, [code])), "status": status, "score": score, "peer": peer,
-            "summary": (facts or {}).get(code, {"trend": None, "rank": None, "top": None}),
+            "summary": (facts or {}).get(code, {**{name: None for name in WINDOWS}, "rank": None, "top": None}),
             "in_files": code not in map_only,
             "latest_year": int(latest["year"]) if latest is not None else None,
             "latest_total": round(float(latest["total"]), 1) if latest is not None else None,
@@ -355,12 +377,12 @@ def main() -> None:
     map_codes = {f["properties"]["code"] for f in geo["features"]}
     pieces = pd.read_csv(unit_panel.PIECES_PATH) if unit_panel.PIECES_PATH.exists() else None
     units = {u["unit_id"]: [int(m) for m in u["members"]] for u in units_data["units"]}
-    district_facts, trend = summaries(rebased, units)
+    district_facts, trends = summaries(rebased, units)
     districts = build(rebased, units_data, scored, dist_names, state_names, map_codes, pieces, district_facts)
     table = dataset(rebased, dist_names, state_names)
     years = [int(rebased["year"].min()), int(rebased["year"].max())]
     watch_year = int(scored["label_year"].iloc[0]) if len(scored) else years[1] + 1
-    meta = {**model_card(report_path, report, facts, watch_year, years), "trend": trend,
+    meta = {**model_card(report_path, report, facts, watch_year, years), **trends,
             "dataset": {"path": f"/{DATASET.relative_to(ROOT / 'frontend' / 'public').as_posix()}", "rows": len(table),
                         "districts": int(table["district_code"].nunique()), "columns": list(table.columns)}}
     app = {"meta": meta,
@@ -379,8 +401,9 @@ def main() -> None:
     for label, path in (("app data", APP_DATA), ("map", MAP_OUT), ("dataset", DATASET), ("snapshot", snap)):
         print(f"{label:<9}-> {path} ({path.stat().st_size / 1e6:.2f} MB)")
     print("top 10:", ", ".join(f"{d['name']} ({d['state']})" for d in watched[:10]))
-    print(f"India {trend['from_year']}-{trend['to_year']}: {trend['india']['from_total']:,.0f} -> {trend['india']['to_total']:,.0f} "
-          f"({trend['india']['change']:+.1%})")
+    for name, w in trends["trends"].items():
+        print(f"India {w['from_year']}-{w['to_year']} ({name}): {w['india']['from_total']:,.0f} -> {w['india']['to_total']:,.0f} "
+              f"({w['india']['change']:+.1%})")
 
 
 if __name__ == "__main__":

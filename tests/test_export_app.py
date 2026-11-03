@@ -50,11 +50,20 @@ def test_kind_of_tells_filed_adjusted_and_estimated_apart():
     assert [export_app.kind_of(b) for b in ("observed", "remainder", "crime:3y", "area")] == [0, 1, 2, 2]
 
 
-def test_bands_split_the_change_at_their_bounds_and_few_cases_overrule_them():
-    band = export_app.band_of
-    assert [band(c, 100) for c in (-0.5, -0.1, 0.0, 0.0999, 0.1, 0.4999, 0.5, 3.0)] == \
-        ["fell", "steady", "steady", "steady", "rose", "rose", "rose_sharply", "rose_sharply"]
-    assert band(1.0, 29) == band(None, 100) == "few_cases" and band(1.0, 30) == "rose_sharply"
+RECENT = export_app.WINDOWS["recent"][1]
+LONG = export_app.WINDOWS["long"][1]
+
+
+def test_bands_are_named_by_their_range_and_few_cases_overrule_them():
+    assert export_app.band_labels(RECENT) == ["down more than 10%", "-10% to +10%", "+10% to +50%", "up 50% or more"]
+    assert export_app.band_labels(LONG) == ["down more than 10%", "-10% to +50%", "+50% to +150%", "+150% to +300%",
+                                            "up 300% or more"]
+    band = lambda c, n=100, b=RECENT: export_app.band_of(c, n, b)                              # noqa: E731
+    assert [band(c) for c in (-0.5, -0.1, 0.0999, 0.1, 0.4999, 0.5, 3.0)] == \
+        ["down more than 10%", "-10% to +10%", "-10% to +10%", "+10% to +50%", "+10% to +50%", "up 50% or more", "up 50% or more"]
+    assert [band(c, b=LONG) for c in (-0.2, 0.4, 1.5, 2.9, 3.0)] == \
+        ["down more than 10%", "-10% to +50%", "+150% to +300%", "+150% to +300%", "up 300% or more"]
+    assert band(1.0, 29) == band(None) == export_app.FEW_CASES and band(1.0, 30) == "up 50% or more"
     assert export_app.change_of(0, 5) is None and export_app.change_of(40, 30) == -0.25
 
 
@@ -85,19 +94,27 @@ def small_panel():
 
 
 def test_summaries_compare_like_with_like():
-    facts, meta = export_app.summaries(small_panel(), {"u1": [1], "u23": [2, 3], "u4": [4], "u5": [5], "u6": [6]})
-    assert meta["india"] == {"from_total": 300.0, "to_total": 365.0, "change": 0.2167}       # the state unit counts here
+    windows = {"all": (None, RECENT), "late": (2019, LONG)}                         # all the years (here 2017-2022), and since 2019
+    facts, meta = export_app.summaries(small_panel(), {"u1": [1], "u23": [2, 3], "u4": [4], "u5": [5], "u6": [6]}, windows)
+    w = meta["trends"]["all"]
+    assert (w["from_year"], w["to_year"]) == (2017, 2022) and meta["trends"]["late"]["from_year"] == 2019
+    assert w["india"] == {"from_total": 300.0, "to_total": 365.0, "change": 0.2167}          # the state unit counts here
     assert meta["india_series"][0] == [2017, 300.0, 0] and meta["india_series"][-1] == [2022, 365.0, 0]
     assert [y for y, _t, _k in meta["india_series"]] == YEARS                                 # every year, not only the two compared
-    assert meta["states"]["1"]["change"] == 0.1702 and meta["states"]["2"]["change"] == 0.3846
-    t = {c: f["trend"] for c, f in facts.items()}
+    assert w["states"]["1"]["change"] == 0.1702 and w["states"]["2"]["change"] == 0.3846
+    assert [b["label"] for b in meta["trends"]["late"]["bands"]] == export_app.band_labels(LONG)
+    t = {c: f["all"] for c, f in facts.items()}
     assert t[1] == {"scope": "district", "from_year": 2017, "to_year": 2022, "from_total": 100.0, "to_total": 150.0,
-                    "change": 0.5, "band": "rose_sharply", "state_change": 0.1702, "india_change": 0.2167}
-    assert t[2]["scope"] == t[3]["scope"] == "area" and (t[2]["from_total"], t[2]["to_total"], t[2]["band"]) == (100.0, 95.0, "steady")
+                    "change": 0.5, "band": "up 50% or more", "state_change": 0.1702, "india_change": 0.2167}
+    assert t[2]["scope"] == t[3]["scope"] == "area" and (t[2]["from_total"], t[2]["to_total"], t[2]["band"]) == (100.0, 95.0, "-10% to +10%")
     assert t[2] == t[3]                                                                    # one unit, one comparison
-    assert (t[4]["from_year"], t[4]["change"], t[4]["band"]) == (2019, -0.25, "fell")      # its first year as today
+    assert (t[4]["from_year"], t[4]["change"], t[4]["band"]) == (2019, -0.25, "down more than 10%")   # its first year as today
     assert (t[4]["state_change"], t[4]["india_change"]) == (0.0659, 0.1335)                # over the same, shorter years
-    assert (t[5]["change"], t[5]["band"]) == (1.0, "few_cases") and t[6] is None
+    assert (t[5]["change"], t[5]["band"]) == (1.0, export_app.FEW_CASES) and t[6] is None
+    late = {c: f["late"] for c, f in facts.items()}                                        # the second window, its own bands
+    assert (late[1]["from_total"], late[1]["change"], late[1]["band"]) == (120.0, 0.25, "-10% to +50%")
+    assert (late[4]["scope"], late[4]["from_year"], late[4]["change"]) == ("district", 2019, -0.25) and late[6] is None
+    assert late[1]["state_change"] == late[4]["state_change"] == 0.0659 and late[1]["india_change"] == 0.1335
     assert [facts[c]["rank"]["rank"] for c in (1, 2, 3, 4)] == [1, 2, 3, 4] and facts[4]["rank"]["of"] == 4
     assert (facts[6]["rank"], facts[5]["rank"]["rank"]) == ({"year": 2022, "rank": 1, "of": 2}, 2)
     assert facts[1]["top"] == {"category": "rape", "share": 0.5, "state_share": 0.2727}   # the first of equals
@@ -159,28 +176,34 @@ def test_the_download_table_is_the_rebased_panel(app_data):
 
 
 def test_every_summary_agrees_with_the_districts_own_numbers(app_data):
-    m = app_data["meta"]["trend"]
+    windows = app_data["meta"]["trends"]
     first, last = app_data["meta"]["data_years"]
-    india = {y: t for y, t, _k in m["india_series"]}
-    assert list(india) == list(range(first, last + 1)) and (india[m["from_year"]], india[m["to_year"]]) == \
-        (m["india"]["from_total"], m["india"]["to_total"])
-    for d in app_data["districts"].values():
-        s, years = d["summary"], {p[0]: p for p in d["series"]}
-        t = s["trend"]
-        if t:
-            assert t["band"] == export_app.band_of(t["change"], t["from_total"], m["min_cases"]) and t["to_year"] == m["to_year"]
+    assert (windows["long"]["from_year"], windows["recent"]["from_year"]) == (first, 2017)
+    india = {y: t for y, t, _k in app_data["meta"]["india_series"]}
+    assert list(india) == list(range(first, last + 1))
+    for name, m in windows.items():
+        assert (india[m["from_year"]], india[m["to_year"]]) == (m["india"]["from_total"], m["india"]["to_total"])
+        bounds = export_app.WINDOWS[name][1]
+        for d in app_data["districts"].values():
+            years, t = {p[0]: p for p in d["series"]}, d["summary"][name]
+            if t is None:
+                continue
+            assert t["band"] == export_app.band_of(t["change"], t["from_total"], bounds, m["min_cases"]) and t["to_year"] == last
             if t["from_year"] == m["from_year"]:
                 assert t["india_change"] == m["india"]["change"] and t["state_change"] == m["states"][str(d["state_code"])]["change"]
-        if t and t["scope"] == "district":                                                # both years as filed, its own
-            assert years[t["from_year"]][2] == years[t["to_year"]][2] == export_app.FILED
-            assert (years[t["from_year"]][1], years[t["to_year"]][1]) == (t["from_total"], t["to_total"])
-        if t and t["scope"] == "area":
-            assert len(d["unit_members"]) > 1
+            if t["scope"] == "district":                                                  # both years as filed, its own
+                assert years[t["from_year"]][2] == years[t["to_year"]][2] == export_app.FILED
+                assert (years[t["from_year"]][1], years[t["to_year"]][1]) == (t["from_total"], t["to_total"])
+            else:
+                assert len(d["unit_members"]) > 1 and t["from_year"] == m["from_year"]
+        compared = sum((d["summary"][name] or {}).get("from_year") == m["from_year"] for d in app_data["districts"].values())
+        assert compared > (650 if name == "long" else 700), name                          # over the window's own years
+    for d in app_data["districts"].values():
+        s = d["summary"]
         if s["rank"]:
             assert 1 <= s["rank"]["rank"] <= s["rank"]["of"] and s["rank"]["year"] == d["latest_year"]
         if s["top"]:
             assert d["latest"][s["top"]["category"]] == max(d["latest"].values())
-    assert sum(d["summary"]["trend"] is not None for d in app_data["districts"].values()) > 700
 
 
 def test_the_site_quotes_the_numbers_of_the_reports(app_data):

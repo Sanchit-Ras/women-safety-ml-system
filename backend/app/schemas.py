@@ -6,7 +6,6 @@ from typing import Literal, Optional
 from pydantic import BaseModel
 
 Status = Literal["watch", "no_signal", "not_scored"]
-Band = Literal["fell", "steady", "rose", "rose_sharply", "few_cases"]
 
 
 class DistrictRef(BaseModel):
@@ -16,7 +15,8 @@ class DistrictRef(BaseModel):
 
 class DistrictListItem(DistrictRef):
     status: Status
-    trend: Optional[Band]                          # the map's colour: how reported cases changed (Trend.band)
+    long_band: Optional[str]                       # the map's colours: the band of the change over all the years and
+    recent_band: Optional[str]                     # since 2017 (Trend.band); None when not comparable over those years
 
 
 class State(BaseModel):
@@ -46,15 +46,15 @@ class Trend(BaseModel):
     """Reported cases in the first and the latest year of the comparison, and the change, beside the state's and India's
     change over the same years. Scope 'area': the district's own numbers are not as filed in both years, so these are
     the combined numbers of the districts it is assessed with (unit_members). A from_year later than the usual one: the
-    first year the district was counted with today's borders. Band 'few_cases': too few cases in the first year for a
-    fair percentage."""
+    first year the district was counted with today's borders. Band: the change's range, as listed in
+    /model-info under trends (for example "+50% to +150%"), or "too few cases" for a fair percentage."""
     scope: Literal["district", "area"]
     from_year: int
     to_year: int
     from_total: float
     to_total: float
     change: Optional[float]
-    band: Band
+    band: str
     state_change: Optional[float]
     india_change: Optional[float]
 
@@ -74,7 +74,8 @@ class Top(BaseModel):
 
 
 class Summary(BaseModel):
-    trend: Optional[Trend]
+    long: Optional[Trend]                          # over all the years of the data (2001-2022)
+    recent: Optional[Trend]                        # since 2017
     rank: Optional[Rank]
     top: Optional[Top]
 

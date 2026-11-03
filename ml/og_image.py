@@ -1,5 +1,5 @@
 """The picture a link to the site shows when it is shared (LinkedIn, WhatsApp, X): 1200 x 630 pixels, today's district
-map coloured as on the site's home page, beside the site's question. Run after ``ml.export_app``; the picture is
+map coloured by the 22-year change, as on the site's home page, beside the site's question. Run after ``ml.export_app``; the picture is
 committed and served with the site (frontend/public/og.png, named in frontend/index.html).
 
     python -m ml.og_image
@@ -19,7 +19,8 @@ OUT = export_app.ROOT / "frontend" / "public" / "og.png"
 SIZE = (1200, 630)
 SCALE = 2                       # drawn at twice the size, then shrunk: smooth edges
 MAP_BOX = (40, 25, 600, 605)    # left, top, right, bottom of the map, in final pixels
-COLORS = {"fell": "#2563eb", "steady": "#94a3b8", "rose": "#fdba74", "rose_sharply": "#ea580c"}   # as frontend/src/lib/bands.js
+# As frontend/src/lib/bands.js: blue fell, grey changed little, oranges rose (one more orange for the 22-year view)
+PALETTES = {4: ["#2563eb", "#94a3b8", "#fdba74", "#ea580c"], 5: ["#2563eb", "#94a3b8", "#fdba74", "#f97316", "#c2410c"]}
 NO_COMPARISON = "#eef2f6"
 INK, MUTED = "#0f172a", "#475569"
 FONTS = {"bold": ["C:/Windows/Fonts/segoeuib.ttf", "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"],
@@ -38,18 +39,8 @@ def mercator(lon: float, lat: float) -> tuple[float, float]:
 
 
 def legend(bands: list[dict]) -> list[tuple[str, str]]:
-    """The same words as the site's legend (frontend/src/lib/bands.js)."""
-    out = []
-    for i, b in enumerate(bands):
-        if i == 0:
-            label = f"Down more than {abs(round(b['below'] * 100))}%"
-        elif b["below"] is None:
-            label = f"Up {round(bands[i - 1]['below'] * 100)}% or more"
-        else:
-            sign = lambda x: f"{'+' if x > 0 else '−' if x < 0 else ''}{abs(round(x * 100))}%"   # noqa: E731
-            label = f"{sign(bands[i - 1]['below'])} to {sign(b['below'])}"
-        out.append((COLORS[b["band"]], label))
-    return out
+    """(colour, words) per band, as the site's legend shows them."""
+    return [(color, b["label"][0].upper() + b["label"][1:]) for color, b in zip(PALETTES[len(bands)], bands)]
 
 
 def wrap(draw: ImageDraw.ImageDraw, text: str, f, width: int) -> list[str]:
@@ -65,7 +56,10 @@ def wrap(draw: ImageDraw.ImageDraw, text: str, f, width: int) -> list[str]:
 
 
 def draw(app: dict, geo: dict) -> Image.Image:
-    band = {int(c): (d["summary"]["trend"] or {}).get("band") for c, d in app["districts"].items()}
+    w = app["meta"]["trends"]["long"]
+    colors = dict((b["label"], color) for b, (color, _label) in zip(w["bands"], legend(w["bands"])))
+    band = {int(c): d["summary"]["long"]["band"] for c, d in app["districts"].items()          # coloured only over all the years
+            if d["summary"]["long"] and d["summary"]["long"]["from_year"] == w["from_year"]}
     shapes = [(f["properties"]["code"], shape(f["geometry"])) for f in geo["features"]]
     shapes.sort(key=lambda s: -s[1].area)                  # large first, so a district inside another is drawn on top
     xs, ys = zip(*(mercator(x, y) for _c, g in shapes for x, y in (g.bounds[:2], g.bounds[2:])))
@@ -80,29 +74,29 @@ def draw(app: dict, geo: dict) -> Image.Image:
     img = Image.new("RGB", (SIZE[0] * SCALE, SIZE[1] * SCALE), "#ffffff")
     d = ImageDraw.Draw(img)
     for code, g in shapes:
-        color = COLORS.get(band.get(code), NO_COMPARISON)
+        color = colors.get(band.get(code), NO_COMPARISON)
         for part in getattr(g, "geoms", [g]):
             d.polygon([to_px(*p) for p in part.exterior.coords], fill=color, outline="#ffffff", width=1)
 
-    tr = app["meta"]["trend"]
+    span = w["to_year"] - w["from_year"] + 1
     x0, width = 640, 520
-    y = 120
-    for line in wrap(d, "How has your district changed?", font("bold", 50), width):
-        d.text((x0 * SCALE, y * SCALE), line, font=font("bold", 50), fill=INK)
-        y += 62
-    y += 14
-    lines = wrap(d, f"Crimes against women reported in every district of India, {app['meta']['data_years'][0]}–"
-                    f"{app['meta']['data_years'][1]}, rebuilt onto today's map so the years can be compared.", font("regular", 26), width)
+    y = 64
+    for line in wrap(d, f"How has your district changed in {span} years?", font("bold", 46), width):
+        d.text((x0 * SCALE, y * SCALE), line, font=font("bold", 46), fill=INK)
+        y += 56
+    y += 12
+    lines = wrap(d, f"Crimes against women reported in every district of India, every year from {w['from_year']} to "
+                    f"{w['to_year']}, rebuilt onto today's map.", font("regular", 24), width)
     for line in lines:
-        d.text((x0 * SCALE, y * SCALE), line, font=font("regular", 26), fill=MUTED)
-        y += 36
-    y += 28
-    d.text((x0 * SCALE, y * SCALE), f"Recent change in reported cases, {tr['from_year']} to {tr['to_year']}", font=font("bold", 20), fill=INK)
-    y += 38
-    for color, label in legend(tr["bands"]):
+        d.text((x0 * SCALE, y * SCALE), line, font=font("regular", 24), fill=MUTED)
+        y += 33
+    y += 22
+    d.text((x0 * SCALE, y * SCALE), f"Change in reported cases, {w['from_year']} to {w['to_year']}", font=font("bold", 20), fill=INK)
+    y += 36
+    for color, label in legend(w["bands"]):
         d.rounded_rectangle([x0 * SCALE, (y + 4) * SCALE, (x0 + 20) * SCALE, (y + 24) * SCALE], radius=4 * SCALE, fill=color)
         d.text(((x0 + 32) * SCALE, y * SCALE), label, font=font("regular", 21), fill=MUTED)
-        y += 34
+        y += 31
     d.text((x0 * SCALE, 584 * SCALE), "women-safety-ml-system-jwlh.vercel.app", font=font("regular", 20), fill="#2563eb")
     return img.resize(SIZE, Image.LANCZOS)
 

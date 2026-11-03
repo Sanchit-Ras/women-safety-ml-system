@@ -1,41 +1,36 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Sparkline from "./Sparkline";
-import { bandColor } from "../lib/bands";
+import { bandColors } from "../lib/bands";
 import { changeText, downloadCsv, listText, num, ordinal, pct } from "../lib/format";
 
 const HOW = ["filed", "adjusted", "estimated"];
 
-// The trend in plain words: what changed, over which years, and the same years for the state and India.
-function Trend({ d, t, firstYear }) {
-  if (!t) {
-    return (
-      <p className="text-slate-600">
-        No fair comparison over time: since {firstYear}, {d.name} has no two years counted with today's borders (its
-        borders changed recently, or a year is missing). The chart and the notes below show what is known.
-      </p>
-    );
-  }
+// One comparison in plain words: what changed, over which years, and the same years for the state and India.
+// w: the window's settings (model_info.trends[name]); t: the district's comparison over it.
+function Trend({ d, t, w, title }) {
   const others = d.unit_members.map((m) => m.name);
   const area = t.scope === "area";
-  const later = t.from_year > firstYear;
+  const later = t.from_year > w.from_year;
   return (
-    <div className="space-y-2">
+    <div className="border-t border-slate-100 pt-4 space-y-2">
+      <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">
+        {later ? `Since ${t.from_year}, its first year with today's borders` : `${title}, ${t.from_year} to ${t.to_year}`}
+      </p>
       {area && (
         <p className="text-sm text-slate-600">
           Its borders changed after {t.from_year}, so it is compared together with {listText(others)}: their combined
           numbers are real for every year.
         </p>
       )}
-      {t.band === "few_cases" ? (
+      {t.band === w.few_cases ? (
         <p className="text-slate-700">
           {num(t.from_total)} cases in {t.from_year} and {num(t.to_total)} in {t.to_year}: too few for a fair percentage.
         </p>
       ) : (
         <p className="text-lg text-slate-800">
-          <span className="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style={{ background: bandColor(t.band) }} />
+          <span className="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style={{ background: bandColors(w.bands)[t.band] }} />
           <strong className="text-2xl font-display">{changeText(t.change)}</strong> since {t.from_year}
-          {later && <span className="text-slate-500">, the first year it was counted with today's borders</span>}
           <span className="text-slate-500"> ({num(t.from_total)} to {num(t.to_total)}{area ? ", together" : ""})</span>
         </p>
       )}
@@ -43,6 +38,27 @@ function Trend({ d, t, firstYear }) {
         Over the same years: {d.state} {changeText(t.state_change)}, India {changeText(t.india_change)}.
       </p>
     </div>
+  );
+}
+
+// The 22-year comparison first, then the recent one; one section when both start in the same year.
+function Trends({ d, meta }) {
+  const { long, recent } = d.summary;
+  const span = meta.trends.long.to_year - meta.trends.long.from_year + 1;
+  if (!long && !recent) {
+    return (
+      <p className="text-slate-600 border-t border-slate-100 pt-4">
+        No fair comparison over time: {d.name} has no two years counted with today's borders (its borders changed recently,
+        or a year is missing). The chart and the notes below show what is known.
+      </p>
+    );
+  }
+  const sameStart = long && recent && long.from_year === recent.from_year;
+  return (
+    <>
+      {long && <Trend d={d} t={long} w={meta.trends.long} title={`Over ${span} years`} />}
+      {recent && !sameStart && <Trend d={d} t={recent} w={meta.trends.recent} title="Recent change" />}
+    </>
   );
 }
 
@@ -80,7 +96,7 @@ export default function DistrictCard({ district: d, meta, watchOpen = false }) {
   const s = d.summary;
   const cats = meta.categories;
   const max = d.latest ? Math.max(1, ...Object.values(d.latest)) : 1;
-  const t = s.trend;
+  const recent = s.recent && s.recent.band !== meta.trends.recent.few_cases ? s.recent : null;
 
   const copyLink = () => {
     navigator.clipboard?.writeText(window.location.href).then(() => {
@@ -113,14 +129,9 @@ export default function DistrictCard({ district: d, meta, watchOpen = false }) {
           </p>
           <div>
             <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Every year, {d.series[0][0]} to {d.latest_year}</p>
-            <Sparkline series={d.series} compared={t && t.band !== "few_cases" ? [t.from_year, t.to_year] : null} />
+            <Sparkline series={d.series} compared={recent ? [recent.from_year, recent.to_year] : null} />
           </div>
-          <div className="border-t border-slate-100 pt-4">
-            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">
-              Recent change{t ? `, ${t.from_year} to ${t.to_year}` : ""}
-            </p>
-            <Trend d={d} t={t} firstYear={meta.trend.from_year} />
-          </div>
+          <Trends d={d} meta={meta} />
           {(s.rank || s.top) && (
             <ul className="text-sm text-slate-600 space-y-1.5">
               {s.rank && (

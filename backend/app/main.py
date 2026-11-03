@@ -18,7 +18,8 @@ app = FastAPI(
     title="Crimes Against Women in India, by District: API",
     description="Reported crimes against women for every district on today's map of India, 2001-2022 (NCRB, re-based "
                 "onto today's districts so every year is comparable): each district's yearly numbers, how it changed "
-                "since 2017 beside its state and India, and an experimental watch list for the year after the data. "
+                "over the 22 years and since 2017, each beside its state and India, and an experimental watch list for "
+                "the year after the data. "
                 "The whole table is also a CSV download on the website.",
     version=API_VERSION,
     lifespan=lifespan,

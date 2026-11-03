@@ -20,7 +20,7 @@ function useStatic(load) {
 export const useSnapshot = () => useStatic(getSnapshot);
 export const useMap = () => useStatic(getMap).data;
 
-export const SITE_TITLE = "How has your district changed? Crimes against women in India, 2001–2022";
+export const SITE_TITLE = "How has your district changed in 22 years? Crimes against women in India, 2001–2022";
 
 // The browser tab's title for the page on show
 export function useTitle(title) {

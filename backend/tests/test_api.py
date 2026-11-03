@@ -6,8 +6,6 @@ import re
 from app import API_VERSION
 from app.services import data
 
-BANDS = {"fell", "steady", "rose", "rose_sharply", "few_cases"}
-
 
 def test_health_and_deploy_check(client):
     assert client.get("/health").json() == {"status": "ok"}
@@ -38,19 +36,29 @@ def test_a_district_carries_its_numbers_status_and_notes(client):
     assert "Warangal" in j["notes"][0]
 
 
-def test_a_district_carries_a_plain_summary_and_the_list_its_map_colour(client):
-    d = client.get("/district/671").json()                         # Shahdara: filed in 2017 and in 2022
-    t, by_year = d["summary"]["trend"], {p[0]: p[1] for p in d["series"]}
-    assert (t["scope"], t["from_year"], t["to_year"]) == ("district", 2017, 2022) and t["band"] in BANDS
-    assert (t["from_total"], t["to_total"]) == (by_year[2017], by_year[2022])
-    assert round((t["to_total"] - t["from_total"]) / t["from_total"], 4) == t["change"]
-    assert d["summary"]["rank"]["of"] == 11 and d["latest"][d["summary"]["top"]["category"]] == max(d["latest"].values())
-    assert client.get("/district/689").json()["summary"] == {"trend": None, "rank": None, "top": None}   # no row of its own
-    listed = {x["code"]: x["trend"] for s in client.get("/districts").json()["states"] for x in s["districts"]}
-    assert listed[671] == t["band"] and listed[689] is None and set(listed.values()) <= BANDS | {None}
+def test_a_district_carries_both_comparisons_and_the_list_their_map_colours(client):
     m = client.get("/model-info").json()
-    assert m["trend"]["from_year"] == 2017 and m["trend"]["india"]["change"] == t["india_change"]
-    assert [p[0] for p in m["trend"]["india_series"]] == list(range(m["data_years"][0], m["data_years"][1] + 1))
+    w = m["trends"]
+    assert (w["long"]["from_year"], w["recent"]["from_year"]) == (m["data_years"][0], 2017)
+    assert [p[0] for p in m["india_series"]] == list(range(m["data_years"][0], m["data_years"][1] + 1))
+    labels = {n: {b["label"] for b in w[n]["bands"]} | {w[n]["few_cases"]} for n in w}
+    d = client.get("/district/671").json()                         # Shahdara: filed from 2017, estimated before
+    by_year = {p[0]: p[1] for p in d["series"]}
+    recent, long = d["summary"]["recent"], d["summary"]["long"]
+    assert (recent["scope"], recent["from_year"], recent["to_year"]) == ("district", 2017, 2022) and recent["band"] in labels["recent"]
+    assert (recent["from_total"], recent["to_total"]) == (by_year[2017], by_year[2022])
+    assert round((recent["to_total"] - recent["from_total"]) / recent["from_total"], 4) == recent["change"]
+    assert (long["scope"], long["from_year"]) == ("area", 2001) and long["band"] in labels["long"]   # 2001 only as a whole area
+    assert long["india_change"] == w["long"]["india"]["change"] and recent["india_change"] == w["recent"]["india"]["change"]
+    assert d["summary"]["rank"]["of"] == 11 and d["latest"][d["summary"]["top"]["category"]] == max(d["latest"].values())
+    assert client.get("/district/689").json()["summary"] == {"long": None, "recent": None, "rank": None, "top": None}
+    listed = {x["code"]: x for s in client.get("/districts").json()["states"] for x in s["districts"]}
+    assert (listed[671]["long_band"], listed[671]["recent_band"]) == (long["band"], recent["band"])
+    assert listed[689]["long_band"] is listed[689]["recent_band"] is None
+    warangal = client.get("/district/522").json()["summary"]["long"]               # counted with today's borders from 2019
+    assert warangal["from_year"] > 2001 and listed[522]["long_band"] is None             # so not coloured on the 22-year map
+    for n in w:
+        assert {x[f"{n}_band"] for x in listed.values()} <= labels[n] | {None}
     assert m["dataset"]["path"].endswith(".csv") and m["dataset"]["rows"] > 16000
 
 

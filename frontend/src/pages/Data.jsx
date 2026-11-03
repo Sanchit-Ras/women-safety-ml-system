@@ -14,7 +14,7 @@ const COLUMNS = {
 };
 
 const ENDPOINTS = [
-  ["/districts", "Every district by state, with its map colour (how its cases changed) and its watch-list status"],
+  ["/districts", "Every district by state, with its map colours (how its cases changed over the 22 years and since 2017) and its watch-list status"],
   ["/district/671", "One district (here Shahdara, Delhi): every year's total and how it was counted, the latest year by offence, the plain summary and notes"],
   ["/watchlist", "The experimental watch list for the year after the data"],
   ["/model-info", "The comparison's settings, India's and each state's change, and the watch list's evidence"],
@@ -35,7 +35,7 @@ export default function Data() {
   const m = snap?.model_info;
   const [first, last] = m ? m.data_years : [2001, 2022];
   const years = `${first}–${last}`;
-  const example = snap?.district["671"]?.summary.trend;
+  const example = snap?.district["671"]?.summary.long;
   useTitle("The data: crimes against women in India, by district, 2001–2022");
 
   return (
@@ -135,7 +135,7 @@ export default function Data() {
               <p className="text-sm text-slate-600 mb-2">For example, part of the answer for Shahdara:</p>
               <pre className="bg-slate-900 text-slate-100 text-xs rounded-xl p-4 overflow-x-auto">{`curl ${API}/district/671
 
-"summary": { "trend": ${JSON.stringify(example, null, 2).replace(/\n/g, "\n  ")} }`}</pre>
+"summary": { "long": ${JSON.stringify(example, null, 2).replace(/\n/g, "\n  ")} }`}</pre>
             </div>
           )}
           <p className="text-sm text-slate-600">

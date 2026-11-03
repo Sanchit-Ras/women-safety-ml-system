@@ -48,7 +48,7 @@ export default function Sparkline({ series, compared }) {
         <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-blue-600" /> As filed</span>
         <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-blue-300 border border-blue-600" /> Adjusted</span>
         <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-white border border-blue-600" /> Estimated</span>
-        {compared && <span className="flex items-center gap-1.5"><span className="w-3 h-2.5 bg-orange-50 border border-orange-200" /> Years compared: {compared[0]}–{compared[1]}</span>}
+        {compared && <span className="flex items-center gap-1.5"><span className="w-3 h-2.5 bg-orange-50 border border-orange-200" /> Recent change: {compared[0]}–{compared[1]}</span>}
       </div>
       {showLaw && (
         <p className="text-xs text-slate-500 mt-2">

@@ -1,23 +1,26 @@
-// The map's colours for how reported cases changed. The bounds come from the data (model_info.trend.bands), so the
-// legend always says what the export computed: blue fell, grey held steady, orange rose.
-const COLOR = { fell: "#2563eb", steady: "#94a3b8", rose: "#fdba74", rose_sharply: "#ea580c" };
+// The map's colours for how reported cases changed: blue fell, grey changed little, oranges rose (darker: more). The
+// bands, and their names, come from the data (model_info.trends[window].bands, lowest first), so the legend always
+// says what the export computed. The 22-year view has one more rising band than the recent one.
+const BLUE = "#2563eb";
+const GREY = "#94a3b8";
+const ORANGES = { 2: ["#fdba74", "#ea580c"], 3: ["#fdba74", "#f97316", "#c2410c"] };
 export const NO_COMPARISON = "#eef2f6";
 
-export const bandColor = (band) => COLOR[band] ?? NO_COMPARISON;
+// band name -> colour, for one window's bands
+export function bandColors(bands) {
+  const palette = [BLUE, GREY, ...ORANGES[bands.length - 2]];
+  return Object.fromEntries(bands.map((b, i) => [b.label, palette[i]]));
+}
 
-const signed = (x) => `${x > 0 ? "+" : x < 0 ? "−" : ""}${Math.abs(Math.round(x * 100))}%`;
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
-export function bandLegend(bands) {
+// The legend, with how many districts the map shows in each band
+export function bandLegend(bands, counts = {}) {
+  const colors = bandColors(bands);
+  const n = (label) => (counts[label] != null ? ` (${counts[label]})` : "");
   return [
-    ...bands.map((b, i) => {
-      const prev = bands[i - 1]?.below;
-      const label =
-        i === 0 ? `Down more than ${Math.abs(Math.round(b.below * 100))}%`
-          : b.below == null ? `Up ${Math.round(prev * 100)}% or more`
-            : `${signed(prev)} to ${signed(b.below)}`;
-      return { color: bandColor(b.band), label };
-    }),
-    { color: NO_COMPARISON, label: "Too few cases, or no comparable years" },
+    ...bands.map((b) => ({ color: colors[b.label], label: `${cap(b.label)}${n(b.label)}` })),
+    { color: NO_COMPARISON, label: `Too few cases, or no comparable years${counts.none != null ? ` (${counts.none})` : ""}` },
   ];
 }
 
