@@ -137,7 +137,8 @@ def summaries(rebased: pd.DataFrame, units: dict[str, list[int]], start: int = T
              India's change over those same, shorter years. None when its borders changed in the latest year itself.
       rank   its place in its state by reported cases in the latest year: counts, not rates
       top    its most common offence in the latest year as a share of its cases, beside the same share for its state
-    Also returns the comparison's settings and the trend of India and of each state, for the site's overview."""
+    Also returns the comparison's settings, India's total in every year (the site's first chart, so a visitor sees all
+    the years before the recent change) and the trend of India and of each state, for the site's overview."""
     end = int(rebased["year"].max())
     state_rows = {int(s): rows for s, rows in rebased.groupby("state_code")}
 
@@ -189,9 +190,11 @@ def summaries(rebased: pd.DataFrame, units: dict[str, list[int]], start: int = T
                 top = {"category": cat, "share": round(float(row[cat] / row["total"]), 4),
                        "state_share": round(float(s[cat] / s["total"]), 4) if s["total"] else None}
         out[int(code)] = {"trend": t, "rank": rank, "top": top}
+    per_year = rebased.groupby("year")["total"].sum()
     meta = {"from_year": start, "to_year": end, "min_cases": min_cases,
             "bands": [{"band": name, "below": None if math.isinf(below) else below} for name, below in BANDS],
-            "india": india, "states": {str(s): v for s, v in sorted(states.items())}}
+            "india": india, "india_series": [[int(y), round(float(t), 1), FILED] for y, t in per_year.items()],
+            "states": {str(s): v for s, v in sorted(states.items())}}
     return out, meta
 
 

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import DistrictCard from "../components/DistrictCard";
 import DistrictMap from "../components/DistrictMap";
 import DistrictSearch from "../components/DistrictSearch";
+import Sparkline from "../components/Sparkline";
 import { bandColor, bandLegend } from "../lib/bands";
 import { changeText, num } from "../lib/format";
 import { districtList, useMap, useSnapshot, useTitle } from "../lib/useData";
@@ -22,10 +23,20 @@ function Overview({ snap, list, onSelect }) {
   const examples = EXAMPLES.map((c) => list.find((d) => d.code === c)).filter(Boolean);
   const states = (rows) => rows.map((s) => `${s.name} ${changeText(s.change)}`).join(", ");
 
+  const series = tr.india_series;
+  const [first, last] = [series[0], series.at(-1)];
+
   return (
     <div className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-5 shadow-sm">
       <div>
-        <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">India, {tr.from_year} to {tr.to_year}</p>
+        <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-1">India, every year {first[0]} to {last[0]}</p>
+        <p className="text-slate-700 mb-3">
+          {num(first[1])} cases reported in {first[0]}; {num(last[1])} in {last[0]}.
+        </p>
+        <Sparkline series={series} compared={[tr.from_year, tr.to_year]} />
+      </div>
+      <div className="border-t border-slate-100 pt-4">
+        <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide">Recent change, {tr.from_year} to {tr.to_year}</p>
         <p className="text-slate-700 mt-1">
           <span className="text-3xl font-display font-bold text-slate-900">{changeText(tr.india.change)}</span>{" "}
           ({num(tr.india.from_total)} to {num(tr.india.to_total)} reported cases)
@@ -72,7 +83,8 @@ export default function Explore() {
   const byCode = useMemo(() => Object.fromEntries(list.map((d) => [d.code, d])), [list]);
   const district = code ? snap?.district[String(code)] : null;
   const tr = snap?.model_info.trend;
-  useTitle(district ? `${district.name}, ${district.state}: crimes against women, 2001–2022` : null);
+  const [y0, y1] = snap?.model_info.data_years ?? [2001, 2022];
+  useTitle(district ? `${district.name}, ${district.state}: crimes against women, ${y0}–${y1}` : null);
 
   const select = (c) => {
     setParams(c ? { district: String(c) } : {});
@@ -92,11 +104,14 @@ export default function Explore() {
     <div className="min-h-screen bg-slate-50 pt-20 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <header className="max-w-3xl pt-4 pb-6 sm:pt-8 sm:pb-8">
+          <p className="text-sm font-semibold text-blue-700 uppercase tracking-wide mb-2">
+            {y0}–{y1} · {y1 - y0 + 1} years · every district on today's map
+          </p>
           <h1 className="text-3xl sm:text-4xl font-display font-bold text-slate-900 tracking-tight">How has your district changed?</h1>
           <p className="mt-3 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Crimes against women reported to the police in every district of India, 2001 to 2022, on today's map. Districts keep
-            splitting and being renamed, so the official yearly tables cannot be lined up year by year as published; this project
-            rebuilt all 22 years onto today's districts, so they can.
+            Crimes against women reported to the police in every district of India, every year from {y0} to {y1}, on today's map.
+            Districts keep splitting and being renamed, so the official yearly tables cannot be lined up year by year as published;
+            this project rebuilt all {y1 - y0 + 1} years onto today's districts, so they can.
           </p>
           <div className="mt-5 max-w-xl">
             <DistrictSearch items={list} onSelect={select} />
@@ -113,10 +128,12 @@ export default function Explore() {
           <div className="grid lg:grid-cols-12 gap-6 items-start">
             <section className="lg:col-span-7 bg-white border border-slate-200 rounded-2xl p-4 sm:p-6 shadow-sm">
               <h2 className="text-lg font-display font-semibold text-slate-900">
-                Change in reported cases, {tr.from_year} to {tr.to_year}
+                Recent change in reported cases, {tr.from_year} to {tr.to_year}
               </h2>
               <p className="text-sm text-slate-500 mb-3">
-                Each district is compared with itself. A rise can mean more crime, or more women reporting it. Click a district.
+                Why from {tr.from_year}: it is the first year in which almost every district was counted with today's borders, so
+                the colours compare real numbers, not estimates. Click a district to see all {y1 - y0 + 1} years. A rise can mean
+                more crime, or more women reporting it.
               </p>
               <DistrictMap
                 geo={geo}

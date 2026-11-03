@@ -50,6 +50,7 @@ def test_a_district_carries_a_plain_summary_and_the_list_its_map_colour(client):
     assert listed[671] == t["band"] and listed[689] is None and set(listed.values()) <= BANDS | {None}
     m = client.get("/model-info").json()
     assert m["trend"]["from_year"] == 2017 and m["trend"]["india"]["change"] == t["india_change"]
+    assert [p[0] for p in m["trend"]["india_series"]] == list(range(m["data_years"][0], m["data_years"][1] + 1))
     assert m["dataset"]["path"].endswith(".csv") and m["dataset"]["rows"] > 16000
 
 

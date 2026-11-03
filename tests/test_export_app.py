@@ -87,6 +87,8 @@ def small_panel():
 def test_summaries_compare_like_with_like():
     facts, meta = export_app.summaries(small_panel(), {"u1": [1], "u23": [2, 3], "u4": [4], "u5": [5], "u6": [6]})
     assert meta["india"] == {"from_total": 300.0, "to_total": 365.0, "change": 0.2167}       # the state unit counts here
+    assert meta["india_series"][0] == [2017, 300.0, 0] and meta["india_series"][-1] == [2022, 365.0, 0]
+    assert [y for y, _t, _k in meta["india_series"]] == YEARS                                 # every year, not only the two compared
     assert meta["states"]["1"]["change"] == 0.1702 and meta["states"]["2"]["change"] == 0.3846
     t = {c: f["trend"] for c, f in facts.items()}
     assert t[1] == {"scope": "district", "from_year": 2017, "to_year": 2022, "from_total": 100.0, "to_total": 150.0,
@@ -158,6 +160,10 @@ def test_the_download_table_is_the_rebased_panel(app_data):
 
 def test_every_summary_agrees_with_the_districts_own_numbers(app_data):
     m = app_data["meta"]["trend"]
+    first, last = app_data["meta"]["data_years"]
+    india = {y: t for y, t, _k in m["india_series"]}
+    assert list(india) == list(range(first, last + 1)) and (india[m["from_year"]], india[m["to_year"]]) == \
+        (m["india"]["from_total"], m["india"]["to_total"])
     for d in app_data["districts"].values():
         s, years = d["summary"], {p[0]: p for p in d["series"]}
         t = s["trend"]

@@ -97,7 +97,7 @@ def draw(app: dict, geo: dict) -> Image.Image:
         d.text((x0 * SCALE, y * SCALE), line, font=font("regular", 26), fill=MUTED)
         y += 36
     y += 28
-    d.text((x0 * SCALE, y * SCALE), f"Change in reported cases, {tr['from_year']} to {tr['to_year']}", font=font("bold", 20), fill=INK)
+    d.text((x0 * SCALE, y * SCALE), f"Recent change in reported cases, {tr['from_year']} to {tr['to_year']}", font=font("bold", 20), fill=INK)
     y += 38
     for color, label in legend(tr["bands"]):
         d.rounded_rectangle([x0 * SCALE, (y + 4) * SCALE, (x0 + 20) * SCALE, (y + 24) * SCALE], radius=4 * SCALE, fill=color)

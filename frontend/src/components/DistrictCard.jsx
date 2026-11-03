@@ -111,7 +111,16 @@ export default function DistrictCard({ district: d, meta, watchOpen = false }) {
             <span className="text-3xl font-display font-bold text-slate-900">{num(d.latest_total)}</span>{" "}
             crimes against women reported in {d.latest_year}
           </p>
-          <Trend d={d} t={t} firstYear={meta.trend.from_year} />
+          <div>
+            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Every year, {d.series[0][0]} to {d.latest_year}</p>
+            <Sparkline series={d.series} compared={t && t.band !== "few_cases" ? [t.from_year, t.to_year] : null} />
+          </div>
+          <div className="border-t border-slate-100 pt-4">
+            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">
+              Recent change{t ? `, ${t.from_year} to ${t.to_year}` : ""}
+            </p>
+            <Trend d={d} t={t} firstYear={meta.trend.from_year} />
+          </div>
           {(s.rank || s.top) && (
             <ul className="text-sm text-slate-600 space-y-1.5">
               {s.rank && (
@@ -128,10 +137,6 @@ export default function DistrictCard({ district: d, meta, watchOpen = false }) {
               )}
             </ul>
           )}
-          <div>
-            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Every year, {d.series[0][0]} to {d.latest_year}</p>
-            <Sparkline series={d.series} compared={t && t.band !== "few_cases" ? [t.from_year, t.to_year] : null} />
-          </div>
           <div>
             <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">By offence, {d.latest_year}</p>
             <ul className="space-y-2">
