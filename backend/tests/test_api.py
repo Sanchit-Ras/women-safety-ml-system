@@ -3,13 +3,17 @@ promise the app makes: no forecast percentage anywhere."""
 import json
 import re
 
+from app import API_VERSION
 from app.services import data
+
+BANDS = {"fell", "steady", "rose", "rose_sharply", "few_cases"}
 
 
 def test_health_and_deploy_check(client):
     assert client.get("/health").json() == {"status": "ok"}
     d = client.get("/deploy-check").json()
-    assert d["api_version"] == "2.0" and re.fullmatch(r"\d{4}-\d{2}-\d{2}", d["data_generated"]) and d["watch_year"] > 2022
+    assert d["api_version"] == API_VERSION == client.get("/openapi.json").json()["info"]["version"]
+    assert re.fullmatch(r"\d{4}-\d{2}-\d{2}", d["data_generated"]) and d["watch_year"] > 2022
 
 
 def test_districts_lists_every_district_once_under_its_state(client):
@@ -32,6 +36,21 @@ def test_a_district_carries_its_numbers_status_and_notes(client):
     j = client.get("/district/689").json()                         # Jangaon: on the map, no row of its own
     assert (j["status"], j["in_files"], j["series"], j["latest"]) == ("not_scored", False, [], None)
     assert "Warangal" in j["notes"][0]
+
+
+def test_a_district_carries_a_plain_summary_and_the_list_its_map_colour(client):
+    d = client.get("/district/671").json()                         # Shahdara: filed in 2017 and in 2022
+    t, by_year = d["summary"]["trend"], {p[0]: p[1] for p in d["series"]}
+    assert (t["scope"], t["from_year"], t["to_year"]) == ("district", 2017, 2022) and t["band"] in BANDS
+    assert (t["from_total"], t["to_total"]) == (by_year[2017], by_year[2022])
+    assert round((t["to_total"] - t["from_total"]) / t["from_total"], 4) == t["change"]
+    assert d["summary"]["rank"]["of"] == 11 and d["latest"][d["summary"]["top"]["category"]] == max(d["latest"].values())
+    assert client.get("/district/689").json()["summary"] == {"trend": None, "rank": None, "top": None}   # no row of its own
+    listed = {x["code"]: x["trend"] for s in client.get("/districts").json()["states"] for x in s["districts"]}
+    assert listed[671] == t["band"] and listed[689] is None and set(listed.values()) <= BANDS | {None}
+    m = client.get("/model-info").json()
+    assert m["trend"]["from_year"] == 2017 and m["trend"]["india"]["change"] == t["india_change"]
+    assert m["dataset"]["path"].endswith(".csv") and m["dataset"]["rows"] > 16000
 
 
 def test_unknown_or_malformed_codes(client):

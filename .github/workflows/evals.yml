@@ -1,7 +1,8 @@
 # On every push and pull request, four jobs, so nothing reaches main (and so Render and Vercel) unchecked:
 #   gate  the pipeline's tests, then the deterministic eval gate (evals/gate.py), which rebuilds the store from the
 #         committed files without any model call and checks the metrics against their floors
-#   api   the API's tests, with only the API's requirements, on the Python version of its Docker image
+#   api   the API's tests, with only the API's requirements, on the Python version of its Docker image; they also
+#         check that the site's static snapshot (frontend/public/snapshot.json) still equals the API's answers
 #   image the API's Docker image built exactly as Render builds it, started, and asked for /health and /deploy-check
 #   web   the frontend installed from its lock file, linted, and built exactly as Vercel builds it
 # By hand (Actions > evals > Run workflow, tick "live"): also ask the live model about 20 gold names. That job

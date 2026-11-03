@@ -1,4 +1,4 @@
-import { pct } from "../lib/api";
+import { pct } from "../lib/format";
 
 export default function WatchExplanation({ meta }) {
   const e = meta.evidence;

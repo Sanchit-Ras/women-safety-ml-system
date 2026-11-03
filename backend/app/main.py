@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app import API_VERSION
 from app.routes import districts, health
 from app.services import data
 
@@ -14,10 +15,12 @@ async def lifespan(_app: FastAPI):
 
 
 app = FastAPI(
-    title="Women's Safety Watch List API",
-    description="Measured crimes against women for today's districts of India (NCRB, 2001-2022, re-based to today's "
-                "district map) and a watch list of districts likely to be among the fastest-growing next year.",
-    version="2.0",
+    title="Crimes Against Women in India, by District: API",
+    description="Reported crimes against women for every district on today's map of India, 2001-2022 (NCRB, re-based "
+                "onto today's districts so every year is comparable): each district's yearly numbers, how it changed "
+                "since 2017 beside its state and India, and an experimental watch list for the year after the data. "
+                "The whole table is also a CSV download on the website.",
+    version=API_VERSION,
     lifespan=lifespan,
 )
 

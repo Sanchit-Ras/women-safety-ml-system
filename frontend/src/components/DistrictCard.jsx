@@ -1,56 +1,139 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import Sparkline from "./Sparkline";
+import { bandColor } from "../lib/bands";
+import { changeText, downloadCsv, listText, num, ordinal, pct } from "../lib/format";
 
-const BADGE = {
-  watch: "bg-red-100 text-red-800 border-red-200",
-  no_signal: "bg-slate-100 text-slate-700 border-slate-200",
-  not_scored: "bg-slate-50 text-slate-500 border-slate-200",
-};
+const HOW = ["filed", "adjusted", "estimated"];
 
-function statusText(d, year) {
-  if (d.status === "watch") return `On the ${year} watch list`;
-  if (d.status === "no_signal") return `Not on the ${year} watch list`;
-  return "Not scored";
-}
-
-export default function DistrictCard({ district: d, meta }) {
-  const cats = meta.categories;
-  const max = d.latest ? Math.max(1, ...Object.values(d.latest)) : 1;
-  const p = d.peer;
-  const groupHit = p && meta.evidence.by_group.find((b) => b.group === p.group)?.precision;
-
+// The trend in plain words: what changed, over which years, and the same years for the state and India.
+function Trend({ d, t, firstYear }) {
+  if (!t) {
+    return (
+      <p className="text-slate-600">
+        No fair comparison over time: since {firstYear}, {d.name} has no two years counted with today's borders (its
+        borders changed recently, or a year is missing). The chart and the notes below show what is known.
+      </p>
+    );
+  }
+  const others = d.unit_members.map((m) => m.name);
+  const area = t.scope === "area";
+  const later = t.from_year > firstYear;
   return (
-    <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <h3 className="text-2xl font-display font-bold text-slate-900">{d.name}</h3>
-          <p className="text-slate-500">{d.state}</p>
-        </div>
-        <span className={`px-4 py-1.5 rounded-full border text-sm font-semibold ${BADGE[d.status]}`}>
-          {statusText(d, meta.watch_year)}
-        </span>
-      </div>
-
-      {p && (
-        <p className={`text-sm rounded-xl p-4 border ${d.status === "watch" ? "text-red-900 bg-red-50 border-red-100" : "text-slate-700 bg-slate-50 border-slate-200"}`}>
-          Compared with the {p.size} districts of similar size (those with {p.min_cases.toLocaleString("en-IN")} to{" "}
-          {p.max_cases.toLocaleString("en-IN")} cases in {meta.data_years[1]}
-          {d.unit_members.length > 0 && (
-            <>; it is assessed with {d.unit_members.map((m) => m.name).join(", ")}, {p.cases.toLocaleString("en-IN")} cases together</>
-          )}), it ranks <strong>{p.rank}</strong> for how likely it is
-          to grow fastest in {meta.watch_year}; the top {Math.max(1, Math.ceil(p.size * meta.watch_share))} are on the watch list.
-          {groupHit != null && (
-            <> In past tests, for districts this size, about {Math.round(groupHit * 100)} in 100 flagged districts really were among
-            the fastest-growing tenth (by guessing: 10).</>
-          )}{" "}
-          This compares growth, not how many crimes a district has.
+    <div className="space-y-2">
+      {area && (
+        <p className="text-sm text-slate-600">
+          Its borders changed after {t.from_year}, so it is compared together with {listText(others)}: their combined
+          numbers are real for every year.
         </p>
       )}
+      {t.band === "few_cases" ? (
+        <p className="text-slate-700">
+          {num(t.from_total)} cases in {t.from_year} and {num(t.to_total)} in {t.to_year}: too few for a fair percentage.
+        </p>
+      ) : (
+        <p className="text-lg text-slate-800">
+          <span className="inline-block w-3 h-3 rounded-sm mr-2 align-middle" style={{ background: bandColor(t.band) }} />
+          <strong className="text-2xl font-display">{changeText(t.change)}</strong> since {t.from_year}
+          {later && <span className="text-slate-500">, the first year it was counted with today's borders</span>}
+          <span className="text-slate-500"> ({num(t.from_total)} to {num(t.to_total)}{area ? ", together" : ""})</span>
+        </p>
+      )}
+      <p className="text-sm text-slate-600">
+        Over the same years: {d.state} {changeText(t.state_change)}, India {changeText(t.india_change)}.
+      </p>
+    </div>
+  );
+}
 
-      {d.latest ? (
-        <div className="grid lg:grid-cols-2 gap-8">
+function WatchStatus({ d, meta, open }) {
+  const p = d.peer;
+  const hit = p && meta.evidence.by_group.find((b) => b.group === p.group)?.precision;
+  const status = d.status === "watch" ? "on the list" : d.status === "no_signal" ? "not on the list" : "not scored";
+  return (
+    <details open={open} className="group border-t border-slate-100 pt-4">
+      <summary className="cursor-pointer text-sm text-slate-700 select-none">
+        <span className="font-semibold">Next year's watch list ({meta.watch_year}, experimental):</span>{" "}
+        <span className={d.status === "watch" ? "text-red-700 font-semibold" : ""}>{status}</span>
+      </summary>
+      <div className="text-sm text-slate-600 mt-2 space-y-2">
+        {p ? (
+          <p>
+            Compared with the {p.size} districts of similar size ({p.min_cases.toLocaleString("en-IN")} to{" "}
+            {p.max_cases.toLocaleString("en-IN")} cases in {meta.data_years[1]}
+            {d.unit_members.length > 0 && <>; assessed with {listText(d.unit_members.map((m) => m.name))}, {num(p.cases)} cases together</>}
+            ), it ranks <strong>{p.rank}</strong> for how likely it is to be among the fastest-growing in {meta.watch_year}; the top{" "}
+            {Math.max(1, Math.ceil(p.size * meta.watch_share))} are on the list.
+            {hit != null && <> In past tests, about {Math.round(hit * 100)} in 100 flags for districts this size were right (by guessing: 10).</>}
+          </p>
+        ) : (
+          <p>Not scored: it lacks six recent years of comparable numbers.</p>
+        )}
+        <Link to="/watch-list" className="text-blue-700 hover:underline">What the watch list is, and how well it works</Link>
+      </div>
+    </details>
+  );
+}
+
+export default function DistrictCard({ district: d, meta, watchOpen = false }) {
+  const [copied, setCopied] = useState(false);
+  const s = d.summary;
+  const cats = meta.categories;
+  const max = d.latest ? Math.max(1, ...Object.values(d.latest)) : 1;
+  const t = s.trend;
+
+  const copyLink = () => {
+    navigator.clipboard?.writeText(window.location.href).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    });
+  };
+  const download = () =>
+    downloadCsv(`${d.name.toLowerCase().replace(/[^a-z0-9]+/g, "_")}_crimes_against_women.csv`,
+      ["state", "district", "district_code", "year", "total", "how_counted"],
+      d.series.map(([year, total, kind]) => [d.state, d.name, d.code, year, total, HOW[kind]]));
+
+  return (
+    <article className="bg-white border border-slate-200 rounded-2xl p-5 sm:p-6 space-y-5 shadow-sm">
+      <header className="flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-2xl font-display font-bold text-slate-900 leading-tight">{d.name}</h2>
+          <p className="text-slate-500">{d.state}</p>
+        </div>
+        <button onClick={copyLink} className="shrink-0 text-sm text-slate-600 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-slate-50">
+          {copied ? "Link copied" : "Copy link"}
+        </button>
+      </header>
+
+      {d.latest_total != null ? (
+        <>
+          <p className="text-slate-700">
+            <span className="text-3xl font-display font-bold text-slate-900">{num(d.latest_total)}</span>{" "}
+            crimes against women reported in {d.latest_year}
+          </p>
+          <Trend d={d} t={t} firstYear={meta.trend.from_year} />
+          {(s.rank || s.top) && (
+            <ul className="text-sm text-slate-600 space-y-1.5">
+              {s.rank && (
+                <li>
+                  {ordinal(s.rank.rank)} of {s.rank.of} districts in {d.state} by cases reported in {s.rank.year} (counts, not
+                  adjusted for population, so larger districts rank higher).
+                </li>
+              )}
+              {s.top && (
+                <li>
+                  Most common: {cats[s.top.category].toLowerCase()}, {pct(s.top.share)} of its cases
+                  {s.top.state_share != null && <> ({d.state}: {pct(s.top.state_share)})</>}.
+                </li>
+              )}
+            </ul>
+          )}
           <div>
-            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-1">Reported in {d.latest_year}</p>
-            <p className="text-4xl font-display font-bold text-slate-900 mb-4">{Math.round(d.latest_total).toLocaleString("en-IN")}</p>
+            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">Every year, {d.series[0][0]} to {d.latest_year}</p>
+            <Sparkline series={d.series} compared={t && t.band !== "few_cases" ? [t.from_year, t.to_year] : null} />
+          </div>
+          <div>
+            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-2">By offence, {d.latest_year}</p>
             <ul className="space-y-2">
               {Object.entries(cats).map(([key, label]) => (
                 <li key={key} className="text-sm">
@@ -60,11 +143,7 @@ export default function DistrictCard({ district: d, meta }) {
               ))}
             </ul>
           </div>
-          <div>
-            <p className="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Total, {d.series[0][0]} to {d.latest_year}</p>
-            <Sparkline series={d.series} />
-          </div>
-        </div>
+        </>
       ) : (
         <p className="text-slate-600">No numbers of its own in the NCRB files.</p>
       )}
@@ -74,6 +153,19 @@ export default function DistrictCard({ district: d, meta }) {
           {d.notes.map((n) => <li key={n}>{n}</li>)}
         </ul>
       )}
-    </div>
+
+      <WatchStatus d={d} meta={meta} open={watchOpen} />
+
+      <div className="flex flex-wrap gap-2 border-t border-slate-100 pt-4 text-sm">
+        {d.series.length > 0 && (
+          <button onClick={download} className="bg-slate-900 text-white rounded-lg px-3 py-2 hover:bg-slate-700">
+            Download {d.name}'s numbers (CSV)
+          </button>
+        )}
+        <Link to="/data" className="border border-slate-200 rounded-lg px-3 py-2 text-slate-700 hover:bg-slate-50">
+          Every district, every offence
+        </Link>
+      </div>
+    </article>
   );
 }

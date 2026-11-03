@@ -1,7 +1,7 @@
 # Women's Safety ML System
 
-**An evaluated LLM data pipeline and a live watch list for crimes against women in India, on 22 years of official
-NCRB data (2001–2022).**
+**An evaluated LLM data pipeline that rebuilt 22 years of India's official district crime data (NCRB, 2001–2022) onto
+today's district map, and a live site where anyone can see how their district changed and download the data.**
 
 [![Live App](https://img.shields.io/badge/Live-App-informational)](https://women-safety-ml-system-jwlh.vercel.app/)
 [![API Docs](https://img.shields.io/badge/API-FastAPI%20docs-success)](https://women-safety-ml-system-1.onrender.com/docs)
@@ -10,10 +10,15 @@ NCRB data (2001–2022).**
 
 ## In 30 seconds
 
-Government crime data is messy: district names changed, districts split, and the files come in four formats. This
-project uses an LLM to fix the messy parts, **measures how often it is right and trusts it only where it earned
-trust**, puts 22 years onto today's map of India, and ships an honest live app.
+Government crime data is messy: district names changed, districts split, and the files come in four formats, so a
+district cannot be compared across years as published. This project uses an LLM to fix the messy parts, **measures
+how often it is right and trusts it only where it earned trust**, puts 22 years onto today's map of India, and ships a
+live site that answers one question for any district: *how has it changed, beside its state and India?*
 
+- **A dataset people can use**: all 783 districts on today's map, each year's reported crimes against women since
+  2001, a plain summary per district (its change since 2017 beside its state's and India's over the same years, its
+  rank in its state, its most common offence), and the whole table as a **16,606-row CSV download and an API** for
+  journalists, researchers and NGOs who need comparable numbers.
 - **LLM data pipeline** (Python, Gemini, structured outputs, prompt engineering): matched **98.5%** of 989 messy
   historical place names to today's districts, against **56.6%** for rule-based name matching, with **0 hallucinated**
   district codes in 76 model answers.
@@ -47,8 +52,8 @@ flowchart LR
   B --> C["Place-name resolver<br/>rules → fuzzy → map → Gemini"]
   C --> D["District history<br/>and re-basing"]
   D --> E["22-year panel<br/>755 districts"]
-  E --> F["Model comparison<br/>and watch list"]
-  F --> G["FastAPI"] --> H["React app"]
+  E --> F["District summaries, CSV,<br/>model comparison, watch list"]
+  F --> G["FastAPI"] --> H["React app<br/>(static copy of the API)"]
   X["Evals: answer keys, reports,<br/>a gate on every push"] -.-> C
   X -.-> D
   X -.-> F
@@ -60,13 +65,15 @@ flowchart LR
    map); Gemini answers only what is left, inside guards.
 3. **Re-base**: every district split is recorded, and each new district's past is estimated from its share of its
    parent, so all 22 years sit on today's map and national totals never change.
-4. **Predict and serve**: 11 forecasting methods are compared fairly; the winner is batch-scored into a 2023 watch
-   list that the API serves and the app maps.
+4. **Summarise, predict and serve**: each district's change since 2017 is computed beside its state's and India's
+   over the same years; 11 forecasting methods are compared fairly and the winner is batch-scored into an experimental
+   2023 watch list; the API serves it all, and the site and the CSV download carry the same numbers.
 
 ## Results
 
 | What | Result | Evidence |
 |---|---|---|
+| Districts anyone can look up and compare | **783** on today's map; a **16,606-row** CSV and an API | [live site](https://women-safety-ml-system-jwlh.vercel.app/), [the data](https://women-safety-ml-system-jwlh.vercel.app/data) |
 | Old place names matched to today's districts | **98.5%** (rule-based matching: 56.6%) | [eval report](evals/reports/2026-10-18.md) |
 | Model answers naming a district outside the allowed list | **0 of 76** | [eval report](evals/reports/2026-10-18.md) |
 | Names a person must check | **124 → 42** (−66%), 2 errors let through | [eval report](evals/reports/2026-10-18.md) |
@@ -135,10 +142,12 @@ report: [framework comparison](evals/reports/2026-11-01_frameworks.md).
 
 ### Shipping: API, app and automatic checks
 
-The watch list is batch-scored once a year into a file ([ml/export_app.py](ml/export_app.py)); the
-[FastAPI service](backend/) serves it with typed responses and runs no model, which keeps the Docker image small and
-cold starts short. The [React app](frontend/) draws today's 755 districts with d3.js and shows each district's numbers
-since 2001, marking which years were estimated. GitHub Actions runs four jobs on every push: the pipeline tests and the
+Every district's numbers, plain summary and watch-list status are computed once a year into a file
+([ml/export_app.py](ml/export_app.py)); the [FastAPI service](backend/) serves them with typed responses and runs no
+model, which keeps the Docker image small. The [React app](frontend/) draws from a static copy of the API's own answers,
+saved by the same job and checked against the API by a test, so it opens at once instead of waiting for the free
+server to wake up. It draws today's districts with d3.js, shows each district's numbers since 2001 (marking which
+years were estimated), and offers each district's numbers and the whole table as CSV. GitHub Actions runs four jobs on every push: the pipeline tests and the
 eval gate, the API tests, the Docker image as Render builds it, and the frontend as Vercel builds it.
 
 ## Design decisions
@@ -179,12 +188,14 @@ pip install -r requirements.txt
 python -m agents.orchestrator build      # rebuild the store and panels from the committed files (no model calls)
 python -m evals.gate                     # the CI gate, locally
 python -m ml.bakeoff                     # the model comparison (several minutes)
-python -m ml.export_app                  # batch-score the watch list for the app
+python -m ml.export_app                  # the app's data: summaries, watch list, CSV, map and the site's API snapshot
+python -m ml.og_image                    # the picture a shared link to the site shows
 ```
 
-The model stages need a Gemini key: copy `.env.example` to `.env` and fill it in. For the app, run
-`uvicorn app.main:app --reload` in `backend/` (after `pip install -r requirements.txt` there), then `npm ci` and
-`npm run dev` in `frontend/` with `VITE_API_URL=http://localhost:8000` in `frontend/.env`.
+The model stages need a Gemini key: copy `.env.example` to `.env` and fill it in. For the app, run `npm ci` and
+`npm run dev` in `frontend/`; it draws from the committed snapshot. To see the live API too, run
+`uvicorn app.main:app --reload` in `backend/` (after `pip install -r requirements.txt` there) with
+`VITE_API_URL=http://localhost:8000` in `frontend/.env`.
 
 ## Repository map
 
@@ -197,7 +208,7 @@ evals/           answer keys, metrics, reports, the CI gate, the live check, the
 ml/              the unit panel, the model comparison, batch scoring
 backend/         the FastAPI service
 frontend/        the React app
-tests/           216 pipeline tests (the API's tests are in backend/tests)
+tests/           222 pipeline tests (the API's tests are in backend/tests)
 ```
 
 ## Author

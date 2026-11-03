@@ -1,7 +1,7 @@
 """The app's data: one JSON file written by ``python -m ml.export_app`` (batch scoring) and read once per worker.
 
 The API runs no model. The data changes once a year, when NCRB publishes, so every answer is computed ahead of
-time and committed with the code that serves it.
+time and committed with the code that serves it (and saved for the website as a static copy: see app/snapshot.py).
 """
 from __future__ import annotations
 
@@ -27,7 +27,9 @@ def states() -> list[dict]:
     data = get()
     by_state: dict[int, list[dict]] = {}
     for d in data["districts"].values():
-        by_state.setdefault(d["state_code"], []).append({"code": d["code"], "name": d["name"], "status": d["status"]})
+        trend = d["summary"]["trend"]
+        by_state.setdefault(d["state_code"], []).append({"code": d["code"], "name": d["name"], "status": d["status"],
+                                                          "trend": trend["band"] if trend else None})
     out = [{"code": int(c), "name": name, "districts": sorted(by_state.get(int(c), []), key=lambda x: x["name"])}
            for c, name in data["states"].items() if by_state.get(int(c))]
     return sorted(out, key=lambda s: s["name"])
