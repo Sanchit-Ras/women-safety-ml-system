@@ -31,7 +31,7 @@ India?*
 - **CI/CD and LLMOps**: GitHub Actions with an **eval regression gate**, a Docker build and a frontend build on every
   push; **versioned prompts**; a **FastAPI + React (d3.js)** app with batch inference, live on Render and Vercel.
 - **Measured, not assumed**: rebuilt the LLM step in **LangGraph / LangChain** and compared it on the same evals
-  (same 92% accuracy, 2.5× more code); found and removed **data leakage** behind a reported R² of 0.88 (honest: 0.06).
+  (same 92% accuracy, 2.5× more code, 21 more packages), then kept the simpler hand-built loop.
 
 **Skills:** LLMs & GenAI (Gemini, prompt engineering, structured outputs, LangGraph, LangChain) · Evals & LLMOps (LLM
 evaluation, calibration, hallucination detection, cost/latency tracking, CI/CD) · Data engineering (ETL pipelines,
